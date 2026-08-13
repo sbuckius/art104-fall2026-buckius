@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CLASS CONTRACT — Climate, Media, Making · Fall 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --dark:#1a3a1a;--mid:#2d5a2d;--leaf:#3d7a3d;--sage:#5a9a5a;
+  --mint:#8dc48d;--pale:#c8e6c8;--wash:#e8f5e8;--cream:#f2faf2;
+  --ink:#1a2e1a;--pencil:#4a6a4a;--highlight:#d4f7a0;--coral:#e07050;
+  --paper:#f7fbf0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.7;
+  background-image:
+    repeating-linear-gradient(0deg,transparent 0 27px,rgba(90,154,90,.08) 27px 28px),
+    repeating-linear-gradient(90deg,transparent 0 99%,rgba(90,154,90,.06) 99% 100%);
+}
+
+/* ── torn-edge header ─────────────────────────────────────────── */
+header{
+  background:var(--dark);color:var(--cream);padding:30px 24px 36px;position:relative;
+  border-bottom:4px solid var(--ink);
+}
+header::after{
+  content:'';position:absolute;bottom:-12px;left:0;right:0;height:12px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12'%3E%3Cpath d='M0 0 Q10 8 20 2 Q30 10 40 1 Q50 9 60 3 Q70 11 80 0 Q90 7 100 2 Q110 10 120 0' fill='%231a3a1a' stroke='none'/%3E%3C/svg%3E") repeat-x;
+}
+h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,7vw,52px);font-weight:700;
+  text-align:center;text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:4px;letter-spacing:3px}
+.sub{font-family:'Space Mono',monospace;font-size:clamp(11px,2vw,14px);
+  text-align:center;color:var(--mint);letter-spacing:1px}
+
+main{max-width:720px;margin:0 auto;padding:20px 18px 120px}
+
+/* ── section cards ────────────────────────────────────────────── */
+.card{
+  border:3px solid var(--mid);background:var(--cream);margin:24px 0;padding:0;
+  border-radius:2px;position:relative;
+  box-shadow:4px 4px 0 var(--pale);
+  
+}
+.card-head{
+  background:var(--leaf);color:var(--cream);padding:12px 18px;
+  font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;
+  letter-spacing:1px;cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;border-bottom:3px solid var(--mid);
+  user-select:none;
+}
+.card-head .arrow{font-size:20px;transition:transform .2s}
+.card.closed .card-body{display:none}
+.card.closed .arrow{transform:rotate(-90deg)}
+.card-body{padding:16px 18px 20px}
+.card-body p{margin-bottom:12px;color:var(--ink)}
+.card-body p:last-child{margin-bottom:0}
+
+/* ── checkboxes ───────────────────────────────────────────────── */
+.check-row{display:flex;gap:12px;align-items:flex-start;margin:10px 0;padding:8px 10px;
+  border:2px dashed var(--pale);background:var(--wash);border-radius:2px;
+  cursor:pointer;transition:background .15s}
+.check-row:hover{background:var(--pale)}
+.check-row.checked{background:var(--highlight);border-color:var(--sage)}
+.check-row input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;width:24px;height:24px;min-width:24px;
+  border:3px solid var(--mid);background:#fff;border-radius:2px;cursor:pointer;
+  position:relative;margin-top:2px;
+}
+.check-row input:checked{background:var(--leaf);border-color:var(--dark)}
+.check-row input:checked::after{
+  content:'✓';position:absolute;top:-2px;left:3px;
+  font-size:20px;font-weight:bold;color:var(--cream);
+  font-family:'Space Grotesk',sans-serif;
+}
+.check-row label{cursor:pointer;flex:1}
+.check-row strong{color:var(--dark)}
+
+/* ── doodles and marginalia ───────────────────────────────────── */
+.margin-note{
+  font-family:'Space Mono',monospace;font-size:12px;color:var(--sage);
+  transform:rotate(-2deg);margin:8px 0 8px 30px;padding-left:12px;
+  border-left:3px solid var(--mint);line-height:1.5;
+}
+.scrawl{font-family:'Space Mono',monospace;font-size:12px;color:var(--leaf);
+  text-align:center;margin:20px 0;transform:rotate(-1deg)}
+.underline{text-decoration:underline;text-decoration-style:wavy;
+  text-decoration-color:var(--sage);text-underline-offset:4px}
+.highlight{background:var(--highlight);padding:1px 4px}
+
+/* ── signature area ───────────────────────────────────────────── */
+.sig-area{border:3px solid var(--mid);background:var(--wash);padding:20px;margin-top:30px;
+  box-shadow:4px 4px 0 var(--pale)}
+.sig-area h2{font-family:'Space Grotesk',sans-serif;font-size:20px;color:var(--dark);margin-bottom:12px}
+.sig-row{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0}
+.sig-row label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);
+  display:block;margin-bottom:4px}
+.sig-row input{width:100%;border:none;border-bottom:3px solid var(--mid);
+  background:transparent;font-family:'IBM Plex Sans',sans-serif;font-size:18px;color:var(--dark);
+  padding:6px 4px;outline:none}
+.sig-row input:focus{border-bottom-color:var(--coral)}
+.sig-row .field{flex:1;min-width:200px}
+
+/* ── progress + buttons ───────────────────────────────────────── */
+.progress-bar{position:fixed;top:0;left:0;right:0;height:6px;z-index:100;
+  background:var(--pale)}
+.progress-fill{height:100%;background:var(--leaf);transition:width .3s;width:0}
+#counter{position:fixed;top:10px;right:14px;z-index:100;
+  font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--dark);
+  background:var(--highlight);padding:3px 10px;border:2px solid var(--mid);
+  border-radius:2px;box-shadow:2px 2px 0 var(--pale)}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;text-transform:uppercase;
+  padding:10px 22px;cursor:pointer;border:3px solid var(--mid);
+  background:var(--leaf);color:var(--cream);letter-spacing:1px;
+  box-shadow:3px 3px 0 var(--dark);transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--dark)}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0}
+.btn.alt{background:var(--cream);color:var(--dark)}
+
+/* ── doodle borders ───────────────────────────────────────────── */
+.squiggle{height:16px;margin:24px 0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='16'%3E%3Cpath d='M0 8 Q12 2 25 8 Q38 14 50 8 Q62 2 75 8 Q88 14 100 8 Q112 2 125 8 Q138 14 150 8 Q162 2 175 8 Q188 14 200 8' fill='none' stroke='%235a9a5a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x center}
+
+footer{border-top:4px solid var(--mid);background:var(--dark);color:var(--mint);
+  padding:20px;text-align:center;font-family:'Space Mono',monospace;font-size:12px}
+footer a{color:var(--highlight)}
+
+@media(max-width:540px){main{padding:16px 12px 120px}.sig-row{flex-direction:column}}
+
+#finalCheck:checked{background:var(--leaf);border-color:var(--dark)}
+#finalCheck:checked::after{
+  content:'✓';position:absolute;top:-1px;left:7px;
+  font-size:32px;font-weight:bold;color:var(--cream);
+  font-family:'Space Grotesk',sans-serif;
+}
+@media print{
+  .progress-bar,#counter,.actions,.btn{display:none}
+  .card.closed .card-body{display:block}
+  body{background:#fff;font-size:14px}
+  .card{box-shadow:none;break-inside:avoid;transform:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="bar"></div></div>
+<div id="counter">0 / 0</div>
+<div id="saved" style="position:fixed;top:10px;right:120px;z-index:100;
+  font-family:'Space Mono',monospace;font-size:11px;color:var(--sage);
+  background:var(--wash);padding:2px 8px;border:1px solid var(--pale);
+  opacity:0;transition:opacity .3s">saved to browser</div>
+
+<header>
+  <h1>Class Contract</h1>
+  <div class="sub">Climate, Media, Making · Art 104 · Fall 2026 · SJSU</div>
+</header>
+
+<main>
+
+<p class="scrawl">~ read each section, check each box, check at the bottom ~</p>
+
+<div style="border:2px solid var(--sage);background:var(--wash);padding:14px 18px;margin:10px 0 20px;max-width:720px">
+  <p style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.3px;color:var(--dark);line-height:1.7;margin:0">
+    <strong>HOW THE CHECKBOXES WORK:</strong> Checking a box means you have read and understood that item.
+    It does not mean you agree with every word of it. If you disagree, have a concern, or want to propose
+    a change, write that in the discussion box at the bottom of each section. A checked box with a
+    comment is more valuable than an unchecked box with silence.</p>
+</div>
+
+<div class="card" data-section="care">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Care, Empathy, and Being in a Room Together</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p>This class runs on <strong>collective trust</strong>. We are asking each other to share unfinished
+      work, argue about difficult topics, give honest feedback, and build something together. That only
+      works if the room feels safe enough to be wrong in.</p>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will listen before I respond.</strong> When someone is
+        speaking, I will hear their full thought before forming mine.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will assume good intent.</strong> If something lands badly,
+        I will ask what was meant before deciding what was meant.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will critique the work, not the person.</strong> "This
+        layout buries the argument" is feedback. "You're bad at layout" is not.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will hold space for disagreement.</strong> This syllabus
+        assigns readings that contradict each other on purpose. Discomfort is not a problem to be
+        solved.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will take care of my group.</strong> If I am falling behind,
+        I will tell my group before they discover it. If someone in my group is struggling, I will ask how I
+        can help rather than working around them.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will be present.</strong> Consider having your camera on, but this is not a requirement.
+        Attention in the room, not on another tab. Three hours is long; the break is real — actually leave
+        the desk.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will be mindful of differences.</strong> This room holds
+        people from different backgrounds, cultures, identities, and life experiences. Some of us are
+        navigating systems that were not built for us. I will not assume that my experience is universal,
+        and I will make space for perspectives shaped by circumstances I have not lived.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will be aware of the weight of the material.</strong>
+        This course discusses colonialism, extraction, racial injustice, erased labour, and ecological
+        crisis. For some people in this room, these are not abstract topics — they are lived experience.
+        I will engage with seriousness and care, and I will notice when a conversation costs someone more
+        than it costs me.</label>
+    </div>
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">being kind and being honest are not opposites ↗</div>
+  </div>
+</div>
+
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="curiosity">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Curiosity, Questions, and Seeing Differently</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p>This course assigns readings that disagree with each other on purpose. Solarpunk and xenofeminism
+      cannot both be right about nature. Ukeles and Doctorow are solving different problems with the same
+      word. <strong>The discomfort of holding two conflicting ideas at once is not a failure of the
+      course — it is the course.</strong></p>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will stay curious.</strong> When I encounter an idea that
+        does not make sense to me, I will sit with it before dismissing it. The readings I resist the most
+        are usually the ones that teach me the most.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will ask questions out loud.</strong> A question is not a
+        sign of ignorance — it is the beginning of every argument in this syllabus. Holling asked what
+        resilience actually means. Yusoff asked whose geology. Le Guin asked what a story is for. The
+        course runs on questions, not answers.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will hear perspectives I did not arrive with.</strong> My
+        classmates come from different places, different disciplines, different life experiences. When
+        someone sees something I do not see, that is data, not disagreement.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will look at things from more than one angle.</strong> The
+        same artwork looks different through rhetoric, through geology, through labour economics, through
+        gender studies. This course names twenty-seven disciplines because no single frame is enough. I
+        will try frames that are not my default.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will change my mind when the evidence asks me to.</strong>
+        Holding a position is good. Defending a position after it has been answered is not. The manifesto
+        plate I write in Week 15 should surprise the person I was in Week 1.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will not confuse comfort with learning.</strong> Some weeks
+        will be uncomfortable — the material is about extraction, dispossession, invisible labour, whose
+        future gets built and whose does not. Discomfort in the presence of that material is appropriate.
+        What matters is what I do with it.</label>
+    </div>
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">the readings I resist the most are usually the ones that teach me the most</div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="zoom">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Zoom Etiquette</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p>This class meets on Zoom for three hours every Monday. That is a long time to be on a screen.
+      These expectations exist to make the room work for everyone, not to police behavior.</p>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Consider having your camera on.</strong> This is not a requirement.
+        Having your camera on can help the room feel more connected, especially when you are presenting
+        or in a breakout room. But it is your choice, and no one will be penalized for keeping it off.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Mute when I am not speaking.</strong> Background noise
+        stacks — one person's keyboard is fine, twenty is a wall of sound.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Use the chat actively.</strong> The warm-up runs in chat.
+        Reactions, links, questions, responses to each other — all of it belongs there. Chat is a second
+        channel, not a side channel.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Name yourself clearly.</strong> Use the name you want to be
+        called in this room. If you have pronouns you want visible, put them in your Zoom display
+        name.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Be in one place.</strong> Do not Zoom from a moving car, a
+        noisy cafe, or while doing something else. If you cannot be fully present for a session, that is
+        okay — let your group know and catch up from the recording. Half-present is harder on everyone than
+        absent.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Take the break for real.</strong> When the break starts,
+        leave the desk. Stand up. Look at something that is not a screen. Seven minutes is short; spend
+        them away from the computer and you will feel the difference in the second half.</label>
+    </div>
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">half-present is harder on everyone than absent — if you can't be here, say so</div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="group">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Working in Groups</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p>The zine is group work. The essay is group work. The manifesto plate is yours alone. <strong>The
+      hardest skill this course teaches is agreeing on one topic in twenty minutes and then making
+      something together in three hours.</strong></p>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will show up for my group prepared.</strong> On group project
+        days, I arrive with ideas to offer, not a blank page.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will give up ideas that don't serve the group.</strong>
+        Choosing one topic means letting go of two. That is editorial judgment, not compromise.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will do my share and name my share.</strong> The credit page
+        is the last thing the group writes, and it says who did what. I will be honest about my
+        contribution.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will raise problems early.</strong> A problem raised in Week
+        6 can be solved. A problem raised in Week 14 is a crisis.</label>
+    </div>
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">your group is your first reader, your editor, and your collaborator — treat them that way</div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="submit">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Showing Up and Submitting Work</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>Show up on time.</strong> If you need to miss a class, turn in all assignments on Canvas.
+      Find at least two classmates who can fill you in. Check Canvas and the Google Drive for notes and
+      slides. If you still have questions, email with the subject
+      <span class="highlight">"ART104: Missed Class"</span>.</p>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I understand the late work policy.</strong> Work is due at
+        <strong>10:00 a.m.</strong> before class starts. I can turn in any assignment late: 5% deducted for
+        the first day, another 5% if a week late. Maximum 10% deducted total. After that, no additional
+        penalty — but falling behind compounds.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I know I can always resubmit.</strong> If I want to improve my
+        grade, I can resubmit any final project. The only points I cannot recoup are the lateness
+        deduction.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will communicate.</strong> If I am going to miss class or a
+        deadline, I will let my instructor and my group know before it happens, not after.</label>
+    </div>
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">you can always turn it in · you can always resubmit · you cannot recoup lateness points</div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="ai">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ AI, Your Voice, and Honesty</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p>The goal is <strong class="underline">your creative voice</strong>. AI can support learning, but it
+      can also replace the thinking that produces it. The question to ask yourself every time:
+      <em>Is this tool supporting my learning, or is it doing my learning for me?</em></p>
+
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>No detection tools.</strong> The instructor will not use any
+        AI detection tools or checkers. This is a trust-based policy.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Permitted — writing support.</strong> AI tools like Grammarly
+        can be used to check spelling, grammar, and punctuation errors.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Permitted — coding support.</strong> AI tools can be used for
+        support with coding.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Permitted — brainstorming.</strong> AI tools can be used for
+        support with brainstorming ideas and concepts.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Suggested — text.</strong> For learning's sake, I suggest
+        that you try not to use AI tools for word-for-word text generation that is directly turned in for
+        writing assignments without translating into your own words. If you want to reference word-for-word
+        text generated by AI, I suggest that you put it in quotes and cite the AI generation
+        software.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>Suggested — images.</strong> For speculative artwork ideas,
+        you can use AI for brainstorming. I will specify when it can be used for final images.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>This policy may change.</strong> Technology is changing
+        rapidly. If the policy needs to be updated, the instructor will let you know right
+        away.</label>
+    </div>
+
+    
+
+    
+    
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I understand the deeper question.</strong> Replace "AI" with
+        "automation." Is this automation supporting my learning and creative voice, or replacing
+        it?</label>
+    </div>
+    
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">no detection tools · trust-based · the question is always: is it supporting your voice or replacing it?</div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="integrity">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Academic Integrity and Original Work</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p>All papers are to be your original work. Plagiarism results in a 0% on the assignment and may have
+      further consequences under <strong>University Policy F15-7</strong>. When in doubt, cite your
+      sources.</p>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will cite everything I use.</strong> Words, images, code,
+        data, ideas. If it came from somewhere, I say where.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I understand what plagiarism means here.</strong> Directly
+        using AI-generated text without quotation marks and a citation is a form of plagiarism under this
+        policy.</label>
+    </div>
+  
+    <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="mindful">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Mindfulness, Sustainability, and Practice</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p>This course is about climate, ecology, and care. <strong>The way we run the class is part of the
+      argument.</strong> A course about sustainability that wastes people's time and energy is contradicting
+      itself.</p>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will pay attention to my own energy.</strong> Three hours on
+        Zoom is long. I will take the break, drink water, step outside if I can. Burning out does not
+        demonstrate commitment.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will notice what I consume and produce.</strong> How many
+        tabs, how many files, how many prints. This is not guilt — it is the course's subject, applied to
+        the course.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will treat this as a practice, not a performance.</strong>
+        The weekly response tool, the warm-up, the critique — these are not tests. They are places to think
+        out loud and get it wrong. Getting it wrong in Week 3 is how you get it right in Week 13.</label>
+    </div>
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">the way you make the work is part of the work</div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="access">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Access, Accommodations, and Getting Help</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p>If you have a disability or need accommodations, register with the
+      <strong>Accessible Education Center (AEC)</strong> and let me know in the first weeks. Every
+      reasonable effort will be made to support your learning.</p>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I know where to get help.</strong> Canvas for materials.
+        Office hours on Zoom for questions. Email with "ART104: Topic" for anything else. Expect a reply
+        in 2–3 business days.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will ask for what I need.</strong> Accommodations,
+        extensions, clarification, a conversation. Asking is not weakness; silence when you're struggling
+        is the thing that hurts you.</label>
+    </div>
+  
+    <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="tech">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Technology, Tools, and How to Reach Me</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>This is an online course.</strong> We meet synchronously on Zoom every Monday, 12:00–3:00
+      p.m. You will need a computer with an internet connection, a camera, and a speaker or microphone.
+      A phone is not enough — you will be screen-sharing work, editing in breakout rooms, and presenting
+      to the class.</p>
+
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I have the equipment I need.</strong> A computer (not a
+        phone), a working camera, a microphone or headset, and a reliable internet connection. If any of
+        these are a problem, I will let the instructor know in the first week so we can solve it
+        together.</label>
+    </div>
+
+    <div style="border:2px solid var(--sage);background:var(--wash);padding:14px 16px;margin:14px 0;font-size:14px">
+      <p style="margin-bottom:10px"><strong style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:.5px;color:var(--dark)">
+        CANVAS</strong><br>
+        Syllabus, handouts, notes, assignment instructions, and grades live on Canvas:
+        <a href="http://sjsu.instructure.com" style="color:var(--leaf)">sjsu.instructure.com</a>.
+        Check it regularly — updates are posted there, not announced by email. For help with Canvas:
+        <a href="http://www.sjsu.edu/ecampus/teaching-tools/canvas/student_resources" style="color:var(--leaf)">
+        Canvas Student Resources</a>.</p>
+
+      <p style="margin-bottom:10px"><strong style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:.5px;color:var(--dark)">
+        EMAIL</strong><br>
+        I am available during class and during office hours on Zoom. For questions not answered there,
+        email with the subject line <strong>"ART104: Topic of Email"</strong>. Expect a reply in
+        2–3 business days (Monday–Friday).</p>
+
+      <p style="margin-bottom:10px"><strong style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:.5px;color:var(--dark)">
+        IF YOU MISS A CLASS</strong><br>
+        First, check with your classmates — find at least two who can fill you in. Notes and slides are
+        on Canvas and in the Google Drive. If you still have questions, email with the subject
+        <strong>"ART104: Missed Class"</strong>. Turn in all assignments on Canvas even if you are
+        absent.</p>
+
+      <p style="margin-bottom:0"><strong style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:.5px;color:var(--dark)">
+        ZOOM RECORDINGS</strong><br>
+        All classes are recorded and available on Canvas through Panopto. This is intended to enhance
+        accessibility and support learning — if you miss a session, the recording is there, and reviewing
+        material afterwards can reinforce what you learned in the room. <strong>The recording is a
+        backup, not a replacement for being present.</strong></p>
+    </div>
+
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I know where to find everything.</strong> Canvas for
+        materials, grades, and submissions. Google Drive for shared notes. Zoom for class. Email with
+        "ART104:" in the subject for questions.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I know what to do if I miss a class.</strong> Check with
+        classmates first. Check Canvas and the Drive. Watch the Panopto recording. Email with "ART104:
+        Missed Class" if I still have questions. Turn in assignments on Canvas regardless.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I understand that recordings exist but presence
+        matters.</strong> The Zoom recording captures what was said; it does not capture the breakout
+        room I was supposed to be in, the critique I was supposed to give, or the group that needed me
+        there.</label>
+    </div>
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">canvas for materials · zoom for class · email for questions · classmates for everything else</div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="card" data-section="grading">
+  <div class="card-head" onclick="toggle(this)">
+    <span>☘ Understanding How Work Is Assessed</span>
+    <span class="arrow">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>Your work is graded on comprehension, effort, engagement, and creative quality.</strong>
+      Not on whether your opinion matches mine, not on whether the work is "right," and not on polish
+      alone. A rough piece that argues something genuinely is worth more than a polished piece that
+      argues nothing.</p>
+
+    <div style="border:2px solid var(--sage);background:var(--wash);padding:14px 16px;margin:12px 0;font-size:16px">
+      <p style="margin-bottom:10px"><strong style="font-family:'Space Grotesk',sans-serif;font-size:16px;color:var(--dark)">A · 100–90% · Excellent</strong><br>
+        Exemplary comprehension and application of the material. All work is completed, engaging, and
+        exceptional in quality. The creative work demonstrates that you have genuinely wrestled with the
+        ideas rather than illustrated them.</p>
+      <p style="margin-bottom:10px"><strong style="font-family:'Space Grotesk',sans-serif;font-size:16px;color:var(--dark)">B · 89–80% · Good</strong><br>
+        Completed assignments with a clear grasp of key ideas and creative concepts. The project shows
+        creative effort and engagement. The difference between a B and an A is usually depth — the
+        reading is used rather than merely cited, and the argument is specific rather than general.</p>
+      <p style="margin-bottom:10px"><strong style="font-family:'Space Grotesk',sans-serif;font-size:16px;color:var(--dark)">C · 79–70% · Satisfactory</strong><br>
+        Most assignments completed, but not all. The work lacks creative and aesthetic effort, or is
+        underdeveloped or incomplete. A C usually means the student did the work but did not push
+        past the first idea.</p>
+      <p style="margin-bottom:10px"><strong style="font-family:'Space Grotesk',sans-serif;font-size:16px;color:var(--dark)">D · 69–60% · Unsatisfactory</strong><br>
+        Work is not completed as assigned. Substantial problems exist. Major components are missing.
+        Writing shows lack of editing and poor grammar.</p>
+      <p style="margin-bottom:0"><strong style="font-family:'Space Grotesk',sans-serif;font-size:16px;color:var(--coral)">F · below 60% · Fail</strong><br>
+        Work is not submitted, or includes very few of the requirements.</p>
+    </div>
+
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I understand the grading scale.</strong> I know what
+        distinguishes each level and that the difference between good and excellent is usually
+        depth and specificity.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I understand that I can always improve.</strong> I can
+        resubmit any final project to improve my grade. The only points I cannot get back are the
+        lateness deduction.</label>
+    </div>
+    <div class="check-row" onclick="ck(this)">
+      <input type="checkbox"/><label><strong>I will ask if I do not understand my grade.</strong> If
+        I receive a grade I do not understand, I will ask about it in office hours rather than
+        guessing. Grades are not punishment — they are information.</label>
+    </div>
+        <div style="margin-top:14px;padding:12px 14px;border:2px dashed var(--sage);background:var(--wash)">
+      <label style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--pencil);display:block;margin-bottom:6px">
+        ANYTHING ABOVE YOU WANT TO DISCUSS, PUSH BACK ON, OR DECLINE? SAY WHY.</label>
+      <textarea style="width:100%;min-height:60px;border:2px solid var(--pale);background:var(--cream);
+        font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--ink);
+        padding:10px 12px;resize:vertical;outline:none" placeholder="Please share your thoughts here."></textarea>
+    </div>
+
+    <div class="margin-note">a rough piece that argues something > a polished piece that argues nothing</div>
+  </div>
+</div>
+
+<div class="squiggle"></div>
+
+<div class="sig-area">
+  <div style="display:flex;align-items:flex-start;gap:16px;padding:10px 0;cursor:pointer" onclick="ckFinal(this)">
+    <input type="checkbox" id="finalCheck" style="
+      appearance:none;-webkit-appearance:none;width:40px;height:40px;min-width:40px;
+      border:4px solid var(--mid);background:#fff;cursor:pointer;position:relative;margin-top:2px;
+    "/>
+    <label for="finalCheck" style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;
+      color:var(--dark);line-height:1.5;cursor:pointer">
+      I HAVE READ EVERY SECTION OF THIS CONTRACT. I understand that checking the boxes above means I
+      have read each item. Any disagreements, concerns, or proposed changes are written in the discussion
+      boxes. Save this file with your name as the filename.</label>
+  </div>
+  <p style="font-family:'Space Mono',monospace;font-size:12px;color:var(--pencil);margin-top:12px;line-height:1.6">
+    When you are done: File → Save As → <strong>YourLastName_YourFirstName_contract.pdf</strong> and submit on Canvas.</p>
+  <div class="actions" style="margin-top:16px">
+    <button class="btn" id="btnExport">Export as PDF</button>
+    <button class="btn alt" id="btnPrint" onclick="window.print()">Print</button>
+    <button class="btn alt" id="btnTxt">Export as .txt</button>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  Climate, Media, Making · Digital Media Arts · San José State University · Fall 2026<br>
+  <a href="index.html">← back to the course site</a>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+"use strict";
+function $(id){return document.getElementById(id);}
+var boxes=document.querySelectorAll('.check-row input[type=checkbox]');
+var total=boxes.length;
+
+function ckFinal(wrap){
+  var cb=wrap.querySelector('input[type=checkbox]');
+  cb.checked=!cb.checked;
+  saveState();updateBar();
+}
+function ck(row){
+  var cb=row.querySelector('input[type=checkbox]');
+  cb.checked=!cb.checked;
+  row.classList.toggle('checked',cb.checked);
+  updateBar();
+}
+function toggle(head){
+  head.parentElement.classList.toggle('closed');
+}
+function updateBar(){
+  var done=0;
+  boxes.forEach(function(b){if(b.checked)done++;});
+  $('bar').style.width=(done/total*100)+'%';
+  $('counter').textContent=done+' / '+total;
+  $('btnExport').disabled=!(done===total && $('finalCheck').checked);
+}
+// ── autosave to browser ──────────────────────────────────────────
+var SAVE_KEY = 'cmm.contract.v1';
+function saveState(){
+  var state = {
+    boxes: [],
+    discussions: [],
+    
+    
+    finalCheck: $('finalCheck').checked
+  };
+  boxes.forEach(function(b){ state.boxes.push(b.checked); });
+  document.querySelectorAll('.card-body textarea').forEach(function(ta){
+    state.discussions.push(ta.value);
+  });
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+    var sv=$('saved');sv.style.opacity='1';clearTimeout(sv._t);
+    sv._t=setTimeout(function(){sv.style.opacity='0';},1200);
+  } catch(e){}
+}
+function loadState(){
+  try {
+    var raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return;
+    var state = JSON.parse(raw);
+    if (state.boxes) {
+      state.boxes.forEach(function(v, i){
+        if (i < boxes.length) {
+          boxes[i].checked = v;
+          boxes[i].closest('.check-row').classList.toggle('checked', v);
+        }
+      });
+    }
+    if (state.discussions) {
+      var tas = document.querySelectorAll('.card-body textarea');
+      state.discussions.forEach(function(v, i){
+        if (i < tas.length) tas[i].value = v;
+      });
+    }
+    if (state.finalCheck) { $('finalCheck').checked = true; }
+    
+    
+    updateBar();
+  } catch(e){}
+}
+// save on every interaction
+boxes.forEach(function(b){b.addEventListener('change',function(){saveState();updateBar();});});
+document.querySelectorAll('.card-body textarea').forEach(function(ta){
+  ta.addEventListener('input', saveState);
+});
+$('finalCheck').addEventListener('change',function(){saveState();updateBar();});
+
+
+// load on page open
+loadState();
+updateBar();
+
+$('btnTxt').addEventListener('click',function(){
+  var lines=['CLASS CONTRACT — Climate, Media, Making — Fall 2026',''];
+  document.querySelectorAll('.card').forEach(function(c){
+    var h=c.querySelector('.card-head span:first-child').textContent;
+    lines.push(h.replace(/☘ /,'').toUpperCase());
+    c.querySelectorAll('.check-row').forEach(function(r){
+      var chk=r.querySelector('input').checked?'[x]':'[ ]';
+      var txt=r.querySelector('label').textContent.trim();
+      lines.push(chk+' '+txt);
+    });
+    var ta=c.querySelector('.card-body textarea');
+    if(ta&&ta.value.trim()){lines.push('');lines.push('DISCUSSION: '+ta.value.trim());}
+    lines.push('');
+  });
+  lines.push('FINAL ACKNOWLEDGMENT: [x] I have read every section of this contract.');
+  var b=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
+  var u=URL.createObjectURL(b);
+  var a=document.createElement('a');
+  a.href=u;a.download='class-contract.txt';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(u);},1200);
+});
+
+$('btnExport').addEventListener('click',function(){
+  var jsPDF=window.jspdf.jsPDF;
+  var doc=new jsPDF({unit:'pt',format:'letter'});
+  var PW=612,PH=792,M=50,y=M;
+  doc.setFillColor(26,58,26);doc.rect(0,0,PW,80,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(22);doc.setTextColor(248,251,240);
+  doc.text('CLASS CONTRACT',PW/2,36,{align:'center'});
+  doc.setFont('helvetica','normal');doc.setFontSize(10);
+  doc.text('Climate, Media, Making  ·  Art 104  ·  Fall 2026  ·  SJSU',PW/2,56,{align:'center'});
+  y=100;
+  document.querySelectorAll('.card').forEach(function(c){
+    var h=c.querySelector('.card-head span:first-child').textContent.replace(/☘ /,'');
+    if(y>PH-120){doc.addPage();y=M;}
+    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(26,58,26);
+    doc.text(h.toUpperCase(),M,y);y+=18;
+    c.querySelectorAll('.check-row').forEach(function(r){
+      var chk=r.querySelector('input').checked?'[x]':'[ ]';
+      var txt=r.querySelector('label').textContent.trim();
+      doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(50,50,50);
+      var ls=doc.splitTextToSize(chk+' '+txt,PW-M*2);
+      if(y+ls.length*13>PH-60){doc.addPage();y=M;}
+      doc.text(ls,M,y);y+=ls.length*13+6;
+    });
+    var ta=c.querySelector('.card-body textarea');
+    if(ta&&ta.value.trim()){
+      if(y+30>PH-60){doc.addPage();y=M;}
+      doc.setFont('helvetica','bolditalic');doc.setFontSize(9);doc.setTextColor(90,90,90);
+      doc.text('DISCUSSION:',M,y);y+=13;
+      doc.setFont('helvetica','italic');doc.setFontSize(10);
+      var dl=doc.splitTextToSize(ta.value.trim(),PW-M*2);
+      if(y+dl.length*13>PH-60){doc.addPage();y=M;}
+      doc.text(dl,M,y);y+=dl.length*13+6;
+    }
+    y+=10;
+  });
+  if(y>PH-80){doc.addPage();y=M;}
+  doc.setDrawColor(61,122,61);doc.line(M,y,PW-M,y);y+=20;
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,58,26);
+  doc.text('[x] I have read every section of this contract.',M,y);
+  doc.save('class-contract.pdf');
+});
+</script>
+</body>
+</html>
