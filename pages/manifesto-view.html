@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>A Speculative Manifesto — Climate, Media, Making · Fall 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --pink:#e85fa0;--pink-deep:#d63d84;--mint:#a8e6c0;--sea:#7db8c4;
+  --teal:#2f7d7d;--grass:#8ba838;--ink:#14202a;--cream:#f4f8f2;
+  --glass:rgba(244,248,242,.90);--glass-dark:rgba(16,26,34,.70);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Sans',sans-serif;color:var(--ink);background:#111;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-2;
+  background:url('images/background_02.jpg') center/cover no-repeat;background-attachment:fixed}
+.bg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(232,95,160,.16),rgba(125,184,196,.12) 50%,rgba(139,168,56,.18))}
+.veil{position:fixed;inset:0;z-index:-1;background:rgba(10,14,18,.30)}
+header{padding:64px 24px 40px;text-align:center}
+.eyebrow{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--cream);margin-bottom:18px;text-shadow:0 1px 8px rgba(0,0,0,.45)}
+h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,7vw,68px);
+  color:var(--cream);letter-spacing:-1px;text-shadow:0 2px 24px rgba(0,0,0,.5);margin-bottom:18px;line-height:1.03}
+.lede{max-width:640px;margin:0 auto;color:var(--cream);background:var(--glass-dark);
+  padding:16px 22px;border-radius:2px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.15);
+  font-size:clamp(15px,2.3vw,17px)}
+.lede em{color:var(--mint);font-style:normal;font-weight:500}
+main{max-width:1100px;margin:0 auto;padding:24px 20px 100px}
+.count{font-family:'Space Mono',monospace;font-size:12px;color:var(--cream);text-align:center;
+  margin-bottom:20px;letter-spacing:1px;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.plate{background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.5);
+  border-radius:3px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.22);display:flex;flex-direction:column}
+.plate.empty{opacity:.4;border-style:dashed}
+.plate-no{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--pink-deep);
+  padding:10px 14px 0}
+.plate-img{width:100%;aspect-ratio:1/1;background:var(--mint);overflow:hidden;display:flex;
+  align-items:center;justify-content:center;margin-top:8px}
+.plate-img img{width:100%;height:100%;object-fit:cover}
+.plate-img .none{font-family:'Space Mono',monospace;font-size:11px;color:var(--teal)}
+.plate-body{padding:14px}
+.plate-dec{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;line-height:1.3;color:var(--ink)}
+.plate-gloss{font-size:13px;color:#48555f;margin-top:8px;line-height:1.5}
+.plate-by{font-family:'Space Mono',monospace;font-size:11px;color:var(--teal);margin-top:10px;
+  text-transform:uppercase;letter-spacing:.5px}
+footer{text-align:center;padding:34px 20px;color:var(--cream);font-family:'Space Mono',monospace;
+  font-size:12px;background:var(--glass-dark);backdrop-filter:blur(6px)}
+footer a{color:var(--mint)}
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="veil"></div>
+<header>
+  <div class="eyebrow">Climate · Media · Making · Fall 2026</div>
+  <h1>A Speculative Manifesto</h1>
+  <p class="lede">Twenty-five plates, one from each of us. Our answer to one question:
+    <em>how can digital media art contribute to conversations about climate, ecology, and nature?</em></p>
+</header>
+<main>
+  <div class="count" id="count">Loading plates…</div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer>
+  Climate, Media, Making · San José State University · Fall 2026<br>
+  <a href="index.html">← the tool portal</a> · <a href="manifesto.html">make your plate →</a>
+</footer>
+<script>
+"use strict";
+var COUNT = 25;
+var grid = document.getElementById('grid');
+var countEl = document.getElementById('count');
+
+function esc(s){ return (s||"").replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+function parseTxt(text){
+  // labelled format: lines "declaration: ...", "gloss: ...", "by: ..."
+  var out = {declaration:"", gloss:"", by:""};
+  var lines = text.split(/\r?\n/);
+  var current = null;
+  lines.forEach(function(line){
+    var m = line.match(/^(declaration|gloss|by)\s*:\s*(.*)$/i);
+    if (m){ current = m[1].toLowerCase(); out[current] = m[2]; }
+    else if (current && line.trim()){ out[current] += "\n" + line; }
+  });
+  return out;
+}
+
+function makeCard(i, data, hasImg){
+  var el = document.createElement('article');
+  var live = data && (data.declaration || hasImg);
+  el.className = 'plate' + (live ? '' : ' empty');
+  var no = i < 10 ? '0'+i : ''+i;
+  var imgHtml = hasImg
+    ? '<img src="images/plates/plate_'+i+'.png" alt="Plate '+i+'"/>'
+    : '<span class="none">'+(live?'text only':'awaiting plate '+i)+'</span>';
+  el.innerHTML =
+    '<div class="plate-no">'+no+'</div>'+
+    '<div class="plate-img">'+imgHtml+'</div>'+
+    '<div class="plate-body">'+
+      '<div class="plate-dec">'+(live?esc(data.declaration):'')+'</div>'+
+      (data && data.gloss ? '<div class="plate-gloss">'+esc(data.gloss)+'</div>' : '')+
+      (data && data.by ? '<div class="plate-by">— '+esc(data.by)+'</div>' : '')+
+    '</div>';
+  return el;
+}
+
+function tryFetch(url){
+  return fetch(url, {cache:'no-store'})
+    .then(function(r){ return r.ok ? r.text() : null; })
+    .catch(function(){ return null; });
+}
+function imgExists(url){
+  return new Promise(function(res){
+    var im = new Image();
+    im.onload = function(){ res(true); };
+    im.onerror = function(){ res(false); };
+    im.src = url;
+  });
+}
+
+var filed = 0;
+var jobs = [];
+for (var i = 1; i <= COUNT; i++){
+  (function(i){
+    jobs.push(Promise.all([
+      tryFetch('plates/plate_'+i+'.txt'),
+      imgExists('images/plates/plate_'+i+'.png')
+    ]).then(function(res){
+      var txt = res[0], hasImg = res[1];
+      var data = txt ? parseTxt(txt) : null;
+      if ((data && data.declaration) || hasImg) filed++;
+      return {i:i, data:data, hasImg:hasImg};
+    }));
+  })(i);
+}
+
+Promise.all(jobs).then(function(results){
+  results.sort(function(a,b){ return a.i - b.i; });
+  results.forEach(function(r){ grid.appendChild(makeCard(r.i, r.data, r.hasImg)); });
+  countEl.textContent = filed + ' of ' + COUNT + ' plates filed';
+});
+</script>
+</body>
+</html>
