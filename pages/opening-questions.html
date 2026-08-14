@@ -804,6 +804,7 @@ async function loadFirebase() {
   for (const base of MIRRORS) {
     try {
       await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
       await loadScript(base + "firebase-database-compat.js");
       if (window.firebase && firebase.database) return true;
     } catch (e) {
@@ -823,9 +824,27 @@ loadFirebase().then((ready) => {
     return;
   }
   firebase.initializeApp(firebaseConfig);
-  db = firebase.database();
-  watchCurrentWeek();
-  $("barState").textContent = "Tap anywhere to place your answer";
+
+  // Students never see a login. This signs each browser in silently so the
+  // database rules can require a signed-in visitor instead of standing wide
+  // open, which is what gets a database deactivated.
+  firebase.auth().signInAnonymously()
+    .then(() => {
+      db = firebase.database();
+      watchCurrentWeek();
+      $("barState").textContent = "Tap anywhere to place your answer";
+    })
+    .catch((err) => {
+      const off = /operation-not-allowed|configuration-not-found/.test(err.code || "");
+      $("barState").textContent = off
+        ? "Turn on Anonymous sign-in in the Firebase console"
+        : "Sign-in failed: " + (err.message || err.code);
+      $("emptyNote").textContent = off
+        ? "Firebase console, Authentication, Sign-in method, enable Anonymous."
+        : "Sign-in failed, so nothing can save yet.";
+      $("emptyNote").classList.remove("off");
+      console.error("[word collage]", err);
+    });
 });
 
 /* ── date stamp ─────────────────────────────────────────────────── */
