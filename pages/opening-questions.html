@@ -181,6 +181,30 @@ main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
 .editor textarea{resize:vertical;min-height:72px}
 .editor input:focus,.editor textarea:focus,.editor select:focus{border-color:var(--pulpred)}
 .ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.archive{margin-top:22px;border:3px solid var(--jet);background:var(--glass);padding:14px 16px 16px;box-shadow:5px 5px 0 var(--chrome-deep)}
+.archive-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mars);border-bottom:2px solid var(--jet);padding-bottom:8px;margin-bottom:11px}
+.archive-hd .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 13px;cursor:pointer;border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip .dot{color:var(--chrome)}
+#publicList{margin-top:12px}
+.previewbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--jet)}
+.previewbar.on{display:flex}
+.previewbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.sheet-frame.previewing{box-shadow:7px 7px 0 var(--rule)}
+.wk-tag-you{background:var(--chrome-deep);color:var(--jet)}
+.ansgroup{border-bottom:3px solid var(--pulp-deep);padding-bottom:10px;margin-bottom:10px}
+.ansgroup:last-child{border-bottom:none;margin-bottom:0}
+.ansgroup-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ansgroup-hd span{color:var(--rule);font-weight:600}
+.ansgroup-q{font-family:'Bitter',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:#334051;margin:3px 0 8px}
+.answers{display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto;border:3px solid var(--rule);background:#fff;padding:10px}
+.ans{font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);border-left:5px solid var(--pulpred);padding:5px 10px}
+.ans:nth-child(even){border-left-color:var(--chrome-deep)}
+.ans-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rule);text-align:center;padding:12px}
 .weeklist{display:flex;flex-direction:column;gap:9px}
 .wk{border:3px solid var(--jet);background:#fff;padding:11px 13px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
 .wk.live{background:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
@@ -239,7 +263,11 @@ main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
     <div class="track"><div class="fill" id="meterFill"></div></div>
   </div>
 
-  <div class="sheet-frame">
+  <div class="sheet-frame" id="sheetFrame">
+    <div class="previewbar" id="previewBar">
+      <span>You are reading a past week. The class sheet has not moved.</span>
+      <button class="btn btn-quiet" id="backLive" type="button">Back to live</button>
+    </div>
     <div class="sheet-bar">
       <span id="barWeek">Week 1</span>
       <span class="arm" id="barState">Tap anywhere to place your answer</span>
@@ -248,6 +276,15 @@ main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
       <div class="emptynote" id="emptyNote">Nothing set down yet. Be the first.</div>
     </div>
   </div>
+
+  <section class="archive" id="archive" hidden>
+    <div class="archive-hd">
+      <span>Past weeks</span>
+      <button class="btn btn-quiet" id="publicListBtn" type="button">Read as a list</button>
+    </div>
+    <div class="chips" id="weekChips"></div>
+    <div class="answers" id="publicList" hidden></div>
+  </section>
 
   <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
 
@@ -290,6 +327,14 @@ main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
     <p class="ed-note">Open puts the whole room on that sheet. Rename and Delete only touch that one week.</p>
     <div class="weeklist" id="weekList"></div>
 
+    <div class="groupmark"><span>Read the answers</span></div>
+    <p class="ed-note">Every answer on whichever sheet you are looking at, in the order it arrived. Easier to read aloud than the collage.</p>
+    <div class="ed-actions" style="margin-top:0;margin-bottom:12px">
+      <button class="btn" id="allWeeksBtn" type="button">Show every week</button>
+      <button class="btn btn-quiet" id="downloadAnswers" type="button">Download as text</button>
+    </div>
+    <div class="answers" id="answerList"></div>
+
     <div class="ed-flag" id="edFlag"></div>
   </section>
 
@@ -328,6 +373,10 @@ main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
 // Passcode for the instructor desk. Change this to whatever you like.
 const TEACHER_CODE = "collage";
 
+// Let students browse past weeks from the strip under the sheet.
+// Set this to false to keep old weeks visible only from the instructor desk.
+const SHOW_ARCHIVE_TO_STUDENTS = true;
+
 // The question the very first week starts with, if the database is empty.
 const FIRST_PROMPT = "Describe a time when you feel that your work was displaced by AI.";
 const FIRST_LABEL  = "Week 1";
@@ -342,8 +391,6 @@ const INK = [
   [214,61,132]    // pink
 ];
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
   authDomain: "art104-fall2026-openquestions.firebaseapp.com",
@@ -375,6 +422,8 @@ let unlocked  = false;
 let connected = false;
 let weekIndex = {};
 let editingWeek = null;
+let liveId = null;
+let previewId = null;
 
 const $ = (id) => document.getElementById(id);
 
@@ -438,6 +487,10 @@ function place(nx, ny) {
     field.focus();
     return;
   }
+  if (previewId) {
+    $("barState").textContent = "This is a preview of an old week. Go back to live to add answers.";
+    return;
+  }
   if (!db || !sessionId) {
     $("barState").textContent = "Not connected yet. Give it a second and try again.";
     return;
@@ -457,6 +510,30 @@ function place(nx, ny) {
 
   field.value = "";
   $("barState").textContent = "Answer set down. Add another whenever you like.";
+}
+
+/* ── live sheet or private preview ──────────────────────────────── */
+function syncWeek() {
+  const target = previewId || liveId;
+  if (target) attachSession(target);
+  const previewing = !!previewId;
+  $("sheetFrame").classList.toggle("previewing", previewing);
+  renderChips();
+  $("previewBar").classList.toggle("on", previewing);
+  if (previewing) {
+    $("barWeek").textContent = "Preview";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+  } else {
+    $("wordInput").disabled = false;
+    $("dropBtn").disabled = false;
+  }
+  renderWeeks();
+}
+
+function endPreview() {
+  previewId = null;
+  syncWeek();
 }
 
 /* ── when the database says no ──────────────────────────────────── */
@@ -524,6 +601,79 @@ function updateMeter() {
   $("meterCount").textContent = n === 1 ? "1 answer" : n + " answers";
   $("meterFill").style.width = Math.min(100, n * 4) + "%";
   $("meterLabel").textContent = n === 0 ? "The floor is open" : "The floor is filling up";
+  renderAnswers();
+}
+
+let allMode = false;
+let allWords = {};
+
+function renderAnswers() {
+  const box = $("answerList");
+  if (!box) return;
+
+  const pub = $("publicList");
+  if (pub && !pub.hidden) {
+    pub.innerHTML = words.length
+      ? words.map((w) => `<div class="ans">${esc(w.text)}</div>`).join("")
+      : '<div class="ans-empty">No answers on this sheet yet</div>';
+  }
+
+  if (!allMode) {
+    box.innerHTML = words.length
+      ? words.map((w) => `<div class="ans">${esc(w.text)}</div>`).join("")
+      : '<div class="ans-empty">No answers on this sheet yet</div>';
+    return;
+  }
+
+  const ids = weekOrder();
+  const blocks = ids.map((id) => {
+    const w = weekIndex[id];
+    const rows = Object.values(allWords[id] || {}).sort((a, b) => (a.at || 0) - (b.at || 0));
+    return `<div class="ansgroup">
+      <div class="ansgroup-hd">${esc(w.label) || "Untitled"}<span>${rows.length} ${rows.length === 1 ? "answer" : "answers"}</span></div>
+      <div class="ansgroup-q">${esc(w.prompt)}</div>
+      ${
+        rows.length
+          ? rows.map((r) => `<div class="ans">${esc(r.text)}</div>`).join("")
+          : '<div class="ans-empty">Nobody answered this one</div>'
+      }
+    </div>`;
+  });
+  box.innerHTML = blocks.length ? blocks.join("") : '<div class="ans-empty">No weeks yet</div>';
+}
+
+function loadAllAnswers() {
+  if (!db) return flag("Not connected to Firebase yet");
+  $("allWeeksBtn").textContent = "Loading";
+  db.ref(WORDS).once("value")
+    .then((snap) => {
+      allWords = snap.val() || {};
+      allMode = true;
+      $("allWeeksBtn").textContent = "Show this sheet only";
+      renderAnswers();
+    })
+    .catch((e) => {
+      $("allWeeksBtn").textContent = "Show every week";
+      dbTrouble(e);
+    });
+}
+
+function answersAsText() {
+  const lines = [];
+  const ids = allMode ? weekOrder() : [sessionId];
+  ids.forEach((id) => {
+    const w = weekIndex[id] || {};
+    const rows = allMode
+      ? Object.values(allWords[id] || {}).sort((a, b) => (a.at || 0) - (b.at || 0))
+      : words;
+    lines.push((w.label || "Untitled").toUpperCase());
+    lines.push(w.prompt || "");
+    lines.push("");
+    rows.forEach((r) => lines.push("- " + r.text));
+    lines.push("");
+    lines.push("");
+  });
+  return lines.join("\n");
 }
 
 function watchCurrentWeek() {
@@ -531,7 +681,8 @@ db.ref(CURRENT).on("value", (s) => {
   connected = true;
   const id = s.val();
   if (id) {
-    attachSession(id);
+    liveId = id;
+    syncWeek();
   } else {
     const first = "s" + Date.now();
     db.ref(CURRENT).transaction((held) => (held ? undefined : first));
@@ -542,6 +693,7 @@ db.ref(CURRENT).on("value", (s) => {
 db.ref(INDEX).on("value", (s) => {
   weekIndex = s.val() || {};
   renderWeeks();
+  renderChips();
 }, dbTrouble);
 
 db.ref(".info/connected").on("value", (s) => {
@@ -598,6 +750,28 @@ function tryCode() {
   $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+$("allWeeksBtn").addEventListener("click", () => {
+  if (allMode) {
+    allMode = false;
+    $("allWeeksBtn").textContent = "Show every week";
+    renderAnswers();
+  } else {
+    loadAllAnswers();
+  }
+});
+
+$("downloadAnswers").addEventListener("click", () => {
+  const blob = new Blob([answersAsText()], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = allMode ? "word_collage_all_weeks.txt" : "word_collage_answers.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  flag("Text file downloaded");
+});
+
+$("backLive").addEventListener("click", endPreview);
+
 $("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
 
 function flag(msg) {
@@ -620,7 +794,8 @@ $("savePrompt").addEventListener("click", () => {
 $("clearWeek").addEventListener("click", () => {
   if (!db) return flag("Not connected to Firebase yet");
   if (!confirm("Clear every word from " + $("barWeek").textContent + "? The question stays.")) return;
-  db.ref(`${WORDS}/${sessionId}`).remove().then(() => flag("Sheet wiped clean"));
+  if (previewId) return flag("Stop the preview first, then clear");
+  db.ref(`${WORDS}/${sessionId}`).remove().then(() => flag("Sheet wiped clean")).catch(dbTrouble);
 });
 
 function esc(t) {
@@ -643,6 +818,43 @@ function weekOrder() {
     (a, b) => (weekIndex[a].created || 0) - (weekIndex[b].created || 0)
   );
 }
+
+function renderChips() {
+  const strip = $("archive");
+  if (!strip) return;
+  if (!SHOW_ARCHIVE_TO_STUDENTS) {
+    strip.hidden = true;
+    return;
+  }
+  const ids = weekOrder();
+  strip.hidden = ids.length < 2;
+  $("weekChips").innerHTML = ids
+    .map((id) => {
+      const w = weekIndex[id];
+      const showing = (previewId || liveId) === id;
+      const live = id === liveId;
+      return `<button class="chip" data-week="${id}" type="button" aria-current="${showing}">${
+        esc(w.label) || "Untitled"
+      }${live ? ' <span class="dot">&#9679;</span>' : ""}</button>`;
+    })
+    .join("");
+}
+
+$("weekChips").addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-week]");
+  if (!chip) return;
+  const id = chip.dataset.week;
+  previewId = id === liveId ? null : id;
+  syncWeek();
+  document.querySelector(".sheet-frame").scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+$("publicListBtn").addEventListener("click", () => {
+  const box = $("publicList");
+  box.hidden = !box.hidden;
+  $("publicListBtn").textContent = box.hidden ? "Read as a list" : "Hide the list";
+  renderAnswers();
+});
 
 function renderWeeks() {
   const list = $("weekList");
@@ -669,11 +881,16 @@ function renderWeeks() {
       }
       return `<div class="wk${live ? " live" : ""}">
         <div class="wk-main">
-          <div class="wk-name">${esc(w.label) || "Untitled"}${live ? '<span class="wk-tag">On screen now</span>' : ""}</div>
+          <div class="wk-name">${esc(w.label) || "Untitled"}${live ? '<span class="wk-tag">On screen now</span>' : ""}${id === previewId ? '<span class="wk-tag wk-tag-you">You are reading this</span>' : ""}</div>
           <div class="wk-q">${esc(w.prompt)}</div>
         </div>
         <div class="wk-btns">
           ${live ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
+          ${
+            id === previewId
+              ? `<button class="btn" data-act="unpreview" type="button">Stop preview</button>`
+              : `<button class="btn" data-act="preview" data-id="${id}" type="button">Preview</button>`
+          }
           <button class="btn" data-act="edit" data-id="${id}" type="button">Rename</button>
           <button class="btn btn-quiet" data-act="delete" data-id="${id}" type="button">Delete</button>
         </div>
@@ -691,9 +908,20 @@ $("weekList").addEventListener("click", (e) => {
   if (act === "open") {
     if (!db) return flag("Not connected to Firebase yet");
     db.ref(CURRENT).set(id)
-      .then(() => flag("Everyone is on " + (weekIndex[id].label || "that week") + " now"))
+      .then(() => {
+        previewId = null;
+        flag("Everyone is on " + (weekIndex[id].label || "that week") + " now");
+      })
       .catch(dbTrouble);
   }
+
+  if (act === "preview") {
+    previewId = id === liveId ? null : id;
+    syncWeek();
+    document.querySelector(".sheet-frame").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  if (act === "unpreview") endPreview();
 
   if (act === "edit") {
     editingWeek = id;
