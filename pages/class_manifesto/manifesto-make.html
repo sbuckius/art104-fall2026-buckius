@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Make Your Plate — A Speculative Manifesto · Fall 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#2f7d7d;--ink-deep:#14202a;--accent:#e85fa0;--second:#8ba838;
+ --paper:#eef4ee;--card:#f7fbf5;--jet:#14202a;--rule:#7db8c4;--body:#3a4650;
+ --glass:rgba(244,248,242,.90);--glass-dark:rgba(16,26,34,.70);--cream:#f4f8f2;--mint:#a8e6c0;--pencil:#48555f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111;color:var(--jet);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-2;
+  background:url('images/background_02.jpg') center/cover no-repeat;background-attachment:fixed}
+.bg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(232,95,160,.16) 0%,rgba(125,184,196,.12) 50%,rgba(139,168,56,.18) 100%)}
+.veil{position:fixed;inset:0;z-index:-1;background:rgba(10,14,18,.30)}
+
+/* ── masthead (same as the view page) ─────────────────────────── */
+header{background:var(--ink);color:var(--paper);border-bottom:8px solid var(--jet);padding:34px 20px 26px}
+.mast{max-width:1000px;margin:0 auto}
+.mast-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;
+ font-weight:600;font-size:12px;letter-spacing:3px;text-transform:uppercase;opacity:.85;margin-bottom:12px}
+.stripes{height:20px;border:3px solid var(--jet);
+ background:repeating-linear-gradient(107deg,var(--accent) 0 14px,var(--jet) 14px 24px)}
+h1.logo{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,7vw,72px);line-height:.9;
+ text-transform:uppercase;text-align:center;margin:14px 0 8px;color:#fff;
+ text-shadow:-3px -3px 0 var(--jet),3px -3px 0 var(--jet),-3px 3px 0 var(--jet),3px 3px 0 var(--jet),
+ 0 -3px 0 var(--jet),0 3px 0 var(--jet),-3px 0 0 var(--jet),3px 0 0 var(--jet),7px 8px 0 var(--jet)}
+h1.logo .sm{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(12px,2.2vw,20px);
+ letter-spacing:8px;text-shadow:none;color:var(--accent);margin-bottom:6px}
+.mast-sub{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(12px,2.2vw,17px);letter-spacing:2px;
+ text-transform:uppercase;text-align:center;border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+ padding:8px 0;margin-top:14px}
+
+main{max-width:640px;margin:0 auto;padding:28px 20px 104px}
+
+.card{border:3px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);padding:24px 26px;
+ box-shadow:6px 6px 0 var(--ink)}
+.card .intro{font-size:15px;line-height:1.6;color:var(--body);margin-bottom:6px}
+.card .intro em{color:var(--ink);font-style:normal;font-weight:600}
+
+label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;
+ text-transform:uppercase;color:var(--ink);margin:22px 0 6px}
+input[type=text],input[type=number],textarea{width:100%;border:3px solid var(--rule);
+ background:var(--card);padding:11px 13px;font-family:'IBM Plex Sans',sans-serif;font-size:15px;color:var(--jet);outline:none}
+input:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:74px;line-height:1.5}
+.hint{font-size:13px;color:var(--pencil);margin-top:5px}
+.filerow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filerow input[type=file]{flex:1;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:var(--jet)}
+.preview{margin-top:12px;display:none}
+.preview img{max-width:100%;border:3px solid var(--jet)}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1px;
+ padding:12px 22px;cursor:pointer;border:3px solid var(--jet);background:var(--ink);color:var(--paper);
+ box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(1px,1px);box-shadow:3px 3px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0}
+.btn.alt{background:var(--card);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:4px 4px 0 var(--rule)}
+.msg{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);margin-top:14px;display:none;line-height:1.6}
+
+.steps{border:3px solid var(--jet);background:var(--glass-dark);backdrop-filter:blur(8px);padding:18px 22px;
+ margin-top:26px;color:var(--paper);box-shadow:6px 6px 0 var(--second)}
+.steps h3{font-family:'Space Grotesk',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;
+ margin-bottom:10px;color:var(--mint)}
+.steps ol{margin:0 0 0 18px}.steps li{margin-bottom:6px;font-size:14px;line-height:1.5}
+.steps code{font-family:'Space Mono',monospace;font-size:12px;background:rgba(255,255,255,.12);padding:1px 6px;color:var(--mint)}
+
+footer{border-top:6px solid var(--jet);background:var(--ink);color:var(--paper);padding:28px 20px 44px;text-align:center;
+ font-family:'Space Mono',monospace;font-size:12px}
+footer a{color:var(--mint);text-decoration:none}footer a:hover{text-decoration:underline}
+
+@media (max-width:620px){header{padding:24px 14px 20px}main{padding:20px 14px 90px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="veil"></div>
+
+<header><div class="mast">
+  <div class="mast-top"><span>Climate, Media, Making &middot; SJSU &middot; Fall 2026</span>
+  <span>Made collectively &middot; Not for sale</span></div>
+  <div class="stripes" aria-hidden="true"></div>
+  <h1 class="logo"><span class="sm">Make Your Plate For</span>A Speculative Manifesto</h1>
+  <div class="mast-sub">One plate &middot; One question</div>
+</div></header>
+
+<main>
+  <div class="card">
+    <p class="intro">One plate each. Your answer to the course question, reduced until only the
+      claim is left: <em>how can digital media art contribute to conversations about climate,
+      ecology, and nature?</em></p>
+
+    <label class="bl" for="pNo">Your plate number (1&ndash;25)</label>
+    <input type="number" id="pNo" min="1" max="25" step="1" placeholder="e.g. 7"/>
+    <p class="hint">Ask your editor which number is yours, so two people don't claim the same slot.</p>
+
+    <label class="bl" for="pDec">The declaration</label>
+    <input type="text" id="pDec" placeholder="The one line. State it, don't hedge it."/>
+    <p class="hint">This is the manifesto. Short, sharp, arguable.</p>
+
+    <label class="bl" for="pGloss">The gloss (optional)</label>
+    <textarea id="pGloss" placeholder="A sentence or two behind the claim &mdash; where it comes from, what it answers."></textarea>
+
+    <label class="bl" for="pBy">Your name</label>
+    <input type="text" id="pBy" placeholder="How you want to be credited"/>
+
+    <label class="bl" for="pImg">The image (optional)</label>
+    <div class="filerow">
+      <input type="file" id="pImg" accept="image/*"/>
+      <button class="btn alt" type="button" id="pClear" style="display:none">Remove</button>
+    </div>
+    <p class="hint">A visual for your plate. It will be saved as a PNG.</p>
+    <div class="preview" id="preview"><img id="previewImg" alt="preview"/></div>
+
+    <div class="actions">
+      <button class="btn" type="button" id="btnTxt">Download plate text (.txt)</button>
+      <button class="btn" type="button" id="btnImg" disabled>Download image (.png)</button>
+    </div>
+    <p class="msg" id="msg"></p>
+
+    <div class="steps">
+      <h3>What to do with the two files</h3>
+      <ol>
+        <li>Download your <code>plate_N.txt</code> (and <code>plate_N.png</code> if you added an image).</li>
+        <li>Send both files to your editor, exactly as named.</li>
+        <li>The editor drops them into the site's <code>plates/</code> and <code>images/plates/</code> folders.</li>
+        <li>Your plate then appears on the manifesto page automatically.</li>
+      </ol>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Climate, Media, Making &middot; San José State University &middot; Fall 2026<br>
+  <a href="index.html">&larr; the tool portal</a> &nbsp;&middot;&nbsp;
+  <a href="manifesto-view.html">see the manifesto &rarr;</a>
+</footer>
+
+<script>
+"use strict";
+function $(id){ return document.getElementById(id); }
+var imgDataUrl = "";
+
+function num(){
+  var n = parseInt($('pNo').value, 10);
+  return (n>=1 && n<=25) ? n : null;
+}
+
+$('pImg').addEventListener('change', function(){
+  var f = this.files && this.files[0];
+  if (!f){ return; }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var im = new Image();
+    im.onload = function(){
+      var s = Math.min(1, 1400 / Math.max(im.width, im.height));
+      var c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(im.width * s));
+      c.height = Math.max(1, Math.round(im.height * s));
+      var x = c.getContext('2d');
+      x.drawImage(im, 0, 0, c.width, c.height);
+      imgDataUrl = c.toDataURL('image/png');
+      $('previewImg').src = imgDataUrl;
+      $('preview').style.display = 'block';
+      $('pClear').style.display = 'inline-block';
+      $('btnImg').disabled = false;
+    };
+    im.onerror = function(){ alert('That file could not be read as an image. Try a JPG or PNG.'); };
+    im.src = e.target.result;
+  };
+  reader.readAsDataURL(f);
+});
+
+$('pClear').addEventListener('click', function(){
+  imgDataUrl = "";
+  $('pImg').value = "";
+  $('preview').style.display = 'none';
+  $('pClear').style.display = 'none';
+  $('btnImg').disabled = true;
+});
+
+function saveFile(href, name){
+  var a = document.createElement('a');
+  a.href = href; a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function flash(t){ var m = $('msg'); m.textContent = t; m.style.display = 'block'; }
+
+$('btnTxt').addEventListener('click', function(){
+  var n = num();
+  if (!n){ flash('Enter a plate number between 1 and 25 first.'); return; }
+  var dec = $('pDec').value.trim();
+  if (!dec){ flash('Write your declaration before downloading.'); return; }
+  var lines = [
+    'declaration: ' + dec,
+    'gloss: ' + $('pGloss').value.trim(),
+    'by: ' + $('pBy').value.trim()
+  ];
+  var blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  saveFile(url, 'plate_' + n + '.txt');
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1200);
+  flash('Saved plate_' + n + '.txt' + (imgDataUrl ? ' \u2014 now download your image too.' : '.'));
+});
+
+$('btnImg').addEventListener('click', function(){
+  var n = num();
+  if (!n){ flash('Enter a plate number between 1 and 25 first.'); return; }
+  if (!imgDataUrl){ flash('Add an image first.'); return; }
+  saveFile(imgDataUrl, 'plate_' + n + '.png');
+  flash('Saved plate_' + n + '.png.');
+});
+</script>
+</body>
+</html>

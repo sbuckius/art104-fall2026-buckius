@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>A Speculative Manifesto — Climate, Media, Making · Fall 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#2f7d7d;--ink-deep:#14202a;--accent:#e85fa0;--second:#8ba838;
+ --paper:#eef4ee;--card:#f7fbf5;--jet:#14202a;--rule:#7db8c4;--body:#3a4650;
+ --glass:rgba(244,248,242,.90);--glass-dark:rgba(16,26,34,.70);--cream:#f4f8f2;--mint:#a8e6c0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111;color:var(--jet);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-2;
+  background:url('images/background_02.jpg') center/cover no-repeat;background-attachment:fixed}
+.bg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(232,95,160,.16) 0%,rgba(125,184,196,.12) 50%,rgba(139,168,56,.18) 100%)}
+.veil{position:fixed;inset:0;z-index:-1;background:rgba(10,14,18,.30)}
+
+/* ── masthead (verbatim from the creator page) ────────────────── */
+header{background:var(--ink);color:var(--paper);border-bottom:8px solid var(--jet);padding:34px 20px 26px}
+.mast{max-width:1000px;margin:0 auto}
+.mast-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;
+ font-weight:600;font-size:12px;letter-spacing:3px;text-transform:uppercase;opacity:.85;margin-bottom:12px}
+.stripes{height:20px;border:3px solid var(--jet);
+ background:repeating-linear-gradient(107deg,var(--accent) 0 14px,var(--jet) 14px 24px)}
+h1.logo{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,8vw,84px);line-height:.9;
+ text-transform:uppercase;text-align:center;margin:14px 0 8px;color:#fff;
+ text-shadow:-3px -3px 0 var(--jet),3px -3px 0 var(--jet),-3px 3px 0 var(--jet),3px 3px 0 var(--jet),
+ 0 -3px 0 var(--jet),0 3px 0 var(--jet),-3px 0 0 var(--jet),3px 0 0 var(--jet),7px 8px 0 var(--jet)}
+h1.logo .sm{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(12px,2.2vw,20px);
+ letter-spacing:8px;text-shadow:none;color:var(--accent);margin-bottom:6px}
+.mast-sub{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(12px,2.2vw,17px);letter-spacing:2px;
+ text-transform:uppercase;text-align:center;border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+ padding:8px 0;margin-top:14px}
+
+main{max-width:1000px;margin:0 auto;padding:28px 20px 104px}
+
+.preamble{border:3px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);padding:22px 24px;margin-bottom:30px;
+ box-shadow:6px 6px 0 var(--ink)}
+.preamble p{font-size:15px;line-height:1.6;color:var(--body)}
+.preamble p+p{margin-top:10px}
+.preamble em{color:var(--ink);font-style:normal;font-weight:600}
+
+.plates-hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+ font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;text-transform:uppercase;
+ color:var(--ink);margin-bottom:14px;background:var(--glass-dark);backdrop-filter:blur(6px);padding:8px 14px}
+.plates-hd .ct{color:var(--mint)}
+
+/* ── plate grid (verbatim from the creator page) ──────────────── */
+.plates{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.plate{border:3px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);display:flex;flex-direction:column;
+ box-shadow:5px 5px 0 var(--second);overflow:hidden}
+.plate.empty{opacity:.42;box-shadow:5px 5px 0 var(--rule)}
+.plate-no{font-family:'Space Grotesk',sans-serif;font-size:20px;line-height:1;color:var(--paper);
+ background:var(--ink);padding:9px 12px;letter-spacing:1px}
+.plate.empty .plate-no{background:var(--rule);color:var(--card)}
+.plate-img{aspect-ratio:4/3;border-bottom:3px solid var(--jet);background:#fff;display:flex;
+ align-items:center;justify-content:center;overflow:hidden}
+.plate-img img{width:100%;height:100%;object-fit:cover}
+.plate-img span{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+ color:var(--rule);padding:10px;text-align:center}
+.plate-body{padding:13px 15px 15px;flex:1;display:flex;flex-direction:column;gap:7px}
+.plate-dec{font-family:'Space Grotesk',sans-serif;font-size:17px;line-height:1.15;text-transform:uppercase;color:var(--ink)}
+.plate-gloss{font-size:13px;line-height:1.55;color:var(--body)}
+.plate-by{margin-top:auto;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:2px;
+ text-transform:uppercase;color:var(--second);border-top:2px dotted var(--rule);padding-top:8px}
+
+footer{border-top:6px solid var(--jet);background:var(--ink);color:var(--paper);padding:28px 20px 44px;text-align:center;
+ font-family:'Space Mono',monospace;font-size:12px}
+footer a{color:var(--mint);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media (max-width:620px){header{padding:24px 14px 20px}main{padding:20px 14px 114px}
+ .plates{grid-template-columns:1fr}}
+@media print{body{background:#fff}.bg,.veil{display:none}
+ header{background:#fff;color:#000;border-bottom:3px solid #000}
+ h1.logo{color:#000;text-shadow:none}.plate{break-inside:avoid;box-shadow:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="veil"></div>
+
+<header><div class="mast">
+  <div class="mast-top"><span>Climate, Media, Making &middot; SJSU &middot; Fall 2026</span>
+  <span>Made collectively &middot; Not for sale</span></div>
+  <div class="stripes" aria-hidden="true"></div>
+  <h1 class="logo"><span class="sm">A</span>Speculative Manifesto</h1>
+  <div class="mast-sub">Twenty-five plates &middot; One question</div>
+</div></header>
+
+<main>
+  <div class="preamble">
+    <p>This is our answer to one question: <em>how can digital media art contribute to conversations
+      about climate, ecology, and nature?</em></p>
+    <p>Twenty-five plates, one from each of us. We do not all agree, and the disagreements are left in.
+      A manifesto that only says what everyone already accepts is not a manifesto.</p>
+  </div>
+
+  <div class="plates-hd">
+    <span>The Plates</span>
+    <span class="ct" id="count">Loading…</span>
+  </div>
+  <div class="plates" id="plates"></div>
+</main>
+
+<footer>
+  Climate, Media, Making &middot; San José State University &middot; Fall 2026<br>
+  <a href="index.html">&larr; the tool portal</a> &nbsp;&middot;&nbsp;
+  <a href="manifesto.html">make your plate &rarr;</a>
+</footer>
+
+<script>
+"use strict";
+var COUNT = 25;
+var platesEl = document.getElementById('plates');
+var countEl = document.getElementById('count');
+
+function esc(s){ return (s||"").replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+function parseTxt(text){
+  // labelled format from the maker page: "declaration: ...", "gloss: ...", "by: ..."
+  var out = {declaration:"", gloss:"", by:""};
+  var cur = null;
+  text.split(/\r?\n/).forEach(function(line){
+    var m = line.match(/^(declaration|gloss|by)\s*:\s*([\s\S]*)$/i);
+    if (m){ cur = m[1].toLowerCase(); out[cur] = m[2]; }
+    else if (cur && line.trim()){ out[cur] += "\n" + line; }
+  });
+  return out;
+}
+
+function makeCard(i, data, hasImg){
+  var live = !!(data && (data.declaration || hasImg));
+  var el = document.createElement('article');
+  el.className = 'plate' + (live ? '' : ' empty');
+  var no = i < 10 ? '0'+i : ''+i;
+  var img = hasImg
+    ? '<img src="images/plates/plate_'+i+'.png" alt="Plate '+i+(data&&data.by?' by '+esc(data.by):'')+'"/>'
+    : '<span>'+(live?'text only':'awaiting plate '+i)+'</span>';
+  el.innerHTML =
+    '<div class="plate-no">'+no+'</div>'+
+    '<div class="plate-img">'+img+'</div>'+
+    '<div class="plate-body">'+
+      '<div class="plate-dec">'+(live?esc(data.declaration):'')+'</div>'+
+      (data&&data.gloss?'<div class="plate-gloss">'+esc(data.gloss)+'</div>':'')+
+      (data&&data.by?'<div class="plate-by">&mdash; '+esc(data.by)+'</div>':'')+
+    '</div>';
+  return el;
+}
+
+function tryFetch(url){
+  return fetch(url, {cache:'no-store'})
+    .then(function(r){ return r.ok ? r.text() : null; })
+    .catch(function(){ return null; });
+}
+function imgExists(url){
+  return new Promise(function(res){
+    var im = new Image();
+    im.onload = function(){ res(true); };
+    im.onerror = function(){ res(false); };
+    im.src = url;
+  });
+}
+
+var filed = 0;
+var jobs = [];
+for (var i = 1; i <= COUNT; i++){
+  (function(i){
+    jobs.push(Promise.all([
+      tryFetch('plates/plate_'+i+'.txt'),
+      imgExists('images/plates/plate_'+i+'.png')
+    ]).then(function(res){
+      var data = res[0] ? parseTxt(res[0]) : null;
+      var hasImg = res[1];
+      if ((data && data.declaration) || hasImg) filed++;
+      return {i:i, data:data, hasImg:hasImg};
+    }));
+  })(i);
+}
+
+Promise.all(jobs).then(function(results){
+  results.sort(function(a,b){ return a.i - b.i; });
+  results.forEach(function(r){ platesEl.appendChild(makeCard(r.i, r.data, r.hasImg)); });
+  countEl.textContent = filed + ' of ' + COUNT + ' filed';
+});
+</script>
+</body>
+</html>
