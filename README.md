@@ -1,1 +1,3 @@
-# art104-fall2026-buckius
+ART104  | Fall 2026: Interdisciplinary Digital Media Art Seminar
+
+Art 104 investigates contemporary themes in 21st-century Digital Media Art practice through the specific lens of climate, ecology, and environmental justice. Themes investigated include imagined futures (solarpunk, speculative and critical design); the material and energetic basis of digital technology (permacomputing, ecomedia, energy humanities, discard studies); labour, justice, and whose future gets built (maintenance and care, Afrofuturism, decolonial ecology, Indigenous futurisms, climate justice); and the body, nature, and voice (ecofeminism, xenofeminism, posthumanism, testimony and oral history).
