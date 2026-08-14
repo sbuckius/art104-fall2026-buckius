@@ -126,8 +126,8 @@ var jobs = [];
 for (var i = 1; i <= COUNT; i++){
   (function(i){
     jobs.push(Promise.all([
-      tryFetch('plates/plate_'+i+'.txt'),
-      imgExists('images/plates/plate_'+i+'.png')
+      tryFetch('../plates/plate_'+i+'.txt'),
+      imgExists('../images/plates/plate_'+i+'.png')
     ]).then(function(res){
       var txt = res[0], hasImg = res[1];
       var data = txt ? parseTxt(txt) : null;
