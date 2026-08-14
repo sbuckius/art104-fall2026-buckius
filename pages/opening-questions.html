@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Collaborative Word Collage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<style>
+:root{
+  /* Same palette as the course site, moved to different jobs.
+     Pink now carries the big surfaces, teal carries the accents,
+     and grass green carries every hard drop shadow. */
+  --cobalt:#d63d84;          /* was teal, now the pink surface color */
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;          /* mint, still the light mark on dark */
+  --chrome-deep:#8ba838;     /* grass green, now every drop shadow */
+  --pulpred:#2f7d7d;         /* was pink, now the teal accent */
+  --mars:#a01e5c;
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#7db8c4;
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--jet);
+  font-family:'IBM Plex Sans',sans-serif;
+  min-height:100vh;
+}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    linear-gradient(160deg,rgba(139,168,56,.16) 0%,rgba(125,184,196,.12) 50%,rgba(232,95,160,.14) 100%),
+    var(--cream);
+}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1100px;margin:0 auto;padding:14px 18px 0}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px;
+}
+.stripes{
+  height:22px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px);
+}
+h1.logo .the{
+  display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  font-size:clamp(11px,2vw,20px);letter-spacing:8px;
+  color:var(--chrome);margin-bottom:2px;
+}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(34px,9.5vw,96px);
+  line-height:.86;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:10px 0 4px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{
+  display:flex;align-items:center;gap:14px;
+  border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+  padding:9px 0;margin-top:12px;
+}
+.roundel{
+  width:56px;height:56px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);
+  box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px;
+}
+.cover-tag{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;
+  color:#fff;line-height:1.2;flex:1;min-width:0;
+}
+.cover-kicker{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block;
+}
+.cover-foot{
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:9px 0 12px;font-family:'Bitter',serif;font-size:12.5px;color:#e9edf1;line-height:1.5;
+}
+.cover-foot b{color:var(--chrome);font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:11px}
+
+/* ══ the sheet ══════════════════════════════════════════════════════ */
+main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
+
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-bar{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.sheet-bar .arm{color:var(--chrome)}
+#canvasWrap{position:relative;width:100%;height:min(62vh,620px);min-height:320px;overflow:hidden;cursor:crosshair}
+#canvasWrap canvas{display:block}
+.emptynote{
+  position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;padding:24px;text-align:center;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--rule);
+}
+.emptynote.off{display:none}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#press .pressmsg{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#fff;flex:1;min-width:180px}
+#press .pressmsg b{color:var(--chrome)}
+#wordInput{
+  flex:2;min-width:220px;border:3px solid var(--jet);background:#fff;
+  font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:10px 12px;outline:none;
+}
+#wordInput:focus{border-color:var(--pulpred);box-shadow:0 0 0 3px var(--chrome)}
+.press-btns{display:flex;gap:9px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .btn{padding:10px 16px;font-size:11px}
+
+/* ══ save roundel ═══════════════════════════════════════════════════ */
+#saveStamp{
+  position:fixed;right:18px;bottom:100px;z-index:300;
+  width:74px;height:74px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;text-align:center;padding:6px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.15;
+  opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none;
+}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ instructor desk ════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--pulpred);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:14px 0 6px}
+.editor input[type=text],.editor textarea,.editor select{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);padding:10px 12px;outline:none}
+.editor textarea{resize:vertical;min-height:72px}
+.editor input:focus,.editor textarea:focus,.editor select:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.weeklist{display:flex;flex-direction:column;gap:9px}
+.wk{border:3px solid var(--jet);background:#fff;padding:11px 13px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.wk.live{background:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
+.wk-main{flex:1;min-width:200px}
+.wk-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mars);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wk.live .wk-name{color:var(--jet)}
+.wk-tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;border:2px solid var(--jet);background:var(--pulpred);color:#fff;padding:2px 7px}
+.wk-q{font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:#334051;margin-top:4px}
+.wk-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.wk-btns .btn{padding:7px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.wk-edit{flex:1;min-width:220px;display:flex;flex-direction:column;gap:7px}
+.wk-edit input,.wk-edit textarea{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:13px;padding:8px 10px;outline:none;color:var(--jet)}
+.wk-edit textarea{resize:vertical;min-height:60px}
+.wk-edit input:focus,.wk-edit textarea:focus{border-color:var(--pulpred)}
+.wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rule);border:3px dashed var(--rule);padding:16px;text-align:center}
+.ed-flag{border:3px solid var(--pulpred);color:var(--pulpred);background:#fff;padding:11px 14px;margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 0}
+  main{padding:18px 14px 190px}
+  .cover-band{flex-wrap:wrap}
+  #canvasWrap{height:min(52vh,440px)}
+  #saveStamp{bottom:170px;right:10px;width:62px;height:62px;font-size:9px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo"><span class="the">Collaborative</span>Word Collage</h1>
+    <div class="cover-band">
+      <div class="roundel" id="weekRoundel">WK<br>1</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">Question of the week</span>
+        <span id="promptText">Loading the week's question</span>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span><b>How it works</b> Type your answer below, then tap the sheet to set it down.</span>
+      <span><b>Live</b> Everyone in the room sees every word as it lands.</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">The floor is open</span><span class="pct" id="meterCount">0 answers</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <div class="sheet-frame">
+    <div class="sheet-bar">
+      <span id="barWeek">Week 1</span>
+      <span class="arm" id="barState">Tap anywhere to place your answer</span>
+    </div>
+    <div id="canvasWrap">
+      <div class="emptynote" id="emptyNote">Nothing set down yet. Be the first.</div>
+    </div>
+  </div>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
+
+    <div class="groupmark"><span>This week's question</span></div>
+    <label class="bl" for="edLabel">Week name</label>
+    <input type="text" id="edLabel" placeholder="Week 3"/>
+    <label class="bl" for="edPrompt">Question</label>
+    <textarea id="edPrompt" placeholder="Describe a time when you feel that your work was displaced by AI."></textarea>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="savePrompt" type="button">Save question</button>
+      <button class="btn" id="clearWeek" type="button">Clear this week's words</button>
+    </div>
+
+    <div class="groupmark"><span>Add a week</span></div>
+    <p class="ed-note">Every week gets its own blank sheet and keeps its own answers. Add them one at a time, or plan the whole run below.</p>
+    <label class="bl" for="newLabel">Week name</label>
+    <input type="text" id="newLabel" placeholder="Week 4"/>
+    <label class="bl" for="newPrompt">Question</label>
+    <textarea id="newPrompt" placeholder="What kind of labor goes unseen in your own household?"></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addWeek" type="button">Add to the list</button>
+      <button class="btn btn-ink" id="startWeek" type="button">Add and open now</button>
+    </div>
+
+    <div class="groupmark"><span>Plan several at once</span></div>
+    <p class="ed-note">One question per line. Each line becomes its own week, numbered on from the highest week already on the list. Nothing opens until you choose it.</p>
+    <textarea id="bulkPrompts" rows="4" placeholder="What kind of labor goes unseen in your own household?&#10;Name a machine you were taught to be afraid of.&#10;Who taught you the skill you use most at work?"></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addBulk" type="button">Add every line</button>
+    </div>
+
+    <div class="groupmark"><span>All weeks</span></div>
+    <p class="ed-note">Open puts the whole room on that sheet. Rename and Delete only touch that one week.</p>
+    <div class="weeklist" id="weekList"></div>
+
+    <div class="ed-flag" id="edFlag"></div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div id="press">
+  <span class="pressmsg"><b>Your answer</b></span>
+  <input type="text" id="wordInput" placeholder="Type your answer, then tap the sheet" autocomplete="off"/>
+  <div class="press-btns">
+    <button class="btn btn-ink" id="dropBtn" type="button">Drop it anywhere</button>
+    <button class="btn" id="saveBtn" type="button">Save image</button>
+  </div>
+</div>
+
+<div id="saveStamp">Image<br>saved</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to change the question or open a new week.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Passcode for the instructor desk. Change this to whatever you like.
+const TEACHER_CODE = "collage";
+
+// The question the very first week starts with, if the database is empty.
+const FIRST_PROMPT = "Describe a time when you feel that your work was displaced by AI.";
+const FIRST_LABEL  = "Week 1";
+
+// Palette the words are drawn in, straight from the site's color scheme.
+const INK = [
+  [139,168,56],   // grass green
+  [47,125,125],   // teal
+  [20,32,42],     // jet
+  [160,30,92],    // mars
+  [125,184,196],  // sea glass
+  [214,61,132]    // pink
+];
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCXggvhEJDisUDy2z4hd5VwsG4fzDrDTHs",
+  authDomain: "collaborative-word-collage.firebaseapp.com",
+  projectId: "collaborative-word-collage",
+  storageBucket: "collaborative-word-collage.firebasestorage.app",
+  messagingSenderId: "657040892622",
+  appId: "1:657040892622:web:aebafff4704197a63a269f",
+  measurementId: "G-YEZ56ZPXL5"
+
+  // If nothing ever saves, your Realtime Database may live outside the
+  // default region, which this config cannot guess. In the Firebase
+  // console open Realtime Database, copy the URL at the top of the page,
+  // and paste it in below. Remember the comma on the line above.
+  // , databaseURL: "https://PASTE-YOURS-HERE.firebaseio.com"
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+let db = null;
+
+const ROOT     = "collage";
+const CURRENT  = ROOT + "/current";
+const INDEX    = ROOT + "/index";
+const WORDS    = ROOT + "/words";
+
+let sessionId = null;
+let wordsRef  = null;
+let metaRef   = null;
+let words     = [];
+let sketch    = null;
+let unlocked  = false;
+let connected = false;
+let weekIndex = {};
+let editingWeek = null;
+
+const $ = (id) => document.getElementById(id);
+
+/* ── the canvas ─────────────────────────────────────────────────── */
+new p5((p) => {
+  sketch = p;
+  let wrap;
+
+  p.setup = () => {
+    wrap = $("canvasWrap");
+    const c = p.createCanvas(wrap.clientWidth, wrap.clientHeight);
+    c.parent(wrap);
+    p.textAlign(p.CENTER, p.CENTER);
+    p.noStroke();
+    p.angleMode(p.DEGREES);
+    p.background(255);
+    p.noLoop();
+
+    c.elt.addEventListener("pointerdown", (e) => {
+      const r = c.elt.getBoundingClientRect();
+      place((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(redrawAll);
+    }
+  };
+
+  p.windowResized = () => {
+    p.resizeCanvas(wrap.clientWidth, wrap.clientHeight);
+    redrawAll();
+  };
+}, document.createElement("div"));
+
+function drawWord(w) {
+  if (!sketch) return;
+  const p = sketch;
+  const scale = p.height / 700;
+  p.push();
+  p.translate(w.nx * p.width, w.ny * p.height);
+  p.rotate(w.angle);
+  p.fill(w.color[0], w.color[1], w.color[2]);
+  p.textFont(w.face === 1 ? "'Bitter', serif" : "'Space Grotesk', sans-serif");
+  p.textSize(Math.max(14, w.size * scale));
+  p.text(w.text, 0, 0);
+  p.pop();
+}
+
+function redrawAll() {
+  if (!sketch) return;
+  sketch.background(255);
+  words.forEach(drawWord);
+  $("emptyNote").classList.toggle("off", words.length > 0);
+}
+
+function place(nx, ny) {
+  const field = $("wordInput");
+  const text = field.value.trim();
+  if (!text) {
+    $("barState").textContent = "Type an answer first, then tap the sheet";
+    field.focus();
+    return;
+  }
+  if (!db || !sessionId) {
+    $("barState").textContent = "Not connected yet. Give it a second and try again.";
+    return;
+  }
+
+  const ink = INK[Math.floor(Math.random() * INK.length)];
+  db.ref(`${WORDS}/${sessionId}`).push({
+    text: text.slice(0, 140),
+    nx: Math.min(0.97, Math.max(0.03, nx)),
+    ny: Math.min(0.96, Math.max(0.04, ny)),
+    size: 20 + Math.random() * 40,
+    angle: -45 + Math.random() * 90,
+    face: Math.random() < 0.4 ? 1 : 0,
+    color: ink,
+    at: Date.now()
+  }).catch(dbTrouble);
+
+  field.value = "";
+  $("barState").textContent = "Answer set down. Add another whenever you like.";
+}
+
+/* ── when the database says no ──────────────────────────────────── */
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  const msg = denied
+    ? "Firebase blocked that. The database rules need updating."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  $("barState").textContent = msg;
+  $("emptyNote").textContent = denied
+    ? "The database rules are blocking reads and writes. Nothing can save until they change."
+    : msg;
+  $("emptyNote").classList.remove("off");
+  console.error("[word collage]", err);
+}
+
+/* ── the week ───────────────────────────────────────────────────── */
+function attachSession(id) {
+  if (id === sessionId) return;
+  if (wordsRef) wordsRef.off();
+  if (metaRef) metaRef.off();
+
+  sessionId = id;
+  words = [];
+  redrawAll();
+  updateMeter();
+  renderWeeks();
+
+  metaRef = db.ref(`${INDEX}/${id}`);
+  metaRef.on("value", (s) => {
+    const m = s.val() || {};
+    $("promptText").textContent = m.prompt || "No question set yet";
+    $("barWeek").textContent = m.label || "This week";
+    $("weekRoundel").innerHTML = roundelText(m.label);
+    document.title = (m.label ? m.label + " · " : "") + "Collaborative Word Collage";
+    if (!unlocked) return;
+    $("edLabel").value = m.label || "";
+    $("edPrompt").value = m.prompt || "";
+  });
+
+  wordsRef = db.ref(`${WORDS}/${id}`);
+  wordsRef.on("child_added", (s) => {
+    words.push(s.val());
+    drawWord(s.val());
+    $("emptyNote").classList.add("off");
+    updateMeter();
+  }, dbTrouble);
+  wordsRef.on("value", (s) => {
+    if (!s.exists()) {
+      words = [];
+      redrawAll();
+      updateMeter();
+    }
+  });
+}
+
+function roundelText(label) {
+  if (!label) return "WK";
+  const n = label.match(/\d+/);
+  return n ? "WK<br>" + n[0] : label.slice(0, 6).toUpperCase();
+}
+
+function updateMeter() {
+  const n = words.length;
+  $("meterCount").textContent = n === 1 ? "1 answer" : n + " answers";
+  $("meterFill").style.width = Math.min(100, n * 4) + "%";
+  $("meterLabel").textContent = n === 0 ? "The floor is open" : "The floor is filling up";
+}
+
+function watchCurrentWeek() {
+db.ref(CURRENT).on("value", (s) => {
+  connected = true;
+  const id = s.val();
+  if (id) {
+    attachSession(id);
+  } else {
+    const first = "s" + Date.now();
+    db.ref(CURRENT).transaction((held) => (held ? undefined : first));
+    db.ref(`${INDEX}/${first}`).set({ label: FIRST_LABEL, prompt: FIRST_PROMPT, created: Date.now() }).catch(dbTrouble);
+  }
+}, dbTrouble);
+
+db.ref(INDEX).on("value", (s) => {
+  weekIndex = s.val() || {};
+  renderWeeks();
+}, dbTrouble);
+
+db.ref(".info/connected").on("value", (s) => {
+  const live = s.val() === true;
+  $("barState").textContent = live
+    ? "Live. Tap anywhere to place your answer."
+    : "Reconnecting to the database";
+});
+}
+
+/* ── the press bar ──────────────────────────────────────────────── */
+$("dropBtn").addEventListener("click", () =>
+  place(0.12 + Math.random() * 0.76, 0.12 + Math.random() * 0.76)
+);
+
+$("wordInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") $("dropBtn").click();
+});
+
+$("saveBtn").addEventListener("click", () => {
+  const name = ($("barWeek").textContent || "word_collage").replace(/\s+/g, "_").toLowerCase();
+  sketch.saveCanvas(name + "_collage", "png");
+  const stamp = $("saveStamp");
+  stamp.classList.add("on");
+  setTimeout(() => stamp.classList.remove("on"), 1600);
+});
+
+/* ── the instructor desk ────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) {
+    $("editor").classList.toggle("open");
+    $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    $("gate").classList.add("open");
+    $("gateCode").focus();
+  }
+});
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateGo").addEventListener("click", tryCode);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) {
+    $("gateErr").classList.add("on");
+    return;
+  }
+  unlocked = true;
+  $("gate").classList.remove("open");
+  $("gateErr").classList.remove("on");
+  $("gateCode").value = "";
+  $("editor").classList.add("open");
+  $("edLabel").value = $("barWeek").textContent;
+  $("edPrompt").value = $("promptText").textContent;
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
+
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  setTimeout(() => f.classList.remove("on"), 3200);
+}
+
+$("savePrompt").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const prompt = $("edPrompt").value.trim();
+  const label = $("edLabel").value.trim();
+  if (!prompt) return flag("Write a question first");
+  db.ref(`${INDEX}/${sessionId}`).update({ prompt, label: label || "This week" })
+    .then(() => flag("Question saved. Every browser has it now."))
+    .catch(() => flag("Firebase refused the write. Check the database rules."));
+});
+
+$("clearWeek").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (!confirm("Clear every word from " + $("barWeek").textContent + "? The question stays.")) return;
+  db.ref(`${WORDS}/${sessionId}`).remove().then(() => flag("Sheet wiped clean"));
+});
+
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+
+function nextWeekNumber() {
+  let top = 0;
+  Object.values(weekIndex).forEach((w) => {
+    const n = String(w.label || "").match(/\d+/);
+    if (n && +n[0] > top) top = +n[0];
+  });
+  return top + 1;
+}
+
+function weekOrder() {
+  return Object.keys(weekIndex).sort(
+    (a, b) => (weekIndex[a].created || 0) - (weekIndex[b].created || 0)
+  );
+}
+
+function renderWeeks() {
+  const list = $("weekList");
+  const ids = weekOrder();
+  if (!ids.length) {
+    list.innerHTML = '<div class="wk-empty">No weeks yet. Add one above.</div>';
+    return;
+  }
+  list.innerHTML = ids
+    .map((id) => {
+      const w = weekIndex[id];
+      const live = id === sessionId;
+      if (id === editingWeek) {
+        return `<div class="wk${live ? " live" : ""}">
+          <div class="wk-edit">
+            <input type="text" data-field="label" value="${esc(w.label)}" placeholder="Week name"/>
+            <textarea data-field="prompt" placeholder="Question">${esc(w.prompt)}</textarea>
+          </div>
+          <div class="wk-btns">
+            <button class="btn btn-ink" data-act="save" data-id="${id}" type="button">Save</button>
+            <button class="btn btn-quiet" data-act="cancel" data-id="${id}" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      return `<div class="wk${live ? " live" : ""}">
+        <div class="wk-main">
+          <div class="wk-name">${esc(w.label) || "Untitled"}${live ? '<span class="wk-tag">On screen now</span>' : ""}</div>
+          <div class="wk-q">${esc(w.prompt)}</div>
+        </div>
+        <div class="wk-btns">
+          ${live ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
+          <button class="btn" data-act="edit" data-id="${id}" type="button">Rename</button>
+          <button class="btn btn-quiet" data-act="delete" data-id="${id}" type="button">Delete</button>
+        </div>
+      </div>`;
+    })
+    .join("");
+}
+
+$("weekList").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.act;
+
+  if (act === "open") {
+    if (!db) return flag("Not connected to Firebase yet");
+    db.ref(CURRENT).set(id)
+      .then(() => flag("Everyone is on " + (weekIndex[id].label || "that week") + " now"))
+      .catch(dbTrouble);
+  }
+
+  if (act === "edit") {
+    editingWeek = id;
+    renderWeeks();
+  }
+
+  if (act === "cancel") {
+    editingWeek = null;
+    renderWeeks();
+  }
+
+  if (act === "save") {
+    const row = btn.closest(".wk");
+    const label = row.querySelector('[data-field="label"]').value.trim();
+    const prompt = row.querySelector('[data-field="prompt"]').value.trim();
+    if (!prompt) return flag("A week needs a question");
+    db.ref(`${INDEX}/${id}`).update({ label: label || "Untitled", prompt })
+      .then(() => {
+        editingWeek = null;
+        flag("Week updated");
+      })
+      .catch(dbTrouble);
+  }
+
+  if (act === "delete") {
+    if (id === sessionId) return flag("Open a different week before deleting this one");
+    const w = weekIndex[id];
+    if (!confirm(`Delete ${w.label || "this week"} and every answer on it? This cannot be undone.`)) return;
+    db.ref(`${WORDS}/${id}`).remove()
+      .then(() => db.ref(`${INDEX}/${id}`).remove())
+      .then(() => flag("Week deleted"))
+      .catch(dbTrouble);
+  }
+});
+
+function makeWeek(label, prompt, openIt) {
+  const id = "s" + Date.now() + Math.floor(Math.random() * 1000);
+  return db.ref(`${INDEX}/${id}`)
+    .set({ label: label || "Week " + nextWeekNumber(), prompt, created: Date.now() })
+    .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
+}
+
+function addFromForm(openIt) {
+  if (!db) return flag("Not connected to Firebase yet");
+  const prompt = $("newPrompt").value.trim();
+  const label = $("newLabel").value.trim();
+  if (!prompt) return flag("Write the question first");
+  makeWeek(label, prompt, openIt)
+    .then(() => {
+      $("newPrompt").value = "";
+      $("newLabel").value = "";
+      flag(openIt ? "New week is open. The room is on a blank sheet." : "Added to the list. Open it when you are ready.");
+    })
+    .catch(dbTrouble);
+}
+
+$("addWeek").addEventListener("click", () => addFromForm(false));
+$("startWeek").addEventListener("click", () => addFromForm(true));
+
+$("addBulk").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const lines = $("bulkPrompts").value.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return flag("Put one question on each line first");
+  let n = nextWeekNumber();
+  let chain = Promise.resolve();
+  lines.forEach((line, i) => {
+    chain = chain.then(
+      () =>
+        new Promise((go) =>
+          setTimeout(() => go(makeWeek("Week " + (n + i), line, false)), 25)
+        )
+    );
+  });
+  chain
+    .then(() => {
+      $("bulkPrompts").value = "";
+      flag(lines.length + " weeks added to the list");
+    })
+    .catch(dbTrouble);
+});
+
+/* ── loading Firebase ───────────────────────────────────────────────
+   Some networks and browser extensions block gstatic.com, which is
+   where Firebase normally lives. If that happens the page tries two
+   other mirrors before giving up, and says so on screen instead of
+   only in the console.
+   ─────────────────────────────────────────────────────────────────── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) {
+      /* try the next mirror */
+    }
+  }
+  return false;
+}
+
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("promptText").textContent = "Cannot reach Firebase";
+    $("barState").textContent = "Offline. Check the network or an ad blocker.";
+    $("emptyNote").textContent = "Firebase did not load, so the collage cannot sync.";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  watchCurrentWeek();
+  $("barState").textContent = "Tap anywhere to place your answer";
+});
+
+/* ── date stamp ─────────────────────────────────────────────────── */
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
