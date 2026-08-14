@@ -94,7 +94,7 @@ function makeCard(i, data, hasImg){
   el.className = 'plate' + (live ? '' : ' empty');
   var no = i < 10 ? '0'+i : ''+i;
   var imgHtml = hasImg
-    ? '<img src="images/plates/plate_'+i+'.png" alt="Plate '+i+'"/>'
+    ? '<img src="../images/plate_'+i+'.png" alt="Plate '+i+'"/>'
     : '<span class="none">'+(live?'text only':'awaiting plate '+i)+'</span>';
   el.innerHTML =
     '<div class="plate-no">'+no+'</div>'+
