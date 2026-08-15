@@ -274,7 +274,7 @@ footer{
   <div class="colophon">
     <h2>Colophon</h2>
     <p><strong>File layout.</strong> Each session has a folder. Inside it, one file per person:
-      <code>week-01/artist_1.html</code> through <code>week-01/artist_24.html</code>, plus
+      <code>week-01/artist_1.html</code> through <code>week-01/artist_25.html</code>, plus
       <code>artist_1.pdf</code> and <code>artist_1.txt</code> alongside. The final session lives in
       <code>final/</code>. Files are exported straight out of that week's zine and committed without renaming.</p>
     <p><strong>Ten zines, no house name.</strong> One per reading week, at the repository root, named
@@ -413,7 +413,7 @@ footer{
    EDIT HERE. Everything below this block is machinery.
    ══════════════════════════════════════════════════════════════════════ */
 
-/* 24 entries. Put a name in to label a button; leave "" for the number alone.
+/* 25 entries. Put a name in to label a button; leave "" for the number alone.
    Position matters: slot 1 is always artist_1.html, whatever the name says. */
 var STUDENTS = [
   "", "", "", "", "", "", "", "",
@@ -488,7 +488,7 @@ var SESSIONS = [
 var BADGE = { content:"Reading week", proof:"Group project", final:"Final project", closed:"No class" };
 
 /* ══ machinery ═══════════════════════════════════════════════════════ */
-var COUNT = 24;
+var COUNT = 25;
 var fmt = "html";
 
 function esc(t){
@@ -563,7 +563,7 @@ function build(){
             (nm ? '<span class="nm">' + esc(nm) + '</span>' : '') +
           '</a>';
       }
-      body = top + '<p class="chips-hd">Submissions \u2014 24 people</p><div class="grid">' + chips + '</div>';
+      body = top + '<p class="chips-hd">Submissions \u2014 25 people</p><div class="grid">' + chips + '</div>';
     }
 
     card.innerHTML = head + '<div class="week-body">' + body + '</div>';
