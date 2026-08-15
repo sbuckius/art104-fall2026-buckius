@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CLIMATE · MEDIA · MAKING — Fall 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cobalt:#e85fa0;
+  --cobalt-deep:#2a0f22;
+  --chrome:#a8e6c0;
+  --chrome-deep:#8ba838;
+  --pulpred:#2f7d7d;
+  --mars:#14484a;
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#f0a8cc;
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#e85fa0;color:var(--ink);
+  font-family:'IBM Plex Sans',sans-serif;min-height:100vh;
+}
+.bg{position:fixed;inset:0;z-index:-2;
+  background:url('images/background_02.jpg') center/cover no-repeat;background-attachment:fixed}
+.bg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(232,95,160,.16) 0%,rgba(125,184,196,.12) 50%,rgba(139,168,56,.18) 100%)}
+.veil{position:fixed;inset:0;z-index:-1;background:rgba(10,14,18,.30)}
+
+/* ── masthead: overprinted, misregistered ───────────────────────── */
+header{
+  position:relative;overflow:hidden;
+  border-bottom:6px solid var(--ink);
+  background:var(--glass);backdrop-filter:blur(8px);
+  padding:44px 20px 34px;
+}
+.blob{position:absolute;border-radius:50%;mix-blend-mode:multiply;pointer-events:none}
+.b1{width:340px;height:340px;background:var(--pink);opacity:.5;top:-150px;left:-90px}
+.b2{width:280px;height:280px;background:var(--blue);opacity:.42;top:-110px;left:20px}
+.b3{width:200px;height:200px;background:var(--green);opacity:.5;bottom:-100px;right:8%}
+.b4{width:150px;height:150px;background:var(--green);opacity:.38;bottom:-70px;right:16%}
+
+.mast{max-width:1080px;margin:0 auto;position:relative;z-index:2}
+.kicker{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:12px;
+  letter-spacing:5px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;
+}
+h1{
+  font-family:'Space Grotesk',sans-serif;font-weight:400;
+  font-size:clamp(44px,10vw,116px);line-height:.84;
+  text-transform:uppercase;letter-spacing:-1px;color:var(--ink);
+}
+h1 .slip{color:var(--pink);position:relative;left:-2px}
+h1 .slip2{color:var(--blue)}
+.mast-sub{
+  font-family:'Space Mono',monospace;font-size:clamp(12px,1.7vw,16px);line-height:1.6;
+  margin-top:18px;max-width:640px;border-left:6px solid var(--pink);padding-left:14px;
+}
+.scrawl{
+  font-family:'Space Grotesk',cursive;color:var(--blue);
+  font-size:clamp(14px,2.2vw,20px);transform:rotate(-2.5deg);
+  display:inline-block;margin-top:16px;
+}
+
+main{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
+
+/* ── control strip, taped down ──────────────────────────────────── */
+.controls{
+  background:var(--glass);backdrop-filter:blur(8px);border:3px solid var(--ink);
+  padding:16px 18px;margin-bottom:34px;position:relative;
+  box-shadow:6px 6px 0 var(--ink);transform:rotate(-.4deg);
+  display:flex;gap:22px;flex-wrap:wrap;align-items:flex-end;
+}
+.ctrl{display:flex;flex-direction:column;gap:7px}
+.ctrl label{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:10px;
+  letter-spacing:3px;text-transform:uppercase;
+}
+.seg{display:flex;border:3px solid var(--ink);background:var(--stock)}
+.seg button{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:12px;
+  padding:9px 15px;border:none;background:transparent;cursor:pointer;color:var(--ink);
+  border-right:3px solid var(--ink);
+}
+.seg button:last-child{border-right:none}
+.seg button[aria-pressed="true"]{background:var(--pink);color:#e85fa0}
+.seg button:focus-visible{outline:3px solid var(--blue);outline-offset:-3px}
+select,input[type=search]{
+  font-family:'Space Mono',monospace;font-size:13px;padding:9px 11px;
+  border:3px solid var(--ink);background:var(--stock);color:var(--ink);outline:none;
+}
+select:focus,input:focus{background:#e85fa0}
+.ctrl-note{font-size:11px;line-height:1.5;max-width:230px;color:#2a0f22}
+
+/* ── week cards: photocopied, taped, rotated ────────────────────── */
+
+.week{
+  --w-ink:var(--ink); --w-accent:var(--pink); --w-second:var(--blue);
+  --w-paper:var(--stock); --w-on-accent:#e85fa0;
+  background:var(--w-paper);border:3px solid var(--w-ink);
+  margin-bottom:30px;position:relative;
+  box-shadow:7px 7px 0 var(--w-ink);
+}
+.week:nth-child(odd){transform:rotate(-.35deg)}
+.week:nth-child(even){transform:rotate(.3deg)}
+.tape{
+  position:absolute;top:-13px;left:34px;width:96px;height:26px;
+  background:var(--w-accent);opacity:.55;border:1px dashed rgba(22,19,15,.4);
+  transform:rotate(-4deg);z-index:3;mix-blend-mode:multiply;
+}
+.tape.r{left:auto;right:44px;transform:rotate(3deg);background:var(--w-second);opacity:.4}
+
+.week-hd{display:flex;align-items:stretch;gap:0;border-bottom:3px solid var(--w-ink);background:var(--w-paper)}
+.wnum{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,6vw,62px);line-height:1;
+  color:var(--w-paper);background:var(--w-ink);
+  padding:14px 16px;min-width:96px;display:flex;align-items:center;justify-content:center;
+}
+.week-titles{flex:1;padding:12px 16px;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.wdate{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--w-second);margin-bottom:4px}
+.wtitle{font-family:'Space Grotesk',sans-serif;font-size:clamp(16px,2.6vw,25px);text-transform:uppercase;line-height:1.05;letter-spacing:.3px}
+.badge{
+  align-self:center;margin-right:14px;flex:none;
+  font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;padding:6px 11px;border:3px solid var(--w-ink);white-space:nowrap;
+  background:var(--w-accent);color:var(--w-on-accent);
+}
+
+.week-body{padding:16px}
+.swatch{
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--w-ink);opacity:.65;padding:8px 16px 0;
+}
+.swatch em{font-style:italic;text-transform:none;letter-spacing:.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.chip{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  border:3px solid var(--w-ink);background:rgba(255,255,255,.55);color:var(--w-ink);
+  text-decoration:none;padding:9px 5px;min-height:56px;text-align:center;
+  transition:transform .07s,box-shadow .07s,background .15s;
+  box-shadow:3px 3px 0 var(--w-ink);
+}
+.chip .n{font-family:'Space Grotesk',sans-serif;font-size:19px;line-height:1}
+.chip .nm{font-family:'Space Mono',monospace;font-size:9px;line-height:1.15;word-break:break-word;letter-spacing:.3px}
+.chip:hover{background:var(--w-second);color:#e85fa0;transform:translate(1px,1px);box-shadow:2px 2px 0 var(--w-ink)}
+.chip:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--w-ink)}
+.chip:focus-visible{outline:4px solid var(--blue);outline-offset:2px}
+.chip.hit{background:var(--w-accent);color:var(--w-on-accent)}
+.chip.dim{opacity:.16}
+
+.comet{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  border:3px solid var(--w-ink);background:var(--w-ink);color:var(--w-paper);
+  padding:13px 16px;margin-bottom:16px;text-decoration:none;
+  box-shadow:4px 4px 0 var(--w-accent);transition:transform .07s,box-shadow .07s;
+}
+.comet:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--w-accent)}
+.comet:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--w-accent)}
+.comet:focus-visible{outline:4px solid var(--w-second);outline-offset:3px}
+.comet-star{font-family:'Space Grotesk',sans-serif;font-size:30px;line-height:1;color:var(--w-accent);flex:none}
+.comet-txt{flex:1;min-width:160px}
+.comet-no{display:block;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--w-accent);margin-bottom:2px}
+.comet-t{display:block;font-family:'Space Grotesk',sans-serif;font-size:26px;text-transform:uppercase;letter-spacing:.5px;line-height:1}
+.comet-s{display:block;font-family:'Space Mono',monospace;font-size:11px;line-height:1.5;opacity:.82;margin-top:5px}
+.comet-do{display:block;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.6;margin-top:6px}
+.comet-go{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;border:3px solid var(--w-paper);padding:7px 13px;flex:none;
+}
+.nocomet{
+  border:3px dashed var(--w-ink);padding:12px 16px;margin-bottom:16px;
+  font-family:'Space Mono',monospace;font-size:12px;line-height:1.6;
+}
+.chips-hd{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--w-ink);opacity:.7;margin-bottom:9px;
+}
+.closed-note{
+  padding:18px;font-family:'Space Grotesk',cursive;font-size:clamp(15px,2.4vw,21px);
+  color:var(--grey);transform:rotate(-1deg);
+}
+
+.rule{
+  font-family:'Space Mono',monospace;font-size:12px;color:var(--pink);
+  letter-spacing:4px;text-align:center;margin:34px 0;overflow:hidden;white-space:nowrap;
+}
+
+footer{
+  border-top:6px solid var(--ink);background:var(--glass);backdrop-filter:blur(8px);
+  padding:30px 20px 46px;margin-top:20px;
+}
+.colophon{max-width:1080px;margin:0 auto;font-size:12px;line-height:1.75}
+.colophon h2{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:10px;color:var(--blue)}
+.colophon code{background:var(--glass);backdrop-filter:blur(8px);padding:1px 5px;border:1px solid var(--ink);font-size:11px}
+.colophon a{color:var(--blue)}
+.lineage{margin:10px 0 14px;padding-left:18px}
+.lineage li{margin-bottom:7px;line-height:1.65}
+
+@media (max-width:620px){
+  header{padding:30px 14px 24px}
+  main{padding:20px 14px 70px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(66px,1fr))}
+  .chip .nm{display:none}
+  .week-hd{flex-wrap:wrap}
+  .badge{margin:0 0 10px 14px}
+  .week:nth-child(odd),.week:nth-child(even){transform:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="veil"></div>
+
+<header>
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+  <div class="mast">
+    <div class="kicker">San José State University · Digital Media Arts · Fall 2026</div>
+    <h1>Climate<br/><span class="slip">Media</span><br/><span class="slip2">Making</span></h1>
+    <p class="mast-sub">How can digital media art contribute to the discussion around climate justice,
+      ecology, and sustainability? Sixteen sessions. Twenty-four people. Everything they made is below.</p>
+    <div class="scrawl">Mondays 12–3 on Zoom · finish one together · print the edition</div>
+  </div>
+</header>
+
+<main>
+
+  <section class="controls">
+    <div class="ctrl">
+      <label id="lblOpen">Buttons open</label>
+      <div class="seg" role="group" aria-labelledby="lblOpen">
+        <button type="button" data-fmt="html" aria-pressed="true">Presentation .html</button>
+        <button type="button" data-fmt="pdf" aria-pressed="false">Notes .pdf</button>
+        <button type="button" data-fmt="txt" aria-pressed="false">Notes .txt</button>
+      </div>
+    </div>
+    <div class="ctrl">
+      <label for="focus">Follow one person</label>
+      <select id="focus">
+        <option value="">Everybody</option>
+      </select>
+    </div>
+    <p class="ctrl-note">Picking a name dims everyone else, so you can read one person straight down the term.</p>
+  </section>
+
+  <a class="comet" href="manifesto.html" style="--w-ink:#2a0f22;--w-accent:#e85fa0;--w-second:#e85fa0;--w-paper:#f4f8f2;margin-bottom:30px">
+    <span class="comet-star" aria-hidden="true">&#2a0f22;</span>
+    <span class="comet-txt">
+      <span class="comet-no">Made by everyone</span>
+      <span class="comet-t">A Speculative Manifesto</span>
+      <span class="comet-s">Twenty-four plates, one each, plus a preamble the whole class argues over. The visual companion to the Week 3 section manifesto, assembled from the term's SPECULATE answers.</span>
+      <span class="comet-do">File your plate in Week 15. Printed as a broadside for the launch.</span>
+    </span>
+    <span class="comet-go">Open &#e85fa0;</span>
+  </a>
+
+  <div id="weeks"></div>
+
+  <div class="rule" aria-hidden="true">✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂ — ✂</div>
+
+</main>
+
+<footer>
+  <div class="colophon">
+    <h2>Colophon</h2>
+    <p><strong>File layout.</strong> Each session has a folder. Inside it, one file per person:
+      <code>week-01/artist_1.html</code> through <code>week-01/artist_24.html</code>, plus
+      <code>artist_1.pdf</code> and <code>artist_1.txt</code> alongside. The final session lives in
+      <code>final/</code>. Files are exported straight out of that week's zine and committed without renaming.</p>
+    <p><strong>Ten zines, no house name.</strong> One per reading week, at the repository root, named
+      <code>artist_theorist_1_thecomet.html</code> through
+      <code>artist_theorist_13_newmoon.html</code>. Issue numbers follow week numbers, so there is no
+      Week 4, 8 or 12 zine: those are group project days, which carry no reading and no response tool. Under the
+      hood it is one tool with a different item list and a different colour scheme each week, but it never
+      says so on the page. <strong>A single branded platform that reskins itself weekly would be the thing
+      this course spends fifteen weeks criticising.</strong> Ten separately titled zines, each crediting
+      the people who made the original, is the small-press argument enacted rather than described.</p>
+    <p><strong>Every issue is named after a real zine.</strong> The publication this class produces
+      belongs to a lineage, and the names keep it visible on the page students open each week. It begins
+      with <em>The Comet</em>, mimeographed by the Science Correspondence Club in Chicago in 1930, the
+      first science fiction fanzine there was.</p>
+    <p><strong>Four are placed for craft rather than politics.</strong> <em>Slant</em> sits on the
+      permacomputing week because Walt Willis and James White hand-set and printed it on a press in
+      Willis's own house in Belfast: somebody who built their own publishing infrastructure rather than
+      renting it. <em>Hyphen</em>, from the same Belfast circle, closes the reading weeks because it is
+      named after a punctuation mark and that week is about form. <em>Energumen</em>, Mike Glicksohn and
+      Susan Wood's Hugo winner, sits on the week about care and maintenance. And <em>Slingshot</em>,
+      printed by an all-volunteer collective in Berkeley since 1988 and still given away free, sits on the
+      week about extraction and accounting, because it is the only masthead here that is both local to us
+      and still running.</p>
+    <p><strong>Four are feminist or BIPOC, and each is placed where it does the most work.</strong>
+      <em>The Witch and the Chameleon</em>, the first explicitly feminist fanzine, made by Amanda Bankier
+      in Hamilton, Ontario across five issues, sits on the ecofeminism and xenofeminism week.
+      <em>Aurora</em>, formerly <em>Janus</em>, edited by Janice Bogstad and Jeanne Gomoll in Madison and
+      nominated three times for a Hugo, sits on the energy week for its name.
+      <em>Khatru</em> is here for one issue in particular: the 1975 Women in Science Fiction symposium, in
+      which Russ, Tiptree, Delany, Charnas, Kidd, McIntyre, Wilhelm and Yarbro argued in print with Tiptree
+      still writing as a man. A symposium is an analysis, which is what that week is.
+      <em>Evolution of a Race Riot</em>, Mimi Thi Nguyen's compilation zine in which contributors of colour
+      challenged racism in punk, sits on the decolonial and climate-justice week, and
+      <em>Shotgun Seamstress</em>, Osa Atoe's fanzine by and for Black punks, sits on the Afrofuturism
+      week.</p>
+    <p><strong>The manifesto.</strong> <code>manifesto.html</code> at the repository root. Twenty-four numbered plates; each student drafts a plate in the page's own compose panel and exports a text block, and the class assembles the finished document in Week 15. Empty slots render as dashed placeholders,
+      so the page shows its own gaps rather than hiding them. It prints as a broadside.</p>
+    <p><strong>To put real names on the buttons</strong>, edit the <code>STUDENTS</code> list at the top of
+      this file's script. Filenames never change, so nothing breaks when a name is added, corrected, or removed.
+      Leave an entry empty and the button shows its number alone.</p>
+    <p><strong>To change a session</strong>, edit the <code>SESSIONS</code> list in the same place.</p>
+    <p><strong>Colour.</strong> Every session carries its own scheme, set in the <code>theme</code> field of
+      its entry: four values, <code>ink</code>, <code>accent</code>, <code>second</code>, and
+      <code>paper</code>, plus an optional <code>onAccent</code> for badge text when the accent runs light.
+      <strong>Each palette is lifted from a real cover</strong>, named under the heading of the card it
+      belongs to.</p>
+    <p><strong>Each card is the palette of its own issue.</strong> Week 1 uses the exact variables from
+      <code>artist_theorist_1_thecomet.html</code>. Open the card and the zine side by side and they are
+      the same object. Each card is the specification for its own zine: <em>Slant</em> takes its
+      <code>--cobalt</code>, <code>--chrome</code> and <code>--pulpred</code> from the Week 2 card, not the
+      other way round.</p>
+    <p>The inks and accents are taken from the covers named on each card; the papers are not.
+      Every stock in this set is a cool neutral, tinted only toward its own week's hue, because a page of
+      seventeen cream cards reads as one beige field rather than seventeen distinct sessions.
+      Weeks 1, 3 and 5 keep the navy and pulp red of <em>Amazing Stories</em> and a mid-century rocket
+      plate, over blue-whites. Week 6 keeps the crimson of an Ace <em>Vintage Science Fiction Month</em>
+      cover on pale rose, which suits a week about extraction and its accounting. Weeks 2 and 10 come from
+      a Japanese science magazine for children, Tokyo, November 1949: deep teal and a red-orange bus, over
+      mint. Week 8 takes the violet of a flying-saucer cover. Week 11 is <em>Space Cat on Mushrooms</em>,
+      brick red over clay. The group project days and Week 14 come from NoPattern Studio's
+      <em>Eternal Reference</em>, hot pink and magenta over plum and deep green. Weeks 7, 9, 13 and 15
+      come from contemporary zine spreads by Luana Lloyd: forest and terracotta, cobalt and hot pink,
+      dusty rose.</p>
+    <p>Every combination was checked on four pairs: the week number against its block, badge text against
+      accent, chip text on hover, and body text on paper. Nothing sits below a ratio of 3.</p>
+    <p>Every combination was checked on four pairs: the week number against its block, badge text against
+      accent, chip text on hover, and body text on paper. Nothing sits below a ratio of 3.</p>
+    <p>Every combination was checked for contrast on four pairs: the week number against its block, badge
+      text against accent, chip text on hover, and body text on paper. Nothing sits below a ratio of 3.</p>
+    <p><strong>Final project reading, Weeks 14 and 15.</strong> Those three sessions have no zine of their
+      own, so their links live here:
+      <a href="https://pluralistic.net/2023/08/27/an-audacious-plan-to-halt-the-internets-enshittification-and-throw-it-into-reverse/">Doctorow's plan to reverse enshittification</a> ·
+      <a href="https://www.eff.org/deeplinks/2019/10/adversarial-interoperability">EFF on adversarial interoperability</a> ·
+      <a href="https://copim.pub/infrastructuring-books-together-notes-from-the-collective-infrastructures-for-publishing-event/">COPIM, Infrastructuring Books Together</a> ·
+      <a href="https://www.thegreenwebfoundation.org/">Green Web Foundation</a>, which you run rather than read ·
+      <a href="https://anthology.rhizome.org/">Rhizome's Net Art Anthology</a> and
+      <a href="https://anthology.rhizome.org/female-extension">Sollfrank's <em>Female Extension</em></a>.</p>
+
+    <p><strong>Look at the originals.</strong> The point of the names is lost if nobody ever sees the
+      zines. Nine of the ten have a link, and six of those go to complete scans rather than to a description.
+      The remaining two are named precisely enough to find.</p>
+    <ul class="lineage">
+      <li><strong>The Comet</strong> (1930) — scans of surviving issues at FANAC, the Fan History Project:
+        <a href="https://fanac.org/fanzines/Comet/">fanac.org/fanzines/Comet</a> ·
+        <a href="https://fanlore.org/wiki/The_Comet_(1930s_zine)">Fanlore</a> ·
+        <a href="https://en.wikipedia.org/wiki/The_Comet_(fanzine)">Wikipedia</a>.
+        Seventeen issues, 1930 to 1933, retitled <em>Cosmology</em> after the third.</li>
+      <li><strong>Slant</strong> (1948–53) — <strong>scans at FANAC</strong>: <a href="https://fanac.org/fanzines/Slant/">fanac.org/fanzines/Slant</a> · <a href="https://en.wikipedia.org/wiki/Slant_(fanzine)">Wikipedia</a>.
+        Won the Retro-Hugo for Best Fanzine of 1954, awarded in 2004.</li>
+      <li><strong>Hyphen</strong> (1952–65) — <strong>scans at FANAC</strong>: <a href="https://fanac.org/fanzines/Hyphen/">fanac.org/fanzines/Hyphen</a> · <a href="https://en.wikipedia.org/wiki/Hyphen_(fanzine)">Wikipedia</a>.
+        Thirty-six issues from the same Belfast circle as <em>Slant</em>, plus a thirty-seventh made in 1987
+        for the fortieth anniversary of Irish fandom.</li>
+      <li><strong>Energumen</strong> (1970–73) — <strong>scans at FANAC</strong>: <a href="https://fanac.org/fanzines/Energumen/">fanac.org/fanzines/Energumen</a> · <a href="https://en.wikipedia.org/wiki/Energumen_(magazine)">Wikipedia</a>.
+        Fifteen issues from Ottawa, Hugo for Best Fanzine in 1973, and an eleventh-anniversary issue in
+        1981 after Susan Wood's death.</li>
+      <li><strong>The Witch and the Chameleon</strong> (1974–76) —
+        <a href="https://en.wikipedia.org/wiki/The_Witch_and_the_Chameleon">Wikipedia</a> ·
+        <a href="https://umbcspecialcollections.omeka.net/exhibits/show/cosletsapienzafancoll/essays/janus-aurora">UMBC Special Collections</a>.
+        Five issues, the last a double. Bankier was Fan Guest of Honour at the first WisCon in 1977 for it.</li>
+      <li><strong>Aurora</strong>, formerly <em>Janus</em> (1975–90) — <strong>the whole run, free</strong>:
+        <a href="https://sf3.org/history/janus-aurora-covers/">sf3.org</a> has all 26 issues as PDFs with
+        covers, tables of contents, and every editor and cover artist credited. Released CC BY-NC.
+        <strong>The best archive of any zine in this set.</strong> Bogstad ran the text, Gomoll the layout;
+        it ended in 1990 because the group's energy had gone into WisCon.</li>
+      <li><strong>Evolution of a Race Riot</strong> (1997) — <strong>the full zine is scanned</strong>, put
+        online by the POC Zine Project:
+        <a href="http://issuu.com/poczineproject/docs/evolution-of-a-race-riot-issue-1">issue 1</a> ·
+        <a href="http://issuu.com/poczineproject/docs/race-riot-2">Race Riot 2</a> (2002).
+        Published in Berkeley. Contributors of colour recounting their experience of overwhelmingly white,
+        male punk scenes across North America.</li>
+      <li><strong>Shotgun Seamstress</strong> (2006–15) — the first six issues exist as a collected
+        anthology, originally from Mend My Dress Press and later reissued.
+        <a href="https://www.goodreads.com/book/show/17033802">Details and contents</a>.
+        Atoe began it in Portland and finished it in New Orleans; she won the Printed Matter Award for
+        Artists in 2009 and toured with the POC Zine Project.</li>
+      <li><strong>Slingshot</strong> (1988– ) — still printing in Berkeley, and still free. Back issues
+        from 1988 onward are held in university alternative-press collections; the collective also
+        publishes the Slingshot Organizer, which is what funds the paper.</li>
+      <li><strong>Khatru</strong> (1975) — no confirmed stable page. The Women in Science Fiction
+        symposium from issues 3 and 4 was reprinted by Aqueduct Press; search that.</li>
+    </ul>
+    <p><strong>Two places to browse further:</strong>
+      <a href="https://fanac.org/fanzines/Comet/">FANAC</a> hosts scanned runs of hundreds of fanzines, and
+      <a href="https://lib.guides.umbc.edu/fanzines">UMBC's fanzine guide</a> and the
+      <a href="https://sf-encyclopedia.com/entry/fanzine">SF Encyclopedia's fanzine entry</a> are the two
+      best maps of the field. The Barnard Zine Library link in the syllabus covers the non-SF side.</p>
+    <p>Set in Anton, Space Mono, and Permanent Marker. Overprinted the way a two-pass riso never quite
+      lines up. Hosted on GitHub Pages. No trackers, no analytics, no cookies.</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ══════════════════════════════════════════════════════════════════════
+   EDIT HERE. Everything below this block is machinery.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* 24 entries. Put a name in to label a button; leave "" for the number alone.
+   Position matters: slot 1 is always artist_1.html, whatever the name says. */
+var STUDENTS = [
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", ""
+];
+
+var SESSIONS = [
+  { n:"1",  folder:"week-01", date:"Mon 24 Aug", title:"Solarpunk", kind:"content",
+    comet:1, cometFile:"artist_theorist_1_thecomet.html", cometName:"The Comet", cometNote:"1930 · Science Correspondence Club, Chicago. The first science fiction fanzine ever published.",
+    theme:{ ink:"#2f7d7d", accent:"#8ba838", second:"#e85fa0", paper:"#f7fbf5", onAccent:"#14202a" }, ref:"The Comet \u2014 cobalt, chrome yellow, pulp red" },
+
+  { n:"2",  folder:"week-02", date:"Mon 31 Aug", title:"Permacomputing — Permacomputing", kind:"content",
+    comet:2, cometFile:"artist_theorist_2_thewitchandthechameleon.html", cometName:"The Witch and the Chameleon", cometNote:"1974–76 · Amanda Bankier, Hamilton, Ontario. The first explicitly feminist fanzine. Five issues, made single-handed.",
+    theme:{ ink:"#14484a", accent:"#8ba838", second:"#2f7d7d", paper:"#dbe8dd" }, ref:"The Practical Science for Boys and Girls, Tokyo, November 1949" },
+
+  { n:"·",  folder:null, date:"Mon 7 Sep", title:"Labor Day — campus closed", kind:"closed",
+    note:"No class. Use the fortnight for artist research and outreach.",
+    theme:{ ink:"#2f7d7d", accent:"#a8e6c0", second:"#2f7d7d", paper:"#eef4ee", onAccent:"#14484a" }, ref:"\u2014" },
+
+  { n:"3",  folder:"week-03", date:"Mon 14 Sep", title:"Ecomedia — Ecomedia", kind:"content",
+    comet:3, cometFile:"artist_theorist_3_slant.html", cometName:"Slant", cometNote:"1948–53 · Walt Willis and James White, Belfast. Hand-set and printed on a press in Willis's own house.",
+    theme:{ ink:"#14484a", accent:"#e85fa0", second:"#2f7d7d", paper:"#f4f8f2" }, ref:"Amazing Stories, Gernsback era" },
+
+  { n:"4",  folder:"week-04", date:"Mon 21 Sep", title:"Group Project I — One Topic, One Zine", kind:"proof",
+    theme:{ ink:"#14484a", accent:"#e85fa0", second:"#8ba838", paper:"#f4f8f2" }, ref:"Eternal Reference, NoPattern Studio" },
+
+  { n:"5",  folder:"week-05", date:"Mon 28 Sep", title:"Energy Imaginaries", kind:"content",
+    comet:5, cometFile:"artist_theorist_5_aurora.html", cometName:"Aurora", cometNote:"1981–87 · Janice Bogstad and Jeanne Gomoll, Madison. Formerly Janus, nominated three times for the Hugo.",
+    theme:{ ink:"#14484a", accent:"#8ba838", second:"#2f7d7d", paper:"#eef4ee" }, ref:"Rocket landing, mid-century paperback plate" },
+
+  { n:"6",  folder:"week-06", date:"Mon 5 Oct", title:"Extraction and Its Accounting", kind:"content",
+    comet:6, cometFile:"artist_theorist_6_slingshot.html", cometName:"Slingshot", cometNote:"1988– · An all-volunteer collective in Berkeley. Still printing, still free.",
+    theme:{ ink:"#2a0f22", accent:"#e85fa0", second:"#2f7d7d", paper:"#eef4ee" }, ref:"Vintage Science Fiction Month, Ace" },
+
+  { n:"7",  folder:"week-07", date:"Mon 12 Oct", title:"Decolonial and Indigenous Futures", kind:"content",
+    comet:7, cometFile:"artist_theorist_7_evolutionofaraceriot.html", cometName:"Evolution of a Race Riot", cometNote:"1997, second issue 2002 · Mimi Thi Nguyen. Contributors of colour challenging racism in punk.",
+    theme:{ ink:"#14484a", accent:"#8ba838", second:"#2f7d7d", paper:"#eef4ee" }, ref:"Contemporary zine spreads, Luana Lloyd" },
+
+  { n:"8",  folder:"week-08", date:"Mon 19 Oct", title:"Group Project II — One Topic, One Zine", kind:"proof",
+    theme:{ ink:"#14484a", accent:"#e85fa0", second:"#2f7d7d", paper:"#eef4ee" }, ref:"Flying saucers, pulp cover" },
+
+  { n:"9",  folder:"week-09", date:"Mon 26 Oct", title:"Building the Picture Differently", kind:"content",
+    comet:9, cometFile:"artist_theorist_9_shotgunseamstress.html", cometName:"Shotgun Seamstress", cometNote:"2006–15 · Osa Atoe. A fanzine by and for Black punks, hand-laid and photocopied in small batches.",
+    theme:{ ink:"#2f7d7d", accent:"#e85fa0", second:"#2f7d7d", paper:"#f4f8f2" }, ref:"Contemporary zine spreads, Luana Lloyd" },
+
+  { n:"10", folder:"week-10", date:"Mon 2 Nov", title:"Care, Repair, Maintenance", kind:"content",
+    comet:10, cometFile:"artist_theorist_10_energumen.html", cometName:"Energumen", cometNote:"1970–73 · Mike Glicksohn and Susan Wood, Toronto. Won the Hugo for Best Fanzine in 1973.",
+    theme:{ ink:"#2f7d7d", accent:"#8ba838", second:"#2f7d7d", paper:"#eef4ee" }, ref:"The Practical Science for Boys and Girls, Tokyo, 1949" },
+
+  { n:"11", folder:"week-11", date:"Mon 9 Nov", title:"Fiction Tests the Method", kind:"content",
+    comet:11, cometFile:"artist_theorist_11_khatru.html", cometName:"Khatru", cometNote:"1975 · Jeffrey D. Smith. Issues 3/4 were the Women in Science Fiction symposium: Russ, Tiptree, Delany, Charnas, Kidd, McIntyre, Wilhelm, Yarbro.",
+    theme:{ ink:"#2a0f22", accent:"#e85fa0", second:"#2f7d7d", paper:"#eef4ee" }, ref:"Space Cat on Mushrooms, Ruthven Todd" },
+
+  { n:"12", folder:"week-12", date:"Mon 16 Nov", title:"Group Project III — One Topic, One Zine", kind:"proof",
+    theme:{ ink:"#14202a", accent:"#e85fa0", second:"#8ba838", paper:"#eef4ee" }, ref:"Eternal Reference, NoPattern Studio" },
+
+  { n:"13", folder:"week-13", date:"Mon 23 Nov", title:"Voice and Form", kind:"content",
+    comet:13, cometFile:"artist_theorist_13_hyphen.html", cometName:"Hyphen", cometNote:"1952–65 · Walt Willis, James White and Bob Shaw, Belfast. Named after a punctuation mark.",
+    theme:{ ink:"#14202a", accent:"#8ba838", second:"#8ba838", paper:"#eef4ee" }, ref:"Contemporary zine spreads, Luana Lloyd" },
+
+  { n:"14", folder:"week-14", date:"Mon 30 Nov", title:"Final Project I — Reproduction and the Draft/Prototype", kind:"final",
+    theme:{ ink:"#14202a", accent:"#e85fa0", second:"#2f7d7d", paper:"#eef4ee" }, ref:"Eternal Reference, riso overprint" },
+
+  { n:"15", folder:"week-15", date:"Mon 7 Dec", title:"Final Project II — Credit, Print, Bind", kind:"final",
+    theme:{ ink:"#14484a", accent:"#e85fa0", second:"#2f7d7d", paper:"#f4f8f2" }, ref:"Contemporary zine spreads, Luana Lloyd" },
+
+  { n:"F",  folder:"final", date:"Wed 9 Dec", title:"Final Project III — The Launch", kind:"final",
+    theme:{ ink:"#2a0f22", accent:"#e85fa0", second:"#e85fa0", paper:"#f4f8f2" }, ref:"Vintage Science Fiction Month, Ace" }
+];
+
+var BADGE = { content:"Reading week", proof:"Group project", final:"Final project", closed:"No class" };
+
+/* ══ machinery ═══════════════════════════════════════════════════════ */
+var COUNT = 24;
+var fmt = "html";
+
+function esc(t){
+  return String(t == null ? "" : t)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function label(i){
+  var name = STUDENTS[i-1];
+  return (name && name.trim()) ? name.trim() : "";
+}
+
+function build(){
+  var wrap = document.getElementById("weeks");
+  wrap.innerHTML = "";
+
+  SESSIONS.forEach(function(s){
+    var card = document.createElement("section");
+    card.className = "week";
+    if (s.theme){
+      card.style.setProperty("--w-ink",    s.theme.ink);
+      card.style.setProperty("--w-accent", s.theme.accent);
+      card.style.setProperty("--w-second", s.theme.second);
+      card.style.setProperty("--w-paper",  s.theme.paper);
+      card.style.setProperty("--w-on-accent", s.theme.onAccent || "#e85fa0");
+    }
+
+    var head =
+      '<div class="tape" aria-hidden="true"></div>' +
+      '<div class="tape r" aria-hidden="true"></div>' +
+      '<div class="week-hd">' +
+        '<div class="wnum">' + esc(s.n) + '</div>' +
+        '<div class="week-titles">' +
+          '<div class="wdate">' + esc(s.date) + '</div>' +
+          '<h2 class="wtitle">' + esc(s.title) + '</h2>' +
+        '</div>' +
+        '<span class="badge ' + s.kind + '">' + esc(BADGE[s.kind]) + '</span>' +
+      '</div>' +
+      (s.ref && s.ref !== "\u2014" ? '<p class="swatch">Colour after <em>' + esc(s.ref) + '</em></p>' : '');
+
+    var body;
+    if (!s.folder){
+      body = '<p class="closed-note">' + esc(s.note || "No class.") + '</p>';
+    } else {
+      var top = "";
+      if (s.comet){
+        top =
+          '<a class="comet" href="' + esc(s.cometFile) + '">' +
+            '<span class="comet-star" aria-hidden="true">\u2726</span>' +
+            '<span class="comet-txt">' +
+              '<span class="comet-no">Week ' + s.n + ' zine</span>' +
+              '<span class="comet-t">' + esc(s.cometName || "This week's zine") + '</span>' +
+              '<span class="comet-s">' + esc(s.cometNote || "") + '</span>' +
+              '<span class="comet-do">Fill this out before class. Export three files, commit them.</span>' +
+            '</span>' +
+            '<span class="comet-go">Open \u2197</span>' +
+          '</a>';
+      } else {
+        top = '<p class="nocomet">No Comet this week. ' +
+          (s.kind === "proof"
+            ? 'Group project day: no reading and no response tool. Bring a topic to argue for.'
+            : 'Final project session: no reading and no response tool.') + '</p>';
+      }
+
+      var chips = "";
+      for (var i = 1; i <= COUNT; i++){
+        var nm = label(i);
+        chips +=
+          '<a class="chip" data-slot="' + i + '" ' +
+             'href="' + esc(s.folder) + '/artist_' + i + '.' + fmt + '" ' +
+             'aria-label="' + (nm ? esc(nm) : "Artist " + i) + ', ' + esc(s.title) + '">' +
+            '<span class="n">' + (i < 10 ? "0" + i : i) + '</span>' +
+            (nm ? '<span class="nm">' + esc(nm) + '</span>' : '') +
+          '</a>';
+      }
+      body = top + '<p class="chips-hd">Submissions \u2014 24 people</p><div class="grid">' + chips + '</div>';
+    }
+
+    card.innerHTML = head + '<div class="week-body">' + body + '</div>';
+    wrap.appendChild(card);
+  });
+
+  applyFocus();
+}
+
+function setFormat(next){
+  fmt = next;
+  document.querySelectorAll("[data-fmt]").forEach(function(b){
+    b.setAttribute("aria-pressed", String(b.dataset.fmt === next));
+  });
+  document.querySelectorAll(".chip").forEach(function(a){
+    a.href = a.href.replace(/\.(html|pdf|txt)$/, "." + next);
+  });
+}
+
+function applyFocus(){
+  var pick = document.getElementById("focus").value;
+  document.querySelectorAll(".chip").forEach(function(a){
+    a.classList.remove("hit","dim");
+    if (!pick) return;
+    if (a.dataset.slot === pick) a.classList.add("hit");
+    else a.classList.add("dim");
+  });
+}
+
+function fillFocus(){
+  var sel = document.getElementById("focus");
+  for (var i = 1; i <= COUNT; i++){
+    var o = document.createElement("option");
+    o.value = String(i);
+    var nm = label(i);
+    o.textContent = (i < 10 ? "0" + i : i) + (nm ? " · " + nm : "");
+    sel.appendChild(o);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  fillFocus();
+  build();
+  document.querySelectorAll("[data-fmt]").forEach(function(b){
+    b.addEventListener("click", function(){ setFormat(b.dataset.fmt); });
+  });
+  document.getElementById("focus").addEventListener("change", applyFocus);
+});
+</script>
+</body>
+</html>
