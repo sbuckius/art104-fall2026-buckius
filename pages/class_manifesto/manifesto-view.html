@@ -142,7 +142,7 @@ function makeCard(i, data, hasImg){
   el.className = 'plate' + (live ? '' : ' empty');
   var no = i < 10 ? '0'+i : ''+i;
   var img = hasImg
-    ? '<img src="images/plates/plate_'+i+'.png" alt="Plate '+i+(data&&data.by?' by '+esc(data.by):'')+'"/>'
+    ? '<img src="images/plate_'+i+'.png" alt="Plate '+i+(data&&data.by?' by '+esc(data.by):'')+'"/>'
     : '<span>'+(live?'text only':'awaiting plate '+i)+'</span>';
   el.innerHTML =
     '<div class="plate-no">'+no+'</div>'+
@@ -174,8 +174,8 @@ var jobs = [];
 for (var i = 1; i <= COUNT; i++){
   (function(i){
     jobs.push(Promise.all([
-      tryFetch('pages/class_manifesto/plates/plate_'+i+'.txt'),
-      imgExists('pages/class_manifesto/images/plate_'+i+'.png')
+      tryFetch('plates/plate_'+i+'.txt'),
+      imgExists('images/plate_'+i+'.png')
     ]).then(function(res){
       var data = res[0] ? parseTxt(res[0]) : null;
       var hasImg = res[1];
