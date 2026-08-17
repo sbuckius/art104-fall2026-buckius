@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>THE COMET — Reflection Sheets</title>
+<title>THE COMET — Responses</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
@@ -363,14 +363,14 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
 
       <div class="cover-right">
         <div class="blurb-lead">
-          <span class="kicker">Read it, watch it, then answer all six</span>
-          <p>Work through every item listed at left. Each asks the same six questions, and
-          <b>every one has to be answered</b> before a sheet counts as pulled. Your writing saves to this
+          <span class="kicker">Read & Encounter Artworks</span>
+          <p>Work through every item listed below.
+          <b>Every one has to be answered</b> before a sheet counts as "completed". Your writing saves to this
           browser as you go, so you can close the tab and come back to it.</p>
         </div>
 
         <div class="six">
-          <div class="six-hd">The six, every sheet</div>
+          <div class="six-hd">Connections</div>
           <dl>
             <dt>Find</dt><dd>something you did not know before</dd>
             <dt>Spark</dt><dd>what inspired you, specifically</dd>
@@ -384,7 +384,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
         <section class="ladder">
           <div class="ladder-hd">The SPECULATE ladder</div>
           <p class="ladder-note">The sixth question needs a shape or it turns into freewriting.
-            Four rungs, the same every week. <strong>This week you owe rungs 1 and 2.</strong></p>
+            Four rungs, the same every week. <strong></strong></p>
           <ol class="ladder-list">
             <li><strong>Name the object.</strong> One ordinary thing that fits in a hand or a room. If it cannot be photographed, it is not an object yet.</li>
             <li><strong>Site it.</strong> Where is it, who made it, what did it cost, what did it replace? An object with no supply chain is a logo.</li>
@@ -393,8 +393,8 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
           </ol>
         </section>
 
-        <p class="cover-foot">When every sheet is pulled, the composing bench opens and you build the
-        slide you will present. Then export three files and commit them. <b>Due two hours before class.</b></p>
+        <p class="cover-foot">When every sheet is "completed", the composing bench opens and you build the
+        slides you will present. Then export three files. <b>Due two hours before class.</b></p>
       </div>
     </div>
   </div>
@@ -420,7 +420,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
 
   <div class="runmeter">
     <div class="runmeter-top">
-      <span id="runLabel">0 of 0 sheets pulled</span>
+      <span id="runLabel">0 of 0 sheets completed</span>
       <span class="pct" id="runPct">0%</span>
     </div>
     <div class="track"><div class="fill" id="runFill"></div></div>
@@ -473,7 +473,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
           <div class="slide-title" id="pvTitle">YOUR TITLE HERE</div>
           <div class="slide-cols">
             <div class="slide-left">
-              <div class="slide-quote" id="pvQuote">Your pulled line appears here.</div>
+              <div class="slide-quote" id="pvQuote">Your completed line appears here.</div>
               <div class="slide-caption" id="pvCaption">Your caption appears here.</div>
             </div>
             <div class="slide-right" id="pvImgWrap"><span>Drawing or image goes here</span></div>
@@ -689,14 +689,14 @@ function renderSheets(){
           '<span class="sheet-kind">'+esc(item.kind||"Item")+'</span>' +
           '<span class="sheet-title">'+esc(item.title)+'</span>' +
         '</span>' +
-        '<span class="sheet-stamp" id="stamp-'+i+'">Not pulled</span>' +
+        '<span class="sheet-stamp" id="stamp-'+i+'">Not completed</span>' +
         '<span class="chev" id="chev-'+i+'" aria-hidden="true">▸</span>' +
       '</button>' +
       '<div class="sheet-body" id="body-'+i+'">' +
         '<div class="viewrow">' + linkRow(item) + '</div>' +
         (item.note ? '<p class="itemnote">'+esc(item.note)+'</p>' : '') + qs +
         '<div class="sheet-actions">' +
-          '<button class="btn btn-ink" type="button" data-mark="'+i+'">Mark this sheet pulled</button>' +
+          '<button class="btn btn-ink" type="button" data-mark="'+i+'">Mark this sheet completed</button>' +
         '</div>' +
       '</div>';
     wrap.appendChild(sec);
@@ -740,7 +740,7 @@ function refreshSheet(i){
   if (sheet) sheet.classList.toggle("done", done);
   if (stamp){
     var missing = KEYS.filter(function(k){ return !getAns(i,k).trim(); }).length;
-    stamp.textContent = done ? "Pulled ✓" : (missing===KEYS.length ? "Not pulled" : missing+" to go");
+    stamp.textContent = done ? "Completed ✓" : (missing===KEYS.length ? "Not completed" : missing+" to go");
     stamp.classList.toggle("on", done);
   }
 }
@@ -780,7 +780,7 @@ function markSheet(i){
 function refreshRun(){
   var total = state.config.items.length, done = doneCount();
   var pct = total ? Math.round(done/total*100) : 0;
-  $("runLabel").textContent = done + " of " + total + " sheets pulled";
+  $("runLabel").textContent = done + " of " + total + " sheets completed";
   $("runPct").textContent = pct + "%";
   $("runFill").style.width = pct + "%";
 
@@ -791,7 +791,7 @@ function refreshRun(){
 
   var left = total - done;
   $("pressMsg").innerHTML = ready
-    ? "All sheets pulled. <b>Build your slide below.</b>"
+    ? "All sheets completed. <b>Build your slide below.</b>"
     : (left===1 ? "<b>1 sheet</b> left to finish." : "<b>"+left+" sheets</b> left to finish.");
 }
 
@@ -861,7 +861,7 @@ function refreshSlide(){
   $("pvModule").textContent = state.config.module || "MODULE";
   $("pvName").textContent = name;
   $("pvTitle").textContent = cur().title || "YOUR TITLE HERE";
-  $("pvQuote").textContent = cur().quote || "Your pulled line appears here.";
+  $("pvQuote").textContent = cur().quote || "Your completed line appears here.";
   $("pvCaption").textContent = cur().caption || "Your caption appears here.";
   $("pvFootL").textContent = "The Comet · " + (state.who.section || "");
   $("pvFootR").textContent = d;
