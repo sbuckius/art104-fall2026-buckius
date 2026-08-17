@@ -85,10 +85,15 @@ h1.logo{
   font-size:clamp(13px,2.6vw,22px);letter-spacing:2px;text-transform:uppercase;
   color:#fff;line-height:1.15;
 }
-.cover-body{display:flex;gap:16px;padding:16px 0 18px;align-items:flex-start}
+.cover-body{
+  display:grid;grid-template-columns:246px 1fr;grid-template-rows:auto auto auto 1fr;
+  gap:3px;margin:16px 0 18px;
+  background:var(--jet);border:3px solid var(--jet);
+  box-shadow:5px 5px 0 rgba(0,0,0,.35);
+}
 .contents{
-  flex:0 0 246px;background:var(--chrome);border:3px solid var(--jet);
-  padding:14px 14px 16px;box-shadow:5px 5px 0 rgba(0,0,0,.35);
+  grid-column:1;grid-row:1/5;
+  background:var(--chrome);padding:14px 14px 16px;
 }
 .contents-hd{
   font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;
@@ -106,19 +111,49 @@ h1.logo{
   font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:2px;color:var(--jet);
   opacity:.65;padding:3px 0;
 }
-.cover-body{align-items:flex-start}
-.cover-right{
-  flex:1;min-width:280px;color:#fff;font-size:14px;line-height:1.65;
-  display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;align-items:start;
+.cover-right{display:contents}
+.cover-right>*{color:#fff;font-size:14px;line-height:1.65}
+/* the two cover panels, boxed like the contents and connections blocks
+   beside them, in two shades of the pink already in the palette */
+.blurb-lead{
+  grid-column:2;grid-row:1;
+  background:var(--pink);padding:13px 15px 15px;color:var(--jet);
 }
-.blurb-lead{grid-column:1/-1}
-.blurb-lead p{margin:0}
+.blurb-lead p{margin:0;color:var(--jet)}
+.blurb-lead b{color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.blurb-lead .kicker{
+  color:#fff;border-bottom:2px solid var(--jet);
+  padding-bottom:7px;margin-bottom:9px;
+  text-shadow:2px 2px 0 var(--mars);
+}
 .cover-right .kicker{margin-bottom:8px}
-.cover-foot{grid-column:1/-1;font-size:12.5px;color:#d8dfe8;margin:0}
+.cover-foot{
+  grid-column:2;grid-row:3;margin:0;
+  background:var(--mars);padding:12px 15px;
+  font-size:12.5px;line-height:1.6;color:#fff;
+}
+.cover-foot b{color:var(--chrome)}
+/* the slack panel: engineering and mathematics notation, clipped to whatever
+   height is left over, so the four blocks above always end flush */
+.glyphs{
+  grid-column:2;grid-row:4;min-height:46px;
+  background:var(--cobalt);overflow:hidden;position:relative;
+}
+.glyphs-inner{
+  position:absolute;inset:0;padding:7px 12px 8px;overflow:hidden;
+  font-family:'Space Grotesk',sans-serif;font-size:14px;line-height:1.55;
+  letter-spacing:4px;word-spacing:2px;color:var(--chrome);
+  -webkit-user-select:none;user-select:none;
+}
+.glyphs-inner .a{color:var(--pink)}
+.glyphs-inner .b{color:#fff;opacity:.72}
+.glyphs-inner .c{color:var(--chrome);opacity:.55}
 .cover-blurb p{margin:0}
 .six{
-  border:3px solid var(--jet);background:rgba(0,0,0,.22);
-  padding:14px 16px 16px;align-self:stretch;
+  grid-column:2;grid-row:2;
+  background:#1f5b5d;            /* --cobalt, darkened: the old translucent
+                                    fill went black now the grid is on jet */
+  padding:14px 16px 16px;
 }
 .six-hd{
   font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;
@@ -132,7 +167,6 @@ h1.logo{
 }
 .six dd{margin:0;font-size:12.5px;line-height:1.4;color:#e9edf1}
 .six-note{font-size:11.5px;line-height:1.45;color:#cfd8e2;margin-top:9px;border-top:2px solid rgba(255,255,255,.28);padding-top:8px}
-.cover-foot{font-size:12.5px;color:#d8dfe8}
 .cover-blurb b{color:var(--chrome)}
 .cover-blurb .kicker{
   font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:1px;
@@ -219,7 +253,7 @@ main{max-width:860px;margin:0 auto;padding:28px 18px 140px}
 h2.sect{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,6vw,48px);text-transform:uppercase;line-height:.95;margin-bottom:10px;color:var(--cobalt);text-shadow:4px 4px 0 var(--chrome),6px 6px 0 var(--jet)}
 .sect-note{font-size:14px;line-height:1.7;color:#334051;margin-bottom:20px;max-width:620px}
 
-/* ══ composing bench ════════════════════════════════════════════════ */
+/* ══ slide creation section ════════════════════════════════════════════════ */
 .bench{border:3px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);padding:22px;box-shadow:5px 5px 0 var(--cobalt)}
 .bench.locked{opacity:.5;pointer-events:none}
 .locknote{border:3px solid var(--pulpred);color:var(--pulpred);background:#fff;padding:13px 16px;margin-bottom:18px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;line-height:1.6;text-transform:uppercase}
@@ -252,12 +286,14 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
 .slide-inner{flex:1;display:flex;flex-direction:column;padding:3% 3.5% 2.4%;min-height:0}
 .slide-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(15px,3.6vw,40px);line-height:.98;text-transform:uppercase;color:var(--cobalt);margin-bottom:2.6%;word-break:break-word;text-shadow:3px 3px 0 var(--chrome)}
 .slide-cols{display:flex;gap:4%;flex:1;min-height:0}
-.slide-left{flex:1.05;display:flex;flex-direction:column;min-width:0}
+.slide-left{flex:1.05;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
 .slide-right{flex:1;border:3px solid var(--jet);display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden}
 .slide-right img{width:100%;height:100%;object-fit:contain}
 .slide-right span{font-family:'Space Grotesk',sans-serif;font-size:clamp(7px,1.1vw,12px);color:var(--rule);letter-spacing:1px;padding:8px;text-align:center;text-transform:uppercase}
-.slide-quote{font-family:'Bitter',serif;font-style:italic;font-size:clamp(8px,1.55vw,17px);line-height:1.45;color:var(--jet);border-left:5px solid var(--pulpred);padding-left:3%;margin-bottom:3.5%;overflow:hidden}
-.slide-caption{font-family:'Bitter',serif;font-size:clamp(7px,1.3vw,14px);line-height:1.5;color:#334051;overflow:hidden}
+.slide-quote{font-family:'Bitter',serif;font-style:italic;font-size:clamp(8px,1.55vw,17px);line-height:1.45;color:var(--jet);border-left:5px solid var(--pulpred);padding-left:3%;margin-bottom:3.5%;overflow:visible;flex:none}
+.slide-caption{font-family:'Bitter',serif;font-size:clamp(7px,1.3vw,14px);line-height:1.5;color:#334051;overflow:visible;flex:none}
+.fitnote{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--cobalt-deep);margin-top:6px}
+.fitnote.warn{color:var(--pulpred);font-weight:700}
 .slide-foot{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(6px,1vw,11px);letter-spacing:2px;text-transform:uppercase;color:var(--jet);background:var(--chrome);border-top:3px solid var(--jet);padding:5px 3.5%;display:flex;justify-content:space-between;gap:10px}
 
 /* ══ save roundel ═══════════════════════════════════════════════════ */
@@ -312,9 +348,13 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
 .ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
 
 @media (max-width:720px){
-  .cover-right{grid-template-columns:1fr}
-  .cover-body{flex-direction:column}
-  .contents{flex:1 1 auto;width:100%}
+  .cover-body{grid-template-columns:1fr;grid-template-rows:auto auto auto auto}
+  .contents{grid-column:1;grid-row:1}
+  .blurb-lead{grid-column:1;grid-row:2}
+  .six{grid-column:1;grid-row:3}
+  .cover-foot{grid-column:1;grid-row:4}
+  .glyphs{grid-column:1;grid-row:5}
+  .cover-body{grid-template-rows:auto auto auto auto auto}
   .cover{padding:12px 14px 0}
   main{padding:22px 14px 150px}
   .sheet-no{font-size:22px;min-width:44px;padding:12px 8px}
@@ -351,9 +391,9 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
       <div class="cover-right">
         <div class="blurb-lead">
           <span class="kicker">Read & Encounter Artworks</span>
-          <p>Work through every item listed below. Most sheets carry the six questions;
-          the readings on method and the three works carry a single question instead.
-          <b>Every question has to be answered</b> before a sheet counts as "completed". Your writing saves to this
+          <p>Work through every item listed below. Most sections contain the six questions;
+          the readings on method and the three works contain a single question instead, and the closing section contains two of its own.
+          <b>Every question has to be answered</b> before a section counts as "completed". Your writing saves to this
           browser as you go, so you can close the tab and come back to it.</p>
         </div>
 
@@ -364,14 +404,16 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
             <dt>Spark</dt><dd>what inspired you, specifically</dd>
             <dt>Friction</dt><dd>what upset you, and why</dd>
             <dt>Lived</dt><dd>your own life, and what it shows beyond you</dd>
-            <dt>Charge</dt><dd>where you stand, said plainly</dd>
+            <dt>Charge</dt><dd>where you stand, said with conviction.</dd>
             <dt>Speculate</dt><dd>a work that does not exist yet</dd>
           </dl>
-          <p class="six-note">Four sheets ask one question instead. Open the sheet to see which.</p>
+          <p class="six-note">Five sections ask one question instead, and the closing section asks its own two. Open the section to see which.</p>
         </div>
 
-        <p class="cover-foot">When every sheet is "completed", the composing bench opens and you build the
+        <p class="cover-foot">When every section is "completed", the slide creation section opens and you build the
         slides you will present. Then export three files. <b>Due two hours before class.</b></p>
+
+        <div class="glyphs" aria-hidden="true"><div class="glyphs-inner" id="glyphField"></div></div>
       </div>
     </div>
   </div>
@@ -382,7 +424,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
   <section class="colophon">
     <div class="colophon-hd">Set your name in the colophon</div>
     <div class="fields">
-      <div class="field"><label for="whoName">Your name</label><input type="text" id="whoName" placeholder="First Last" autocomplete="name"/></div>
+      <div class="field"><label for="whoName">Your name</label><input type="text" id="whoName" placeholder="First Name, Last Initial" autocomplete="name"/></div>
       <div class="field"><label for="whoSection">Section</label><input type="text" id="whoSection" placeholder="e.g. Tues 9am"/></div>
       <div class="field"><label for="whoDate">Date</label><input type="date" id="whoDate"/></div>
       <div class="field">
@@ -397,7 +439,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
 
   <div class="runmeter">
     <div class="runmeter-top">
-      <span id="runLabel">0 of 0 sheets completed</span>
+      <span id="runLabel">0 of 0 sections completed</span>
       <span class="pct" id="runPct">0%</span>
     </div>
     <div class="track"><div class="fill" id="runFill"></div></div>
@@ -407,12 +449,12 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
 
   <div class="divider" aria-hidden="true">— · — · — · — · — · — · — · — · — · — · — · — · — · —</div>
 
-  <h2 class="sect"><span class="misreg" data-t="COMPOSING BENCH">COMPOSING BENCH</span></h2>
+  <h2 class="sect"><span class="misreg" data-t="SLIDE CREATION SECTION">SLIDE CREATION SECTION</span></h2>
   <p class="sect-note">One slide, built from what you wrote. Pull a line from any answer, add a drawing or
     photograph, and say what it is. The exported slide keeps its text selectable, so anyone can copy from it.</p>
 
   <section class="bench locked" id="bench">
-    <div class="locknote" id="lockNote">Locked until every question on every sheet is completed.</div>
+    <div class="locknote" id="lockNote">Locked until every question on every section is completed.</div>
 
     <div class="slidenav">
       <div class="slidetabs" id="slideTabs" role="tablist" aria-label="Slides"></div>
@@ -439,7 +481,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
       <button class="btn" type="button" id="btnClearImg" style="display:none">Remove image</button>
     </div>
 
-    <label class="bl" for="slCaption">What is it? Say it plainly</label>
+    <label class="bl" for="slCaption">What is it? Say it with conviction.</label>
     <textarea id="slCaption" placeholder="What the image shows, and what it has to do with the line above"></textarea>
 
     <div class="preview-wrap">
@@ -458,6 +500,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
         </div>
         <div class="slide-foot"><span id="pvFootL">THE COMET</span><span id="pvFootR">DATE</span></div>
       </div>
+      <div class="fitnote" id="fitNote"></div>
     </div>
 
     <div class="sheet-actions" style="margin-top:20px">
@@ -488,7 +531,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
     </div>
     <p class="ed-note">Changes apply to this browser only. To set the defaults for every student, edit the
       <code>DEFAULTS</code> block at the top of this file's script and re-upload it. The prompts below are the six
-      standard questions. Sheets that carry a single question of their own keep it; edit those in the
+      standard questions. Sections that contain a single question of their own keep it; edit those in the
       <code>DEFAULTS</code> block, on the item's <code>prompts</code> line.</p>
 
     <div class="ed-row">
@@ -513,10 +556,11 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
 <div id="saveStamp" role="status" aria-live="polite"><span id="saveStampText">Saved</span></div>
 
 <div id="press">
-  <span id="pressMsg">Answer every question on every sheet.</span>
+  <span id="pressMsg">Answer every question on every section.</span>
   <div class="press-btns">
     <button class="btn" type="button" id="btnTxt">Save notes (.txt)</button>
     <button class="btn" type="button" id="btnPdf" disabled>Export notes (PDF)</button>
+    <button class="btn btn-ink" type="button" id="btnAnsHtml">All answers (.html)</button>
   </div>
 </div>
 
@@ -532,48 +576,48 @@ var DEFAULTS = {
   module: "WEEK 1 \u00b7 THE IMAGINARY \u00b7 SOLARPUNK",
   folder: "week-01",
   items: [
-    { title: "A Solarpunk Manifesto", kind: "Reading", group: "The manifestos",
+    { title: "A Solarpunk Manifesto", kind: "Reading", group: "The Ideas & Manifestos",
       url: "https://theanarchistlibrary.org/library/the-solarpunk-community-a-solarpunk-manifesto",
       note: "The Solarpunk Community\u2019s manifesto, mirrored on The Anarchist Library. Short. Read the whole thing." },
 
-    { title: "Williams, Solarpunk: Against a Shitty Future", kind: "Reading", group: "The manifestos",
-      url: "https://lareviewofbooks.org/article/solarpunk-against-a-shitty-future/",
-      note: "Rhys Williams, Los Angeles Review of Books, 2018." },
-
-    { title: "Wilk, Is Ornamenting Solar Panels a Crime?", kind: "Reading", group: "The manifestos",
-      url: "https://www.e-flux.com/architecture/positions/191258/is-ornamenting-solar-panels-a-crime",
-      note: "Elvia Wilk, e-flux Architecture, 2018." },
-
-    { title: "Solarpunk: Notes toward a Manifesto", kind: "Reading", group: "The manifestos",
+    { title: "Solarpunk: Notes toward a Manifesto", kind: "Reading", group: "The Ideas & Manifestos",
       url: "https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/",
       note: "Project Hieroglyph, ASU, 2014." },
 
-    { title: "What solarpunk looks like", kind: "Look at", group: "The look",
+    { title: "Williams, Solarpunk: Against a Shitty Future", kind: "Reading", group: "The Ideas & Manifestos",
+      url: "https://lareviewofbooks.org/article/solarpunk-against-a-shitty-future/",
+      note: "Rhys Williams, Los Angeles Review of Books, 2018." },
+
+    { title: "Wilk, Is Ornamenting Solar Panels a Crime?", kind: "Reading", group: "The Ideas & Manifestos",
+      url: "https://www.e-flux.com/architecture/positions/191258/is-ornamenting-solar-panels-a-crime",
+      note: "Elvia Wilk, e-flux Architecture, 2018." },
+
+    { title: "What solarpunk looks like", kind: "Look at", group: "The Aesthetic",
       links: [
         { label: "Aesthetics Wiki, Solarpunk", url: "https://aesthetics.fandom.com/wiki/Solarpunk" },
         { label: "Solarpunks.club, Art", url: "https://www.solarpunks.club/art" }
       ],
-      note: "Look through both. One is a fan-written encyclopedia entry, the other a community gallery. Neither is a scholarly source, and that is the point: this is where the look is actually being made and argued over." },
+      note: "Look through both. One is a fan-written encyclopedia entry, the other a community gallery. Neither is a scholarly source, but they do provide insights." },
 
-    { title: "Bleecker, Design Fiction", kind: "Reading", group: "The method",
+    { title: "Bleecker, Design Fiction", kind: "Reading", group: "Design Fiction",
       url: "https://nearfuturelaboratory.com/blog/2009/03/design-fiction-a-short-essay-on-design-science-fact-and-fiction/",
-      note: "Julian Bleecker, 2009. A short essay, so read it properly.",
+      note: "Julian Bleecker, 2009. Skim and look at ideas, projects, and pictures.",
       keys: ["RETHINK"],
       prompts: { RETHINK: "Pick 1 paragraph from this article. How can you rethink an idea in it in a \u201csolarpunk\u201d way?\n\nQuote or paraphrase the paragraph first, then rethink it." } },
 
-    { title: "Dunne & Raby, Speculative Everything", kind: "Reading", group: "The method",
+    { title: "Dunne & Raby, Speculative Everything", kind: "Reading", group: "Design Fiction",
       url: "https://readings.design/PDF/speculative-everything.pdf",
-      note: "2013. Skim. This is a whole book: read the introduction, then move through it looking at the projects and pictures. Twenty minutes is enough.",
+      note: "2013. Skim. This is a whole book. Move through it looking at the projects and pictures.",
       keys: ["RETHINK"],
       prompts: { RETHINK: "Pick 1 paragraph from this article. How can you rethink an idea in it in a \u201csolarpunk\u201d way?\n\nQuote or paraphrase the paragraph first, then rethink it." } },
 
-    { title: "Dear Alice, The Line for Chobani", kind: "Watch", group: "The works",
+    { title: "Dear Alice, The Line for Chobani", kind: "Watch", group: "The Artworks & Video",
       url: "https://thelinestudio.com/work/chobani",
       note: "2021, 1:30.",
       keys: ["TAKE"],
       prompts: { TAKE: "Watch this video. Find something inspiring in it. Take this thing and make it yours: name the specific thing you took \u2014 an image, a movement, a sound, an object, a moment \u2014 and describe what you would build out of it." } },
 
-    { title: "Olalekan Jeyifous", kind: "Look at", group: "The works",
+    { title: "Olalekan Jeyifous", kind: "Look at", group: "The Artworks & Video",
       links: [
         { label: "ACE / AAP", url: "https://jeyifo.us/ACE-AAP" },
         { label: "PIONEER", url: "https://jeyifo.us/PIONEER" },
@@ -587,35 +631,43 @@ var DEFAULTS = {
       keys: ["SPECULATE"],
       prompts: { SPECULATE: "Pick one of these artworks to look up. What aesthetics do you find inspiring? What concepts do you find inspiring? If you had to speculate about an artwork that you would make inspired by this artwork and with a solarpunk lens, what would it be? Describe it in detail.\n\nIt can be in a different medium than the one used in this piece. Say which piece you picked." } },
 
-    { title: "Brain & Lavigne, Synthetic Messenger", kind: "Look at", group: "The works",
+    { title: "Brain & Lavigne, Synthetic Messenger", kind: "Look at", group: "The Artworks & Video",
       links: [
         { label: "Ars Electronica", url: "https://ars.electronica.art/export/en/synthetic-messenger/" },
         { label: "Artists\u2019 page", url: "https://tegabrain.com/Synthetic-Messenger" }
       ],
       note: "Tega Brain and Sam Lavigne, 2021. Read both pages; the artists\u2019 page explains the mechanism.",
       keys: ["SPECULATE"],
-      prompts: { SPECULATE: "Look at this artwork. It is not necessarily \u201csolarpunk\u201d. How can you take something about this artwork and make your own recreation of a part of it in a \u201csolarpunk\u201d way? Describe a speculative artwork (one that doesn\u2019t exist yet and can even be impossible) that you would make using this piece as a jumping off point." } }
+      prompts: { SPECULATE: "Look at this artwork. It is not necessarily \u201csolarpunk\u201d. How can you take something about this artwork and make your own recreation of a part of it in a \u201csolarpunk\u201d way? Describe a speculative artwork (one that doesn\u2019t exist yet and can even be impossible) that you would make using this piece as a jumping off point." } },
+
+    { title: "Overall thoughts on Solarpunk as a frame", kind: "Write", group: "Conclusion",
+      note: "No links on this one. Answer both questions last, once you have worked through everything above.",
+      keys: ["OVERALL","BEYOND"],
+      prompts: {
+        OVERALL: "Write around 5 sentences about your overall thoughts about how Solarpunk can help to frame discussions about digital media art and climate change, ecology, nature, and our planet. In what ways can it be a useful frame for digital media artists to make and discuss digital artwork?",
+        BEYOND: "Which disciplines outside of art do the ideas in Solarpunk connect to? Pick one or two, from this list or from anywhere else:\n\narchitecture and urban planning \u00b7 agriculture and food systems \u00b7 engineering and energy \u00b7 biology and ecology \u00b7 computer science and machine learning \u00b7 economics and labor \u00b7 law and policy \u00b7 public health \u00b7 education \u00b7 anthropology \u00b7 geology and climate science \u00b7 supply chains and logistics \u00b7 disability studies \u00b7 philosophy and religion\n\nThen describe how or why the connection holds. Be specific: name the idea from this week that does the connecting, name what it touches in that field, and say what changes when you put the two together." } }
   ],
   groupNotes: {
-    "The manifestos": "Four readings. Each sheet carries the six questions.",
-    "The look": "Look through both links. This sheet carries the six questions.",
-    "The method": "Skim these. Each of these sheets carries one question, not six.",
-    "The works": "Watch and look. Each of these sheets carries one question, not six."
+    "The Ideas & Manifestos": "Four readings. Each section contains the six questions.",
+    "The Aesthetic": "Look through both links. This section contains the six questions.",
+    "Design Fiction": "Skim these. Each of these sections contains one question, not six.",
+    "The Artworks & Video": "Watch and look. Each of these sections contains one question, not six.",
+    "Conclusion": "Two questions about the week as a whole. Answer them once everything above is done."
   },
   prompts: {
-    FIND:     "Something you learned that you did not know before. A fact, a name, a date, a claim. One line is enough.",
-    SPARK:    "What inspired you. Point at the specific thing that did it \u2014 a sentence, an image, a moment, an object \u2014 rather than the topic in general.",
-    FRICTION: "What upset you. Disagreement, irritation, discomfort, or something you think is simply wrong all count. Say what, and say why.",
-    LIVED:    "Something in your own life this connects to, and what it shows beyond you. Two parts: what happened to you, then what that experience reveals about how things are arranged for other people too.",
-    CHARGE:   "What you feel strongly about here. Take a position and say it plainly.",
-    SPECULATE:"Propose a speculative artwork.\n\nA speculative artwork is something that does not exist yet, described as though it already does. It can be an object, an image, a film, a publication, a performance, a tool, a garment, a machine, or a place. What makes it speculative is not that it is imaginary but that it is specific: it is presented as a real thing in a world slightly unlike ours, and that world becomes understandable through it. It is not a plan, a pitch, an essay, or a description of a problem.\n\nDescribe yours in two or three sentences. Name the thing first. Then say where it is, who made it, and what it replaced. It does not have to be buildable."
+    FIND:     "Something you learned that you did not know before. A fact, a quote, a concept, a claim. What is it? Why is it interesting?",
+    SPARK:    "What inspired you? Describe the thing \u2014 a sentence, an image, a moment, an object \u2014 and why it is inspiring to you.",
+    FRICTION: "What upset you. Disagreement, irritation, discomfort, or something you think is simply wrong. Describe it and why you responded this way.",
+    LIVED:    "Something in your own life this connects to, and how it connects to the larger world. Two parts: why it relates to your lived experience, then what that experience reveals about other people and the world beyond you.",
+    CHARGE:   "What you feel strongly about in the reading OR something that is connected to the reading that you feel strongly about. Take a position and say it with conviction.",
+    SPECULATE:"Propose a speculative artwork.\n\nFor this question, think of a speculative artwork as something that does not exist yet, described as though it already does. It can be an object, an image, a film, a publication, a performance, a tool, a garment, a machine, a place, an installation, a software or hardware. What makes it speculative is that you haven't made it yet. Describe it as a real thing in the world, as if it existed. \n\nDescribe yours in two or three sentences. Descirbe its parts, aesthetics, concepts, location, interactive elements, technologies, sounds, movement, etc. It does not have to be buildable or possible."
   }
 };
 
 var KEYS = ["FIND","SPARK","FRICTION","LIVED","CHARGE","SPECULATE"];
 var STORE_KEY = "ctm.w01.v2";
 
-/* Some sheets carry the six questions; others carry a single question of their
+/* Some sections contain the six questions; others contain a single question of their
    own. An item declares its own set with keys:[...] and prompts:{...}. */
 function keysFor(item){
   return (item && item.keys && item.keys.length) ? item.keys : KEYS;
@@ -652,6 +704,32 @@ if (!state.config) state.config = { volume:DEFAULTS.volume, module:DEFAULTS.modu
 if (!state.config.prompts) state.config.prompts = Object.assign({},DEFAULTS.prompts);
 if (!state.config.folder) state.config.folder = DEFAULTS.folder;
 if (!state.config.groupNotes) state.config.groupNotes = Object.assign({},DEFAULTS.groupNotes);
+
+/* Saved work from an earlier version of this file keeps its own copy of the
+   item list. Answers are keyed by item position, so new sections are appended at
+   the end and nothing already written is disturbed. */
+(function migrateConfig(){
+  var items = state.config.items || (state.config.items = []);
+  DEFAULTS.items.forEach(function(def){
+    var mine = null;
+    items.forEach(function(it){ if (it.title === def.title) mine = it; });
+    if (!mine){ items.push(JSON.parse(JSON.stringify(def))); return; }
+    /* an item already saved here may predate a question added since; fold in
+       any key it is missing without touching what is already written */
+    if (def.keys && def.keys.length){
+      if (!mine.keys || !mine.keys.length) mine.keys = def.keys.slice();
+      else def.keys.forEach(function(k){ if (mine.keys.indexOf(k) < 0) mine.keys.push(k); });
+      if (!mine.prompts) mine.prompts = {};
+      Object.keys(def.prompts || {}).forEach(function(k){
+        if (!mine.prompts[k]) mine.prompts[k] = def.prompts[k];
+      });
+    }
+  });
+  Object.keys(DEFAULTS.groupNotes).forEach(function(g){
+    if (!state.config.groupNotes[g]) state.config.groupNotes[g] = DEFAULTS.groupNotes[g];
+  });
+})();
+
 if (state.slide && !state.slides){ state.slides = [state.slide]; delete state.slide; }
 if (!state.slides || !state.slides.length) state.slides = [{ title:"", quote:"", caption:"", img:"" }];
 if (typeof state.slideIdx !== "number" || state.slideIdx >= state.slides.length) state.slideIdx = 0;
@@ -672,7 +750,7 @@ function flashStamp(){
   stampTimer = setTimeout(function(){ el.classList.remove("on"); }, 1100);
 }
 
-/* ── sheets ──────────────────────────────────────────────────────── */
+/* ── sections ────────────────────────────────────────────────────── */
 function ansKey(i,k){ return i + ":" + k; }
 function getAns(i,k){ return (state.answers[ansKey(i,k)] || ""); }
 function sheetDone(i){
@@ -683,6 +761,10 @@ function doneCount(){
   return n;
 }
 function allDone(){ return state.config.items.length>0 && doneCount()===state.config.items.length; }
+
+function hasLinks(item){
+  return !!((item && item.links && item.links.length) || (item && item.url));
+}
 
 function linkRow(item){
   var ls = (item.links && item.links.length) ? item.links
@@ -745,10 +827,10 @@ function renderSheets(){
         '<span class="chev" id="chev-'+i+'" aria-hidden="true">▸</span>' +
       '</button>' +
       '<div class="sheet-body" id="body-'+i+'">' +
-        '<div class="viewrow">' + linkRow(item) + '</div>' +
+        (hasLinks(item) ? '<div class="viewrow">' + linkRow(item) + '</div>' : '') +
         (item.note ? '<p class="itemnote">'+esc(item.note)+'</p>' : '') + qs +
         '<div class="sheet-actions">' +
-          '<button class="btn btn-ink" type="button" data-mark="'+i+'">Mark this sheet completed</button>' +
+          '<button class="btn btn-ink" type="button" data-mark="'+i+'">Mark this section completed</button>' +
         '</div>' +
       '</div>';
     wrap.appendChild(sec);
@@ -833,7 +915,7 @@ function markSheet(i){
 function refreshRun(){
   var total = state.config.items.length, done = doneCount();
   var pct = total ? Math.round(done/total*100) : 0;
-  $("runLabel").textContent = done + " of " + total + " sheets completed";
+  $("runLabel").textContent = done + " of " + total + " sections completed";
   $("runPct").textContent = pct + "%";
   $("runFill").style.width = pct + "%";
 
@@ -844,8 +926,8 @@ function refreshRun(){
 
   var left = total - done;
   $("pressMsg").innerHTML = ready
-    ? "All sheets completed. <b>Build your slide below.</b>"
-    : (left===1 ? "<b>1 sheet</b> left to finish." : "<b>"+left+" sheets</b> left to finish.");
+    ? "All sections completed. <b>Build your slide below.</b>"
+    : (left===1 ? "<b>1 section</b> left to finish." : "<b>"+left+" sections</b> left to finish.");
 }
 
 /* ── slide bench ─────────────────────────────────────────────────── */
@@ -925,6 +1007,52 @@ function refreshSlide(){
   var th = $("slThumb");
   if (cur().img){ th.src = cur().img; th.classList.add("on"); $("btnClearImg").style.display="inline-block"; }
   else { th.classList.remove("on"); $("btnClearImg").style.display="none"; }
+  fitPreview();
+}
+
+/* Size the preview text against the slide, then step it down until it stops
+   overflowing. A long answer comes out smaller rather than cut off, and the
+   exports use the same rule so what you see here is what you hand in. */
+function fitPreview(){
+  var slide = $("slidePreview");
+  if (!slide) return;
+  var W = slide.clientWidth, H = slide.clientHeight;
+  if (!W || !H) return;
+
+  var title = $("pvTitle"), q = $("pvQuote"), c = $("pvCaption");
+  var left = slide.querySelector(".slide-left");
+  if (!title || !q || !c || !left) return;
+
+  var tBase = W*0.052, tScale = 1, guard = 0;
+  title.style.fontSize = tBase + "px";
+  while (tScale > 0.42 && title.scrollHeight > H*0.30 && guard++ < 40){
+    tScale -= 0.05;
+    title.style.fontSize = (tBase*tScale) + "px";
+  }
+
+  var qBase = W*0.028, cBase = W*0.021, s = 1, n = 0;
+  function put(v){
+    q.style.fontSize = (qBase*v) + "px";
+    c.style.fontSize = (cBase*v) + "px";
+  }
+  put(1);
+  while (s > 0.30 && left.scrollHeight > left.clientHeight + 1 && n++ < 70){
+    s -= 0.03;
+    put(s);
+  }
+
+  var stillOver = left.scrollHeight > left.clientHeight + 1;
+  var note = $("fitNote");
+  if (note){
+    note.classList.toggle("warn", stillOver);
+    if (stillOver){
+      note.textContent = "Longer than the slide can hold, even at the smallest size. Trim it so none of it is cut off.";
+    } else if (s < 0.99 || tScale < 0.99){
+      note.textContent = "Long text \u2014 scaled to " + Math.round(Math.min(s,tScale)*100) + "% so all of it fits the slide.";
+    } else {
+      note.textContent = "";
+    }
+  }
 }
 
 function shrinkImage(file, maxDim, cb){
@@ -952,7 +1080,7 @@ function shrinkImage(file, maxDim, cb){
 /* ── exports ─────────────────────────────────────────────────────── */
 function plainText(){
   var L = [];
-  L.push("THE COMET — REFLECTION SHEETS");
+  L.push("THE COMET — REFLECTION SECTIONS");
   L.push(state.config.module);
   L.push("");
   L.push("Slot:    " + (state.who.slot ? "artist_" + state.who.slot : "—"));
@@ -1040,8 +1168,41 @@ function exportTxt(){
   download(new Blob([plainText()],{type:"text/plain;charset=utf-8"}), fileStem()+".txt");
 }
 
-/* colours as jsPDF rgb triples */
-var C = { stock:[250,251,252], ink:[17,16,20], aniline:[23,80,158], spot:[200,32,46], pale:[141,150,164], chrome:[242,196,12] };
+/* ── one palette, taken straight off the page ─────────────────────────
+   These are the same values as the :root custom properties at the top of
+   this file. Change them there and change them here, or the exports drift
+   away from the page again. */
+var PALETTE = {
+  cobalt:      "#2f7d7d",
+  cobaltDeep:  "#14202a",
+  chrome:      "#a8e6c0",
+  chromeDeep:  "#8ba838",
+  pulpred:     "#d63d84",
+  mars:        "#a01e5c",
+  jet:         "#14202a",
+  rule:        "#7db8c4",
+  cream:       "#f4f8f2",
+  pulpDeep:    "#dbe8dd",
+  slate:       "#334051",
+  white:       "#ffffff"
+};
+
+function rgb(hex){
+  var h = String(hex).replace("#","");
+  return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+}
+
+/* the same palette as jsPDF rgb triples */
+var C = {
+  stock:  rgb(PALETTE.cream),      /* paper           */
+  ink:    rgb(PALETTE.jet),        /* body ink        */
+  aniline:rgb(PALETTE.cobalt),     /* teal, the bars  */
+  spot:   rgb(PALETTE.pulpred),    /* pink accent     */
+  pale:   rgb(PALETTE.rule),       /* sea-glass rule  */
+  chrome: rgb(PALETTE.chrome),     /* mint highlight  */
+  slate:  rgb(PALETTE.slate),      /* caption ink     */
+  white:  [255,255,255]
+};
 
 function exportNotesPdf(){
   if (!needSlot()) return;
@@ -1060,14 +1221,18 @@ function exportNotesPdf(){
 
   doc.setFillColor(C.aniline[0],C.aniline[1],C.aniline[2]);
   doc.rect(0,0,PW,96,"F");
+  doc.setFillColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.rect(0,96,PW,6,"F");
   doc.setFillColor(C.spot[0],C.spot[1],C.spot[2]);
-  doc.rect(0,96,PW,5,"F");
-  doc.setTextColor(250,251,252);
+  doc.rect(0,102,PW,3,"F");
+  doc.setTextColor(C.white[0],C.white[1],C.white[2]);
   doc.setFont("helvetica","bold"); doc.setFontSize(34);
   doc.text("THE COMET", M, 52);
-  doc.setFont("courier","normal"); doc.setFontSize(10);
-  doc.setTextColor(242,196,12);
+  doc.setFont("helvetica","bold"); doc.setFontSize(10);
+  doc.setTextColor(C.chrome[0],C.chrome[1],C.chrome[2]);
   doc.text(String(state.config.module||""), M, 70);
+  doc.setFont("times","normal");
+  doc.setTextColor(C.white[0],C.white[1],C.white[2]);
   var who = [state.who.name, state.who.section, state.who.date].filter(Boolean).join("   \u00b7   ");
   doc.text(who || "\u2014", M, 86);
   y = 128;
@@ -1076,12 +1241,12 @@ function exportNotesPdf(){
     need(64);
     doc.setFillColor(C.aniline[0],C.aniline[1],C.aniline[2]);
     doc.rect(M, y, TW, 30, "F");
-    doc.setTextColor(250,251,252);
-    doc.setFont("courier","bold"); doc.setFontSize(13);
+    doc.setTextColor(C.white[0],C.white[1],C.white[2]);
+    doc.setFont("helvetica","bold"); doc.setFontSize(13);
     doc.text(String(i+1).padStart(2,"0") + "  " + String(item.title).slice(0,52), M+10, y+20);
     y += 34;
     if (item.url){
-      doc.setFont("courier","normal"); doc.setFontSize(8);
+      doc.setFont("times","normal"); doc.setFontSize(8);
       doc.setTextColor(C.pale[0],C.pale[1],C.pale[2]);
       doc.text(String(item.url).slice(0,92), M+2, y+8);
       y += 18;
@@ -1089,16 +1254,16 @@ function exportNotesPdf(){
 
     keysFor(item).forEach(function(k){
       var txt = getAns(i,k).trim() || "(no answer)";
-      doc.setFont("courier","normal"); doc.setFontSize(10.5);
+      doc.setFont("times","normal"); doc.setFontSize(11);
       var lines = doc.splitTextToSize(txt, TW-22);
       need(30 + lines.length*14);
       doc.setDrawColor(C.spot[0],C.spot[1],C.spot[2]);
       doc.setLineWidth(3);
       doc.line(M+2, y-2, M+2, y + 14 + lines.length*14);
-      doc.setFont("courier","bold"); doc.setFontSize(10);
+      doc.setFont("helvetica","bold"); doc.setFontSize(10);
       doc.setTextColor(C.spot[0],C.spot[1],C.spot[2]);
       doc.text(k, M+12, y+8);
-      doc.setFont("courier","normal"); doc.setFontSize(10.5);
+      doc.setFont("times","normal"); doc.setFontSize(11);
       doc.setTextColor(C.ink[0],C.ink[1],C.ink[2]);
       doc.text(lines, M+12, y+25);
       y += 30 + lines.length*14;
@@ -1109,8 +1274,8 @@ function exportNotesPdf(){
   var pages = doc.internal.getNumberOfPages();
   for (var p=1;p<=pages;p++){
     doc.setPage(p);
-    doc.setFont("courier","normal"); doc.setFontSize(8);
-    doc.setTextColor(C.pale[0],C.pale[1],C.pale[2]);
+    doc.setFont("helvetica","bold"); doc.setFontSize(8);
+    doc.setTextColor(C.aniline[0],C.aniline[1],C.aniline[2]);
     doc.text("THE COMET  \u00b7  " + (state.who.name||""), M, PH-30);
     doc.text(p + " / " + pages, PW-M, PH-30, {align:"right"});
   }
@@ -1131,86 +1296,133 @@ function exportSlidePdf(){
   doc.save(fileStem()+"_slides.pdf");
 }
 
-function drawSlidePage(doc, SL, SI, W, H, M){
+/* Fit a block of text into a fixed box by stepping the size down until the
+   lines stop overflowing. Returns the split lines, the size that worked, and
+   the line height, so the caller can lay out whatever comes after it. */
+function fitBlock(doc, font, style, text, width, maxH, base, min, lf){
+  var size = base, lines, lh;
+  for(;;){
+    doc.setFont(font, style);
+    doc.setFontSize(size);
+    lines = doc.splitTextToSize(String(text == null ? "" : text), width);
+    lh = size * lf;
+    if (lines.length * lh <= maxH || size <= min) break;
+    size = Math.max(min, size - 0.5);
+  }
+  if (lines.length * lh > maxH){
+    lines = lines.slice(0, Math.max(1, Math.floor(maxH / lh)));
+  }
+  return { lines: lines, size: size, lh: lh, h: lines.length * lh };
+}
 
+function drawSlidePage(doc, SL, SI, W, H, M){
+  var BAR = 46, FOOT = 42;
+
+  /* stock */
   doc.setFillColor(C.stock[0],C.stock[1],C.stock[2]);
   doc.rect(0,0,W,H,"F");
+
+  /* top bar — teal, as on the page */
+  doc.setFillColor(C.aniline[0],C.aniline[1],C.aniline[2]);
+  doc.rect(0,0,W,BAR,"F");
   doc.setDrawColor(C.ink[0],C.ink[1],C.ink[2]);
-  doc.setLineWidth(4);
-  doc.rect(14,14,W-28,H-28,"S");
+  doc.setLineWidth(3);
+  doc.line(0,BAR,W,BAR);
+  doc.setFont("helvetica","bold"); doc.setFontSize(11);
+  doc.setTextColor(C.white[0],C.white[1],C.white[2]);
+  doc.text(String(state.config.module||"").toUpperCase(), M, 29);
+  doc.text(String(state.who.name||"").toUpperCase(), W-M, 29, {align:"right"});
 
-  /* top bar — real text, so it stays selectable */
-  doc.setFont("courier","bold"); doc.setFontSize(11);
-  doc.setTextColor(C.spot[0],C.spot[1],C.spot[2]);
-  doc.text(String(state.config.module||"").toUpperCase(), M, 56);
-  doc.text(String(state.who.name||"").toUpperCase(), W-M, 56, {align:"right"});
-  doc.setDrawColor(C.aniline[0],C.aniline[1],C.aniline[2]);
-  doc.setLineWidth(2);
-  doc.line(M, 66, W-M, 66);
+  /* foot — mint, as on the page */
+  doc.setFillColor(C.chrome[0],C.chrome[1],C.chrome[2]);
+  doc.rect(0,H-FOOT,W,FOOT,"F");
+  doc.setDrawColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.setLineWidth(3);
+  doc.line(0,H-FOOT,W,H-FOOT);
+  doc.setFont("helvetica","bold"); doc.setFontSize(10);
+  doc.setTextColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.text(("THE COMET  \u00b7  " + (state.who.section||"")).toUpperCase(), M, H-FOOT+26);
+  var d = state.who.date ? new Date(state.who.date+"T00:00:00").toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"}) : "";
+  doc.text(d.toUpperCase(), W-M, H-FOOT+26, {align:"right"});
+  if (state.slides.length > 1){
+    doc.text((SI+1) + " / " + state.slides.length, W/2, H-FOOT+26, {align:"center"});
+  }
 
-  /* title, with the misregistration doubled in the red plate */
-  var title = (SL.title || "UNTITLED").toUpperCase();
-  doc.setFont("courier","bold"); doc.setFontSize(34);
-  var tLines = doc.splitTextToSize(title, W-M*2).slice(0,2);
-  doc.setTextColor(C.spot[0],C.spot[1],C.spot[2]);
-  doc.text(tLines, M+3, 108+2);
+  /* the working area between the two bars */
+  var top = BAR + 26;
+  var bottom = H - FOOT - 20;
+  var area = bottom - top;
+
+  /* title: teal with the mint drop, matching the page. It gets at most a
+     third of the height and shrinks to stay inside it. */
+  var titleText = (SL.title || "Untitled").toUpperCase();
+  var T = fitBlock(doc, "helvetica", "bold", titleText, W-M*2, area*0.32, 34, 15, 1.08);
+  doc.setFont("helvetica","bold"); doc.setFontSize(T.size);
+  doc.setTextColor(C.chrome[0],C.chrome[1],C.chrome[2]);
+  doc.text(T.lines, M+3, top+T.size+3);
   doc.setTextColor(C.aniline[0],C.aniline[1],C.aniline[2]);
-  doc.text(tLines, M, 108);
+  doc.text(T.lines, M, top+T.size);
 
-  var top = 108 + tLines.length*38 + 14;
+  var colTop = top + T.h + 22;
+  var colH = bottom - colTop;
   var colW = (W - M*2 - 40) / 2;
   var imgX = M + colW + 40;
-  var boxH = H - top - 74;
 
-  /* left column */
-  doc.setDrawColor(C.spot[0],C.spot[1],C.spot[2]);
-  doc.setLineWidth(4);
-  doc.line(M, top, M, top + boxH*0.52);
-  doc.setFont("courier","bolditalic"); doc.setFontSize(15);
-  doc.setTextColor(C.ink[0],C.ink[1],C.ink[2]);
-  var qLines = doc.splitTextToSize(SL.quote || "", colW-18);
-  doc.text(qLines.slice(0,7), M+16, top+16);
-
-  var capY = top + Math.max(qLines.slice(0,7).length*20, 40) + 28;
-  doc.setFont("courier","normal"); doc.setFontSize(12);
-  doc.setTextColor(58,64,72);
-  var cLines = doc.splitTextToSize(SL.caption || "", colW);
-  doc.text(cLines.slice(0,8), M, capY);
-
-  /* right column: image */
-  doc.setDrawColor(C.pale[0],C.pale[1],C.pale[2]);
-  doc.setLineWidth(2);
-  doc.rect(imgX, top, colW, boxH, "S");
+  /* right column: the image box */
+  doc.setFillColor(C.white[0],C.white[1],C.white[2]);
+  doc.rect(imgX, colTop, colW, colH, "F");
+  doc.setDrawColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.setLineWidth(3);
+  doc.rect(imgX, colTop, colW, colH, "S");
   if (SL.img){
     try {
       var props = doc.getImageProperties(SL.img);
-      var s = Math.min((colW-14)/props.width, (boxH-14)/props.height);
+      var s = Math.min((colW-14)/props.width, (colH-14)/props.height);
       var dw = props.width*s, dh = props.height*s;
-      doc.addImage(SL.img, "JPEG", imgX + (colW-dw)/2, top + (boxH-dh)/2, dw, dh);
+      doc.addImage(SL.img, "JPEG", imgX + (colW-dw)/2, colTop + (colH-dh)/2, dw, dh);
     } catch(e){
-      doc.setFont("courier","normal"); doc.setFontSize(10);
+      doc.setFont("helvetica","bold"); doc.setFontSize(10);
       doc.setTextColor(C.pale[0],C.pale[1],C.pale[2]);
-      doc.text("[image could not be placed]", imgX+14, top+26);
+      doc.text("[IMAGE COULD NOT BE PLACED]", imgX+14, colTop+26);
     }
   } else {
-    doc.setFont("courier","normal"); doc.setFontSize(10);
+    doc.setFont("helvetica","bold"); doc.setFontSize(10);
     doc.setTextColor(C.pale[0],C.pale[1],C.pale[2]);
-    doc.text("[no image]", imgX+14, top+26);
+    doc.text("[NO IMAGE]", imgX+14, colTop+26);
   }
 
-  /* foot */
-  doc.setDrawColor(C.pale[0],C.pale[1],C.pale[2]);
-  doc.setLineWidth(1.5);
-  doc.line(M, H-56, W-M, H-56);
-  doc.setFont("courier","normal"); doc.setFontSize(10);
-  doc.setTextColor(C.aniline[0],C.aniline[1],C.aniline[2]);
-  doc.text("THE COMET  \u00b7  " + (state.who.section||""), M, H-36);
-  var d = state.who.date ? new Date(state.who.date+"T00:00:00").toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"}) : "";
-  doc.text(d, W-M, H-36, {align:"right"});
-  if (state.slides.length > 1){
-    doc.setFont("courier","normal"); doc.setFontSize(10);
-    doc.text((SI+1) + " / " + state.slides.length, W/2, H-36, {align:"center"});
+  /* left column: the pulled line, then the caption. Both are fitted, so a
+     long answer comes out smaller rather than cut off. */
+  var qText = SL.quote || "";
+  var cText = SL.caption || "";
+  var GAP = 20;
+  var quoteMax = cText.trim() ? colH*0.58 : colH;
+
+  var Q = fitBlock(doc, "times", "bolditalic", qText, colW-24, quoteMax, 16, 7.5, 1.4);
+  var qH = qText.trim() ? Q.h : 0;
+
+  if (qText.trim()){
+    doc.setDrawColor(C.spot[0],C.spot[1],C.spot[2]);
+    doc.setLineWidth(5);
+    doc.line(M+2, colTop, M+2, colTop + qH + 6);
+    doc.setFont("times","bolditalic"); doc.setFontSize(Q.size);
+    doc.setTextColor(C.ink[0],C.ink[1],C.ink[2]);
+    doc.text(Q.lines, M+20, colTop + Q.size);
   }
+
+  if (cText.trim()){
+    var capTop = colTop + (qH ? qH + GAP : 0);
+    var capMax = colH - (capTop - colTop);
+    var Cp = fitBlock(doc, "times", "normal", cText, colW-4, capMax, 13, 7, 1.45);
+    doc.setFont("times","normal"); doc.setFontSize(Cp.size);
+    doc.setTextColor(C.slate[0],C.slate[1],C.slate[2]);
+    doc.text(Cp.lines, M+2, capTop + Cp.size);
+  }
+
+  /* frame last, so it sits over the bars like the border on the page */
+  doc.setDrawColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.setLineWidth(6);
+  doc.rect(3,3,W-6,H-6,"S");
 }
 
 /* ── self-contained HTML slide: the weekly presentation deliverable ── */
@@ -1250,46 +1462,83 @@ function exportSlideHtml(){
 '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8"/>\n' +
 '<meta name="viewport" content="width=device-width, initial-scale=1"/>\n' +
 '<title>' + e(state.slides[0].title || "Untitled") + ' \u2014 ' + e(state.who.name) + '</title>\n' +
+'<link rel="preconnect" href="https://fonts.googleapis.com"/>\n' +
+'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>\n' +
+'<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Bitter:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>\n' +
 '<style>\n' +
+':root{\n' +
+'  --cobalt:' + PALETTE.cobalt + ';\n' +
+'  --cobalt-deep:' + PALETTE.cobaltDeep + ';\n' +
+'  --chrome:' + PALETTE.chrome + ';\n' +
+'  --pulpred:' + PALETTE.pulpred + ';\n' +
+'  --jet:' + PALETTE.jet + ';\n' +
+'  --rule:' + PALETTE.rule + ';\n' +
+'  --cream:' + PALETTE.cream + ';\n' +
+'  --slate:' + PALETTE.slate + ';\n' +
+'}\n' +
 '*{box-sizing:border-box;margin:0;padding:0}\n' +
 'html{scroll-snap-type:y mandatory;scroll-behavior:smooth;height:100%}\n' +
-'body{background:#111014;font-family:Georgia,"Times New Roman",serif;color:#111014;height:100%;overflow-y:auto}\n' +
-'.slide{scroll-snap-align:center;min-height:100vh;display:grid;place-items:center;padding:2vmin}\n' +
-'.slide>*{grid-area:1/1}\n' +
-'.slide{width:100%}\n' +
-'@supports(display:grid){.slide{display:flex;align-items:center;justify-content:center}}\n' +
-'.slide{scroll-snap-align:center}\n' +
-'.card{width:min(96vw,calc(92vh*16/9));aspect-ratio:16/9;background:#fafbfc;\n' +
-'  border:0.5vmin solid #111014;display:flex;flex-direction:column;overflow:hidden}\n' +
-'.bar{background:#17509e;color:#fff;border-bottom:0.35vmin solid #111014;\n' +
+'body{background:var(--jet);font-family:"Bitter",Georgia,"Times New Roman",serif;\n' +
+'  color:var(--jet);height:100%;overflow-y:auto}\n' +
+'.slide{scroll-snap-align:center;min-height:100vh;display:flex;align-items:center;\n' +
+'  justify-content:center;padding:2vmin;width:100%}\n' +
+'.card{width:min(96vw,calc(92vh*16/9));aspect-ratio:16/9;background:var(--cream);\n' +
+'  border:0.5vmin solid var(--jet);display:flex;flex-direction:column;overflow:hidden;\n' +
+'  box-shadow:1vmin 1vmin 0 var(--cobalt)}\n' +
+'.bar{background:var(--cobalt);color:#fff;border-bottom:0.35vmin solid var(--jet);\n' +
 '  padding:0.9vmin 3.5%;display:flex;justify-content:space-between;gap:2%;\n' +
-'  font-family:Helvetica,Arial,sans-serif;font-weight:700;\n' +
+'  font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-weight:600;\n' +
 '  font-size:1.5vmin;letter-spacing:0.25vmin;text-transform:uppercase}\n' +
 '.inner{flex:1;display:flex;flex-direction:column;padding:3% 3.5% 2.4%;min-height:0}\n' +
-'h1{font-family:Helvetica,Arial,sans-serif;font-size:5.2vmin;line-height:1;\n' +
-'  text-transform:uppercase;color:#17509e;margin-bottom:2.6%;word-break:break-word;\n' +
-'  text-shadow:0.45vmin 0.45vmin 0 #f2c40c}\n' +
+'h1{font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-weight:700;\n' +
+'  font-size:5.2vmin;line-height:1;text-transform:uppercase;color:var(--cobalt);\n' +
+'  margin-bottom:2.6%;word-break:break-word;overflow-wrap:anywhere;\n' +
+'  text-shadow:0.45vmin 0.45vmin 0 var(--chrome)}\n' +
 '.cols{display:flex;gap:4%;flex:1;min-height:0}\n' +
-'.left{flex:1.05;display:flex;flex-direction:column;min-width:0;overflow:hidden}\n' +
-'.right{flex:1;border:0.35vmin solid #111014;background:#fff;display:flex;\n' +
+'.left{flex:1.05;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}\n' +
+'.right{flex:1;border:0.35vmin solid var(--jet);background:#fff;display:flex;\n' +
 '  align-items:center;justify-content:center;overflow:hidden}\n' +
 '.right img{width:100%;height:100%;object-fit:contain}\n' +
-'.ph{font-family:Helvetica,Arial,sans-serif;font-size:1.6vmin;color:#8d96a4;\n' +
-'  text-transform:uppercase;letter-spacing:0.2vmin}\n' +
-'blockquote{font-style:italic;font-size:2.5vmin;line-height:1.45;\n' +
-'  border-left:0.6vmin solid #c8202e;padding-left:3%;margin-bottom:3.5%}\n' +
-'p.cap{font-size:1.95vmin;line-height:1.5;color:#334051}\n' +
-'.foot{background:#f2c40c;border-top:0.35vmin solid #111014;padding:0.9vmin 3.5%;\n' +
-'  display:flex;justify-content:space-between;gap:2%;\n' +
-'  font-family:Helvetica,Arial,sans-serif;font-weight:700;\n' +
+'.ph{font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-size:1.6vmin;\n' +
+'  color:var(--rule);text-transform:uppercase;letter-spacing:0.2vmin}\n' +
+'blockquote{font-style:italic;font-size:2.5vmin;line-height:1.45;color:var(--jet);\n' +
+'  border-left:0.6vmin solid var(--pulpred);padding-left:3%;margin-bottom:3.5%;\n' +
+'  flex:none;overflow-wrap:anywhere}\n' +
+'p.cap{font-size:1.95vmin;line-height:1.5;color:var(--slate);flex:none;overflow-wrap:anywhere}\n' +
+'.foot{background:var(--chrome);border-top:0.35vmin solid var(--jet);padding:0.9vmin 3.5%;\n' +
+'  display:flex;justify-content:space-between;gap:2%;color:var(--jet);\n' +
+'  font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-weight:600;\n' +
 '  font-size:1.4vmin;letter-spacing:0.2vmin;text-transform:uppercase}\n' +
 '@media print{html{scroll-snap-type:none}body{background:#fff}\n' +
 '  .slide{min-height:auto;padding:0;page-break-after:always}\n' +
-'  .card{width:100%;border:none}}\n' +
+'  .card{width:100%;border:none;box-shadow:none}}\n' +
 '</style>\n</head>\n<body>\n' +
 body.replace(/<section class="slide" id="s(\d+)">/g, '<section class="slide" id="s$1"><div class="card">')
     .replace(/<\/section>/g, '</div></section>') +
 '<script>\n' +
+'/* Text is sized against the card, then stepped down until it stops\n' +
+'   overflowing, so a long answer shrinks instead of disappearing. */\n' +
+'function fitCard(card){\n' +
+'  var h1=card.querySelector("h1"), left=card.querySelector(".left"),\n' +
+'      bq=card.querySelector("blockquote"), cap=card.querySelector("p.cap");\n' +
+'  var W=card.clientWidth, H=card.clientHeight;\n' +
+'  if(!W||!H) return;\n' +
+'  if(h1){\n' +
+'    var tb=W*0.055, ts=1, g=0;\n' +
+'    h1.style.fontSize=tb+"px";\n' +
+'    while(ts>0.42 && h1.scrollHeight>H*0.30 && g++<40){ ts-=0.05; h1.style.fontSize=(tb*ts)+"px"; }\n' +
+'  }\n' +
+'  if(!left) return;\n' +
+'  var qb=W*0.028, cb=W*0.021, s=1, n=0;\n' +
+'  function put(v){ if(bq) bq.style.fontSize=(qb*v)+"px"; if(cap) cap.style.fontSize=(cb*v)+"px"; }\n' +
+'  put(1);\n' +
+'  while(s>0.30 && left.scrollHeight>left.clientHeight+1 && n++<70){ s-=0.03; put(s); }\n' +
+'}\n' +
+'function fitAll(){ [].forEach.call(document.querySelectorAll(".card"), fitCard); }\n' +
+'window.addEventListener("load", fitAll);\n' +
+'window.addEventListener("resize", function(){ clearTimeout(window.__ft); window.__ft=setTimeout(fitAll,120); });\n' +
+'if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);\n' +
+'fitAll();\n' +
 'document.addEventListener("keydown",function(ev){\n' +
 '  var ss=[].slice.call(document.querySelectorAll(".slide"));\n' +
 '  if(!ss.length)return;\n' +
@@ -1305,6 +1554,178 @@ body.replace(/<section class="slide" id="s(\d+)">/g, '<section class="slide" id=
 '</body>\n</html>\n';
 
   download(new Blob([doc],{type:"text/html;charset=utf-8"}), fileStem()+".html");
+}
+
+/* ── every answer, as one self-contained HTML page ────────────────── */
+function exportAnswersHtml(){
+  if (!needSlot()) return;
+
+  function e(t){ return String(t==null?"":t)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function para(t){
+    return String(t==null?"":t).split(/\n{2,}/).map(function(b){
+      return "<p>" + e(b).replace(/\n/g,"<br/>") + "</p>";
+    }).join("");
+  }
+
+  var d = state.who.date
+    ? new Date(state.who.date+"T00:00:00").toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})
+    : "\u2014";
+
+  var total = 0, answered = 0, words = 0;
+  var lastGroup = null;
+
+  var sheets = state.config.items.map(function(item, i){
+    var out = "";
+    var g = item.group || null;
+    if (g && g !== lastGroup){
+      var gn = (state.config.groupNotes || {})[g] || "";
+      out += '<div class="groupmark"><span>' + e(g) + '</span></div>' +
+             (gn ? '<p class="group-sub">' + e(gn) + '</p>' : '');
+    }
+    lastGroup = g;
+
+    var ls = (item.links && item.links.length) ? item.links
+           : (item.url ? [{label:"Open the item", url:item.url}] : []);
+    var links = ls.map(function(l){
+      return '<a href="' + e(l.url) + '" target="_blank" rel="noopener">' + e(l.label) + ' \u2197</a>';
+    }).join("");
+
+    var qs = keysFor(item).map(function(k){
+      var v = getAns(i,k).trim();
+      total++;
+      if (v){ answered++; words += v.split(/\s+/).length; }
+      return '<div class="q' + (v ? ' filled' : '') + '">' +
+        '<div class="q-key">' + e(k) + '</div>' +
+        '<p class="q-prompt">' + e(promptFor(item,k)).replace(/\n/g,"<br/>") + '</p>' +
+        '<div class="answer">' + (v ? para(v) : '<p class="empty">No answer written.</p>') + '</div>' +
+        (v ? '<div class="q-count">' + v.split(/\s+/).length + ' words</div>' : '') +
+      '</div>';
+    }).join("");
+
+    return out +
+      '<section class="sheet">' +
+        '<div class="sheet-hd">' +
+          '<span class="sheet-no">' + String(i+1).padStart(2,"0") + '</span>' +
+          '<span class="sheet-titles">' +
+            '<span class="sheet-kind">' + e(item.kind||"Item") + '</span>' +
+            '<span class="sheet-title">' + e(item.title) + '</span>' +
+          '</span>' +
+        '</div>' +
+        '<div class="sheet-body">' +
+          (links ? '<div class="viewrow">' + links + '</div>' : '') +
+          (item.note ? '<p class="itemnote">' + e(item.note) + '</p>' : '') +
+          qs +
+        '</div>' +
+      '</section>';
+  }).join("");
+
+  var slides = state.slides.filter(function(sl){
+    return sl.title || sl.quote || sl.caption || sl.img;
+  }).map(function(sl, i){
+    return '<section class="sheet">' +
+      '<div class="sheet-hd">' +
+        '<span class="sheet-no">S' + (i+1) + '</span>' +
+        '<span class="sheet-titles">' +
+          '<span class="sheet-kind">Slide</span>' +
+          '<span class="sheet-title">' + e(sl.title || "Untitled") + '</span>' +
+        '</span>' +
+      '</div>' +
+      '<div class="sheet-body">' +
+        (sl.quote ? '<blockquote>' + e(sl.quote) + '</blockquote>' : '') +
+        (sl.caption ? '<p class="itemnote">' + e(sl.caption) + '</p>' : '') +
+        (sl.img ? '<img class="slideimg" src="' + sl.img + '" alt="Image from slide ' + (i+1) + '"/>' : '') +
+      '</div>' +
+    '</section>';
+  }).join("");
+
+  var doc =
+'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8"/>\n' +
+'<meta name="viewport" content="width=device-width, initial-scale=1"/>\n' +
+'<title>' + e(state.who.name || "Answers") + ' \u2014 The Comet</title>\n' +
+'<link rel="preconnect" href="https://fonts.googleapis.com"/>\n' +
+'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>\n' +
+'<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Bitter:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>\n' +
+'<style>\n' +
+':root{\n' +
+'  --cobalt:' + PALETTE.cobalt + ';--cobalt-deep:' + PALETTE.cobaltDeep + ';\n' +
+'  --chrome:' + PALETTE.chrome + ';--pulpred:' + PALETTE.pulpred + ';\n' +
+'  --mars:' + PALETTE.mars + ';--jet:' + PALETTE.jet + ';--rule:' + PALETTE.rule + ';\n' +
+'  --cream:' + PALETTE.cream + ';--pulp-deep:' + PALETTE.pulpDeep + ';--slate:' + PALETTE.slate + ';\n' +
+'}\n' +
+'*{box-sizing:border-box;margin:0;padding:0}\n' +
+'body{background:var(--cream);color:var(--jet);font-family:"Bitter",Georgia,serif;line-height:1.6}\n' +
+'header{background:var(--cobalt);border-bottom:8px solid var(--jet);padding:26px 20px}\n' +
+'.masthead{max-width:820px;margin:0 auto;color:#fff}\n' +
+'h1{font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:700;font-size:clamp(34px,8vw,64px);\n' +
+'  line-height:.9;text-transform:uppercase;color:#fff;\n' +
+'  text-shadow:-2px -2px 0 var(--jet),2px -2px 0 var(--jet),-2px 2px 0 var(--jet),2px 2px 0 var(--jet),5px 6px 0 var(--jet)}\n' +
+'.mast-mod{font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:13px;\n' +
+'  letter-spacing:2px;text-transform:uppercase;color:var(--chrome);margin-top:12px}\n' +
+'.mast-who{font-size:14px;color:#fff;margin-top:6px}\n' +
+'.stripes{height:20px;border:3px solid var(--jet);margin-top:16px;\n' +
+'  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px)}\n' +
+'main{max-width:820px;margin:0 auto;padding:26px 20px 80px}\n' +
+'.tally{border:3px solid var(--jet);background:var(--chrome);padding:12px 16px;margin-bottom:26px;\n' +
+'  font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:12px;\n' +
+'  letter-spacing:1.5px;text-transform:uppercase;color:var(--jet)}\n' +
+'.groupmark{display:flex;align-items:center;gap:12px;margin:34px 0 10px;\n' +
+'  font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:700;font-size:12px;\n' +
+'  letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}\n' +
+'.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}\n' +
+'.group-sub{font-size:12.5px;color:var(--slate);text-align:center;margin-bottom:14px}\n' +
+'.sheet{border:3px solid var(--jet);background:#fff;margin-bottom:20px;box-shadow:5px 5px 0 var(--cobalt)}\n' +
+'.sheet-hd{display:flex;align-items:center;gap:14px;background:var(--cobalt);\n' +
+'  border-bottom:3px solid var(--jet);color:#fff}\n' +
+'.sheet-no{font-family:"Space Grotesk",Helvetica,sans-serif;font-size:26px;line-height:1;\n' +
+'  color:var(--chrome);background:var(--jet);padding:15px 11px;min-width:54px;text-align:center}\n' +
+'.sheet-titles{padding:10px 14px 10px 0}\n' +
+'.sheet-kind{display:block;font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;\n' +
+'  font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--chrome)}\n' +
+'.sheet-title{display:block;font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:17px}\n' +
+'.sheet-body{padding:18px 16px 20px}\n' +
+'.viewrow{display:flex;gap:10px;flex-wrap:wrap;border:3px solid var(--jet);background:var(--chrome);\n' +
+'  padding:11px 13px;margin-bottom:18px}\n' +
+'.viewrow a{display:inline-block;background:var(--pulpred);color:#fff;text-decoration:none;\n' +
+'  padding:8px 15px;border:3px solid var(--jet);font-family:"Space Grotesk",Helvetica,sans-serif;\n' +
+'  font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}\n' +
+'.itemnote{font-size:13px;color:var(--slate);background:var(--cream);border-left:6px solid var(--cobalt);\n' +
+'  padding:11px 14px;margin-bottom:18px}\n' +
+'.q{margin-bottom:20px;border-left:6px solid var(--cobalt);padding-left:14px}\n' +
+'.q.filled{border-left-color:var(--pulpred)}\n' +
+'.q-key{font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:17px;\n' +
+'  letter-spacing:.5px;text-transform:uppercase;color:var(--cobalt)}\n' +
+'.q.filled .q-key{color:var(--pulpred)}\n' +
+'.q-prompt{font-size:13px;line-height:1.55;color:var(--slate);margin:5px 0 10px}\n' +
+'.answer{border:3px solid var(--rule);background:#fff;padding:12px 14px;font-size:15px}\n' +
+'.answer p+p{margin-top:10px}\n' +
+'.answer .empty{color:var(--rule);font-style:italic}\n' +
+'.q-count{font-family:"Space Grotesk",Helvetica,sans-serif;font-size:10px;letter-spacing:1px;\n' +
+'  text-transform:uppercase;color:var(--rule);text-align:right;margin-top:4px}\n' +
+'blockquote{font-style:italic;font-size:16px;border-left:6px solid var(--pulpred);\n' +
+'  padding-left:14px;margin-bottom:16px}\n' +
+'.slideimg{max-width:100%;border:3px solid var(--jet);display:block;margin-top:10px}\n' +
+'footer{background:var(--chrome);border-top:5px solid var(--jet);padding:14px 20px;text-align:center;\n' +
+'  font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:11px;\n' +
+'  letter-spacing:2px;text-transform:uppercase;color:var(--jet)}\n' +
+'@media print{body{background:#fff}.sheet{box-shadow:none;break-inside:avoid}\n' +
+'  header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}\n' +
+'</style>\n</head>\n<body>\n' +
+'<header><div class="masthead">' +
+'<h1>The Comet</h1>' +
+'<div class="mast-mod">' + e(state.config.module) + '</div>' +
+'<div class="mast-who">' + e(state.who.name || "\u2014") + ' \u00b7 ' + e(state.who.section || "\u2014") + ' \u00b7 ' + e(d) +
+  (state.who.slot ? ' \u00b7 artist_' + e(state.who.slot) : '') + '</div>' +
+'<div class="stripes"></div>' +
+'</div></header>\n<main>\n' +
+'<div class="tally">' + answered + ' of ' + total + ' questions answered \u00b7 ' + words + ' words in total</div>\n' +
+sheets +
+(slides ? '<div class="groupmark"><span>Slides</span></div>' + slides : '') +
+'</main>\n' +
+'<footer>The Comet \u00b7 ' + e(state.config.module) + '</footer>\n' +
+'</body>\n</html>\n';
+
+  download(new Blob([doc],{type:"text/html;charset=utf-8"}), fileStem()+"_answers.html");
 }
 
 /* ── editor ──────────────────────────────────────────────────────── */
@@ -1333,7 +1754,7 @@ function edRow(title,kind,url,src){
   r._src = src || null;
   r.innerHTML =
     '<input class="t" type="text" placeholder="Title" value="'+esc(title)+'" aria-label="Item title"/>' +
-    '<select aria-label="Item kind"><option>Reading</option><option>Watch</option><option>Listen</option><option>Look at</option></select>' +
+    '<select aria-label="Item kind"><option>Reading</option><option>Watch</option><option>Listen</option><option>Look at</option><option>Write</option></select>' +
     '<input class="u" type="text" placeholder="https://…" value="'+esc(url)+'" aria-label="Item link"/>' +
     '<button class="ed-x" type="button">✕</button>';
   r.querySelector("select").value = kind || "Reading";
@@ -1386,7 +1807,7 @@ function paintCover(){
   var ol = $("coverList");
   if (!ol) return;
   ol.innerHTML = "";
-  var tag = (state.config.module||"STF").replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || "STF";
+var tag = "---";
   state.config.items.forEach(function(item,i){
     if (i){
       var sep = document.createElement("li");
@@ -1398,6 +1819,7 @@ function paintCover(){
     li.innerHTML = '<span class="ct">'+esc(item.title)+'</span><br/><span class="ck">'+esc(item.kind||"Item")+'</span>';
     ol.appendChild(li);
   });
+  fillGlyphs();
 }
 
 function paintHeader(){
@@ -1405,6 +1827,48 @@ function paintHeader(){
   $("mastVol").textContent = state.config.volume;
   $("mastModule").textContent = state.config.module;
   document.title = "THE COMET — " + state.config.module;
+}
+
+/* ── the glyph field ─────────────────────────────────────────────────
+   Engineering and mathematics notation poured into whatever space the four
+   panels leave over. It keeps adding symbols until the frame is full, so the
+   block is filled edge to edge at any window size or item count. The layer is
+   absolutely placed inside the frame, so pouring more in can never push the
+   grid taller and start a loop. */
+var GLYPHS = (
+  "\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\u03ba\u03bb\u03bc\u03bd\u03be\u03c0\u03c1\u03c3\u03c4\u03c5\u03c6\u03c7\u03c8\u03c9" +
+  "\u0393\u0394\u0398\u039b\u039e\u03a0\u03a3\u03a6\u03a8\u03a9" +
+  "\u2211\u220f\u222b\u222c\u222e\u2202\u2207\u221a\u221b\u221e\u2248\u2245\u2261\u2260\u2264\u2265\u226a\u226b" +
+  "\u00b1\u2213\u00d7\u00f7\u22c5\u2218\u2295\u2297\u2296\u2299\u22a5\u2225\u2220\u2221\u2222" +
+  "\u25b3\u25a1\u25c7\u2234\u2235\u2200\u2203\u2204\u2208\u2209\u2282\u2283\u2286\u2287\u222a\u2229\u2205" +
+  "\u221d\u223c\u2243\u21d2\u21d4\u2192\u2190\u2194\u21a6\u21c4\u21cc" +
+  "\u2308\u2309\u230a\u230b\u27e8\u27e9\u2032\u2033\u2034\u00b0\u2030\u2135\u210f\u2113" +
+  "\u2300\u223f\u22a4\u22a3\u22a2\u00ac\u2310\u2312\u2313\u25b7\u25c1\u22c8\u2263\u2242" +
+  "\u2126\u00b5\u212b\u2211\u222b\u2202\u2207"
+).split("");
+
+function fillGlyphs(){
+  var field = $("glyphField");
+  if (!field) return;
+  var frame = field.parentNode;
+  if (!frame || !frame.clientHeight) return;
+
+  field.innerHTML = "";
+  var accents = ["", "", "", "a", "", "b", "", "", "c", ""];
+  var i = 0, guard = 0, html = "";
+  /* pour in batches, checking after each whether the frame has filled */
+  while (guard++ < 400){
+    var batch = "";
+    for (var n = 0; n < 60; n++){
+      var g = GLYPHS[(i * 7 + (i % 13) * 3) % GLYPHS.length];
+      var cls = accents[i % accents.length];
+      batch += cls ? '<span class="' + cls + '">' + g + "</span> " : g + " ";
+      i++;
+    }
+    html += batch;
+    field.innerHTML = html;
+    if (field.scrollHeight > field.clientHeight + 24) break;
+  }
 }
 
 /* ── wiring ──────────────────────────────────────────────────────── */
@@ -1472,6 +1936,7 @@ document.addEventListener("DOMContentLoaded", function(){
   });
 
   $("btnTxt").addEventListener("click", exportTxt);
+  $("btnAnsHtml").addEventListener("click", exportAnswersHtml);
   $("btnPdf").addEventListener("click", exportNotesPdf);
   $("btnAddSlide").addEventListener("click", addSlide);
   $("btnDelSlide").addEventListener("click", delSlide);
@@ -1494,8 +1959,16 @@ document.addEventListener("DOMContentLoaded", function(){
     if (e.key==="Escape"){ closePw(); }
   });
 
+  var fitTimer;
+  window.addEventListener("resize", function(){
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(function(){ fitPreview(); fillGlyphs(); }, 120);
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPreview);
+
   paintHeader();
   paintCover();
+  fillGlyphs();
   renderSheets();
   paintTabs();
   refreshSlide();
