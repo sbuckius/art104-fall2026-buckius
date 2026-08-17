@@ -1100,7 +1100,7 @@ function exportNotesPdf(){
       doc.text(k, M+12, y+8);
       doc.setFont("courier","normal"); doc.setFontSize(10.5);
       doc.setTextColor(C.ink[0],C.ink[1],C.ink[2]);
-      doc.text(lines, M+12, y+24);
+      doc.text(lines, M+12, y+25);
       y += 30 + lines.length*14;
     });
     y += 12;
@@ -1436,7 +1436,7 @@ document.addEventListener("DOMContentLoaded", function(){
   bindWho("whoName","name"); bindWho("whoSection","section"); bindWho("whoDate","date");
 
   var slotSel = $("whoSlot");
-  for (var sn = 1; sn <= 24; sn++){
+  for (var sn = 1; sn <= 25; sn++){
     var o = document.createElement("option");
     o.value = String(sn);
     o.textContent = "artist_" + sn;
