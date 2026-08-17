@@ -131,6 +131,7 @@ h1.logo{
   text-transform:uppercase;color:var(--chrome);white-space:nowrap;
 }
 .six dd{margin:0;font-size:12.5px;line-height:1.4;color:#e9edf1}
+.six-note{font-size:11.5px;line-height:1.45;color:#cfd8e2;margin-top:9px;border-top:2px solid rgba(255,255,255,.28);padding-top:8px}
 .cover-foot{font-size:12.5px;color:#d8dfe8}
 .cover-blurb b{color:var(--chrome)}
 .cover-blurb .kicker{
@@ -149,20 +150,6 @@ main{max-width:860px;margin:0 auto;padding:28px 18px 140px}
 .field input{border:none;border-bottom:2px solid var(--rule);background:transparent;font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:6px 2px;outline:none}
 .field input:focus{border-bottom:2px solid var(--pulpred);background:rgba(255,255,255,.55)}
 
-.ladder{
-  border:3px solid var(--jet);background:var(--chrome);
-  padding:14px 16px 16px;align-self:stretch;
-}
-.ladder-hd{
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;
-  text-transform:uppercase;color:var(--cobalt-deep);text-align:center;
-  border-bottom:2px solid var(--jet);padding-bottom:7px;margin-bottom:9px;
-}
-.ladder-note{font-family:'Bitter',serif;font-size:12px;line-height:1.5;color:var(--jet);margin-bottom:10px}
-.ladder-list{margin:0;padding-left:17px;font-family:'Bitter',serif;font-size:12px;line-height:1.45;color:var(--jet)}
-.ladder-list li{margin-bottom:7px}
-.ladder-list li.dim{opacity:.55}
-.ladder-list strong{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:.5px;text-transform:uppercase;font-size:11px}
 .target{
   margin-top:16px;border:3px solid var(--jet);padding:11px 14px;
   font-family:'Bitter',serif;font-size:13px;line-height:1.6;
@@ -353,7 +340,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
     <h1 class="logo"><span class="the">The</span>COMET</h1>
     <div class="cover-band">
       <div class="roundel" aria-hidden="true">SIX</div>
-      <div class="cover-tag" id="mastModule">Week 1 &middot; Solarpunk &middot; Solarpunk</div>
+      <div class="cover-tag" id="mastModule">Week 1 &middot; The Imaginary &middot; Solarpunk</div>
     </div>
     <div class="cover-body">
       <aside class="contents">
@@ -364,8 +351,9 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
       <div class="cover-right">
         <div class="blurb-lead">
           <span class="kicker">Read & Encounter Artworks</span>
-          <p>Work through every item listed below.
-          <b>Every one has to be answered</b> before a sheet counts as "completed". Your writing saves to this
+          <p>Work through every item listed below. Most sheets carry the six questions;
+          the readings on method and the three works carry a single question instead.
+          <b>Every question has to be answered</b> before a sheet counts as "completed". Your writing saves to this
           browser as you go, so you can close the tab and come back to it.</p>
         </div>
 
@@ -379,19 +367,8 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
             <dt>Charge</dt><dd>where you stand, said plainly</dd>
             <dt>Speculate</dt><dd>a work that does not exist yet</dd>
           </dl>
+          <p class="six-note">Four sheets ask one question instead. Open the sheet to see which.</p>
         </div>
-
-        <section class="ladder">
-          <div class="ladder-hd">The SPECULATE ladder</div>
-          <p class="ladder-note">The sixth question needs a shape or it turns into freewriting.
-            Four rungs, the same every week. <strong></strong></p>
-          <ol class="ladder-list">
-            <li><strong>Name the object.</strong> One ordinary thing that fits in a hand or a room. If it cannot be photographed, it is not an object yet.</li>
-            <li><strong>Site it.</strong> Where is it, who made it, what did it cost, what did it replace? An object with no supply chain is a logo.</li>
-            <li class="dim"><strong>Hand it over.</strong> Give it to somebody in a different position and say what breaks. <em>From Week 5.</em></li>
-            <li class="dim"><strong>Name the strategy.</strong> Which of the fourteen? <em>Later in the term.</em></li>
-          </ol>
-        </section>
 
         <p class="cover-foot">When every sheet is "completed", the composing bench opens and you build the
         slides you will present. Then export three files. <b>Due two hours before class.</b></p>
@@ -435,7 +412,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
     photograph, and say what it is. The exported slide keeps its text selectable, so anyone can copy from it.</p>
 
   <section class="bench locked" id="bench">
-    <div class="locknote" id="lockNote">Locked until every question is completed.</div>
+    <div class="locknote" id="lockNote">Locked until every question on every sheet is completed.</div>
 
     <div class="slidenav">
       <div class="slidetabs" id="slideTabs" role="tablist" aria-label="Slides"></div>
@@ -510,7 +487,9 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
       <button class="btn" type="button" id="edClose">Close</button>
     </div>
     <p class="ed-note">Changes apply to this browser only. To set the defaults for every student, edit the
-      <code>DEFAULTS</code> block at the top of this file's script and re-upload it.</p>
+      <code>DEFAULTS</code> block at the top of this file's script and re-upload it. The prompts below are the six
+      standard questions. Sheets that carry a single question of their own keep it; edit those in the
+      <code>DEFAULTS</code> block, on the item's <code>prompts</code> line.</p>
 
     <div class="ed-row">
       <input class="t" type="text" id="edModule" placeholder="Module title" aria-label="Module title"/>
@@ -534,7 +513,7 @@ input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-
 <div id="saveStamp" role="status" aria-live="polite"><span id="saveStampText">Saved</span></div>
 
 <div id="press">
-  <span id="pressMsg">Answer all six questions on every sheet.</span>
+  <span id="pressMsg">Answer every question on every sheet.</span>
   <div class="press-btns">
     <button class="btn" type="button" id="btnTxt">Save notes (.txt)</button>
     <button class="btn" type="button" id="btnPdf" disabled>Export notes (PDF)</button>
@@ -553,15 +532,76 @@ var DEFAULTS = {
   module: "WEEK 1 \u00b7 THE IMAGINARY \u00b7 SOLARPUNK",
   folder: "week-01",
   items: [
-    { title: "From Steampunk to Solarpunk (2008)", kind: "Reading", group: "The manifestos", url: "https://republicofthebees.wordpress.com/2008/05/27/from-steampunk-to-solarpunk/", note: "Two pages. The origin post, still live at its original address." },
-    { title: "Solarpunk: Notes toward a Manifesto", kind: "Reading", group: "The manifestos", url: "https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/" },
-    { title: "A Solarpunk Manifesto (2019)", kind: "Reading", group: "The manifestos", url: "https://re-des.org/a-solarpunk-manifesto/" },
-    { title: "Dear Alice + The Solar Film", kind: "Watch", group: "The picture", links: [{label:"Dear Alice, 1:30", url:"https://thelinestudio.com/work/chobani"},{label:"The Solar Film, 9 min", url:"https://www.youtube.com/watch?v=SqaB2x0VA1w"}], note: "Watch Dear Alice first, then The Solar Film immediately after. Oscar-nominated, scored to Tubular Bells, executive produced by Robert Redford on roughly $400,000. Thirty years before anyone said solarpunk, and the money was already Hollywood money. Also watch the opening ten minutes of Black Mirror, Nosedive." },
-    { title: "Where solarpunk came from, and who took it", kind: "Reading", group: "The genealogy", links: [{label:"Williams, Against a Shitty Future", url:"https://lareviewofbooks.org/article/solarpunk-against-a-shitty-future/"},{label:"Wilk, Is Ornamenting Solar Panels a Crime?", url:"https://www.e-flux.com/architecture/positions/191258/is-ornamenting-solar-panels-a-crime"}], note: "Also read the introduction and one story from Lodi-Ribeiro (ed.), Solarpunk (Brazil 2012, trans. 2018). The genre is not Anglophone in origin." },
-    { title: "Three works to look at", kind: "Look at", group: "The works", links: [
-        { label: "Dullaart, Jennifer in Paradise", url: "https://constantdullaart.com/projects/jennifer-in-paradise,-liquify" },{label:"Steyerl, How Not to Be Seen", url:"https://www.moma.org/collection/works/181784"},{label:"Harvey, CV Dazzle", url:"https://adam.harvey.studio/cvdazzle"}], note: "Hito Steyerl, How Not to Be Seen (2013), shot on photographic calibration targets built into the California desert for military aircraft.   \u2022   Adam Harvey, CV Dazzle (2010 onward), makeup and hair against face detection. No app, no device, no power draw.   \u2022   Constant Dullaart, Jennifer in Paradise (2013), the first image ever Photoshopped. No stable link; search the title." },
-    { title: "The method: Design Fiction + Speculative Everything", kind: "Reading", group: "Read this last", links: [{label:"Bleecker, Design Fiction", url:"https://nearfuturelaboratory.com/blog/2009/03/design-fiction-a-short-essay-on-design-science-fact-and-fiction/"},{label:"Dunne & Raby, Speculative Everything", url:"https://readings.design/PDF/speculative-everything.pdf"}], note: "SKIM THESE. Bleecker is a short essay, so read that properly. Speculative Everything is a whole book: read the introduction, then move through it looking at the projects and pictures. Twenty minutes each is enough. Read them after everything else in the week, so you meet the vocabulary for something you have already been doing." }
+    { title: "A Solarpunk Manifesto", kind: "Reading", group: "The manifestos",
+      url: "https://theanarchistlibrary.org/library/the-solarpunk-community-a-solarpunk-manifesto",
+      note: "The Solarpunk Community\u2019s manifesto, mirrored on The Anarchist Library. Short. Read the whole thing." },
+
+    { title: "Williams, Solarpunk: Against a Shitty Future", kind: "Reading", group: "The manifestos",
+      url: "https://lareviewofbooks.org/article/solarpunk-against-a-shitty-future/",
+      note: "Rhys Williams, Los Angeles Review of Books, 2018." },
+
+    { title: "Wilk, Is Ornamenting Solar Panels a Crime?", kind: "Reading", group: "The manifestos",
+      url: "https://www.e-flux.com/architecture/positions/191258/is-ornamenting-solar-panels-a-crime",
+      note: "Elvia Wilk, e-flux Architecture, 2018." },
+
+    { title: "Solarpunk: Notes toward a Manifesto", kind: "Reading", group: "The manifestos",
+      url: "https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/",
+      note: "Project Hieroglyph, ASU, 2014." },
+
+    { title: "What solarpunk looks like", kind: "Look at", group: "The look",
+      links: [
+        { label: "Aesthetics Wiki, Solarpunk", url: "https://aesthetics.fandom.com/wiki/Solarpunk" },
+        { label: "Solarpunks.club, Art", url: "https://www.solarpunks.club/art" }
+      ],
+      note: "Look through both. One is a fan-written encyclopedia entry, the other a community gallery. Neither is a scholarly source, and that is the point: this is where the look is actually being made and argued over." },
+
+    { title: "Bleecker, Design Fiction", kind: "Reading", group: "The method",
+      url: "https://nearfuturelaboratory.com/blog/2009/03/design-fiction-a-short-essay-on-design-science-fact-and-fiction/",
+      note: "Julian Bleecker, 2009. A short essay, so read it properly.",
+      keys: ["RETHINK"],
+      prompts: { RETHINK: "Pick 1 paragraph from this article. How can you rethink an idea in it in a \u201csolarpunk\u201d way?\n\nQuote or paraphrase the paragraph first, then rethink it." } },
+
+    { title: "Dunne & Raby, Speculative Everything", kind: "Reading", group: "The method",
+      url: "https://readings.design/PDF/speculative-everything.pdf",
+      note: "2013. Skim. This is a whole book: read the introduction, then move through it looking at the projects and pictures. Twenty minutes is enough.",
+      keys: ["RETHINK"],
+      prompts: { RETHINK: "Pick 1 paragraph from this article. How can you rethink an idea in it in a \u201csolarpunk\u201d way?\n\nQuote or paraphrase the paragraph first, then rethink it." } },
+
+    { title: "Dear Alice, The Line for Chobani", kind: "Watch", group: "The works",
+      url: "https://thelinestudio.com/work/chobani",
+      note: "2021, 1:30.",
+      keys: ["TAKE"],
+      prompts: { TAKE: "Watch this video. Find something inspiring in it. Take this thing and make it yours: name the specific thing you took \u2014 an image, a movement, a sound, an object, a moment \u2014 and describe what you would build out of it." } },
+
+    { title: "Olalekan Jeyifous", kind: "Look at", group: "The works",
+      links: [
+        { label: "ACE / AAP", url: "https://jeyifo.us/ACE-AAP" },
+        { label: "PIONEER", url: "https://jeyifo.us/PIONEER" },
+        { label: "MoMA", url: "https://www.moma.org/artists/131884-olalekan-jeyifous" },
+        { label: "LIVING", url: "https://jeyifo.us/LIVING" },
+        { label: "TED, megacity gallery", url: "https://ideas.ted.com/gallery-an-intriguing-sci-fi-vision-of-a-megacity/" },
+        { label: "SMS", url: "https://jeyifo.us/SMS" },
+        { label: "EUNIC Namibia Cluster Fund", url: "https://eunic.eu/projects/namibia-cluster-fund-2024-1" }
+      ],
+      note: "Pick one and go deep rather than skimming all seven.",
+      keys: ["SPECULATE"],
+      prompts: { SPECULATE: "Pick one of these artworks to look up. What aesthetics do you find inspiring? What concepts do you find inspiring? If you had to speculate about an artwork that you would make inspired by this artwork and with a solarpunk lens, what would it be? Describe it in detail.\n\nIt can be in a different medium than the one used in this piece. Say which piece you picked." } },
+
+    { title: "Brain & Lavigne, Synthetic Messenger", kind: "Look at", group: "The works",
+      links: [
+        { label: "Ars Electronica", url: "https://ars.electronica.art/export/en/synthetic-messenger/" },
+        { label: "Artists\u2019 page", url: "https://tegabrain.com/Synthetic-Messenger" }
+      ],
+      note: "Tega Brain and Sam Lavigne, 2021. Read both pages; the artists\u2019 page explains the mechanism.",
+      keys: ["SPECULATE"],
+      prompts: { SPECULATE: "Look at this artwork. It is not necessarily \u201csolarpunk\u201d. How can you take something about this artwork and make your own recreation of a part of it in a \u201csolarpunk\u201d way? Describe a speculative artwork (one that doesn\u2019t exist yet and can even be impossible) that you would make using this piece as a jumping off point." } }
   ],
+  groupNotes: {
+    "The manifestos": "Four readings. Each sheet carries the six questions.",
+    "The look": "Look through both links. This sheet carries the six questions.",
+    "The method": "Skim these. Each of these sheets carries one question, not six.",
+    "The works": "Watch and look. Each of these sheets carries one question, not six."
+  },
   prompts: {
     FIND:     "Something you learned that you did not know before. A fact, a name, a date, a claim. One line is enough.",
     SPARK:    "What inspired you. Point at the specific thing that did it \u2014 a sentence, an image, a moment, an object \u2014 rather than the topic in general.",
@@ -573,7 +613,14 @@ var DEFAULTS = {
 };
 
 var KEYS = ["FIND","SPARK","FRICTION","LIVED","CHARGE","SPECULATE"];
-var STORE_KEY = "ctm.w01.v1";
+var STORE_KEY = "ctm.w01.v2";
+
+/* Some sheets carry the six questions; others carry a single question of their
+   own. An item declares its own set with keys:[...] and prompts:{...}. */
+function keysFor(item){
+  return (item && item.keys && item.keys.length) ? item.keys : KEYS;
+}
+function keysAt(i){ return keysFor(state.config.items[i]); }
 
 /* ── storage: real when hosted, in-memory when sandboxed ─────────── */
 var memory = {};
@@ -596,7 +643,7 @@ function load(){
 
 var state = load() || {
   who:{ name:"", section:"", date:"" },
-  config:{ volume:DEFAULTS.volume, module:DEFAULTS.module, folder:DEFAULTS.folder, items:DEFAULTS.items.slice(), prompts:Object.assign({},DEFAULTS.prompts) },
+  config:{ volume:DEFAULTS.volume, module:DEFAULTS.module, folder:DEFAULTS.folder, items:DEFAULTS.items.slice(), prompts:Object.assign({},DEFAULTS.prompts), groupNotes:Object.assign({},DEFAULTS.groupNotes) },
   answers:{},
   slides:[{ title:"", quote:"", caption:"", img:"" }],
   slideIdx:0
@@ -604,6 +651,7 @@ var state = load() || {
 if (!state.config) state.config = { volume:DEFAULTS.volume, module:DEFAULTS.module, folder:DEFAULTS.folder, items:DEFAULTS.items.slice(), prompts:Object.assign({},DEFAULTS.prompts) };
 if (!state.config.prompts) state.config.prompts = Object.assign({},DEFAULTS.prompts);
 if (!state.config.folder) state.config.folder = DEFAULTS.folder;
+if (!state.config.groupNotes) state.config.groupNotes = Object.assign({},DEFAULTS.groupNotes);
 if (state.slide && !state.slides){ state.slides = [state.slide]; delete state.slide; }
 if (!state.slides || !state.slides.length) state.slides = [{ title:"", quote:"", caption:"", img:"" }];
 if (typeof state.slideIdx !== "number" || state.slideIdx >= state.slides.length) state.slideIdx = 0;
@@ -628,7 +676,7 @@ function flashStamp(){
 function ansKey(i,k){ return i + ":" + k; }
 function getAns(i,k){ return (state.answers[ansKey(i,k)] || ""); }
 function sheetDone(i){
-  return KEYS.every(function(k){ return getAns(i,k).trim().length > 0; });
+  return keysAt(i).every(function(k){ return getAns(i,k).trim().length > 0; });
 }
 function doneCount(){
   var n=0; for (var i=0;i<state.config.items.length;i++) if (sheetDone(i)) n++;
@@ -661,17 +709,21 @@ function renderSheets(){
       mark.className = "groupmark";
       mark.innerHTML = "<span>"+esc(g)+"</span>";
       wrap.appendChild(mark);
-      var sub = document.createElement("p");
-      sub.className = "group-sub";
-      sub.textContent = "Read both. These two sheets carry their own six questions.";
-      wrap.appendChild(sub);
+      var gn = (state.config.groupNotes || {})[g];
+      if (gn){
+        var sub = document.createElement("p");
+        sub.className = "group-sub";
+        sub.textContent = gn;
+        wrap.appendChild(sub);
+      }
     }
     lastGroup = g;
     var sec = document.createElement("section");
     sec.className = "sheet";
     sec.id = "sheet-"+i;
 
-    var qs = KEYS.map(function(k){
+    var ks = keysFor(item);
+    var qs = ks.map(function(k){
       return '<div class="q" id="q-'+i+'-'+k+'">' +
         '<div class="q-key">'+k+'</div>' +
         '<p class="q-prompt">'+esc(promptFor(item,k))+'</p>' +
@@ -686,7 +738,7 @@ function renderSheets(){
       '<button class="sheet-hd" type="button" aria-expanded="false" aria-controls="body-'+i+'" data-toggle="'+i+'">' +
         '<span class="sheet-no">'+String(i+1).padStart(2,"0")+'</span>' +
         '<span class="sheet-titles">' +
-          '<span class="sheet-kind">'+esc(item.kind||"Item")+'</span>' +
+          '<span class="sheet-kind">'+esc(item.kind||"Item")+' \u00b7 '+(ks.length===1?"one question":ks.length+" questions")+'</span>' +
           '<span class="sheet-title">'+esc(item.title)+'</span>' +
         '</span>' +
         '<span class="sheet-stamp" id="stamp-'+i+'">Not completed</span>' +
@@ -728,7 +780,8 @@ function onType(e){
 }
 
 function refreshSheet(i){
-  KEYS.forEach(function(k){
+  var ks = keysAt(i);
+  ks.forEach(function(k){
     var v = getAns(i,k).trim();
     var q = $("q-"+i+"-"+k);
     if (q) q.classList.toggle("filled", v.length>0);
@@ -739,8 +792,8 @@ function refreshSheet(i){
   var sheet = $("sheet-"+i), stamp = $("stamp-"+i);
   if (sheet) sheet.classList.toggle("done", done);
   if (stamp){
-    var missing = KEYS.filter(function(k){ return !getAns(i,k).trim(); }).length;
-    stamp.textContent = done ? "Completed ✓" : (missing===KEYS.length ? "Not completed" : missing+" to go");
+    var missing = ks.filter(function(k){ return !getAns(i,k).trim(); }).length;
+    stamp.textContent = done ? "Completed ✓" : (missing===ks.length ? "Not completed" : missing+" to go");
     stamp.classList.toggle("on", done);
   }
 }
@@ -759,7 +812,7 @@ function toggleSheet(i){
 }
 
 function markSheet(i){
-  var missing = KEYS.filter(function(k){ return !getAns(i,k).trim(); });
+  var missing = keysAt(i).filter(function(k){ return !getAns(i,k).trim(); });
   if (missing.length){
     var first = $("ta-"+i+"-"+missing[0]);
     if (first){ first.focus(); first.scrollIntoView({block:"center"}); }
@@ -800,7 +853,7 @@ function refreshPull(){
   var sel = $("slPull"), keep = sel.value;
   sel.innerHTML = '<option value="">— choose an answer to pull in —</option>';
   state.config.items.forEach(function(item,i){
-    KEYS.forEach(function(k){
+    keysFor(item).forEach(function(k){
       var v = getAns(i,k).trim();
       if (!v) return;
       var o = document.createElement("option");
@@ -915,7 +968,7 @@ function plainText(){
     ls.forEach(function(u){ L.push(u); });
     if (item.note) L.push("Note: " + item.note);
     L.push("=".repeat(62));
-    KEYS.forEach(function(k){
+    keysFor(item).forEach(function(k){
       L.push("");
       L.push(k);
       L.push("-".repeat(k.length));
@@ -1034,7 +1087,7 @@ function exportNotesPdf(){
       y += 18;
     }
 
-    KEYS.forEach(function(k){
+    keysFor(item).forEach(function(k){
       var txt = getAns(i,k).trim() || "(no answer)";
       doc.setFont("courier","normal"); doc.setFontSize(10.5);
       var lines = doc.splitTextToSize(txt, TW-22);
@@ -1309,6 +1362,7 @@ function applyEditor(){
     var next = {title:t, kind:k, url:u};
     if (r._src && r._src.group) next.group = r._src.group;
     if (r._src && r._src.prompts) next.prompts = r._src.prompts;
+    if (r._src && r._src.keys) next.keys = r._src.keys;
     if (r._src && r._src.links) next.links = r._src.links;
     if (r._src && r._src.note) next.note = r._src.note;
     items.push(next);
