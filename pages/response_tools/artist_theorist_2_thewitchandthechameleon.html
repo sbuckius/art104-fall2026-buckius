@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>THE WITCH AND THE CHAMELEON — Responses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --cobalt:#7db8c4;
+  --cobalt-deep:#14202a;
+  --chrome:#e85fa0;
+  --chrome-deep:#d63d84;
+  --pulpred:#3d5817;   /* dark green: the lime it replaced was too pale to read */
+  --mars:#2f4712;      /* deeper green, for filled section headers */
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#a8e6c0;
+  --glass:rgba(244,248,242,.90);
+  --glass-dark:rgba(16,26,34,.70);
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#111;
+  color:var(--jet);
+  font-family:'IBM Plex Sans',sans-serif;
+  min-height:100vh;
+}
+/* ── fixed collage background ─────────────────────────────────── */
+.bg{position:fixed;inset:0;z-index:-2;
+  background:url('../images/background-thewitchandthechameleon.png') center/cover no-repeat;background-attachment:fixed}
+.bg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(232,95,160,.14) 0%,rgba(125,184,196,.10) 50%,rgba(139,168,56,.16) 100%)}
+.veil{position:fixed;inset:0;z-index:-1;background:rgba(244,248,242,.60)}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:860px;margin:0 auto;padding:16px 18px 0}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:10px;
+}
+.stripes{
+  height:26px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px);
+}
+h1.logo .the{
+  display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  font-size:clamp(13px,2.4vw,24px);letter-spacing:8px;
+  text-shadow:none;color:var(--chrome);margin-bottom:2px;
+}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(46px,13vw,128px);
+  line-height:.86;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:10px 0 6px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{
+  display:flex;align-items:center;gap:14px;
+  border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+  padding:9px 0;margin-top:14px;
+}
+.roundel{
+  width:52px;height:52px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--cobalt-deep);
+  box-shadow:0 0 0 3px var(--jet);
+  display:grid;place-items:center;color:#fff;
+  font-family:'Space Grotesk',sans-serif;font-size:15px;letter-spacing:.5px;
+}
+.cover-tag{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:clamp(13px,2.6vw,22px);letter-spacing:2px;text-transform:uppercase;
+  color:#fff;line-height:1.15;
+}
+.cover-body{
+  display:grid;grid-template-columns:246px 1fr;grid-template-rows:auto auto auto 1fr;
+  gap:3px;margin:16px 0 18px;
+  background:var(--jet);border:3px solid var(--jet);
+  box-shadow:5px 5px 0 rgba(0,0,0,.35);
+}
+.contents{
+  grid-column:1;grid-row:1/5;
+  background:var(--chrome);padding:14px 14px 16px;
+}
+.contents-hd{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--cobalt-deep);text-align:center;
+  border-bottom:2px solid var(--jet);padding-bottom:7px;margin-bottom:10px;
+}
+#coverList{list-style:none}
+#coverList li{text-align:center;padding:5px 0}
+#coverList .ct{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;line-height:1.2;
+  letter-spacing:.4px;text-transform:uppercase;color:var(--pulpred);
+}
+#coverList .ck{font-family:'Bitter',serif;font-size:10px;color:var(--cobalt-deep);letter-spacing:1px;text-transform:uppercase}
+#coverList .sep{
+  font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:2px;color:var(--jet);
+  opacity:.65;padding:3px 0;
+}
+.cover-right{display:contents}
+.cover-right>*{color:#fff;font-size:14px;line-height:1.65}
+/* the two cover panels, boxed like the contents and connections blocks
+   beside them, in two shades of the pink already in the palette */
+.blurb-lead{
+  grid-column:2;grid-row:1;
+  background:var(--chrome);padding:13px 15px 15px;color:var(--jet);
+}
+.blurb-lead p{margin:0;color:var(--jet)}
+.blurb-lead b{color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.blurb-lead .kicker{
+  color:#fff;border-bottom:2px solid var(--jet);
+  padding-bottom:7px;margin-bottom:9px;
+  text-shadow:2px 2px 0 var(--chrome-deep);
+}
+.cover-right .kicker{margin-bottom:8px}
+.cover-foot{
+  grid-column:2;grid-row:3;margin:0;
+  background:var(--chrome-deep);padding:12px 15px;
+  font-size:12.5px;line-height:1.6;color:#fff;
+}
+.cover-foot b{color:var(--rule)}
+/* the slack panel: engineering and mathematics notation, clipped to whatever
+   height is left over, so the four blocks above always end flush */
+.glyphs{
+  grid-column:2;grid-row:4;min-height:46px;
+  background:var(--cobalt);overflow:hidden;position:relative;
+}
+.glyphs-inner{
+  position:absolute;inset:0;padding:7px 12px 8px;overflow:hidden;
+  font-family:'Space Grotesk',sans-serif;font-size:14px;line-height:1.55;
+  letter-spacing:4px;word-spacing:2px;color:rgba(20,32,42,.60);
+  -webkit-user-select:none;user-select:none;
+}
+.glyphs-inner .a{color:var(--chrome)}
+.glyphs-inner .b{color:#fff;opacity:.80}
+.glyphs-inner .c{color:rgba(20,32,42,.35)}
+.cover-blurb p{margin:0}
+.six{
+  grid-column:2;grid-row:2;
+  background:#3f6d77;            /* --cobalt, darkened: the old translucent
+                                    fill went black now the grid is on jet */
+  padding:14px 16px 16px;
+}
+.six-hd{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--chrome);text-align:center;
+  border-bottom:2px solid rgba(255,255,255,.4);padding-bottom:7px;margin-bottom:9px;
+}
+.six dl{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:0}
+.six dt{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--chrome);white-space:nowrap;
+}
+.six dd{margin:0;font-size:12.5px;line-height:1.4;color:#e9edf1}
+.six-note{font-size:11.5px;line-height:1.45;color:#cfd8e2;margin-top:9px;border-top:2px solid rgba(255,255,255,.28);padding-top:8px}
+.cover-blurb b{color:var(--chrome)}
+.cover-blurb .kicker{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--chrome);display:block;margin-bottom:8px;line-height:1.15;
+}
+
+main{max-width:860px;margin:0 auto;padding:28px 18px 140px}
+
+/* ══ interior pulp stock ════════════════════════════════════════════ */
+.colophon{border:3px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);padding:18px 20px;margin-bottom:24px;box-shadow:5px 5px 0 var(--cobalt)}
+.colophon-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred);margin-bottom:13px}
+.fields{display:flex;gap:16px;flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:170px}
+.field label{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cobalt-deep)}
+.field input{border:none;border-bottom:2px solid var(--rule);background:transparent;font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:6px 2px;outline:none}
+.field input:focus{border-bottom:2px solid var(--pulpred);background:rgba(255,255,255,.55)}
+
+.target{
+  margin-top:16px;border:3px solid var(--jet);padding:11px 14px;
+  font-family:'Bitter',serif;font-size:13px;line-height:1.6;
+}
+.target.unset{background:var(--pulpred);color:#fff}
+.target.set{background:var(--chrome);color:var(--jet)}
+.target code{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:1px;
+  background:#fff;color:var(--jet);border:2px solid var(--jet);padding:1px 7px;
+  display:inline-block;margin:0 2px;
+}
+.runmeter{margin-bottom:26px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--cobalt-deep);margin-bottom:7px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:20px;border:3px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;background:repeating-linear-gradient(107deg,var(--chrome) 0 12px,var(--jet) 12px 21px)}
+
+/* ══ story blocks ═══════════════════════════════════════════════════ */
+.sheet{border:3px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);margin-bottom:20px;box-shadow:5px 5px 0 var(--cobalt)}
+.sheet.done{box-shadow:5px 5px 0 var(--pulpred)}
+.sheet-hd{display:flex;align-items:center;gap:14px;padding:0 16px 0 0;cursor:pointer;user-select:none;background:var(--cobalt);width:100%;text-align:left;font:inherit;color:#fff;border:none;border-bottom:3px solid var(--jet)}
+.sheet.done .sheet-hd{background:var(--mars)}
+.sheet-hd:focus-visible{outline:4px solid var(--chrome);outline-offset:-4px}
+.sheet-no{font-family:'Space Grotesk',sans-serif;font-size:30px;line-height:1;color:var(--chrome);background:var(--jet);padding:16px 12px;min-width:58px;text-align:center;flex:none}
+.sheet-titles{flex:1;min-width:0;padding:11px 0}
+.sheet-kind{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--chrome);margin-bottom:2px}
+.sheet-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17px;line-height:1.2;color:#fff}
+.sheet-stamp{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:1px;text-transform:uppercase;border:2px solid var(--chrome);color:var(--chrome);padding:4px 9px;white-space:nowrap;flex:none}
+.sheet.done .sheet-stamp{background:var(--chrome);color:var(--jet);border-color:var(--jet)}
+.chev{font-size:16px;color:var(--chrome);flex:none}
+.sheet-body{display:none;padding:20px 18px 22px}
+.sheet-body.open{display:block}
+
+.viewrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:22px;border:3px solid var(--jet);padding:13px 15px;background:var(--chrome)}
+.btn-view{display:inline-block;background:var(--pulpred);color:#fff;text-decoration:none;padding:11px 22px;border:3px solid var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s}
+.btn-view:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn-view:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.viewurl{font-size:11px;color:var(--cobalt-deep);word-break:break-all;flex:1;min-width:150px;font-family:'Bitter',serif}
+
+.itemnote{font-family:'Bitter',serif;font-size:13px;line-height:1.65;color:#334051;background:#fff;border-left:6px solid var(--cobalt);padding:12px 15px;margin:-6px 0 22px}
+
+/* ══ the six questions ══════════════════════════════════════════════ */
+.q{margin-bottom:20px;border-left:6px solid var(--cobalt);padding-left:14px}
+.q.filled{border-left-color:var(--pulpred)}
+.q-key{font-family:'Space Grotesk',sans-serif;font-size:18px;letter-spacing:.5px;text-transform:uppercase;color:var(--cobalt)}
+.q.filled .q-key{color:var(--pulpred)}
+.q-prompt{font-size:13.5px;line-height:1.6;color:#334051;margin:5px 0 9px;white-space:pre-line}
+.q textarea{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.65;color:var(--jet);padding:11px 13px;outline:none;resize:vertical;min-height:76px}
+.q textarea:focus{border-color:var(--pulpred)}
+.q-count{font-size:10px;font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--rule);margin-top:4px;text-align:right}
+
+.sheet-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:6px}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:11px 22px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+
+/* ══ group divider ══════════════════════════════════════════════════ */
+.groupmark{display:flex;align-items:center;gap:12px;margin:36px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.groupmark span{white-space:nowrap}
+.group-sub{font-size:12.5px;line-height:1.6;color:#334051;margin:-2px 0 16px;text-align:center}
+
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:42px 0 20px}
+h2.sect{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,6vw,48px);text-transform:uppercase;line-height:.95;margin-bottom:10px;color:var(--cobalt);text-shadow:4px 4px 0 var(--chrome),6px 6px 0 var(--jet)}
+.sect-note{font-size:14px;line-height:1.7;color:#334051;margin-bottom:20px;max-width:620px}
+
+/* ══ slide creation section ════════════════════════════════════════════════ */
+.bench{border:3px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);padding:22px;box-shadow:5px 5px 0 var(--cobalt)}
+.bench.locked{opacity:.5;pointer-events:none}
+.locknote{border:3px solid var(--pulpred);color:var(--pulpred);background:#fff;padding:13px 16px;margin-bottom:18px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;line-height:1.6;text-transform:uppercase}
+.bench label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cobalt-deep);margin:16px 0 6px}
+.bench input[type=text],.bench textarea,.bench select{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);padding:10px 12px;outline:none}
+.bench textarea{resize:vertical;min-height:72px}
+.bench input:focus,.bench textarea:focus,.bench select:focus{border-color:var(--pulpred)}
+.slidenav{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center;border-bottom:3px solid var(--jet);padding-bottom:12px;margin-bottom:6px}
+.slidetabs{display:flex;gap:7px;flex-wrap:wrap}
+.slidetab{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;
+  text-transform:uppercase;padding:9px 15px;cursor:pointer;
+  border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);
+  box-shadow:3px 3px 0 var(--jet);
+}
+.slidetab[aria-selected="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--pulpred)}
+.slidetab:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.slidenav-actions{display:flex;gap:8px;flex-wrap:wrap}
+.slidenav-actions .btn{padding:9px 15px;font-size:11px}
+.slidenav-note{font-family:'Bitter',serif;font-size:12px;line-height:1.6;color:#334051;margin-bottom:4px}
+.filerow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px}
+input[type=file]{font-family:'Bitter',serif;font-size:12px;color:var(--jet);max-width:100%}
+.thumb{border:3px solid var(--jet);max-width:150px;max-height:110px;display:none;background:#fff}
+.thumb.on{display:block}
+
+/* ══ slide preview: a cover in miniature ════════════════════════════ */
+.preview-wrap{margin-top:22px}
+.slide{aspect-ratio:16/9;width:100%;border:4px solid var(--jet);background:var(--glass);backdrop-filter:blur(8px);position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:7px 7px 0 var(--cobalt)}
+.slide-bar{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(7px,1.15vw,12px);letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);padding:6px 3.5%;display:flex;justify-content:space-between;gap:10px}
+.slide-inner{flex:1;display:flex;flex-direction:column;padding:3% 3.5% 2.4%;min-height:0}
+.slide-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(15px,3.6vw,40px);line-height:.98;text-transform:uppercase;color:var(--cobalt);margin-bottom:2.6%;word-break:break-word;text-shadow:3px 3px 0 var(--chrome)}
+.slide-cols{display:flex;gap:4%;flex:1;min-height:0}
+.slide-left{flex:1.05;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
+.slide-right{flex:1;border:3px solid var(--jet);display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden}
+.slide-right img{width:100%;height:100%;object-fit:contain}
+.slide-right span{font-family:'Space Grotesk',sans-serif;font-size:clamp(7px,1.1vw,12px);color:var(--rule);letter-spacing:1px;padding:8px;text-align:center;text-transform:uppercase}
+.slide-quote{font-family:'Bitter',serif;font-style:italic;font-size:clamp(8px,1.55vw,17px);line-height:1.45;color:var(--jet);border-left:5px solid var(--pulpred);padding-left:3%;margin-bottom:3.5%;overflow:visible;flex:none}
+.slide-caption{font-family:'Bitter',serif;font-size:clamp(7px,1.3vw,14px);line-height:1.5;color:#334051;overflow:visible;flex:none}
+.fitnote{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--cobalt-deep);margin-top:6px}
+.fitnote.warn{color:var(--pulpred);font-weight:700}
+.slide-foot{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(6px,1vw,11px);letter-spacing:2px;text-transform:uppercase;color:var(--jet);background:var(--chrome);border-top:3px solid var(--jet);padding:5px 3.5%;display:flex;justify-content:space-between;gap:10px}
+
+/* ══ save roundel ═══════════════════════════════════════════════════ */
+#saveStamp{
+  position:fixed;right:18px;bottom:92px;z-index:300;
+  width:74px;height:74px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--cobalt-deep);box-shadow:0 0 0 3px var(--jet);
+  display:grid;place-items:center;text-align:center;padding:6px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.15;
+  opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none;
+}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:11px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#pressMsg{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#fff}
+#pressMsg b{color:var(--chrome)}
+.press-btns{display:flex;gap:9px;flex-wrap:wrap}
+#press .btn{padding:9px 16px;font-size:11px}
+
+/* ══ editor ═════════════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:36px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(12,50,104,.8);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--pulpred);padding:26px;width:350px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:23px;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--pulpred);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);backdrop-filter:blur(8px);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.ed-row{display:flex;gap:8px;margin-bottom:8px;align-items:center;flex-wrap:wrap}
+.ed-row input,.ed-row select{border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:13px;padding:8px 10px;outline:none;color:var(--jet)}
+.ed-row input:focus{border-color:var(--pulpred)}
+.ed-row .t{flex:1;min-width:120px}
+.ed-row .u{flex:2;min-width:170px}
+.ed-x{background:var(--pulpred);border:3px solid var(--jet);color:#fff;padding:7px 11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600}
+.ed-x:hover{background:var(--jet)}
+.ed-prompts{margin-top:18px;border-top:3px solid var(--rule);padding-top:16px}
+.ed-prompts label{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cobalt-deep);margin:12px 0 5px}
+.ed-prompts textarea{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:13px;padding:8px 10px;outline:none;resize:vertical;min-height:54px;color:var(--jet)}
+.ed-prompts textarea:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+
+@media (max-width:720px){
+  .cover-body{grid-template-columns:1fr;grid-template-rows:auto auto auto auto}
+  .contents{grid-column:1;grid-row:1}
+  .blurb-lead{grid-column:1;grid-row:2}
+  .six{grid-column:1;grid-row:3}
+  .cover-foot{grid-column:1;grid-row:4}
+  .glyphs{grid-column:1;grid-row:5}
+  .cover-body{grid-template-rows:auto auto auto auto auto}
+  .cover{padding:12px 14px 0}
+  main{padding:22px 14px 150px}
+  .sheet-no{font-size:22px;min-width:44px;padding:12px 8px}
+  .sheet-title{font-size:15px}
+  .slide-cols{flex-direction:column;gap:3%}
+  #saveStamp{bottom:126px;right:10px;width:62px;height:62px;font-size:9px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="veil"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top">
+      <span id="mastVol">Vol. I &middot; No. 2</span>
+      <span>1974–76 &middot; Amanda Bankier, Hamilton, Ontario. The first explicitly feminist SF fanzine</span>
+    </div>
+    <div class="stripes" aria-hidden="true"></div>
+    <h1 class="logo"><span class="the">The</span>WITCH AND THE CHAMELEON</h1>
+    <div class="cover-band">
+      <div class="roundel" aria-hidden="true">SIX</div>
+      <div class="cover-tag" id="mastModule">Week 2 &middot; The Practice &middot; Permacomputing</div>
+    </div>
+    <div class="cover-body">
+      <aside class="contents">
+        <div class="contents-hd">In this issue</div>
+        <ol id="coverList"></ol>
+      </aside>
+
+      <div class="cover-right">
+        <div class="blurb-lead">
+          <span class="kicker">Read & Encounter Artworks</span>
+          <p>Work through every item listed below. Four sections contain the six questions;
+          the glossary, the diagnosis, the film and the six artworks contain a single question instead, and the closing section contains two of its own.
+          <b>Every question has to be answered</b> before a section counts as "completed". Your writing saves to this
+          browser as you go, so you can close the tab and come back to it.</p>
+        </div>
+
+        <div class="six">
+          <div class="six-hd">Connections</div>
+          <dl>
+            <dt>Find</dt><dd>something you did not know before</dd>
+            <dt>Spark</dt><dd>what inspired you, specifically</dd>
+            <dt>Friction</dt><dd>what upset you, and why</dd>
+            <dt>Lived</dt><dd>your own life, and what it shows beyond you</dd>
+            <dt>Charge</dt><dd>where you stand, said with conviction.</dd>
+            <dt>Speculate</dt><dd>a work that does not exist yet</dd>
+          </dl>
+          <p class="six-note">Ten sections ask one question instead, and the closing section asks its own two. Open the section to see which.</p>
+        </div>
+
+        <p class="cover-foot">When every section is "completed", the slide creation section opens and you build the
+        slides you will present. Then export three files. <b>Due two hours before class.</b></p>
+
+        <div class="glyphs" aria-hidden="true"><div class="glyphs-inner" id="glyphField"></div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="colophon">
+    <div class="colophon-hd">Set your name in the colophon</div>
+    <div class="fields">
+      <div class="field"><label for="whoName">Your name</label><input type="text" id="whoName" placeholder="First Name, Last Initial" autocomplete="name"/></div>
+      <div class="field"><label for="whoSection">Section</label><input type="text" id="whoSection" placeholder="e.g. Tues 9am"/></div>
+      <div class="field"><label for="whoDate">Date</label><input type="date" id="whoDate"/></div>
+      <div class="field">
+        <label for="whoSlot">Your submission number</label>
+        <select id="whoSlot">
+          <option value="">— pick yours —</option>
+        </select>
+      </div>
+    </div>
+    <div class="target" id="target" role="status" aria-live="polite"></div>
+  </section>
+
+  <div class="runmeter">
+    <div class="runmeter-top">
+      <span id="runLabel">0 of 0 sections completed</span>
+      <span class="pct" id="runPct">0%</span>
+    </div>
+    <div class="track"><div class="fill" id="runFill"></div></div>
+  </div>
+
+  <div id="sheets"></div>
+
+  <div class="divider" aria-hidden="true">— · — · — · — · — · — · — · — · — · — · — · — · — · —</div>
+
+  <h2 class="sect"><span class="misreg" data-t="SLIDE CREATION SECTION">SLIDE CREATION SECTION</span></h2>
+  <p class="sect-note">One slide, built from what you wrote. Pull a line from any answer, add a drawing or
+    photograph, and say what it is. The exported slide keeps its text selectable, so anyone can copy from it.</p>
+
+  <section class="bench locked" id="bench">
+    <div class="locknote" id="lockNote">Locked until every question on every section is completed.</div>
+
+    <div class="slidenav">
+      <div class="slidetabs" id="slideTabs" role="tablist" aria-label="Slides"></div>
+      <div class="slidenav-actions">
+        <button class="btn" type="button" id="btnAddSlide">+ Add slide</button>
+        <button class="btn" type="button" id="btnDelSlide">Delete this slide</button>
+      </div>
+    </div>
+    <p class="slidenav-note">Add more slides if the argument needs them; the export puts every slide in a single file, in this order.</p>
+
+    <label class="bl" for="slTitle">Slide title</label>
+    <input type="text" id="slTitle" placeholder="Name the idea in a few words"/>
+
+    <label class="bl" for="slPull">Pull a line from your answers</label>
+    <select id="slPull"><option value="">— choose an answer to pull in —</option></select>
+
+    <label class="bl" for="slQuote">The line, as it will appear (edit freely)</label>
+    <textarea id="slQuote" placeholder="Paste, edit, or write it yourself"></textarea>
+
+    <label class="bl" for="slImg">Drawing or image</label>
+    <div class="filerow">
+      <input type="file" id="slImg" accept="image/*"/>
+      <img class="thumb" id="slThumb" alt="Preview of your uploaded image"/>
+      <button class="btn" type="button" id="btnClearImg" style="display:none">Remove image</button>
+    </div>
+
+    <label class="bl" for="slCaption">What is it? Say it with conviction.</label>
+    <textarea id="slCaption" placeholder="What the image shows, and what it has to do with the line above"></textarea>
+
+    <div class="preview-wrap">
+      <label class="bl">Preview</label>
+      <div class="slide" id="slidePreview">
+        <div class="slide-bar"><span id="pvModule">MODULE</span><span id="pvName">NAME</span></div>
+        <div class="slide-inner">
+          <div class="slide-title" id="pvTitle">YOUR TITLE HERE</div>
+          <div class="slide-cols">
+            <div class="slide-left">
+              <div class="slide-quote" id="pvQuote">Your completed line appears here.</div>
+              <div class="slide-caption" id="pvCaption">Your caption appears here.</div>
+            </div>
+            <div class="slide-right" id="pvImgWrap"><span>Drawing or image goes here</span></div>
+          </div>
+        </div>
+        <div class="slide-foot"><span id="pvFootL">THE WITCH AND THE CHAMELEON</span><span id="pvFootR">DATE</span></div>
+      </div>
+      <div class="fitnote" id="fitNote"></div>
+    </div>
+
+    <div class="sheet-actions" style="margin-top:20px">
+      <button class="btn" type="button" id="btnSlide">Slides as PDF</button>
+      <button class="btn btn-ink" type="button" id="btnHtml">Presentation file (.html)</button>
+    </div>
+  </section>
+
+  <div class="ed-toggle"><button type="button" id="btnEd">Editor access</button></div>
+
+  <div class="overlay" id="pwOverlay" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+    <div class="box">
+      <h3 id="pwTitle">Editor access</h3>
+      <p>For the instructor. Enter the password to change the module, the items, or the six prompts.</p>
+      <input type="password" id="pwInput" placeholder="Password" aria-label="Editor password"/>
+      <div class="err" id="pwErr">That password does not match. Try again.</div>
+      <div class="box-actions">
+        <button class="btn" type="button" id="pwCancel">Cancel</button>
+        <button class="btn btn-ink" type="button" id="pwGo">Enter</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="editor" id="editor">
+    <div class="ed-hd">
+      <h3>Editor</h3>
+      <button class="btn" type="button" id="edClose">Close</button>
+    </div>
+    <p class="ed-note">Changes apply to this browser only. To set the defaults for every student, edit the
+      <code>DEFAULTS</code> block at the top of this file's script and re-upload it. The prompts below are the six
+      standard questions. Sections that contain a single question of their own keep it; edit those in the
+      <code>DEFAULTS</code> block, on the item's <code>prompts</code> line.</p>
+
+    <div class="ed-row">
+      <input class="t" type="text" id="edModule" placeholder="Module title" aria-label="Module title"/>
+      <input class="t" type="text" id="edVol" placeholder="Vol. I · No. 1" aria-label="Volume line"/>
+      <input class="t" type="text" id="edFolder" placeholder="week-01" aria-label="Course site folder"/>
+    </div>
+
+    <div id="edList"></div>
+
+    <div class="ed-prompts" id="edPrompts"></div>
+
+    <div class="ed-actions">
+      <button class="btn" type="button" id="edAdd">Add item</button>
+      <button class="btn" type="button" id="edReset">Reset prompts</button>
+      <button class="btn btn-ink" type="button" id="edApply">Apply changes</button>
+    </div>
+  </section>
+
+</main>
+
+<div id="saveStamp" role="status" aria-live="polite"><span id="saveStampText">Saved</span></div>
+
+<div id="press">
+  <span id="pressMsg">Answer every question on every section.</span>
+  <div class="press-btns">
+    <button class="btn" type="button" id="btnTxt">Save notes (.txt)</button>
+    <button class="btn" type="button" id="btnPdf" disabled>Export notes (PDF)</button>
+    <button class="btn btn-ink" type="button" id="btnAnsHtml">All answers (.html)</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ══════════════════════════════════════════════════════════════════════
+   DEFAULTS — instructors: edit this block, save, re-upload.
+   ══════════════════════════════════════════════════════════════════════ */
+var DEFAULTS = {
+  password: "comet2026",
+  volume: "Vol. I \u00b7 No. 2 \u00b7 Climate, Media, Making",
+  module: "WEEK 2 \u00b7 THE PRACTICE \u00b7 PERMACOMPUTING",
+  folder: "week-02",
+  items: [
+    { title: "Heikkil\u00e4, Permacomputing", kind: "Reading", group: "The Principles",
+      links: [
+        { label: "Permacomputing", url: "https://permacomputing.net/permacomputing/" },
+        { label: "Issues", url: "https://permacomputing.net/issues/" },
+        { label: "Principles and library", url: "https://permacomputing.net/library/" }
+      ],
+      note: "Ville-Matias Heikkil\u00e4, 2020, plus the permacomputing.net issues and library pages. Worth framing before you start: the wiki describes permacomputing explicitly as an anti-capitalist project drawing on anarchism, decoloniality, intersectional feminism, degrowth and ecologism. It is not a green-tech optimisation pitch." },
+
+    { title: "Permacomputing Aesthetics", kind: "Reading", group: "The Principles",
+      links: [
+        { label: "LIMITS paper", url: "https://limits.pubpub.org/pub/6loh1eqi" },
+        { label: "Readable wiki version", url: "https://monoskop.org/Permacomputing_Aesthetics" }
+      ],
+      note: "Mansoux, Howell, Barok and Heikkil\u00e4, 2023. The foundational scholarly statement, and explicitly about aesthetics rather than engineering. It contains its own best critique: the authors warn that permacomputing in art education risks becoming a romanticism close to the failure of the Arts and Crafts movement, a bourgeois idea of craft as luxury product. That passage is assigned deliberately." },
+
+    { title: "de Valk, From appropriate technology to permacomputing: a glossary", kind: "Reading", group: "The Principles",
+      url: "https://monoskop.org/images/5/55/Valk_Marloes_de_Heikkila_Ville-Matias_2022_Permacomputing.pdf",
+      note: "Marloes de Valk, 2022. A glossary, so read it the way you read a glossary: find the terms that are doing the most work and follow them.",
+      keys: ["RETHINK"],
+      prompts: { RETHINK: "Pick 3 terms from this glossary. For each one, say what it means in your own words and where you have already seen the thing it names \u2014 in a device you own, an app you use, a class you have taken, a job you have had.\n\nThen pick the one term you would argue with, and argue with it." } },
+
+    { title: "A Feminist Server Manifesto", kind: "Reading", group: "The Principles",
+      url: "https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml",
+      note: "Constant, Brussels, 2013. Two pages. Read it against the permacomputing principles in the same sitting. It frames a server through agency, knowledge and politics. Two communities, no shared reading list, arriving at overlapping constraints. Which set would you rather be governed by?" },
+
+    { title: "Degrowth: the argument under the limits", kind: "Reading", group: "The Economics",
+      links: [
+        { label: "Kallis, Degrowth (2018) ch. 1", url: "https://csu-sjsu.primo.exlibrisgroup.com/permalink/01CALS_SJO/14iett4/alma991078783272602901" },
+        { label: "Hickel, Less Is More (2020) ch. 1", url: "https://blackbooksdotpub.wordpress.com/wp-content/uploads/2021/08/jason-hickel-less-is-more-random-house-2020.pdf" },
+        { label: "Selwyn, What might degrowth computing look like?", url: "https://www.cambridge.org/core/books/abs/degrowth/what-is-degrowth/FBC40479FC00A7FFB8DDCA2F42925D21" }
+      ],
+      note: "Pick one of Kallis or Hickel, then read Selwyn on what degrowth would mean for computing specifically. Permacomputing asserts limits constantly and argues for them almost never. This is where the argument actually is." },
+
+    { title: "Doctorow, Enshittification", kind: "Reading", group: "The Diagnosis",
+      links: [
+        { label: "Enshittification (Verso, 2025)", url: "https://www.versobooks.com/products/3341-enshittification" },
+        { label: "Unintentional permacomputing", url: "https://permacomputing.net/unintentional_permacomputing/" }
+      ],
+      note: "Cory Doctorow, ch. 1, plus his 2022 Pluralistic posts. Read it AGAINST the permacomputing texts, not alongside. Platforms decay by design; permacomputing answers from the other end with software small enough to finish and repair. Assign the mechanism, not the mood: Doctorow argues the collapse only looks simultaneous, and traces the pattern to around 2016.   \u2022   THE CURE IS NOT IN THIS ISSUE. Doctorow's own reversal plan is assigned in Week 15, when you are building something yourself rather than in the week you first feel angry.",
+      keys: ["AGAINST"],
+      prompts: { AGAINST: "Put these two readings in the same room. Doctorow describes how a platform decays; the permacomputing texts describe software built to last and be repaired.\n\nName one specific piece of software or one platform you use every day. Describe how it has decayed, or how it is set up to. Then say what a permacomputing version of that same thing would have to give up \u2014 and whether you would still use it." } },
+
+    { title: "Damaged Earth Catalog", kind: "Look at", group: "The Diagnosis",
+      url: "https://damaged.bleu255.com/",
+      note: "A catalog assembled in the shape of the Whole Earth Catalog, for a damaged earth. Browse rather than read: the form is part of the argument.",
+      keys: ["TAKE"],
+      prompts: { TAKE: "Move through the catalog until something stops you. Name the entry. Say what it is, and why that one.\n\nThen take it somewhere: describe what you would make with it, or from it, or against it." } },
+
+    { title: "The Man Who Planted Trees (1987)", kind: "Watch", group: "The Long View",
+      links: [
+        { label: "Full film, 30 min", url: "https://archive.org/details/the-man-who-planted-trees-1987" },
+        { label: "No-narration track", url: "https://archive.org/details/the-man-who-planted-trees-voice-isolation" }
+      ],
+      note: "Fr\u00e9d\u00e9ric Back, from Jean Giono's 1953 story. A shepherd reforests a desolate valley across thirty-five years, through two world wars, expecting nothing. Permacomputing's ethic, filmed, decades before the principles were written down.",
+      keys: ["TAKE"],
+      prompts: { TAKE: "Watch it. Find something you can take: an image, a rhythm, a sound, a gesture, a way time is handled.\n\nName the specific thing you took, then describe what you would build out of it." } },
+
+    { title: "Solar Protocol", kind: "Look at", group: "The Artworks & Video",
+      url: "https://solarprotocol.net/",
+      note: "A network of solar-powered servers in different time zones; whichever one is in sunlight serves the website. The site changes what it shows you depending on how much energy its current server has.",
+      keys: ["SPECULATE"],
+      prompts: { SPECULATE: "This work lets an energy constraint decide what the viewer gets to see. Propose a speculative artwork of your own where a real, physical limit \u2014 sun, battery, weather, tide, bandwidth, a body \u2014 decides what the work does.\n\nDescribe it as though it already exists. Say what happens when the limit is generous, and what happens when it runs out." } },
+
+    { title: "Julian Oliver, Harvest (2017)", kind: "Look at", group: "The Artworks & Video",
+      url: "https://julianoliver.com/projects/harvest/",
+      note: "A wind turbine that mines cryptocurrency and donates the proceeds to climate research. It uses the machinery it criticises.",
+      keys: ["SPECULATE"],
+      prompts: { SPECULATE: "Harvest turns a thing you might oppose into a funding mechanism for the opposite. Propose a speculative artwork built on the same move: it runs on something you object to, and redirects what it produces.\n\nName the thing it runs on, what it produces, and where that output goes." } },
+
+    { title: "Hundred Rabbits, Uxn / Varvara", kind: "Look at", group: "The Artworks & Video",
+      url: "https://100r.co/site/uxn.html",
+      note: "A computing stack small enough to be rebuilt from scratch, made by two people living on a sailboat, running on salvaged parts and very little power.",
+      keys: ["SPECULATE"],
+      prompts: { SPECULATE: "Uxn was designed by people whose power, bandwidth and repair options are genuinely limited. Pick a tool you rely on for making work and imagine you had to rebuild it under those conditions.\n\nDescribe the version that survives. What is gone, what is kept, and what does the work made with it start to look like?" } },
+
+    { title: "Jakob Kudsk Steensen, Boreal Dreams (2025)", kind: "Look at", group: "The Artworks & Video",
+      links: [
+        { label: "Boreal Dreams", url: "https://www.jakobsteensen.com/boreal-dreams" }
+      ],
+      note: "A live simulation, spatialised sound piece and online interactive work, built from fieldwork in the boreal forest, that moves through five climate futures at rising temperatures. Made with sound artist Matt McCorkle and dream researcher Adam Haar.",
+      keys: ["SPECULATE"],
+      prompts: { SPECULATE: "This work stages a future by degrees, and its landscape changes at each one. Propose a speculative artwork that moves through stages of a change rather than showing one fixed state.\n\nName the stages. Say what the viewer sees, hears or does at each, and what is lost between one and the next." } },
+
+    { title: "Louis Henderson, All That Is Solid (2014)", kind: "Watch", group: "The Artworks & Video",
+      links: [
+        { label: "Video Data Bank", url: "https://www.vdb.org/titles/all-solid" },
+        { label: "Spectre Productions", url: "https://www.spectre-productions.com/en/catalogue/all-that-is-soli" }
+      ],
+      note: "Sixteen minutes, filmed in the Agbogbloshie e-waste ground in Accra and in gold mines in Ghana. Henderson's argument is that the cloud has a mineral weight, and that discarded Western computers become a kind of reversed mining operation carried out on the materials of Europe.",
+      keys: ["TAKE"],
+      prompts: { TAKE: "This film insists that computation is made of dug-up matter. Take one image, one sound, or one process from it.\n\nName what you took, then describe what you would make with it \u2014 something that makes the material weight of a device visible to someone holding it." } },
+
+    { title: "Fran\u00e7ois Knoetze, Core Dump (2018\u20132019)", kind: "Look at", group: "The Artworks & Video",
+      links: [
+        { label: "Artist's page", url: "https://francoisknoetze.com/core-dump-2018/" },
+        { label: "Recursive Colonialism", url: "https://www.recursivecolonialism.com/opere/coredump/" },
+        { label: "Video", url: "https://www.youtube.com/watch?v=4JqW0DBFNPQ" }
+      ],
+      note: "A four-part video and performance work made across Dakar, Kinshasa, Shenzhen and New York, using costumes built from electronic waste. Knoetze follows the material and colonial history running through the devices.",
+      keys: ["SPECULATE"],
+      prompts: { SPECULATE: "Knoetze builds bodies out of dead electronics and walks them through the cities where that waste travels. Propose a speculative artwork that gives a discarded technology a body, a voice, or a route.\n\nSay what it is made from, where it goes, and who it addresses when it gets there." } },
+
+    { title: "Overall thoughts on permacomputing as a frame", kind: "Write", group: "Conclusion",
+      note: "No links on this one. Answer both questions last, once you have worked through everything above.",
+      keys: ["OVERALL","BEYOND"],
+      prompts: {
+        OVERALL: "Write around 5 sentences about your overall thoughts about how permacomputing and degrowth can help to frame discussions about digital media art and climate change, ecology, nature, and our planet. In what ways can it be a useful frame for digital media artists to make and discuss digital artwork?",
+        BEYOND: "Which disciplines outside of art do the ideas in permacomputing connect to? Pick one or two, from this list or from anywhere else:\n\narchitecture and urban planning \u00b7 agriculture and food systems \u00b7 engineering and energy \u00b7 biology and ecology \u00b7 computer science and machine learning \u00b7 economics and labor \u00b7 law and policy \u00b7 public health \u00b7 education \u00b7 anthropology \u00b7 geology and climate science \u00b7 supply chains and logistics \u00b7 disability studies \u00b7 philosophy and religion\n\nThen describe how or why the connection holds. Be specific: name the idea from this week that does the connecting, name what it touches in that field, and say what changes when you put the two together." } }
+  ],
+  groupNotes: {
+    "The Principles": "Four readings. Three contain the six questions; the glossary contains one.",
+    "The Economics": "Pick one of the books, then read Selwyn. This section contains the six questions.",
+    "The Diagnosis": "Read against the principles above. Each of these sections contains one question, not six.",
+    "The Long View": "Watch it. This section contains one question, not six.",
+    "The Artworks & Video": "Look and watch. Each of these sections contains one question, not six.",
+    "Conclusion": "Two questions about the week as a whole. Answer them once everything above is done."
+  },
+  prompts: {
+    FIND:     "Something you learned that you did not know before. A fact, a quote, a concept, a claim. What is it? Why is it interesting?",
+    SPARK:    "What inspired you? Describe the thing \u2014 a sentence, an image, a moment, an object \u2014 and why it is inspiring to you.",
+    FRICTION: "What upset you. Disagreement, irritation, discomfort, or something you think is simply wrong. Describe it and why you responded this way.",
+    LIVED:    "Something in your own life this connects to, and how it connects to the larger world. Two parts: why it relates to your lived experience, then what that experience reveals about other people and the world beyond you.",
+    CHARGE:   "What you feel strongly about in the reading OR something that is connected to the reading that you feel strongly about. Take a position and say it with conviction.",
+    SPECULATE:"Propose a speculative artwork.\n\nFor this question, think of a speculative artwork as something that does not exist yet, described as though it already does. It can be an object, an image, a film, a publication, a performance, a tool, a garment, a machine, a place, an installation, a software or hardware. What makes it speculative is that you haven't made it yet. Describe it as a real thing in the world, as if it existed. \n\nDescribe yours in two or three sentences. Descirbe its parts, aesthetics, concepts, location, interactive elements, technologies, sounds, movement, etc. It does not have to be buildable or possible."
+  }
+};
+
+var KEYS = ["FIND","SPARK","FRICTION","LIVED","CHARGE","SPECULATE"];
+var STORE_KEY = "ctm.w02.v2";
+
+/* Some sections contain the six questions; others contain a single question of their
+   own. An item declares its own set with keys:[...] and prompts:{...}. */
+function keysFor(item){
+  return (item && item.keys && item.keys.length) ? item.keys : KEYS;
+}
+function keysAt(i){ return keysFor(state.config.items[i]); }
+
+/* ── storage: real when hosted, in-memory when sandboxed ─────────── */
+var memory = {};
+var storageWorks = (function(){
+  try { window.localStorage.setItem("__t","1"); window.localStorage.removeItem("__t"); return true; }
+  catch(e){ return false; }
+})();
+function save(){
+  var payload = JSON.stringify(state);
+  try { if (storageWorks) window.localStorage.setItem(STORE_KEY, payload); else memory[STORE_KEY] = payload; }
+  catch(e){ memory[STORE_KEY] = payload; }
+  flashStamp();
+}
+function load(){
+  try {
+    var raw = storageWorks ? window.localStorage.getItem(STORE_KEY) : memory[STORE_KEY];
+    return raw ? JSON.parse(raw) : null;
+  } catch(e){ return null; }
+}
+
+var state = load() || {
+  who:{ name:"", section:"", date:"" },
+  config:{ volume:DEFAULTS.volume, module:DEFAULTS.module, folder:DEFAULTS.folder, items:DEFAULTS.items.slice(), prompts:Object.assign({},DEFAULTS.prompts), groupNotes:Object.assign({},DEFAULTS.groupNotes) },
+  answers:{},
+  slides:[{ title:"", quote:"", caption:"", img:"" }],
+  slideIdx:0
+};
+if (!state.config) state.config = { volume:DEFAULTS.volume, module:DEFAULTS.module, folder:DEFAULTS.folder, items:DEFAULTS.items.slice(), prompts:Object.assign({},DEFAULTS.prompts) };
+if (!state.config.prompts) state.config.prompts = Object.assign({},DEFAULTS.prompts);
+if (!state.config.folder) state.config.folder = DEFAULTS.folder;
+if (!state.config.groupNotes) state.config.groupNotes = Object.assign({},DEFAULTS.groupNotes);
+
+/* Saved work from an earlier version of this file keeps its own copy of the
+   item list. Answers are keyed by item position, so new sections are appended at
+   the end and nothing already written is disturbed. */
+(function migrateConfig(){
+  var items = state.config.items || (state.config.items = []);
+  DEFAULTS.items.forEach(function(def){
+    var mine = null;
+    items.forEach(function(it){ if (it.title === def.title) mine = it; });
+    if (!mine){ items.push(JSON.parse(JSON.stringify(def))); return; }
+    /* an item already saved here may predate a question added since; fold in
+       any key it is missing without touching what is already written */
+    if (def.keys && def.keys.length){
+      if (!mine.keys || !mine.keys.length) mine.keys = def.keys.slice();
+      else def.keys.forEach(function(k){ if (mine.keys.indexOf(k) < 0) mine.keys.push(k); });
+      if (!mine.prompts) mine.prompts = {};
+      Object.keys(def.prompts || {}).forEach(function(k){
+        if (!mine.prompts[k]) mine.prompts[k] = def.prompts[k];
+      });
+    }
+  });
+  Object.keys(DEFAULTS.groupNotes).forEach(function(g){
+    if (!state.config.groupNotes[g]) state.config.groupNotes[g] = DEFAULTS.groupNotes[g];
+  });
+})();
+
+if (state.slide && !state.slides){ state.slides = [state.slide]; delete state.slide; }
+if (!state.slides || !state.slides.length) state.slides = [{ title:"", quote:"", caption:"", img:"" }];
+if (typeof state.slideIdx !== "number" || state.slideIdx >= state.slides.length) state.slideIdx = 0;
+
+function cur(){ return state.slides[state.slideIdx]; }
+if (!state.answers) state.answers = {};
+if (!state.who) state.who = { name:"", section:"", date:"" };
+
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+var stampTimer;
+function flashStamp(){
+  var el = $("saveStamp");
+  $("saveStampText").textContent = storageWorks ? "Saved" : "Held in tab";
+  el.classList.add("on");
+  clearTimeout(stampTimer);
+  stampTimer = setTimeout(function(){ el.classList.remove("on"); }, 1100);
+}
+
+/* ── sections ────────────────────────────────────────────────────── */
+function ansKey(i,k){ return i + ":" + k; }
+function getAns(i,k){ return (state.answers[ansKey(i,k)] || ""); }
+function sheetDone(i){
+  return keysAt(i).every(function(k){ return getAns(i,k).trim().length > 0; });
+}
+function doneCount(){
+  var n=0; for (var i=0;i<state.config.items.length;i++) if (sheetDone(i)) n++;
+  return n;
+}
+function allDone(){ return state.config.items.length>0 && doneCount()===state.config.items.length; }
+
+function hasLinks(item){
+  return !!((item && item.links && item.links.length) || (item && item.url));
+}
+
+function linkRow(item){
+  var ls = (item.links && item.links.length) ? item.links
+         : (item.url ? [{label:"Open the item", url:item.url}] : []);
+  if (!ls.length) return '<span class="viewurl">No link set for this item.</span>';
+  return ls.map(function(l){
+    return '<a class="btn-view" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label)+' \u2197</a>';
+  }).join("") + '<span class="viewurl">'+esc(ls.map(function(l){return l.url;}).join("   \u00b7   "))+'</span>';
+}
+
+function promptFor(item,k){
+  if (item && item.prompts && item.prompts[k]) return item.prompts[k];
+  return state.config.prompts[k] || "";
+}
+
+function renderSheets(){
+  var wrap = $("sheets");
+  wrap.innerHTML = "";
+  var lastGroup = null;
+  state.config.items.forEach(function(item,i){
+    var g = item.group || null;
+    if (g && g !== lastGroup){
+      var mark = document.createElement("div");
+      mark.className = "groupmark";
+      mark.innerHTML = "<span>"+esc(g)+"</span>";
+      wrap.appendChild(mark);
+      var gn = (state.config.groupNotes || {})[g];
+      if (gn){
+        var sub = document.createElement("p");
+        sub.className = "group-sub";
+        sub.textContent = gn;
+        wrap.appendChild(sub);
+      }
+    }
+    lastGroup = g;
+    var sec = document.createElement("section");
+    sec.className = "sheet";
+    sec.id = "sheet-"+i;
+
+    var ks = keysFor(item);
+    var qs = ks.map(function(k){
+      return '<div class="q" id="q-'+i+'-'+k+'">' +
+        '<div class="q-key">'+k+'</div>' +
+        '<p class="q-prompt">'+esc(promptFor(item,k))+'</p>' +
+        '<textarea id="ta-'+i+'-'+k+'" data-i="'+i+'" data-k="'+k+'" rows="3" ' +
+          'aria-label="'+k+' answer for '+esc(item.title)+'" ' +
+          'placeholder="Write your answer">'+esc(getAns(i,k))+'</textarea>' +
+        '<div class="q-count" id="c-'+i+'-'+k+'"></div>' +
+      '</div>';
+    }).join("");
+
+    sec.innerHTML =
+      '<button class="sheet-hd" type="button" aria-expanded="false" aria-controls="body-'+i+'" data-toggle="'+i+'">' +
+        '<span class="sheet-no">'+String(i+1).padStart(2,"0")+'</span>' +
+        '<span class="sheet-titles">' +
+          '<span class="sheet-kind">'+esc(item.kind||"Item")+' \u00b7 '+(ks.length===1?"one question":ks.length+" questions")+'</span>' +
+          '<span class="sheet-title">'+esc(item.title)+'</span>' +
+        '</span>' +
+        '<span class="sheet-stamp" id="stamp-'+i+'">Not completed</span>' +
+        '<span class="chev" id="chev-'+i+'" aria-hidden="true">▸</span>' +
+      '</button>' +
+      '<div class="sheet-body" id="body-'+i+'">' +
+        (hasLinks(item) ? '<div class="viewrow">' + linkRow(item) + '</div>' : '') +
+        (item.note ? '<p class="itemnote">'+esc(item.note)+'</p>' : '') + qs +
+        '<div class="sheet-actions">' +
+          '<button class="btn btn-ink" type="button" data-mark="'+i+'">Mark this section completed</button>' +
+        '</div>' +
+      '</div>';
+    wrap.appendChild(sec);
+  });
+
+  wrap.querySelectorAll("textarea").forEach(function(ta){
+    ta.addEventListener("input", onType);
+  });
+  wrap.querySelectorAll("[data-toggle]").forEach(function(b){
+    b.addEventListener("click", function(){ toggleSheet(+b.dataset.toggle); });
+  });
+  wrap.querySelectorAll("[data-mark]").forEach(function(b){
+    b.addEventListener("click", function(){ markSheet(+b.dataset.mark); });
+  });
+
+  state.config.items.forEach(function(_,i){ refreshSheet(i); });
+  refreshRun();
+  refreshPull();
+}
+
+var typeTimer;
+function onType(e){
+  var i = +e.target.dataset.i, k = e.target.dataset.k;
+  state.answers[ansKey(i,k)] = e.target.value;
+  refreshSheet(i);
+  refreshRun();
+  clearTimeout(typeTimer);
+  typeTimer = setTimeout(function(){ save(); refreshPull(); }, 500);
+}
+
+function refreshSheet(i){
+  var ks = keysAt(i);
+  ks.forEach(function(k){
+    var v = getAns(i,k).trim();
+    var q = $("q-"+i+"-"+k);
+    if (q) q.classList.toggle("filled", v.length>0);
+    var c = $("c-"+i+"-"+k);
+    if (c) c.textContent = v ? (v.split(/\s+/).length + " words") : "";
+  });
+  var done = sheetDone(i);
+  var sheet = $("sheet-"+i), stamp = $("stamp-"+i);
+  if (sheet) sheet.classList.toggle("done", done);
+  if (stamp){
+    var missing = ks.filter(function(k){ return !getAns(i,k).trim(); }).length;
+    stamp.textContent = done ? "Completed ✓" : (missing===ks.length ? "Not completed" : missing+" to go");
+    stamp.classList.toggle("on", done);
+  }
+}
+
+function toggleSheet(i){
+  var body = $("body-"+i), chev = $("chev-"+i);
+  var open = body.classList.contains("open");
+  document.querySelectorAll(".sheet-body").forEach(function(b){ b.classList.remove("open"); });
+  document.querySelectorAll(".chev").forEach(function(c){ c.textContent = "▸"; });
+  document.querySelectorAll(".sheet-hd").forEach(function(h){ h.setAttribute("aria-expanded","false"); });
+  if (!open){
+    body.classList.add("open");
+    chev.textContent = "▾";
+    document.querySelector('[data-toggle="'+i+'"]').setAttribute("aria-expanded","true");
+  }
+}
+
+function markSheet(i){
+  var missing = keysAt(i).filter(function(k){ return !getAns(i,k).trim(); });
+  if (missing.length){
+    var first = $("ta-"+i+"-"+missing[0]);
+    if (first){ first.focus(); first.scrollIntoView({block:"center"}); }
+    var stamp = $("stamp-"+i);
+    if (stamp) stamp.textContent = missing.length+" still empty";
+    return;
+  }
+  save();
+  refreshRun();
+  refreshPull();
+  for (var n=i+1; n<state.config.items.length; n++){
+    if (!sheetDone(n)){ toggleSheet(n); $("sheet-"+n).scrollIntoView({block:"start"}); return; }
+  }
+  toggleSheet(i);
+  $("bench").scrollIntoView({block:"start"});
+}
+
+function refreshRun(){
+  var total = state.config.items.length, done = doneCount();
+  var pct = total ? Math.round(done/total*100) : 0;
+  $("runLabel").textContent = done + " of " + total + " sections completed";
+  $("runPct").textContent = pct + "%";
+  $("runFill").style.width = pct + "%";
+
+  var ready = allDone();
+  $("bench").classList.toggle("locked", !ready);
+  $("lockNote").style.display = ready ? "none" : "block";
+  $("btnPdf").disabled = !ready;
+
+  var left = total - done;
+  $("pressMsg").innerHTML = ready
+    ? "All sections completed. <b>Build your slide below.</b>"
+    : (left===1 ? "<b>1 section</b> left to finish." : "<b>"+left+" sections</b> left to finish.");
+}
+
+/* ── slide bench ─────────────────────────────────────────────────── */
+function refreshPull(){
+  var sel = $("slPull"), keep = sel.value;
+  sel.innerHTML = '<option value="">— choose an answer to pull in —</option>';
+  state.config.items.forEach(function(item,i){
+    keysFor(item).forEach(function(k){
+      var v = getAns(i,k).trim();
+      if (!v) return;
+      var o = document.createElement("option");
+      o.value = v;
+      o.textContent = (i+1) + " · " + k + " — " + (v.length>58 ? v.slice(0,58)+"…" : v);
+      sel.appendChild(o);
+    });
+  });
+  sel.value = keep;
+}
+
+function paintTabs(){
+  var t = $("slideTabs");
+  t.innerHTML = "";
+  state.slides.forEach(function(_, i){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "slidetab";
+    b.setAttribute("role","tab");
+    b.setAttribute("aria-selected", String(i === state.slideIdx));
+    b.textContent = "Slide " + (i+1);
+    b.addEventListener("click", function(){ gotoSlide(i); });
+    t.appendChild(b);
+  });
+  $("btnDelSlide").disabled = state.slides.length < 2;
+}
+
+function loadSlideFields(){
+  $("slTitle").value   = cur().title   || "";
+  $("slQuote").value   = cur().quote   || "";
+  $("slCaption").value = cur().caption || "";
+  $("slImg").value = "";
+}
+
+function gotoSlide(i){
+  state.slideIdx = i;
+  loadSlideFields();
+  paintTabs();
+  refreshSlide();
+  save();
+}
+
+function addSlide(){
+  state.slides.push({ title:"", quote:"", caption:"", img:"" });
+  gotoSlide(state.slides.length - 1);
+  $("slTitle").focus();
+}
+
+function delSlide(){
+  if (state.slides.length < 2) return;
+  state.slides.splice(state.slideIdx, 1);
+  gotoSlide(Math.max(0, state.slideIdx - 1));
+}
+
+function refreshSlide(){
+  var name = state.who.name || "Your name";
+  var d = state.who.date ? new Date(state.who.date+"T00:00:00").toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric"}) : "";
+  $("pvModule").textContent = state.config.module || "MODULE";
+  $("pvName").textContent = name;
+  $("pvTitle").textContent = cur().title || "YOUR TITLE HERE";
+  $("pvQuote").textContent = cur().quote || "Your completed line appears here.";
+  $("pvCaption").textContent = cur().caption || "Your caption appears here.";
+  $("pvFootL").textContent = "The Witch and the Chameleon · " + (state.who.section || "");
+  $("pvFootR").textContent = d;
+  var wrap = $("pvImgWrap");
+  wrap.innerHTML = cur().img
+    ? '<img src="'+cur().img+'" alt="Your uploaded drawing or image"/>'
+    : '<span>Drawing or image goes here</span>';
+  var th = $("slThumb");
+  if (cur().img){ th.src = cur().img; th.classList.add("on"); $("btnClearImg").style.display="inline-block"; }
+  else { th.classList.remove("on"); $("btnClearImg").style.display="none"; }
+  fitPreview();
+}
+
+/* Size the preview text against the slide, then step it down until it stops
+   overflowing. A long answer comes out smaller rather than cut off, and the
+   exports use the same rule so what you see here is what you hand in. */
+function fitPreview(){
+  var slide = $("slidePreview");
+  if (!slide) return;
+  var W = slide.clientWidth, H = slide.clientHeight;
+  if (!W || !H) return;
+
+  var title = $("pvTitle"), q = $("pvQuote"), c = $("pvCaption");
+  var left = slide.querySelector(".slide-left");
+  if (!title || !q || !c || !left) return;
+
+  var tBase = W*0.052, tScale = 1, guard = 0;
+  title.style.fontSize = tBase + "px";
+  while (tScale > 0.42 && title.scrollHeight > H*0.30 && guard++ < 40){
+    tScale -= 0.05;
+    title.style.fontSize = (tBase*tScale) + "px";
+  }
+
+  var qBase = W*0.028, cBase = W*0.021, s = 1, n = 0;
+  function put(v){
+    q.style.fontSize = (qBase*v) + "px";
+    c.style.fontSize = (cBase*v) + "px";
+  }
+  put(1);
+  while (s > 0.30 && left.scrollHeight > left.clientHeight + 1 && n++ < 70){
+    s -= 0.03;
+    put(s);
+  }
+
+  var stillOver = left.scrollHeight > left.clientHeight + 1;
+  var note = $("fitNote");
+  if (note){
+    note.classList.toggle("warn", stillOver);
+    if (stillOver){
+      note.textContent = "Longer than the slide can hold, even at the smallest size. Trim it so none of it is cut off.";
+    } else if (s < 0.99 || tScale < 0.99){
+      note.textContent = "Long text \u2014 scaled to " + Math.round(Math.min(s,tScale)*100) + "% so all of it fits the slide.";
+    } else {
+      note.textContent = "";
+    }
+  }
+}
+
+function shrinkImage(file, maxDim, cb){
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    var img = new Image();
+    img.onload = function(){
+      var s = Math.min(1, maxDim/Math.max(img.width,img.height));
+      var c = document.createElement("canvas");
+      c.width = Math.max(1,Math.round(img.width*s));
+      c.height = Math.max(1,Math.round(img.height*s));
+      var ctx = c.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0,0,c.width,c.height);
+      ctx.drawImage(img,0,0,c.width,c.height);
+      cb(c.toDataURL("image/jpeg",0.82), c.width, c.height);
+    };
+    img.onerror = function(){ cb(null); };
+    img.src = ev.target.result;
+  };
+  reader.onerror = function(){ cb(null); };
+  reader.readAsDataURL(file);
+}
+
+/* ── exports ─────────────────────────────────────────────────────── */
+function plainText(){
+  var L = [];
+  L.push("THE WITCH AND THE CHAMELEON — REFLECTION SECTIONS");
+  L.push(state.config.module);
+  L.push("");
+  L.push("Slot:    " + (state.who.slot ? "artist_" + state.who.slot : "—"));
+  L.push("Name:    " + (state.who.name||"—"));
+  L.push("Section: " + (state.who.section||"—"));
+  L.push("Date:    " + (state.who.date||"—"));
+  L.push("");
+  state.config.items.forEach(function(item,i){
+    L.push("=".repeat(62));
+    L.push(String(i+1).padStart(2,"0") + ". " + item.title + "  [" + (item.kind||"Item") + "]");
+    var ls = (item.links && item.links.length) ? item.links.map(function(l){return l.url;})
+           : (item.url ? [item.url] : []);
+    ls.forEach(function(u){ L.push(u); });
+    if (item.note) L.push("Note: " + item.note);
+    L.push("=".repeat(62));
+    keysFor(item).forEach(function(k){
+      L.push("");
+      L.push(k);
+      L.push("-".repeat(k.length));
+      if (item.prompts && item.prompts[k]) L.push("[" + item.prompts[k] + "]");
+      L.push(getAns(i,k).trim() || "(no answer)");
+    });
+    L.push("");
+  });
+  state.slides.forEach(function(sl, i){
+    if (!(sl.title || sl.quote || sl.caption || sl.img)) return;
+    L.push("=".repeat(62));
+    L.push("SLIDE " + (i+1) + " of " + state.slides.length);
+    L.push("=".repeat(62));
+    L.push("Title:   " + (sl.title||"\u2014"));
+    L.push("");
+    L.push("Line:    " + (sl.quote||"\u2014"));
+    L.push("");
+    L.push("Caption: " + (sl.caption||"\u2014"));
+    L.push("");
+    L.push(sl.img ? "[image attached in the PDF and HTML exports]" : "[no image]");
+    L.push("");
+  });
+  return L.join("\n");
+}
+
+function download(blob, filename){
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+}
+
+function fileStem(){
+  if (state.who.slot) return "artist_" + state.who.slot;
+  var n = (state.who.name||"student").replace(/[^\w]+/g,"_").replace(/^_|_$/g,"");
+  var m = (state.config.module||"module").replace(/[^\w]+/g,"_").replace(/^_|_$/g,"");
+  return n + "_" + m;
+}
+
+/* the three files the course site links to are named exactly artist_N.<ext> */
+function needSlot(){
+  if (state.who.slot) return true;
+  var t = $("target");
+  t.scrollIntoView({block:"center"});
+  $("whoSlot").focus();
+  return false;
+}
+
+function paintTarget(){
+  var t = $("target");
+  var f = state.config.folder || "week-01";
+  if (!state.who.slot){
+    t.className = "target unset";
+    t.innerHTML = "Pick your submission number before you export. Without it your files will not be named " +
+      "the way the course site expects, and your buttons on the homepage will lead nowhere.";
+  } else {
+    var stem = "artist_" + state.who.slot;
+    t.className = "target set";
+    t.innerHTML = "Your three files go in <code>" + esc(f) + "/</code> on the course site, named " +
+      "<code>" + stem + ".html</code> <code>" + stem + ".pdf</code> <code>" + stem + ".txt</code>. " +
+      "Export all three and commit them without renaming.";
+  }
+}
+
+function exportTxt(){
+  if (!needSlot()) return;
+  download(new Blob([plainText()],{type:"text/plain;charset=utf-8"}), fileStem()+".txt");
+}
+
+/* ── one palette, taken straight off the page ─────────────────────────
+   These are the same values as the :root custom properties at the top of
+   this file. Change them there and change them here, or the exports drift
+   away from the page again. */
+var PALETTE = {
+  cobalt:      "#7db8c4",
+  cobaltDeep:  "#14202a",
+  chrome:      "#e85fa0",
+  chromeDeep:  "#d63d84",
+  pulpred:     "#3d5817",
+  mars:        "#2f4712",
+  jet:         "#14202a",
+  rule:        "#a8e6c0",
+  cream:       "#f4f8f2",
+  pulpDeep:    "#dbe8dd",
+  slate:       "#334051",
+  white:       "#ffffff"
+};
+
+function rgb(hex){
+  var h = String(hex).replace("#","");
+  return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+}
+
+/* the same palette as jsPDF rgb triples */
+var C = {
+  stock:  rgb(PALETTE.cream),      /* paper           */
+  ink:    rgb(PALETTE.jet),        /* body ink        */
+  aniline:rgb(PALETTE.cobalt),     /* teal, the bars  */
+  spot:   rgb(PALETTE.pulpred),    /* pink accent     */
+  pale:   rgb(PALETTE.rule),       /* sea-glass rule  */
+  chrome: rgb(PALETTE.chrome),     /* mint highlight  */
+  slate:  rgb(PALETTE.slate),      /* caption ink     */
+  white:  [255,255,255]
+};
+
+function exportNotesPdf(){
+  if (!needSlot()) return;
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({unit:"pt", format:"letter"});
+  var PW=612, PH=792, M=54, TW=PW-M*2, y=0;
+
+  function paper(){
+    doc.setFillColor(C.stock[0],C.stock[1],C.stock[2]);
+    doc.rect(0,0,PW,PH,"F");
+  }
+  function newPage(){ doc.addPage(); paper(); y = M; }
+  function need(h){ if (y+h > PH-58) newPage(); }
+
+  paper();
+
+  doc.setFillColor(C.aniline[0],C.aniline[1],C.aniline[2]);
+  doc.rect(0,0,PW,96,"F");
+  doc.setFillColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.rect(0,96,PW,6,"F");
+  doc.setFillColor(C.spot[0],C.spot[1],C.spot[2]);
+  doc.rect(0,102,PW,3,"F");
+  doc.setTextColor(C.white[0],C.white[1],C.white[2]);
+  doc.setFont("helvetica","bold"); doc.setFontSize(34);
+  doc.setFontSize(24);
+  doc.text("THE WITCH AND THE CHAMELEON", M, 52);
+  doc.setFont("helvetica","bold"); doc.setFontSize(10);
+  doc.setTextColor(C.chrome[0],C.chrome[1],C.chrome[2]);
+  doc.text(String(state.config.module||""), M, 70);
+  doc.setFont("times","normal");
+  doc.setTextColor(C.white[0],C.white[1],C.white[2]);
+  var who = [state.who.name, state.who.section, state.who.date].filter(Boolean).join("   \u00b7   ");
+  doc.text(who || "\u2014", M, 86);
+  y = 128;
+
+  state.config.items.forEach(function(item,i){
+    need(64);
+    doc.setFillColor(C.aniline[0],C.aniline[1],C.aniline[2]);
+    doc.rect(M, y, TW, 30, "F");
+    doc.setTextColor(C.white[0],C.white[1],C.white[2]);
+    doc.setFont("helvetica","bold"); doc.setFontSize(13);
+    doc.text(String(i+1).padStart(2,"0") + "  " + String(item.title).slice(0,52), M+10, y+20);
+    y += 34;
+    if (item.url){
+      doc.setFont("times","normal"); doc.setFontSize(8);
+      doc.setTextColor(C.pale[0],C.pale[1],C.pale[2]);
+      doc.text(String(item.url).slice(0,92), M+2, y+8);
+      y += 18;
+    }
+
+    keysFor(item).forEach(function(k){
+      var txt = getAns(i,k).trim() || "(no answer)";
+      doc.setFont("times","normal"); doc.setFontSize(11);
+      var lines = doc.splitTextToSize(txt, TW-22);
+      need(30 + lines.length*14);
+      doc.setDrawColor(C.spot[0],C.spot[1],C.spot[2]);
+      doc.setLineWidth(3);
+      doc.line(M+2, y-2, M+2, y + 14 + lines.length*14);
+      doc.setFont("helvetica","bold"); doc.setFontSize(10);
+      doc.setTextColor(C.spot[0],C.spot[1],C.spot[2]);
+      doc.text(k, M+12, y+8);
+      doc.setFont("times","normal"); doc.setFontSize(11);
+      doc.setTextColor(C.ink[0],C.ink[1],C.ink[2]);
+      doc.text(lines, M+12, y+25);
+      y += 30 + lines.length*14;
+    });
+    y += 12;
+  });
+
+  var pages = doc.internal.getNumberOfPages();
+  for (var p=1;p<=pages;p++){
+    doc.setPage(p);
+    doc.setFont("helvetica","bold"); doc.setFontSize(8);
+    doc.setTextColor(C.aniline[0],C.aniline[1],C.aniline[2]);
+    doc.text("THE WITCH AND THE CHAMELEON  \u00b7  " + (state.who.name||""), M, PH-30);
+    doc.text(p + " / " + pages, PW-M, PH-30, {align:"right"});
+  }
+  doc.save(fileStem()+".pdf");
+}
+
+function exportSlidePdf(){
+  if (!needSlot()) return;
+  var jsPDF = window.jspdf.jsPDF;
+  var W=960, H=540;
+  var doc = new jsPDF({unit:"pt", format:[W,H], orientation:"landscape"});
+  var M=52;
+
+  state.slides.forEach(function(SL, SI){
+    if (SI) doc.addPage([W,H], "landscape");
+    drawSlidePage(doc, SL, SI, W, H, M);
+  });
+  doc.save(fileStem()+"_slides.pdf");
+}
+
+/* Fit a block of text into a fixed box by stepping the size down until the
+   lines stop overflowing. Returns the split lines, the size that worked, and
+   the line height, so the caller can lay out whatever comes after it. */
+function fitBlock(doc, font, style, text, width, maxH, base, min, lf){
+  var size = base, lines, lh;
+  for(;;){
+    doc.setFont(font, style);
+    doc.setFontSize(size);
+    lines = doc.splitTextToSize(String(text == null ? "" : text), width);
+    lh = size * lf;
+    if (lines.length * lh <= maxH || size <= min) break;
+    size = Math.max(min, size - 0.5);
+  }
+  if (lines.length * lh > maxH){
+    lines = lines.slice(0, Math.max(1, Math.floor(maxH / lh)));
+  }
+  return { lines: lines, size: size, lh: lh, h: lines.length * lh };
+}
+
+function drawSlidePage(doc, SL, SI, W, H, M){
+  var BAR = 46, FOOT = 42;
+
+  /* stock */
+  doc.setFillColor(C.stock[0],C.stock[1],C.stock[2]);
+  doc.rect(0,0,W,H,"F");
+
+  /* top bar — teal, as on the page */
+  doc.setFillColor(C.aniline[0],C.aniline[1],C.aniline[2]);
+  doc.rect(0,0,W,BAR,"F");
+  doc.setDrawColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.setLineWidth(3);
+  doc.line(0,BAR,W,BAR);
+  doc.setFont("helvetica","bold"); doc.setFontSize(11);
+  doc.setTextColor(C.white[0],C.white[1],C.white[2]);
+  doc.text(String(state.config.module||"").toUpperCase(), M, 29);
+  doc.text(String(state.who.name||"").toUpperCase(), W-M, 29, {align:"right"});
+
+  /* foot — mint, as on the page */
+  doc.setFillColor(C.chrome[0],C.chrome[1],C.chrome[2]);
+  doc.rect(0,H-FOOT,W,FOOT,"F");
+  doc.setDrawColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.setLineWidth(3);
+  doc.line(0,H-FOOT,W,H-FOOT);
+  doc.setFont("helvetica","bold"); doc.setFontSize(10);
+  doc.setTextColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.text(("THE WITCH AND THE CHAMELEON  \u00b7  " + (state.who.section||"")).toUpperCase(), M, H-FOOT+26);
+  var d = state.who.date ? new Date(state.who.date+"T00:00:00").toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"}) : "";
+  doc.text(d.toUpperCase(), W-M, H-FOOT+26, {align:"right"});
+  if (state.slides.length > 1){
+    doc.text((SI+1) + " / " + state.slides.length, W/2, H-FOOT+26, {align:"center"});
+  }
+
+  /* the working area between the two bars */
+  var top = BAR + 26;
+  var bottom = H - FOOT - 20;
+  var area = bottom - top;
+
+  /* title: teal with the mint drop, matching the page. It gets at most a
+     third of the height and shrinks to stay inside it. */
+  var titleText = (SL.title || "Untitled").toUpperCase();
+  var T = fitBlock(doc, "helvetica", "bold", titleText, W-M*2, area*0.32, 34, 15, 1.08);
+  doc.setFont("helvetica","bold"); doc.setFontSize(T.size);
+  doc.setTextColor(C.chrome[0],C.chrome[1],C.chrome[2]);
+  doc.text(T.lines, M+3, top+T.size+3);
+  doc.setTextColor(C.aniline[0],C.aniline[1],C.aniline[2]);
+  doc.text(T.lines, M, top+T.size);
+
+  var colTop = top + T.h + 22;
+  var colH = bottom - colTop;
+  var colW = (W - M*2 - 40) / 2;
+  var imgX = M + colW + 40;
+
+  /* right column: the image box */
+  doc.setFillColor(C.white[0],C.white[1],C.white[2]);
+  doc.rect(imgX, colTop, colW, colH, "F");
+  doc.setDrawColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.setLineWidth(3);
+  doc.rect(imgX, colTop, colW, colH, "S");
+  if (SL.img){
+    try {
+      var props = doc.getImageProperties(SL.img);
+      var s = Math.min((colW-14)/props.width, (colH-14)/props.height);
+      var dw = props.width*s, dh = props.height*s;
+      doc.addImage(SL.img, "JPEG", imgX + (colW-dw)/2, colTop + (colH-dh)/2, dw, dh);
+    } catch(e){
+      doc.setFont("helvetica","bold"); doc.setFontSize(10);
+      doc.setTextColor(C.pale[0],C.pale[1],C.pale[2]);
+      doc.text("[IMAGE COULD NOT BE PLACED]", imgX+14, colTop+26);
+    }
+  } else {
+    doc.setFont("helvetica","bold"); doc.setFontSize(10);
+    doc.setTextColor(C.pale[0],C.pale[1],C.pale[2]);
+    doc.text("[NO IMAGE]", imgX+14, colTop+26);
+  }
+
+  /* left column: the pulled line, then the caption. Both are fitted, so a
+     long answer comes out smaller rather than cut off. */
+  var qText = SL.quote || "";
+  var cText = SL.caption || "";
+  var GAP = 20;
+  var quoteMax = cText.trim() ? colH*0.58 : colH;
+
+  var Q = fitBlock(doc, "times", "bolditalic", qText, colW-24, quoteMax, 16, 7.5, 1.4);
+  var qH = qText.trim() ? Q.h : 0;
+
+  if (qText.trim()){
+    doc.setDrawColor(C.spot[0],C.spot[1],C.spot[2]);
+    doc.setLineWidth(5);
+    doc.line(M+2, colTop, M+2, colTop + qH + 6);
+    doc.setFont("times","bolditalic"); doc.setFontSize(Q.size);
+    doc.setTextColor(C.ink[0],C.ink[1],C.ink[2]);
+    doc.text(Q.lines, M+20, colTop + Q.size);
+  }
+
+  if (cText.trim()){
+    var capTop = colTop + (qH ? qH + GAP : 0);
+    var capMax = colH - (capTop - colTop);
+    var Cp = fitBlock(doc, "times", "normal", cText, colW-4, capMax, 13, 7, 1.45);
+    doc.setFont("times","normal"); doc.setFontSize(Cp.size);
+    doc.setTextColor(C.slate[0],C.slate[1],C.slate[2]);
+    doc.text(Cp.lines, M+2, capTop + Cp.size);
+  }
+
+  /* frame last, so it sits over the bars like the border on the page */
+  doc.setDrawColor(C.ink[0],C.ink[1],C.ink[2]);
+  doc.setLineWidth(6);
+  doc.rect(3,3,W-6,H-6,"S");
+}
+
+/* ── self-contained HTML slide: the weekly presentation deliverable ── */
+function exportSlideHtml(){
+  if (!needSlot()) return;
+  var d = state.who.date
+    ? new Date(state.who.date+"T00:00:00").toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})
+    : "";
+  function e(t){ return String(t==null?"":t)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+  var total = state.slides.length;
+  var body = state.slides.map(function(SL, i){
+    var img = SL.img
+      ? '<img src="'+SL.img+'" alt="Drawing or image by '+e(state.who.name)+'"/>'
+      : '<span class="ph">no image</span>';
+    return '' +
+'<section class="slide" id="s'+(i+1)+'">\n' +
+'  <div class="bar"><span>' + e(state.config.module) + '</span><span>' + e(state.who.name) + '</span></div>\n' +
+'  <div class="inner">\n' +
+'    <h1>' + e(SL.title || "Untitled") + '</h1>\n' +
+'    <div class="cols">\n' +
+'      <div class="left">\n' +
+'        <blockquote>' + e(SL.quote) + '</blockquote>\n' +
+'        <p class="cap">' + e(SL.caption) + '</p>\n' +
+'      </div>\n' +
+'      <div class="right">' + img + '</div>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'  <div class="foot"><span>The Witch and the Chameleon \u00b7 ' + e(state.who.section) + '</span>' +
+     (total > 1 ? '<span>' + (i+1) + ' / ' + total + '</span>' : '') +
+     '<span>' + e(d) + '</span></div>\n' +
+'</section>\n';
+  }).join("");
+
+  var doc =
+'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8"/>\n' +
+'<meta name="viewport" content="width=device-width, initial-scale=1"/>\n' +
+'<title>' + e(state.slides[0].title || "Untitled") + ' \u2014 ' + e(state.who.name) + '</title>\n' +
+'<link rel="preconnect" href="https://fonts.googleapis.com"/>\n' +
+'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>\n' +
+'<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Bitter:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>\n' +
+'<style>\n' +
+':root{\n' +
+'  --cobalt:' + PALETTE.cobalt + ';\n' +
+'  --cobalt-deep:' + PALETTE.cobaltDeep + ';\n' +
+'  --chrome:' + PALETTE.chrome + ';\n' +
+'  --pulpred:' + PALETTE.pulpred + ';\n' +
+'  --jet:' + PALETTE.jet + ';\n' +
+'  --rule:' + PALETTE.rule + ';\n' +
+'  --cream:' + PALETTE.cream + ';\n' +
+'  --slate:' + PALETTE.slate + ';\n' +
+'}\n' +
+'*{box-sizing:border-box;margin:0;padding:0}\n' +
+'html{scroll-snap-type:y mandatory;scroll-behavior:smooth;height:100%}\n' +
+'body{background:var(--jet);font-family:"Bitter",Georgia,"Times New Roman",serif;\n' +
+'  color:var(--jet);height:100%;overflow-y:auto}\n' +
+'.slide{scroll-snap-align:center;min-height:100vh;display:flex;align-items:center;\n' +
+'  justify-content:center;padding:2vmin;width:100%}\n' +
+'.card{width:min(96vw,calc(92vh*16/9));aspect-ratio:16/9;background:var(--cream);\n' +
+'  border:0.5vmin solid var(--jet);display:flex;flex-direction:column;overflow:hidden;\n' +
+'  box-shadow:1vmin 1vmin 0 var(--cobalt)}\n' +
+'.bar{background:var(--cobalt);color:#fff;border-bottom:0.35vmin solid var(--jet);\n' +
+'  padding:0.9vmin 3.5%;display:flex;justify-content:space-between;gap:2%;\n' +
+'  font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-weight:600;\n' +
+'  font-size:1.5vmin;letter-spacing:0.25vmin;text-transform:uppercase}\n' +
+'.inner{flex:1;display:flex;flex-direction:column;padding:3% 3.5% 2.4%;min-height:0}\n' +
+'h1{font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-weight:700;\n' +
+'  font-size:5.2vmin;line-height:1;text-transform:uppercase;color:var(--cobalt);\n' +
+'  margin-bottom:2.6%;word-break:break-word;overflow-wrap:anywhere;\n' +
+'  text-shadow:0.45vmin 0.45vmin 0 var(--chrome)}\n' +
+'.cols{display:flex;gap:4%;flex:1;min-height:0}\n' +
+'.left{flex:1.05;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}\n' +
+'.right{flex:1;border:0.35vmin solid var(--jet);background:#fff;display:flex;\n' +
+'  align-items:center;justify-content:center;overflow:hidden}\n' +
+'.right img{width:100%;height:100%;object-fit:contain}\n' +
+'.ph{font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-size:1.6vmin;\n' +
+'  color:var(--rule);text-transform:uppercase;letter-spacing:0.2vmin}\n' +
+'blockquote{font-style:italic;font-size:2.5vmin;line-height:1.45;color:var(--jet);\n' +
+'  border-left:0.6vmin solid var(--pulpred);padding-left:3%;margin-bottom:3.5%;\n' +
+'  flex:none;overflow-wrap:anywhere}\n' +
+'p.cap{font-size:1.95vmin;line-height:1.5;color:var(--slate);flex:none;overflow-wrap:anywhere}\n' +
+'.foot{background:var(--chrome);border-top:0.35vmin solid var(--jet);padding:0.9vmin 3.5%;\n' +
+'  display:flex;justify-content:space-between;gap:2%;color:var(--jet);\n' +
+'  font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-weight:600;\n' +
+'  font-size:1.4vmin;letter-spacing:0.2vmin;text-transform:uppercase}\n' +
+'@media print{html{scroll-snap-type:none}body{background:#fff}\n' +
+'  .slide{min-height:auto;padding:0;page-break-after:always}\n' +
+'  .card{width:100%;border:none;box-shadow:none}}\n' +
+'</style>\n</head>\n<body>\n' +
+body.replace(/<section class="slide" id="s(\d+)">/g, '<section class="slide" id="s$1"><div class="card">')
+    .replace(/<\/section>/g, '</div></section>') +
+'<script>\n' +
+'/* Text is sized against the card, then stepped down until it stops\n' +
+'   overflowing, so a long answer shrinks instead of disappearing. */\n' +
+'function fitCard(card){\n' +
+'  var h1=card.querySelector("h1"), left=card.querySelector(".left"),\n' +
+'      bq=card.querySelector("blockquote"), cap=card.querySelector("p.cap");\n' +
+'  var W=card.clientWidth, H=card.clientHeight;\n' +
+'  if(!W||!H) return;\n' +
+'  if(h1){\n' +
+'    var tb=W*0.055, ts=1, g=0;\n' +
+'    h1.style.fontSize=tb+"px";\n' +
+'    while(ts>0.42 && h1.scrollHeight>H*0.30 && g++<40){ ts-=0.05; h1.style.fontSize=(tb*ts)+"px"; }\n' +
+'  }\n' +
+'  if(!left) return;\n' +
+'  var qb=W*0.028, cb=W*0.021, s=1, n=0;\n' +
+'  function put(v){ if(bq) bq.style.fontSize=(qb*v)+"px"; if(cap) cap.style.fontSize=(cb*v)+"px"; }\n' +
+'  put(1);\n' +
+'  while(s>0.30 && left.scrollHeight>left.clientHeight+1 && n++<70){ s-=0.03; put(s); }\n' +
+'}\n' +
+'function fitAll(){ [].forEach.call(document.querySelectorAll(".card"), fitCard); }\n' +
+'window.addEventListener("load", fitAll);\n' +
+'window.addEventListener("resize", function(){ clearTimeout(window.__ft); window.__ft=setTimeout(fitAll,120); });\n' +
+'if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);\n' +
+'fitAll();\n' +
+'document.addEventListener("keydown",function(ev){\n' +
+'  var ss=[].slice.call(document.querySelectorAll(".slide"));\n' +
+'  if(!ss.length)return;\n' +
+'  var mid=window.innerHeight/2;\n' +
+'  var i=ss.findIndex(function(s){var r=s.getBoundingClientRect();return r.top<=mid&&r.bottom>=mid;});\n' +
+'  if(i<0)i=0;\n' +
+'  if(ev.key==="ArrowRight"||ev.key==="ArrowDown"||ev.key===" "){ev.preventDefault();\n' +
+'    if(ss[i+1])ss[i+1].scrollIntoView();}\n' +
+'  if(ev.key==="ArrowLeft"||ev.key==="ArrowUp"){ev.preventDefault();\n' +
+'    if(ss[i-1])ss[i-1].scrollIntoView();}\n' +
+'});\n' +
+'<\/script>\n' +
+'</body>\n</html>\n';
+
+  download(new Blob([doc],{type:"text/html;charset=utf-8"}), fileStem()+".html");
+}
+
+/* ── every answer, as one self-contained HTML page ────────────────── */
+function exportAnswersHtml(){
+  if (!needSlot()) return;
+
+  function e(t){ return String(t==null?"":t)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function para(t){
+    return String(t==null?"":t).split(/\n{2,}/).map(function(b){
+      return "<p>" + e(b).replace(/\n/g,"<br/>") + "</p>";
+    }).join("");
+  }
+
+  var d = state.who.date
+    ? new Date(state.who.date+"T00:00:00").toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})
+    : "\u2014";
+
+  var total = 0, answered = 0, words = 0;
+  var lastGroup = null;
+
+  var sheets = state.config.items.map(function(item, i){
+    var out = "";
+    var g = item.group || null;
+    if (g && g !== lastGroup){
+      var gn = (state.config.groupNotes || {})[g] || "";
+      out += '<div class="groupmark"><span>' + e(g) + '</span></div>' +
+             (gn ? '<p class="group-sub">' + e(gn) + '</p>' : '');
+    }
+    lastGroup = g;
+
+    var ls = (item.links && item.links.length) ? item.links
+           : (item.url ? [{label:"Open the item", url:item.url}] : []);
+    var links = ls.map(function(l){
+      return '<a href="' + e(l.url) + '" target="_blank" rel="noopener">' + e(l.label) + ' \u2197</a>';
+    }).join("");
+
+    var qs = keysFor(item).map(function(k){
+      var v = getAns(i,k).trim();
+      total++;
+      if (v){ answered++; words += v.split(/\s+/).length; }
+      return '<div class="q' + (v ? ' filled' : '') + '">' +
+        '<div class="q-key">' + e(k) + '</div>' +
+        '<p class="q-prompt">' + e(promptFor(item,k)).replace(/\n/g,"<br/>") + '</p>' +
+        '<div class="answer">' + (v ? para(v) : '<p class="empty">No answer written.</p>') + '</div>' +
+        (v ? '<div class="q-count">' + v.split(/\s+/).length + ' words</div>' : '') +
+      '</div>';
+    }).join("");
+
+    return out +
+      '<section class="sheet">' +
+        '<div class="sheet-hd">' +
+          '<span class="sheet-no">' + String(i+1).padStart(2,"0") + '</span>' +
+          '<span class="sheet-titles">' +
+            '<span class="sheet-kind">' + e(item.kind||"Item") + '</span>' +
+            '<span class="sheet-title">' + e(item.title) + '</span>' +
+          '</span>' +
+        '</div>' +
+        '<div class="sheet-body">' +
+          (links ? '<div class="viewrow">' + links + '</div>' : '') +
+          (item.note ? '<p class="itemnote">' + e(item.note) + '</p>' : '') +
+          qs +
+        '</div>' +
+      '</section>';
+  }).join("");
+
+  var slides = state.slides.filter(function(sl){
+    return sl.title || sl.quote || sl.caption || sl.img;
+  }).map(function(sl, i){
+    return '<section class="sheet">' +
+      '<div class="sheet-hd">' +
+        '<span class="sheet-no">S' + (i+1) + '</span>' +
+        '<span class="sheet-titles">' +
+          '<span class="sheet-kind">Slide</span>' +
+          '<span class="sheet-title">' + e(sl.title || "Untitled") + '</span>' +
+        '</span>' +
+      '</div>' +
+      '<div class="sheet-body">' +
+        (sl.quote ? '<blockquote>' + e(sl.quote) + '</blockquote>' : '') +
+        (sl.caption ? '<p class="itemnote">' + e(sl.caption) + '</p>' : '') +
+        (sl.img ? '<img class="slideimg" src="' + sl.img + '" alt="Image from slide ' + (i+1) + '"/>' : '') +
+      '</div>' +
+    '</section>';
+  }).join("");
+
+  var doc =
+'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8"/>\n' +
+'<meta name="viewport" content="width=device-width, initial-scale=1"/>\n' +
+'<title>' + e(state.who.name || "Answers") + ' \u2014 The Witch and the Chameleon</title>\n' +
+'<link rel="preconnect" href="https://fonts.googleapis.com"/>\n' +
+'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>\n' +
+'<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Bitter:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>\n' +
+'<style>\n' +
+':root{\n' +
+'  --cobalt:' + PALETTE.cobalt + ';--cobalt-deep:' + PALETTE.cobaltDeep + ';\n' +
+'  --chrome:' + PALETTE.chrome + ';--pulpred:' + PALETTE.pulpred + ';\n' +
+'  --mars:' + PALETTE.mars + ';--jet:' + PALETTE.jet + ';--rule:' + PALETTE.rule + ';\n' +
+'  --cream:' + PALETTE.cream + ';--pulp-deep:' + PALETTE.pulpDeep + ';--slate:' + PALETTE.slate + ';\n' +
+'}\n' +
+'*{box-sizing:border-box;margin:0;padding:0}\n' +
+'body{background:var(--cream);color:var(--jet);font-family:"Bitter",Georgia,serif;line-height:1.6}\n' +
+'header{background:var(--cobalt);border-bottom:8px solid var(--jet);padding:26px 20px}\n' +
+'.masthead{max-width:820px;margin:0 auto;color:#fff}\n' +
+'h1{font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:700;font-size:clamp(34px,8vw,64px);\n' +
+'  line-height:.9;text-transform:uppercase;color:#fff;\n' +
+'  text-shadow:-2px -2px 0 var(--jet),2px -2px 0 var(--jet),-2px 2px 0 var(--jet),2px 2px 0 var(--jet),5px 6px 0 var(--jet)}\n' +
+'.mast-mod{font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:13px;\n' +
+'  letter-spacing:2px;text-transform:uppercase;color:var(--chrome);margin-top:12px}\n' +
+'.mast-who{font-size:14px;color:#fff;margin-top:6px}\n' +
+'.stripes{height:20px;border:3px solid var(--jet);margin-top:16px;\n' +
+'  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px)}\n' +
+'main{max-width:820px;margin:0 auto;padding:26px 20px 80px}\n' +
+'.tally{border:3px solid var(--jet);background:var(--chrome);padding:12px 16px;margin-bottom:26px;\n' +
+'  font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:12px;\n' +
+'  letter-spacing:1.5px;text-transform:uppercase;color:var(--jet)}\n' +
+'.groupmark{display:flex;align-items:center;gap:12px;margin:34px 0 10px;\n' +
+'  font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:700;font-size:12px;\n' +
+'  letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}\n' +
+'.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}\n' +
+'.group-sub{font-size:12.5px;color:var(--slate);text-align:center;margin-bottom:14px}\n' +
+'.sheet{border:3px solid var(--jet);background:#fff;margin-bottom:20px;box-shadow:5px 5px 0 var(--cobalt)}\n' +
+'.sheet-hd{display:flex;align-items:center;gap:14px;background:var(--cobalt);\n' +
+'  border-bottom:3px solid var(--jet);color:#fff}\n' +
+'.sheet-no{font-family:"Space Grotesk",Helvetica,sans-serif;font-size:26px;line-height:1;\n' +
+'  color:var(--chrome);background:var(--jet);padding:15px 11px;min-width:54px;text-align:center}\n' +
+'.sheet-titles{padding:10px 14px 10px 0}\n' +
+'.sheet-kind{display:block;font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;\n' +
+'  font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--chrome)}\n' +
+'.sheet-title{display:block;font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:17px}\n' +
+'.sheet-body{padding:18px 16px 20px}\n' +
+'.viewrow{display:flex;gap:10px;flex-wrap:wrap;border:3px solid var(--jet);background:var(--chrome);\n' +
+'  padding:11px 13px;margin-bottom:18px}\n' +
+'.viewrow a{display:inline-block;background:var(--pulpred);color:#fff;text-decoration:none;\n' +
+'  padding:8px 15px;border:3px solid var(--jet);font-family:"Space Grotesk",Helvetica,sans-serif;\n' +
+'  font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}\n' +
+'.itemnote{font-size:13px;color:var(--slate);background:var(--cream);border-left:6px solid var(--cobalt);\n' +
+'  padding:11px 14px;margin-bottom:18px}\n' +
+'.q{margin-bottom:20px;border-left:6px solid var(--cobalt);padding-left:14px}\n' +
+'.q.filled{border-left-color:var(--pulpred)}\n' +
+'.q-key{font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:17px;\n' +
+'  letter-spacing:.5px;text-transform:uppercase;color:var(--cobalt)}\n' +
+'.q.filled .q-key{color:var(--pulpred)}\n' +
+'.q-prompt{font-size:13px;line-height:1.55;color:var(--slate);margin:5px 0 10px}\n' +
+'.answer{border:3px solid var(--rule);background:#fff;padding:12px 14px;font-size:15px}\n' +
+'.answer p+p{margin-top:10px}\n' +
+'.answer .empty{color:var(--rule);font-style:italic}\n' +
+'.q-count{font-family:"Space Grotesk",Helvetica,sans-serif;font-size:10px;letter-spacing:1px;\n' +
+'  text-transform:uppercase;color:var(--rule);text-align:right;margin-top:4px}\n' +
+'blockquote{font-style:italic;font-size:16px;border-left:6px solid var(--pulpred);\n' +
+'  padding-left:14px;margin-bottom:16px}\n' +
+'.slideimg{max-width:100%;border:3px solid var(--jet);display:block;margin-top:10px}\n' +
+'footer{background:var(--chrome);border-top:5px solid var(--jet);padding:14px 20px;text-align:center;\n' +
+'  font-family:"Space Grotesk",Helvetica,sans-serif;font-weight:600;font-size:11px;\n' +
+'  letter-spacing:2px;text-transform:uppercase;color:var(--jet)}\n' +
+'@media print{body{background:#fff}.sheet{box-shadow:none;break-inside:avoid}\n' +
+'  header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}\n' +
+'</style>\n</head>\n<body>\n' +
+'<header><div class="masthead">' +
+'<h1>The Witch and the Chameleon</h1>' +
+'<div class="mast-mod">' + e(state.config.module) + '</div>' +
+'<div class="mast-who">' + e(state.who.name || "\u2014") + ' \u00b7 ' + e(state.who.section || "\u2014") + ' \u00b7 ' + e(d) +
+  (state.who.slot ? ' \u00b7 artist_' + e(state.who.slot) : '') + '</div>' +
+'<div class="stripes"></div>' +
+'</div></header>\n<main>\n' +
+'<div class="tally">' + answered + ' of ' + total + ' questions answered \u00b7 ' + words + ' words in total</div>\n' +
+sheets +
+(slides ? '<div class="groupmark"><span>Slides</span></div>' + slides : '') +
+'</main>\n' +
+'<footer>The Witch and the Chameleon \u00b7 ' + e(state.config.module) + '</footer>\n' +
+'</body>\n</html>\n';
+
+  download(new Blob([doc],{type:"text/html;charset=utf-8"}), fileStem()+"_answers.html");
+}
+
+/* ── editor ──────────────────────────────────────────────────────── */
+function openPw(){
+  $("pwInput").value=""; $("pwErr").style.display="none";
+  $("pwOverlay").classList.add("open");
+  setTimeout(function(){ $("pwInput").focus(); },80);
+}
+function closePw(){ $("pwOverlay").classList.remove("open"); }
+function tryPw(){
+  if ($("pwInput").value === DEFAULTS.password){ closePw(); openEditor(); }
+  else { $("pwErr").style.display="block"; $("pwInput").value=""; $("pwInput").focus(); }
+}
+function openEditor(){
+  $("edModule").value = state.config.module;
+  $("edVol").value = state.config.volume;
+  $("edFolder").value = state.config.folder || "week-01";
+  renderEdRows();
+  renderEdPrompts();
+  $("editor").classList.add("open");
+  $("editor").scrollIntoView({block:"start"});
+}
+function edRow(title,kind,url,src){
+  var r = document.createElement("div");
+  r.className = "ed-row";
+  r._src = src || null;
+  r.innerHTML =
+    '<input class="t" type="text" placeholder="Title" value="'+esc(title)+'" aria-label="Item title"/>' +
+    '<select aria-label="Item kind"><option>Reading</option><option>Watch</option><option>Listen</option><option>Look at</option><option>Write</option></select>' +
+    '<input class="u" type="text" placeholder="https://…" value="'+esc(url)+'" aria-label="Item link"/>' +
+    '<button class="ed-x" type="button">✕</button>';
+  r.querySelector("select").value = kind || "Reading";
+  r.querySelector(".ed-x").addEventListener("click", function(){ r.remove(); });
+  return r;
+}
+function renderEdRows(){
+  var list = $("edList"); list.innerHTML="";
+  state.config.items.forEach(function(it){ list.appendChild(edRow(it.title,it.kind,it.url,it)); });
+}
+function renderEdPrompts(){
+  var box = $("edPrompts"); box.innerHTML="";
+  KEYS.forEach(function(k){
+    var l = document.createElement("label"); l.textContent = k + " prompt"; l.setAttribute("for","p-"+k);
+    var t = document.createElement("textarea"); t.id = "p-"+k; t.value = state.config.prompts[k]||"";
+    box.appendChild(l); box.appendChild(t);
+  });
+}
+function applyEditor(){
+  var rows = $("edList").querySelectorAll(".ed-row");
+  var items = [];
+  rows.forEach(function(r){
+    var ins = r.querySelectorAll("input");
+    var t = ins[0].value.trim(), u = ins[1].value.trim(), k = r.querySelector("select").value;
+    if (!t) return;
+    var next = {title:t, kind:k, url:u};
+    if (r._src && r._src.group) next.group = r._src.group;
+    if (r._src && r._src.prompts) next.prompts = r._src.prompts;
+    if (r._src && r._src.keys) next.keys = r._src.keys;
+    if (r._src && r._src.links) next.links = r._src.links;
+    if (r._src && r._src.note) next.note = r._src.note;
+    items.push(next);
+  });
+  if (!items.length){ alert("Add at least one item before applying."); return; }
+  state.config.items = items;
+  state.config.module = $("edModule").value.trim() || DEFAULTS.module;
+  state.config.volume = $("edVol").value.trim() || DEFAULTS.volume;
+  state.config.folder = $("edFolder").value.trim() || DEFAULTS.folder;
+  KEYS.forEach(function(k){ state.config.prompts[k] = $("p-"+k).value.trim() || DEFAULTS.prompts[k]; });
+  save();
+  paintHeader();
+  paintCover();
+  paintTarget();
+  renderSheets();
+  refreshSlide();
+  $("editor").classList.remove("open");
+}
+
+function paintCover(){
+  var ol = $("coverList");
+  if (!ol) return;
+  ol.innerHTML = "";
+var tag = "---";
+  state.config.items.forEach(function(item,i){
+    if (i){
+      var sep = document.createElement("li");
+      sep.className = "sep";
+      sep.textContent = "\u2014 " + tag + " \u2014";
+      ol.appendChild(sep);
+    }
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="ct">'+esc(item.title)+'</span><br/><span class="ck">'+esc(item.kind||"Item")+'</span>';
+    ol.appendChild(li);
+  });
+  fillGlyphs();
+}
+
+function paintHeader(){
+  paintTarget();
+  $("mastVol").textContent = state.config.volume;
+  $("mastModule").textContent = state.config.module;
+  document.title = "THE WITCH AND THE CHAMELEON — " + state.config.module;
+}
+
+/* ── the glyph field ─────────────────────────────────────────────────
+   Engineering and mathematics notation poured into whatever space the four
+   panels leave over. It keeps adding symbols until the frame is full, so the
+   block is filled edge to edge at any window size or item count. The layer is
+   absolutely placed inside the frame, so pouring more in can never push the
+   grid taller and start a loop. */
+var GLYPHS = (
+  "\u03b1\u03b2\u03b3\u03b4\u03b5\u03b6\u03b7\u03b8\u03ba\u03bb\u03bc\u03bd\u03be\u03c0\u03c1\u03c3\u03c4\u03c5\u03c6\u03c7\u03c8\u03c9" +
+  "\u0393\u0394\u0398\u039b\u039e\u03a0\u03a3\u03a6\u03a8\u03a9" +
+  "\u2211\u220f\u222b\u222c\u222e\u2202\u2207\u221a\u221b\u221e\u2248\u2245\u2261\u2260\u2264\u2265\u226a\u226b" +
+  "\u00b1\u2213\u00d7\u00f7\u22c5\u2218\u2295\u2297\u2296\u2299\u22a5\u2225\u2220\u2221\u2222" +
+  "\u25b3\u25a1\u25c7\u2234\u2235\u2200\u2203\u2204\u2208\u2209\u2282\u2283\u2286\u2287\u222a\u2229\u2205" +
+  "\u221d\u223c\u2243\u21d2\u21d4\u2192\u2190\u2194\u21a6\u21c4\u21cc" +
+  "\u2308\u2309\u230a\u230b\u27e8\u27e9\u2032\u2033\u2034\u00b0\u2030\u2135\u210f\u2113" +
+  "\u2300\u223f\u22a4\u22a3\u22a2\u00ac\u2310\u2312\u2313\u25b7\u25c1\u22c8\u2263\u2242" +
+  "\u2126\u00b5\u212b\u2211\u222b\u2202\u2207"
+).split("");
+
+function fillGlyphs(){
+  var field = $("glyphField");
+  if (!field) return;
+  var frame = field.parentNode;
+  if (!frame || !frame.clientHeight) return;
+
+  field.innerHTML = "";
+  var accents = ["", "", "", "a", "", "b", "", "", "c", ""];
+  var i = 0, guard = 0, html = "";
+  /* pour in batches, checking after each whether the frame has filled */
+  while (guard++ < 400){
+    var batch = "";
+    for (var n = 0; n < 60; n++){
+      var g = GLYPHS[(i * 7 + (i % 13) * 3) % GLYPHS.length];
+      var cls = accents[i % accents.length];
+      batch += cls ? '<span class="' + cls + '">' + g + "</span> " : g + " ";
+      i++;
+    }
+    html += batch;
+    field.innerHTML = html;
+    if (field.scrollHeight > field.clientHeight + 24) break;
+  }
+}
+
+/* ── wiring ──────────────────────────────────────────────────────── */
+function bindWho(id, key){
+  var el = $(id);
+  el.value = state.who[key] || "";
+  el.addEventListener("input", function(){
+    state.who[key] = el.value;
+    refreshSlide();
+    clearTimeout(typeTimer);
+    typeTimer = setTimeout(save, 500);
+  });
+}
+
+function bindSlide(id, key){
+  var el = $(id);
+  el.value = cur()[key] || "";
+  el.addEventListener("input", function(){
+    cur()[key] = el.value;
+    refreshSlide();
+    clearTimeout(typeTimer);
+    typeTimer = setTimeout(save, 500);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  if (!state.who.date) state.who.date = new Date().toISOString().slice(0,10);
+
+  bindWho("whoName","name"); bindWho("whoSection","section"); bindWho("whoDate","date");
+
+  var slotSel = $("whoSlot");
+  for (var sn = 1; sn <= 25; sn++){
+    var o = document.createElement("option");
+    o.value = String(sn);
+    o.textContent = "artist_" + sn;
+    slotSel.appendChild(o);
+  }
+  slotSel.value = state.who.slot || "";
+  slotSel.addEventListener("change", function(){
+    state.who.slot = this.value;
+    paintTarget();
+    save();
+  });
+  paintTarget();
+  bindSlide("slTitle","title"); bindSlide("slQuote","quote"); bindSlide("slCaption","caption");
+
+  $("slPull").addEventListener("change", function(){
+    if (!this.value) return;
+    $("slQuote").value = this.value;
+    cur().quote = this.value;
+    refreshSlide(); save();
+  });
+
+  $("slImg").addEventListener("change", function(){
+    var f = this.files && this.files[0];
+    if (!f) return;
+    shrinkImage(f, 1100, function(dataUrl){
+      if (!dataUrl){ alert("That file could not be read as an image. Try a JPG or PNG."); return; }
+      cur().img = dataUrl;
+      refreshSlide(); save();
+    });
+  });
+  $("btnClearImg").addEventListener("click", function(){
+    cur().img = ""; $("slImg").value = ""; refreshSlide(); save();
+  });
+
+  $("btnTxt").addEventListener("click", exportTxt);
+  $("btnAnsHtml").addEventListener("click", exportAnswersHtml);
+  $("btnPdf").addEventListener("click", exportNotesPdf);
+  $("btnAddSlide").addEventListener("click", addSlide);
+  $("btnDelSlide").addEventListener("click", delSlide);
+  $("btnSlide").addEventListener("click", exportSlidePdf);
+  $("btnHtml").addEventListener("click", exportSlideHtml);
+
+  $("btnEd").addEventListener("click", openPw);
+  $("pwCancel").addEventListener("click", closePw);
+  $("pwGo").addEventListener("click", tryPw);
+  $("pwInput").addEventListener("keydown", function(e){ if (e.key==="Enter") tryPw(); });
+  $("pwOverlay").addEventListener("click", function(e){ if (e.target===this) closePw(); });
+  $("edClose").addEventListener("click", function(){ $("editor").classList.remove("open"); });
+  $("edAdd").addEventListener("click", function(){ $("edList").appendChild(edRow("","Reading","",null)); });
+  $("edApply").addEventListener("click", applyEditor);
+  $("edReset").addEventListener("click", function(){
+    KEYS.forEach(function(k){ $("p-"+k).value = DEFAULTS.prompts[k]; });
+  });
+
+  document.addEventListener("keydown", function(e){
+    if (e.key==="Escape"){ closePw(); }
+  });
+
+  var fitTimer;
+  window.addEventListener("resize", function(){
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(function(){ fitPreview(); fillGlyphs(); }, 120);
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPreview);
+
+  paintHeader();
+  paintCover();
+  fillGlyphs();
+  renderSheets();
+  paintTabs();
+  refreshSlide();
+  toggleSheet(0);
+});
+</script>
+</body>
+</html>
