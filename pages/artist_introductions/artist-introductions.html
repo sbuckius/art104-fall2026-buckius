@@ -97,6 +97,8 @@ main{flex:1;width:100%;max-width:1180px;margin:0 auto;padding:0 22px 80px}
   font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;
   letter-spacing:1px;background:var(--ink);color:var(--mint);padding:5px 10px}
 .slot.filled .no{background:var(--pink-deep);color:#fff}
+.slot.linked .no{background:var(--teal);color:#fff}
+.slot.linked .no::after{content:' ↗'}
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:8px;text-align:center;padding:20px 14px;width:100%;height:100%}
 .empty .waiting{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;
@@ -117,6 +119,9 @@ main{flex:1;width:100%;max-width:1180px;margin:0 auto;padding:0 22px 80px}
   border:3px solid var(--ink);background:var(--mint);color:var(--ink);
   box-shadow:4px 4px 0 var(--ink)}
 .lb-btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.lb-btn.lb-visit{text-decoration:none;display:inline-block;
+  background:var(--pink);color:#fff}
+.lb-btn.lb-visit:hover{background:var(--pink-deep)}
 
 footer{text-align:center;padding:26px 20px;color:var(--cream);
   font-family:'Space Mono',monospace;font-size:12px;
@@ -142,7 +147,7 @@ footer a:hover{text-decoration:underline}
 <header>
   <p class="eyebrow">ART 104 · Fall 2026</p>
   <h1><span class="l">Artist</span><span class="l">Introductions</span></h1>
-  <p class="tagline">Twenty five artists, one image each.</p>
+  <p class="tagline">Twenty six artists, one image each.</p>
 </header>
 
 <main>
@@ -161,7 +166,7 @@ footer a:hover{text-decoration:underline}
 
   <div class="tally">
     <span>The page so far</span>
-    <span><b id="count">0</b> of 25 received</span>
+    <span><b id="count">0</b> of <span id="total">26</span> received</span>
   </div>
   <div class="track"><div class="fill" id="fill"></div></div>
 
@@ -176,6 +181,7 @@ footer a:hover{text-decoration:underline}
   <img id="lbImg" alt=""/>
   <div class="lb-bar">
     <span id="lbName"></span>
+    <a class="lb-btn lb-visit" id="lbVisit" href="#" target="_blank" rel="noopener noreferrer">Visit site</a>
     <button class="lb-btn" id="lbPrev" type="button">Previous</button>
     <button class="lb-btn" id="lbNext" type="button">Next</button>
     <button class="lb-btn" id="lbClose" type="button">Close</button>
@@ -188,15 +194,49 @@ footer a:hover{text-decoration:underline}
    ═══════════════════════════════════════════════════════════════════ */
 
 // How many slots the wall shows.
-const COUNT = 25;
+const COUNT = 26;
 
 // The filename each student uses. {n} becomes their number.
 const PATTERN = "images/artist_{n}_introduction.png";
+
+// Where each artist's image links to.
+// Paste each artist's url between the quotes on their line.
+// Leave a line empty ("") and that artist simply gets no Visit site button.
+const LINKS = {
+   1: "https://yisiai1009.github.io/yisiai-art/Portfolio",
+   2: "https://andreaarellanogaff0a.myportfolio.com",
+   3: "https://amybet-506.github.io",
+   4: "https://kohsinchang.myportfolio.com/work",
+   5: "https://air-conditioning.github.io",
+   6: "https://shisoco.org",
+   7: "https://oliviaflorence968.wixsite.com/my-site-1",
+   8: "",
+   9: "https://ashernandez3.github.io/Index.html",
+  10: "",
+  11: "https://alexscottibarra.myportfolio.com",
+  12: "",
+  13: "https://shelbymatthews.com",
+  14: "https://lizbehtperezrodrig.wixsite.com/bfaportfolio",
+  15: "",
+  16: "https://amity-bouzu.github.io",
+  17: "https://summerspellwitch.github.io/digital.art.portfolio",
+  18: "https://emilyrojasmartinez-coder.github.io/ART-109-emily/tutorials/final-portflio/index.html",
+  19: "https://www.taylorsmithdesigns.com",
+  20: "https://zoeesowders.myportfolio.com",
+  21: "https://codepen.io/elsstajq-the-vuer/pen/VYaBGZj",
+  22: "",
+  23: "https://lilywilberportfolio.weebly.com/my-work.html",
+  24: "https://www.chloeyap.com",
+  25: "https://sarahbuckius.com",
+  26: "https://anaarellano0.github.io/index.html"
+};
 
 /* ═══════════════════════════════════════════════════════════════════ */
 
 const wall = document.getElementById("wall");
 const filled = [];
+
+document.getElementById("total").textContent = COUNT;
 
 for (let i = 1; i <= COUNT; i++) {
   const src = PATTERN.replace("{n}", i);
@@ -215,6 +255,7 @@ for (let i = 1; i <= COUNT; i++) {
   const probe = new Image();
   probe.onload = () => {
     slot.classList.add("filled");
+    if (LINKS[i]) slot.classList.add("linked");
     slot.tabIndex = 0;
     slot.setAttribute("role", "button");
     slot.setAttribute("aria-label", "Artist " + i + ", open larger");
@@ -240,6 +281,7 @@ tally();
 const lb = document.getElementById("lb");
 const lbImg = document.getElementById("lbImg");
 const lbName = document.getElementById("lbName");
+const lbVisit = document.getElementById("lbVisit");
 let at = 0;
 
 function show(n) {
@@ -256,6 +298,16 @@ function paint() {
   lbImg.src = f.src;
   lbImg.alt = "Artist introduction " + f.n;
   lbName.textContent = f.file;
+
+  const url = LINKS[f.n];
+  if (url) {
+    lbVisit.href = url;
+    lbVisit.style.display = "";
+    lbVisit.setAttribute("aria-label", "Visit artist " + f.n + "'s site");
+  } else {
+    lbVisit.removeAttribute("href");
+    lbVisit.style.display = "none";
+  }
 }
 
 function step(d) {
