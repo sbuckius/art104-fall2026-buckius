@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Presentation Day Boards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  /* Same palette, arranged a third way. Deep grass green has come forward
+     onto the big surfaces, mars magenta has moved to every hard drop
+     shadow, teal now does the accents and buttons, and pink has taken
+     the small caps labels. */
+  --cobalt:#4d661a;          /* deep grass green, now the surface color */
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;          /* mint, still the light mark on dark */
+  --chrome-deep:#a01e5c;     /* mars magenta, now every drop shadow */
+  --pulpred:#2f7d7d;         /* teal, now the accent */
+  --mars:#d63d84;            /* pink, now the label color */
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#a8c9c9;            /* pale teal on the hairlines */
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+  --sea:#7db8c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--jet);
+  font-family:'IBM Plex Sans',sans-serif;
+  min-height:100vh;
+}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    linear-gradient(160deg,rgba(139,168,56,.15) 0%,rgba(214,61,132,.11) 50%,rgba(47,125,125,.14) 100%),
+    var(--cream);
+}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1320px;margin:0 auto;padding:14px 18px 0}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px;
+}
+.stripes{
+  height:22px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px);
+}
+h1.logo .the{
+  display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  font-size:clamp(11px,2vw,20px);letter-spacing:8px;
+  color:var(--chrome);margin-bottom:2px;
+}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(32px,8.6vw,88px);
+  line-height:.86;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:10px 0 4px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{
+  display:flex;align-items:center;gap:14px;
+  border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+  padding:9px 0;margin-top:12px;
+}
+.roundel{
+  width:56px;height:56px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);
+  box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px;
+}
+.cover-tag{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;
+  color:#fff;line-height:1.2;flex:1;min-width:0;
+}
+.cover-kicker{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block;
+}
+.cover-foot{
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:9px 0 12px;font-family:'Bitter',serif;font-size:12.5px;color:#e9f2df;line-height:1.5;
+}
+.cover-foot b{color:var(--chrome);font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:11px}
+
+/* ══ the sheet ══════════════════════════════════════════════════════ */
+main{max-width:1320px;margin:0 auto;padding:22px 18px 150px}
+
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+/* ══ the jump strip ═════════════════════════════════════════════════ */
+.jumpbox{border:3px solid var(--jet);background:var(--glass);padding:10px 12px;margin-bottom:14px;box-shadow:5px 5px 0 var(--chrome-deep)}
+.jump-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--mars);margin-bottom:8px}
+.jump{display:flex;gap:5px;flex-wrap:wrap}
+.jump button{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:11px;
+  width:34px;height:32px;cursor:pointer;border:2px solid var(--jet);
+  background:#fff;color:var(--jet);padding:0;
+}
+.jump button:hover{background:var(--chrome)}
+.jump button.done{background:var(--pulpred);color:#fff}
+.jump button.empty{border-style:dashed;color:#8a97a0}
+.jump-key{font-family:'Space Grotesk',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:#56646d;margin-top:8px}
+.jump-key i{display:inline-block;width:11px;height:11px;border:2px solid var(--jet);background:var(--pulpred);vertical-align:-2px;margin-right:4px}
+
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-bar{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.sheet-bar .arm{color:var(--chrome)}
+.dayprompt{
+  font-family:'Bitter',serif;font-style:italic;font-size:14px;line-height:1.55;color:var(--jet);
+  border-bottom:3px solid var(--jet);background:var(--pulp-pale);padding:11px 14px;
+}
+
+/* ══ the boards ═════════════════════════════════════════════════════ */
+.boardgrid{
+  display:grid;gap:13px;padding:14px;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+}
+.board{
+  --bg:#fff; --ink:var(--jet); --sh:var(--jet);
+  background:var(--bg);border:4px solid var(--jet);box-shadow:5px 5px 0 var(--sh);
+  display:flex;flex-direction:column;min-width:0;scroll-margin-top:14px;
+}
+/* The same six tints, in a third arrangement, cycling down all
+   twenty six boards so no two neighbours match. */
+.board.p1{--bg:#eaf3cd;--ink:#4d661a;--sh:#8ba838}
+.board.p2{--bg:#ffe1ef;--ink:#a01e5c;--sh:#d63d84}
+.board.p3{--bg:#e2e6e8;--ink:#14202a;--sh:#5c6b74}
+.board.p4{--bg:#faead0;--ink:#8a5a16;--sh:#c9922f}
+.board.p5{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
+.board.p6{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
+
+.board-hd{
+  display:flex;justify-content:space-between;align-items:center;gap:9px;
+  border-bottom:3px solid var(--jet);padding:8px 11px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;color:#fff;background:var(--ink);
+}
+.board-hd .no{
+  font-family:'Space Mono',monospace;font-size:11px;background:#fff;color:var(--jet);
+  border:2px solid var(--jet);padding:1px 6px;flex:none;
+}
+.board-hd .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board-hd .count{color:var(--chrome);font-weight:600;font-size:9.5px;letter-spacing:1.5px;flex:none}
+.board.mine .board-hd{box-shadow:inset 0 -4px 0 var(--chrome)}
+.board-posts{
+  flex:1;display:flex;flex-direction:column;gap:7px;
+  padding:11px;max-height:260px;overflow-y:auto;min-height:74px;
+}
+.post{
+  background:#fff;border:2px solid var(--jet);border-left:6px solid var(--ink);
+  box-shadow:3px 3px 0 rgba(20,32,42,.16);
+  font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);padding:7px 10px;
+}
+.post.self{border-left-color:var(--pulpred);background:#f4fbfa}
+.post .who{
+  display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-bottom:3px;
+}
+.post.self .who{color:var(--pulpred)}
+.post-empty{
+  font-family:'Space Grotesk',sans-serif;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;
+  color:#6c7a83;text-align:center;padding:14px 8px;border:3px dashed rgba(20,32,42,.3);
+}
+.board-foot{padding:0 11px 11px}
+.board-foot .btn{width:100%;padding:8px;font-size:10px}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:11px 18px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+#press .pressmsg{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#fff;flex:none}
+#press .pressmsg b{color:var(--chrome)}
+#pPick{
+  flex:1;min-width:170px;max-width:280px;
+  border:3px solid var(--jet);background:var(--chrome);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--jet);padding:10px;outline:none;cursor:pointer;
+}
+#pPick:focus{box-shadow:0 0 0 3px var(--pulpred)}
+#wordInput{
+  flex:2;min-width:200px;border:3px solid var(--jet);background:#fff;
+  font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:10px 12px;outline:none;
+}
+#wordInput:focus{border-color:var(--pulpred);box-shadow:0 0 0 3px var(--chrome)}
+.press-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .btn{padding:10px 15px;font-size:11px}
+#whoTag{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--jet);background:var(--chrome);border:3px solid var(--jet);
+  padding:9px 11px;cursor:pointer;
+}
+#whoTag:hover{background:#fff}
+
+/* ══ posted roundel ═════════════════════════════════════════════════ */
+#saveStamp{
+  position:fixed;right:18px;bottom:100px;z-index:300;
+  width:74px;height:74px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;text-align:center;padding:6px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.15;
+  opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none;
+}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ bars ═══════════════════════════════════════════════════════════ */
+.netbar{
+  display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);
+  padding:9px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.6;
+}
+.netbar.on{display:flex}
+.netbar .why{font-family:'Bitter',serif;font-size:12px;letter-spacing:0;text-transform:none;color:#f8e4ee;display:block;margin-top:5px;max-width:70ch}
+.netbar .btn{padding:7px 13px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.previewbar{display:none;background:var(--pulpred);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.previewbar.on{display:flex}
+.previewbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.sheet-frame.previewing{box-shadow:7px 7px 0 var(--mars)}
+
+/* ══ instructor desk ════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--chrome-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:14px 0 6px}
+.editor input[type=text],.editor textarea,.editor select{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);padding:10px 12px;outline:none}
+.editor textarea{resize:vertical;min-height:72px}
+.editor input:focus,.editor textarea:focus,.editor select:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.rosternote{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--pulpred);margin-top:6px}
+
+.archive{margin-top:22px;border:3px solid var(--jet);background:var(--glass);padding:14px 16px 16px;box-shadow:5px 5px 0 var(--chrome-deep)}
+.archive-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mars);border-bottom:2px solid var(--jet);padding-bottom:8px;margin-bottom:11px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 13px;cursor:pointer;border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip .dot{color:var(--chrome)}
+
+.exportbox{margin-top:22px;border:4px solid var(--jet);background:#fff;box-shadow:7px 7px 0 var(--pulpred);padding:16px 18px 18px}
+.exportbox h3{font-family:'Space Grotesk',sans-serif;font-size:17px;text-transform:uppercase;color:var(--cobalt);letter-spacing:1px;margin-bottom:5px}
+.exportbox p{font-family:'Bitter',serif;font-size:12.5px;line-height:1.6;color:#334051;margin-bottom:12px;max-width:74ch}
+.exportbox .ed-actions{margin-top:0}
+
+.answers{display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto;border:3px solid var(--rule);background:#fff;padding:10px}
+.ansgroup{border-bottom:3px solid var(--pulp-deep);padding-bottom:10px;margin-bottom:10px}
+.ansgroup:last-child{border-bottom:none;margin-bottom:0}
+.ansgroup-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ansgroup-hd span{color:#6c7a83;font-weight:600}
+.ans{font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);border-left:5px solid var(--pulpred);padding:5px 10px;margin-top:5px}
+.ans:nth-child(even){border-left-color:var(--cobalt)}
+.ans-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;text-align:center;padding:12px}
+
+.daylist{display:flex;flex-direction:column;gap:9px}
+.wk{border:3px solid var(--jet);background:#fff;padding:11px 13px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.wk.live{background:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
+.wk-main{flex:1;min-width:200px}
+.wk-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mars);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wk.live .wk-name{color:var(--jet)}
+.wk-tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;border:2px solid var(--jet);background:var(--cobalt);color:#fff;padding:2px 7px}
+.wk-tag-you{background:var(--pulpred);color:#fff}
+.wk-q{font-family:'Bitter',serif;font-size:12.5px;line-height:1.5;color:#334051;margin-top:4px}
+.wk-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.wk-btns .btn{padding:7px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.wk-edit{flex:1;min-width:220px;display:flex;flex-direction:column;gap:7px}
+.wk-edit input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:13px;padding:8px 10px;outline:none;color:var(--jet)}
+.wk-edit input:focus{border-color:var(--pulpred)}
+.wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;border:3px dashed var(--rule);padding:16px;text-align:center}
+.ed-flag{border:3px solid var(--chrome-deep);color:var(--chrome-deep);background:#fff;padding:11px 14px;margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+/* ══ the printed sheet ══════════════════════════════════════════════
+   Everything above is hidden at print time and this takes over, which
+   is what turns the browser's Save as PDF into a clean handout.
+   ══════════════════════════════════════════════════════════════════ */
+#printSheet{display:none}
+.pr-head{border-bottom:3px solid #000;padding-bottom:8px;margin-bottom:16px}
+.pr-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:1px}
+.pr-sub{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#333;margin-top:5px}
+.pr-block{margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid #999;break-inside:avoid;page-break-inside:avoid}
+.pr-block-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.pr-line{font-family:'Bitter',serif;font-size:12.5px;line-height:1.55;padding:4px 0 4px 12px;border-left:3px solid #000;margin-top:5px}
+.pr-line .pr-who{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;display:block;color:#444}
+.pr-none{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#777;padding-left:12px}
+.pr-break{page-break-before:always;break-before:page}
+
+@media print{
+  body>*{display:none!important}
+  #printSheet{display:block!important;color:#000}
+  @page{margin:16mm}
+  a{text-decoration:none;color:#000}
+}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 0}
+  main{padding:18px 14px 220px}
+  .cover-band{flex-wrap:wrap}
+  .boardgrid{grid-template-columns:1fr;padding:11px;gap:12px}
+  #saveStamp{bottom:200px;right:10px;width:62px;height:62px;font-size:9px}
+  #pPick{max-width:100%}
+  #press .pressmsg{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo"><span class="the">Presentation Day</span>Comment Boards</h1>
+    <div class="cover-band">
+      <div class="roundel" id="dayRoundel">DAY<br>1</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">On the floor today</span>
+        <span id="promptText">Loading today's boards</span>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span><b>How it works</b> One board for every presenter. Leave a comment on each one as it happens.</span>
+      <span><b>Yours to keep</b> Export everything you wrote as a PDF at the bottom of the page.</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">The floor is open</span><span class="pct" id="meterCount">0 comments</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <div class="jumpbox">
+    <div class="jump-hd">Jump to a board</div>
+    <div class="jump" id="jumpStrip"></div>
+    <div class="jump-key"><i></i>Filled squares are the ones you have already commented on</div>
+  </div>
+
+  <div class="sheet-frame" id="sheetFrame">
+    <div class="netbar" id="netBar">
+      <span id="netMsg">&nbsp;</span>
+      <button class="btn btn-quiet" id="netRetry" type="button">Try again</button>
+    </div>
+    <div class="previewbar" id="previewBar">
+      <span>You are reading an earlier day. The live boards have not moved.</span>
+      <button class="btn btn-quiet" id="backLive" type="button">Back to live</button>
+    </div>
+    <div class="sheet-bar">
+      <span id="barDay">Day 1</span>
+      <span class="arm" id="barState">Pick a presenter below, then post</span>
+    </div>
+    <div class="dayprompt" id="dayPrompt" hidden></div>
+    <div class="boardgrid" id="boardGrid"></div>
+  </div>
+
+  <section class="exportbox">
+    <h3>Take your comments with you</h3>
+    <p>This builds a clean sheet of everything you wrote today, under each presenter's name, and hands it to your browser's print window. Choose Save as PDF as the destination. On a phone, use the share icon and then Print, then pinch out on the preview to get the PDF option.</p>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="pdfMine" type="button">Export my comments as PDF</button>
+      <button class="btn btn-quiet" id="pdfMineAll" type="button">Every day I have commented on</button>
+    </div>
+  </section>
+
+  <section class="archive" id="archive" hidden>
+    <div class="archive-hd"><span>Every day</span></div>
+    <div class="chips" id="dayChips"></div>
+  </section>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
+
+    <div class="groupmark"><span>Today's presenters</span></div>
+    <p class="ed-note">One name per line, in the order they present. Blank lines are skipped. Boards appear in this order and are numbered down the page.</p>
+    <label class="bl" for="edLabel">Day name</label>
+    <input type="text" id="edLabel" placeholder="Presentation Day 1"/>
+    <label class="bl" for="edPrompt">What are they commenting on (optional, sits above every board)</label>
+    <input type="text" id="edPrompt" placeholder="One thing that worked, one question you still have."/>
+    <label class="bl" for="edRoster">Presenters, one per line</label>
+    <textarea id="edRoster" rows="12" placeholder="Ada Lovelace&#10;Grace Hopper&#10;Hedy Lamarr"></textarea>
+    <div class="rosternote" id="rosterCount">0 names</div>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="saveRoster" type="button">Save the roster</button>
+      <button class="btn" id="clearDay" type="button">Clear this day's comments</button>
+    </div>
+
+    <div class="groupmark"><span>Add a day</span></div>
+    <p class="ed-note">Every day gets its own roster of boards and keeps its own comments.</p>
+    <label class="bl" for="newLabel">Day name</label>
+    <input type="text" id="newLabel" placeholder="Presentation Day 2"/>
+    <label class="bl" for="newRoster">Presenters, one per line</label>
+    <textarea id="newRoster" rows="6" placeholder="Leave this blank to start with numbered boards and fill in the names later"></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addDay" type="button">Add to the list</button>
+      <button class="btn btn-ink" id="startDay" type="button">Add and open now</button>
+    </div>
+
+    <div class="groupmark"><span>All days</span></div>
+    <p class="ed-note">Open puts the whole room on that day. Rename and delete only touch that one day.</p>
+    <div class="daylist" id="dayList"></div>
+
+    <div class="groupmark"><span>Export</span></div>
+    <p class="ed-note">All three go to the print window, where the destination is Save as PDF. The per presenter export starts each presenter on a fresh page, so one file splits into one handout each.</p>
+    <label class="bl" for="pdfWho">One student's comments</label>
+    <select id="pdfWho"><option value="">Everyone who commented today</option></select>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="pdfBoards" type="button">All boards, one page each</button>
+      <button class="btn" id="pdfStudent" type="button">The student picked above</button>
+      <button class="btn btn-quiet" id="downloadAnswers" type="button">Download as plain text</button>
+    </div>
+
+    <div class="groupmark"><span>Read the comments</span></div>
+    <div class="answers" id="answerList"></div>
+
+    <div class="ed-flag" id="edFlag"></div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div id="press">
+  <span class="pressmsg"><b>Commenting on</b></span>
+  <select id="pPick" aria-label="Which presenter are you commenting on"></select>
+  <input type="text" id="wordInput" placeholder="Type your comment, then press Post" autocomplete="off"/>
+  <div class="press-btns">
+    <button id="whoTag" type="button">Artist ?</button>
+    <button class="btn btn-ink" id="dropBtn" type="button">Post</button>
+  </div>
+</div>
+
+<div id="saveStamp">Comment<br>posted</div>
+
+<div class="overlay" id="numGate">
+  <div class="box">
+    <h3>Your artist number</h3>
+    <p>This sits above every comment you post, and it is how your PDF gets built at the end of the day.</p>
+    <input type="text" id="numCode" inputmode="numeric" placeholder="ARTIST NUMBER"/>
+    <div class="err" id="numErr">Enter your artist number</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="numCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="numGo" type="button">That's me</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to set the roster, open a new day, or export.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<div id="printSheet"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Passcode for the instructor desk.
+const TEACHER_CODE = "presentations";
+
+// How many boards a day carries. Change this and everything follows.
+const BOARDS = 26;
+
+// Ask each student for their artist number before their first comment.
+// Turning this off also turns off the student PDF export, since there
+// would be no way to tell whose comments are whose.
+const ASK_FOR_NUMBER = true;
+const NUMBERS_ONLY = true;
+
+// Can students read each other's comments? Set to false for a quieter
+// crit where each student sees only their own on every board. You still
+// see all of them once the instructor desk is unlocked.
+const SHOW_OTHER_COMMENTS = true;
+
+// Let students browse earlier presentation days.
+const SHOW_ARCHIVE_TO_STUDENTS = true;
+
+// The first day, if the database is empty. Leave the roster blank to get
+// twenty six numbered boards you can name later.
+const FIRST_LABEL = "Presentation Day 1";
+const FIRST_PROMPT = "One thing that worked, and one question you still have.";
+const FIRST_ROSTER = [];
+
+// Same Firebase project as the other class tools, under its own key, so
+// none of them touch each other's data. Add a matching "crits" branch to
+// the database rules before class.
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+let db = null;
+
+const ROOT    = "crits";
+const CURRENT = ROOT + "/current";
+const INDEX   = ROOT + "/index";
+const POSTS   = ROOT + "/posts";
+
+let sessionId  = null;
+let postsRef   = null;
+let metaRef    = null;
+let meta       = {};
+let posts      = {};
+let unlocked   = false;
+let dayIndex   = {};
+let editingDay = null;
+let liveId     = null;
+let previewId  = null;
+let allPosts   = {};
+let artistNo   = localStorage.getItem("boardArtistNo") || "";
+let pending    = null;
+
+const $ = (id) => document.getElementById(id);
+const range = (n) => Array.from({ length: n }, (_, i) => i);
+
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+function whoLabel(w) { return w ? "Artist " + w : "Anonymous"; }
+
+function listOf(val, len, fill) {
+  const out = [];
+  for (let i = 0; i < len; i++) {
+    const v = val ? val[i] : undefined;
+    out.push(v == null ? fill : v);
+  }
+  return out;
+}
+function rosterOf(m) { return listOf(m && m.roster, BOARDS, ""); }
+function nameOf(m, i) { return (rosterOf(m)[i] || "").trim() || "Presenter " + (i + 1); }
+
+function rowsFor(bag, i) {
+  return Object.values((bag && bag["p" + i]) || {}).sort((a, b) => (a.at || 0) - (b.at || 0));
+}
+function countPosts(bag) {
+  return range(BOARDS).reduce((n, i) => n + Object.keys((bag && bag["p" + i]) || {}).length, 0);
+}
+function mineOn(bag, i) {
+  return artistNo ? rowsFor(bag, i).filter((r) => r.who === artistNo) : [];
+}
+function boardsIDone(bag) {
+  return range(BOARDS).filter((i) => mineOn(bag, i).length).length;
+}
+
+/* ── drawing the boards ─────────────────────────────────────────── */
+function visibleRows(bag, i) {
+  const rows = rowsFor(bag, i);
+  if (SHOW_OTHER_COMMENTS || unlocked) return rows;
+  return rows.filter((r) => r.who === artistNo);
+}
+
+function boardsHTML(m, bag, live) {
+  return range(BOARDS)
+    .map((i) => {
+      const rows = visibleRows(bag, i);
+      const mine = mineOn(bag, i).length;
+      const total = rowsFor(bag, i).length;
+      return `<article class="board p${(i % 6) + 1}${mine ? " mine" : ""}" id="board${i}">
+        <div class="board-hd">
+          <span class="no">${i + 1}</span>
+          <span class="nm" title="${esc(nameOf(m, i))}">${esc(nameOf(m, i))}</span>
+          <span class="count">${total} ${total === 1 ? "note" : "notes"}</span>
+        </div>
+        <div class="board-posts">${
+          rows.length
+            ? rows
+                .map(
+                  (r) =>
+                    `<div class="post${r.who && r.who === artistNo ? " self" : ""}">
+                      <span class="who">${esc(whoLabel(r.who))}${
+                        r.who && r.who === artistNo ? " (you)" : ""
+                      }</span>${esc(r.text)}</div>`
+                )
+                .join("")
+            : `<div class="post-empty">${
+                SHOW_OTHER_COMMENTS || unlocked ? "No comments yet" : "You have not commented here yet"
+              }</div>`
+        }</div>
+        ${
+          live
+            ? `<div class="board-foot"><button class="btn board-post" data-p="${i}" type="button">${
+                mine ? "Add another comment" : "Comment on this board"
+              }</button></div>`
+            : ""
+        }
+      </article>`;
+    })
+    .join("");
+}
+
+function renderBoards() {
+  $("boardGrid").innerHTML = boardsHTML(meta, posts, !previewId);
+  const total = countPosts(posts);
+  const done = boardsIDone(posts);
+  $("meterCount").textContent = artistNo
+    ? done + " of " + BOARDS + " boards"
+    : total + (total === 1 ? " comment" : " comments");
+  $("meterFill").style.width = (artistNo ? (done / BOARDS) * 100 : Math.min(100, total / 2)) + "%";
+  $("meterLabel").textContent = !artistNo
+    ? "The floor is open"
+    : done === BOARDS
+    ? "You have commented on every board"
+    : "Your comments so far";
+  renderJump();
+  renderPicker();
+  renderAnswers();
+}
+
+function renderJump() {
+  $("jumpStrip").innerHTML = range(BOARDS)
+    .map((i) => {
+      const mine = mineOn(posts, i).length;
+      const any = rowsFor(posts, i).length;
+      return `<button data-jump="${i}" type="button" class="${
+        mine ? "done" : any ? "" : "empty"
+      }" title="${esc(nameOf(meta, i))}">${i + 1}</button>`;
+    })
+    .join("");
+}
+
+$("jumpStrip").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-jump]");
+  if (!b) return;
+  const card = $("board" + b.dataset.jump);
+  if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
+  $("pPick").value = b.dataset.jump;
+});
+
+function renderPicker() {
+  const keep = $("pPick").value;
+  $("pPick").innerHTML = range(BOARDS)
+    .map((i) => `<option value="${i}">${i + 1}. ${esc(nameOf(meta, i))}</option>`)
+    .join("");
+  if (keep) $("pPick").value = keep;
+}
+
+$("boardGrid").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-p]");
+  if (!b) return;
+  $("pPick").value = b.dataset.p;
+  $("wordInput").focus();
+  $("barState").textContent = "Commenting on " + nameOf(meta, +b.dataset.p);
+});
+
+/* ── posting ────────────────────────────────────────────────────── */
+function post() {
+  const text = $("wordInput").value.trim();
+  if (!text) {
+    $("barState").textContent = "Type a comment first";
+    $("wordInput").focus();
+    return;
+  }
+  if (previewId) {
+    $("barState").textContent = "This is an earlier day. Go back to live to post.";
+    return;
+  }
+  if (!db || !sessionId) {
+    $("barState").textContent = "Not connected yet. Give it a second and try again.";
+    return;
+  }
+  const i = +$("pPick").value || 0;
+  if (ASK_FOR_NUMBER && !artistNo) {
+    pending = { text, i };
+    openNumGate();
+    return;
+  }
+  send(text, i);
+}
+
+function send(text, i) {
+  db.ref(`${POSTS}/${sessionId}/p${i}`)
+    .push({ text: text.slice(0, 800), who: artistNo || null, at: Date.now() })
+    .catch(dbTrouble);
+  $("wordInput").value = "";
+  $("barState").textContent = "Posted on " + nameOf(meta, i) + ". Next board whenever you are ready.";
+  const stamp = $("saveStamp");
+  stamp.classList.add("on");
+  setTimeout(() => stamp.classList.remove("on"), 1400);
+}
+
+$("dropBtn").addEventListener("click", post);
+$("wordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") post(); });
+
+/* ── the artist number ──────────────────────────────────────────── */
+function showWho() {
+  $("whoTag").textContent = artistNo ? "Artist " + artistNo : "Artist ?";
+  $("whoTag").title = artistNo ? "Tap to change your artist number" : "Tap to set your artist number";
+}
+showWho();
+
+function openNumGate() {
+  $("numCode").value = artistNo;
+  $("numErr").classList.remove("on");
+  $("numGate").classList.add("open");
+  $("numCode").focus();
+}
+
+function takeNumber() {
+  let v = $("numCode").value.trim();
+  if (NUMBERS_ONLY) v = v.replace(/\D/g, "");
+  v = v.slice(0, 8);
+  if (!v) { $("numErr").classList.add("on"); return; }
+  artistNo = v;
+  localStorage.setItem("boardArtistNo", artistNo);
+  $("numGate").classList.remove("open");
+  showWho();
+  renderBoards();
+  if (pending) { send(pending.text, pending.i); pending = null; }
+}
+
+$("whoTag").addEventListener("click", openNumGate);
+$("numGo").addEventListener("click", takeNumber);
+$("numCode").addEventListener("keydown", (e) => { if (e.key === "Enter") takeNumber(); });
+$("numCancel").addEventListener("click", () => { pending = null; $("numGate").classList.remove("open"); });
+
+/* ── the printed sheet ──────────────────────────────────────────────
+   No PDF library involved. The page builds a plain sheet, hides itself,
+   and hands the sheet to the browser's own print window, where every
+   browser offers Save as PDF as a destination. Nothing to install and
+   nothing an ad blocker can stop.
+   ─────────────────────────────────────────────────────────────────── */
+function printOut(html) {
+  $("printSheet").innerHTML = html;
+  setTimeout(() => window.print(), 80);
+}
+
+function prHead(title, sub) {
+  return `<div class="pr-head"><div class="pr-title">${esc(title)}</div>
+    <div class="pr-sub">${esc(sub)}</div></div>`;
+}
+
+// One student's comments across a day, under each presenter's name.
+function sheetForStudent(m, bag, no, label) {
+  const blocks = range(BOARDS)
+    .map((i) => {
+      const rows = rowsFor(bag, i).filter((r) => r.who === no);
+      if (!rows.length) return "";
+      return `<div class="pr-block"><div class="pr-block-hd">${i + 1}. ${esc(nameOf(m, i))}</div>${rows
+        .map((r) => `<div class="pr-line">${esc(r.text)}</div>`)
+        .join("")}</div>`;
+    })
+    .filter(Boolean);
+  const n = blocks.length;
+  return (
+    prHead(
+      label || m.label || "Presentation day",
+      "Artist " + no + " · " + n + " of " + BOARDS + " boards · " + stamp()
+    ) + (blocks.length ? blocks.join("") : '<div class="pr-none">No comments recorded for this day</div>')
+  );
+}
+
+// Every board with every comment on it, one presenter per page.
+function sheetForBoards(m, bag) {
+  return (
+    prHead(m.label || "Presentation day", countPosts(bag) + " comments · " + stamp()) +
+    range(BOARDS)
+      .map((i) => {
+        const rows = rowsFor(bag, i);
+        return `<div class="pr-block${i ? " pr-break" : ""}">
+          <div class="pr-block-hd">${i + 1}. ${esc(nameOf(m, i))} · ${rows.length} ${
+          rows.length === 1 ? "comment" : "comments"
+        }</div>${
+          rows.length
+            ? rows
+                .map(
+                  (r) =>
+                    `<div class="pr-line"><span class="pr-who">${esc(whoLabel(r.who))}</span>${esc(r.text)}</div>`
+                )
+                .join("")
+            : '<div class="pr-none">No comments</div>'
+        }</div>`;
+      })
+      .join("")
+  );
+}
+
+function stamp() {
+  return new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
+
+$("pdfMine").addEventListener("click", () => {
+  if (!artistNo) return openNumGate();
+  printOut(sheetForStudent(meta, posts, artistNo, meta.label));
+});
+
+$("pdfMineAll").addEventListener("click", () => {
+  if (!artistNo) return openNumGate();
+  $("pdfMineAll").textContent = "Building";
+  loadAllPosts()
+    .then(() => {
+      const ids = dayOrder().filter((id) => countPosts(allPosts[id] || {}));
+      const html = ids
+        .map((id, n) => {
+          const inner = sheetForStudent(dayIndex[id], allPosts[id] || {}, artistNo, dayIndex[id].label);
+          return n ? '<div class="pr-break">' + inner + "</div>" : inner;
+        })
+        .join("");
+      $("pdfMineAll").textContent = "Every day I have commented on";
+      printOut(html || prHead("No comments yet", "Artist " + artistNo));
+    })
+    .catch((e) => {
+      $("pdfMineAll").textContent = "Every day I have commented on";
+      dbTrouble(e);
+    });
+});
+
+$("pdfBoards").addEventListener("click", () => printOut(sheetForBoards(meta, posts)));
+
+$("pdfStudent").addEventListener("click", () => {
+  const no = $("pdfWho").value;
+  if (!no) return flag("Pick a student from the list first");
+  printOut(sheetForStudent(meta, posts, no, meta.label));
+});
+
+function renderWhoList() {
+  const seen = new Set();
+  range(BOARDS).forEach((i) => rowsFor(posts, i).forEach((r) => { if (r.who) seen.add(r.who); }));
+  const list = [...seen].sort((a, b) => (+a || 0) - (+b || 0));
+  const keep = $("pdfWho").value;
+  $("pdfWho").innerHTML =
+    '<option value="">Pick a student</option>' +
+    list.map((w) => `<option value="${esc(w)}">Artist ${esc(w)}</option>`).join("");
+  if (keep) $("pdfWho").value = keep;
+}
+
+/* ── live day or private preview ────────────────────────────────── */
+function syncDay() {
+  const target = previewId || liveId;
+  if (target) attachDay(target);
+  const previewing = !!previewId;
+  $("sheetFrame").classList.toggle("previewing", previewing);
+  renderChips();
+  $("previewBar").classList.toggle("on", previewing);
+  $("wordInput").disabled = previewing || !db;
+  $("dropBtn").disabled = previewing || !db;
+  $("pPick").disabled = previewing;
+  $("barDay").textContent = previewing
+    ? "Preview"
+    : (dayIndex[liveId] && dayIndex[liveId].label) || "This day";
+  renderDays();
+}
+
+function endPreview() { previewId = null; syncDay(); }
+$("backLive").addEventListener("click", endPreview);
+
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  $("barState").textContent = denied
+    ? "Firebase blocked that. The database rules need a crits branch."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  console.error("[presentation boards]", err);
+}
+
+function attachDay(id) {
+  if (id === sessionId) return;
+  if (postsRef) postsRef.off();
+  if (metaRef) metaRef.off();
+
+  sessionId = id;
+  posts = {};
+  meta = {};
+  renderBoards();
+
+  metaRef = db.ref(`${INDEX}/${id}`);
+  metaRef.on("value", (s) => {
+    meta = s.val() || {};
+    if (!previewId) $("barDay").textContent = meta.label || "This day";
+    const named = rosterOf(meta).filter((n) => n && n.trim()).length;
+    $("promptText").textContent = named
+      ? named + " presenters on the board today"
+      : BOARDS + " boards, waiting on names";
+    $("dayRoundel").innerHTML = roundelText(meta.label);
+    $("dayPrompt").hidden = !meta.prompt;
+    $("dayPrompt").textContent = meta.prompt || "";
+    document.title = (meta.label ? meta.label + " · " : "") + "Presentation Day Boards";
+    renderBoards();
+    if (unlocked) fillDesk();
+  }, dbTrouble);
+
+  postsRef = db.ref(`${POSTS}/${id}`);
+  postsRef.on("value", (s) => {
+    posts = s.val() || {};
+    renderBoards();
+    renderWhoList();
+  }, dbTrouble);
+}
+
+function roundelText(label) {
+  if (!label) return "DAY";
+  const n = label.match(/\d+/);
+  return n ? "DAY<br>" + n[0] : label.slice(0, 6).toUpperCase();
+}
+
+/* ── the desk ───────────────────────────────────────────────────── */
+function fillDesk() {
+  $("edLabel").value = meta.label || "";
+  $("edPrompt").value = meta.prompt || "";
+  $("edRoster").value = rosterOf(meta).join("\n").replace(/\n+$/, "");
+  countRoster();
+}
+
+function countRoster() {
+  const n = $("edRoster").value.split("\n").filter((l) => l.trim()).length;
+  $("rosterCount").textContent =
+    n + (n === 1 ? " name" : " names") + (n > BOARDS ? " — more than " + BOARDS + ", the rest will be dropped" : "");
+}
+$("edRoster").addEventListener("input", countRoster);
+
+$("saveRoster").addEventListener("click", () => {
+  if (!db || !sessionId) return flag("Not connected to Firebase yet");
+  const names = $("edRoster").value.split("\n").map((l) => l.trim()).filter(Boolean).slice(0, BOARDS);
+  db.ref(`${INDEX}/${sessionId}`)
+    .update({
+      roster: listOf(names, BOARDS, ""),
+      label: $("edLabel").value.trim() || "This day",
+      prompt: $("edPrompt").value.trim() || null
+    })
+    .then(() => flag("Saved. Every browser has the roster now."))
+    .catch(() => flag("Firebase refused the write. Check the database rules."));
+});
+
+$("clearDay").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (previewId) return flag("Stop the preview first, then clear");
+  if (!confirm("Clear every comment from " + (meta.label || "this day") + "? The roster stays.")) return;
+  db.ref(`${POSTS}/${sessionId}`).remove().then(() => flag("All boards wiped clean")).catch(dbTrouble);
+});
+
+/* ── reading the comments ───────────────────────────────────────── */
+function renderAnswers() {
+  const box = $("answerList");
+  if (!box) return;
+  box.innerHTML = range(BOARDS)
+    .map((i) => {
+      const rows = rowsFor(posts, i);
+      return `<div class="ansgroup">
+        <div class="ansgroup-hd">${i + 1}. ${esc(nameOf(meta, i))}<span>${rows.length} ${
+        rows.length === 1 ? "comment" : "comments"
+      }</span></div>
+        ${
+          rows.length
+            ? rows.map((r) => `<div class="ans">${esc(whoLabel(r.who))}: ${esc(r.text)}</div>`).join("")
+            : '<div class="ans-empty">Nothing here yet</div>'
+        }
+      </div>`;
+    })
+    .join("");
+}
+
+function loadAllPosts() {
+  if (!db) return Promise.reject(new Error("no db"));
+  return db.ref(POSTS).once("value").then((s) => { allPosts = s.val() || {}; return allPosts; });
+}
+
+$("downloadAnswers").addEventListener("click", () => {
+  const lines = [(meta.label || "Untitled").toUpperCase(), ""];
+  range(BOARDS).forEach((i) => {
+    lines.push(i + 1 + ". " + nameOf(meta, i).toUpperCase());
+    rowsFor(posts, i).forEach((r) => lines.push("- " + whoLabel(r.who) + ": " + r.text));
+    lines.push("");
+  });
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "presentation_comments.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  flag("Text file downloaded");
+});
+
+/* ── the gate ───────────────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) {
+    $("editor").classList.toggle("open");
+    $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    $("gate").classList.add("open");
+    $("gateCode").focus();
+  }
+});
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateGo").addEventListener("click", tryCode);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) {
+    $("gateErr").classList.add("on");
+    return;
+  }
+  unlocked = true;
+  $("gate").classList.remove("open");
+  $("gateErr").classList.remove("on");
+  $("gateCode").value = "";
+  $("editor").classList.add("open");
+  fillDesk();
+  renderBoards();
+  renderWhoList();
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+$("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
+
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  setTimeout(() => f.classList.remove("on"), 3200);
+}
+
+/* ── days ───────────────────────────────────────────────────────── */
+function nextDayNumber() {
+  let top = 0;
+  Object.values(dayIndex).forEach((d) => {
+    const n = String(d.label || "").match(/\d+/);
+    if (n && +n[0] > top) top = +n[0];
+  });
+  return top + 1;
+}
+function dayOrder() {
+  return Object.keys(dayIndex).sort((a, b) => (dayIndex[a].created || 0) - (dayIndex[b].created || 0));
+}
+
+function renderChips() {
+  const strip = $("archive");
+  if (!strip) return;
+  if (!SHOW_ARCHIVE_TO_STUDENTS) { strip.hidden = true; return; }
+  const ids = dayOrder();
+  strip.hidden = ids.length < 2;
+  $("dayChips").innerHTML = ids
+    .map((id) => {
+      const showing = (previewId || liveId) === id;
+      return `<button class="chip" data-day="${id}" type="button" aria-current="${showing}">${
+        esc(dayIndex[id].label) || "Untitled"
+      }${id === liveId ? ' <span class="dot">&#9679;</span>' : ""}</button>`;
+    })
+    .join("");
+}
+
+$("dayChips").addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-day]");
+  if (!chip) return;
+  previewId = chip.dataset.day === liveId ? null : chip.dataset.day;
+  syncDay();
+  $("sheetFrame").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+function renderDays() {
+  const list = $("dayList");
+  if (!list) return;
+  const ids = dayOrder();
+  if (!ids.length) { list.innerHTML = '<div class="wk-empty">No days yet. Add one above.</div>'; return; }
+  list.innerHTML = ids
+    .map((id) => {
+      const d = dayIndex[id];
+      const here = id === sessionId;
+      if (id === editingDay) {
+        return `<div class="wk${here ? " live" : ""}">
+          <div class="wk-edit"><input type="text" data-field="label" value="${esc(d.label)}" placeholder="Day name"/></div>
+          <div class="wk-btns">
+            <button class="btn btn-ink" data-act="save" data-id="${id}" type="button">Save</button>
+            <button class="btn btn-quiet" data-act="cancel" data-id="${id}" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      const named = listOf(d.roster, BOARDS, "").filter((n) => n && n.trim()).length;
+      return `<div class="wk${here ? " live" : ""}">
+        <div class="wk-main">
+          <div class="wk-name">${esc(d.label) || "Untitled"}${
+            id === liveId ? '<span class="wk-tag">On screen now</span>' : ""
+          }${id === previewId ? '<span class="wk-tag wk-tag-you">You are reading this</span>' : ""}</div>
+          <div class="wk-q">${named} of ${BOARDS} boards named</div>
+        </div>
+        <div class="wk-btns">
+          ${id === liveId ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
+          ${
+            id === previewId
+              ? `<button class="btn" data-act="unpreview" type="button">Stop preview</button>`
+              : `<button class="btn" data-act="preview" data-id="${id}" type="button">Preview</button>`
+          }
+          <button class="btn" data-act="edit" data-id="${id}" type="button">Rename</button>
+          <button class="btn btn-quiet" data-act="delete" data-id="${id}" type="button">Delete</button>
+        </div>
+      </div>`;
+    })
+    .join("");
+}
+
+$("dayList").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.act;
+
+  if (act === "open") {
+    if (!db) return flag("Not connected to Firebase yet");
+    db.ref(CURRENT).set(id)
+      .then(() => { previewId = null; flag("Everyone is on " + (dayIndex[id].label || "that day") + " now"); })
+      .catch(dbTrouble);
+  }
+  if (act === "preview") {
+    previewId = id === liveId ? null : id;
+    syncDay();
+    $("sheetFrame").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  if (act === "unpreview") endPreview();
+  if (act === "edit") { editingDay = id; renderDays(); }
+  if (act === "cancel") { editingDay = null; renderDays(); }
+  if (act === "save") {
+    const label = btn.closest(".wk").querySelector('[data-field="label"]').value.trim();
+    db.ref(`${INDEX}/${id}`).update({ label: label || "Untitled" })
+      .then(() => { editingDay = null; flag("Day renamed"); })
+      .catch(dbTrouble);
+  }
+  if (act === "delete") {
+    if (id === liveId) return flag("Open a different day before deleting this one");
+    if (!confirm(`Delete ${dayIndex[id].label || "this day"} and every comment on it? This cannot be undone.`)) return;
+    db.ref(`${POSTS}/${id}`).remove()
+      .then(() => db.ref(`${INDEX}/${id}`).remove())
+      .then(() => flag("Day deleted"))
+      .catch(dbTrouble);
+  }
+});
+
+function makeDay(label, names, openIt) {
+  const id = "d" + Date.now() + Math.floor(Math.random() * 1000);
+  return db.ref(`${INDEX}/${id}`)
+    .set({
+      label: label || "Presentation Day " + nextDayNumber(),
+      roster: listOf(names, BOARDS, ""),
+      created: Date.now()
+    })
+    .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
+}
+
+function addFromForm(openIt) {
+  if (!db) return flag("Not connected to Firebase yet");
+  const names = $("newRoster").value.split("\n").map((l) => l.trim()).filter(Boolean).slice(0, BOARDS);
+  makeDay($("newLabel").value.trim(), names, openIt)
+    .then(() => {
+      $("newRoster").value = "";
+      $("newLabel").value = "";
+      flag(openIt ? "New day is open with " + BOARDS + " blank boards." : "Added to the list.");
+    })
+    .catch(dbTrouble);
+}
+$("addDay").addEventListener("click", () => addFromForm(false));
+$("startDay").addEventListener("click", () => addFromForm(true));
+
+/* ── watching the database ──────────────────────────────────────── */
+function watchCurrentDay() {
+  db.ref(CURRENT).on("value", (s) => {
+    const id = s.val();
+    if (id) { liveId = id; syncDay(); }
+    else {
+      const first = "d" + Date.now();
+      db.ref(CURRENT).transaction((held) => (held ? undefined : first));
+      db.ref(`${INDEX}/${first}`)
+        .set({
+          label: FIRST_LABEL,
+          prompt: FIRST_PROMPT,
+          roster: listOf(FIRST_ROSTER, BOARDS, ""),
+          created: Date.now()
+        })
+        .catch(dbTrouble);
+    }
+  }, dbTrouble);
+
+  db.ref(INDEX).on("value", (s) => {
+    dayIndex = s.val() || {};
+    renderDays();
+    renderChips();
+  }, dbTrouble);
+
+  db.ref(".info/connected").on("value", (s) => {
+    if (previewId) return;
+    $("barState").textContent = s.val() === true
+      ? "Live. Pick a presenter, then post."
+      : "Reconnecting to the database";
+  });
+}
+
+/* ── loading Firebase ───────────────────────────────────────────── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) { /* next mirror */ }
+  }
+  return false;
+}
+
+function netTrouble(err) {
+  const code = (err && err.code) || "";
+  const off = /operation-not-allowed|configuration-not-found/.test(code);
+  const net = /network-request-failed|timeout/.test(code);
+  const onDisk = location.protocol === "file:";
+
+  let head = "Sign-in failed: " + ((err && err.message) || code);
+  let why = "";
+
+  if (off) {
+    head = "Anonymous sign-in is switched off";
+    why = "In the Firebase console open Authentication, then Sign-in method, and enable Anonymous.";
+  } else if (net && onDisk) {
+    head = "This page is running off the hard drive";
+    why = "Firebase sign-in will not run from a file:// address. Open the page from its web address instead, or serve the folder locally with python3 -m http.server 8000 and visit localhost:8000.";
+  } else if (net) {
+    head = "Cannot reach the sign-in server";
+    why = "Three things to check. A privacy extension or campus network blocking identitytoolkit.googleapis.com. Whether this address sits on the Authorized domains list in the Firebase console under Authentication, Settings. Or the wifi itself.";
+  }
+
+  $("netMsg").innerHTML = esc(head) + (why ? '<span class="why">' + esc(why) + "</span>" : "");
+  $("netBar").classList.add("on");
+  $("barState").textContent = head;
+  $("wordInput").disabled = true;
+  $("dropBtn").disabled = true;
+  console.error("[presentation boards]", err);
+}
+
+function signIn(tries) {
+  return firebase.auth().signInAnonymously().catch((err) => {
+    const net = /network-request-failed|timeout/.test((err && err.code) || "");
+    if (net && tries > 0) {
+      $("barState").textContent = "Connection dropped. Trying again.";
+      return new Promise((go) => setTimeout(go, 1500)).then(() => signIn(tries - 1));
+    }
+    throw err;
+  });
+}
+
+function startUp() {
+  $("netBar").classList.remove("on");
+  $("barState").textContent = "Connecting";
+  signIn(3)
+    .then(() => {
+      db = firebase.database();
+      $("wordInput").disabled = false;
+      $("dropBtn").disabled = false;
+      watchCurrentDay();
+      $("barState").textContent = "Pick a presenter, then post";
+    })
+    .catch(netTrouble);
+}
+$("netRetry").addEventListener("click", startUp);
+
+// Draw the empty boards first so the page never sits blank.
+renderBoards();
+
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("promptText").textContent = "Cannot reach Firebase";
+    $("netMsg").innerHTML =
+      "The Firebase library did not load" +
+      '<span class="why">All three mirrors were blocked. Usually an ad blocker, or a network that filters gstatic.com, jsdelivr and unpkg.</span>';
+    $("netBar").classList.add("on");
+    $("barState").textContent = "Offline. Check the network or an ad blocker.";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  startUp();
+});
+
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
