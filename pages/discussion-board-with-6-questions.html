@@ -157,10 +157,22 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
   padding:11px;max-height:300px;overflow-y:auto;
 }
 .post{
+  position:relative;
   background:#fff;border:2px solid var(--jet);border-left:6px solid var(--ink);
   box-shadow:3px 3px 0 rgba(20,32,42,.16);
   font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);padding:7px 10px;
 }
+.post.self{border-left-color:var(--pulpred);background:#f8fbfa}
+.post.hasdel{padding-right:32px}
+.post .del{
+  position:absolute;top:5px;right:5px;
+  width:21px;height:21px;line-height:1;padding:0;cursor:pointer;
+  border:2px solid var(--jet);background:#fff;color:var(--jet);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;
+}
+.post .del:hover{background:var(--pulpred);color:#fff}
+.post.self .who{color:var(--pulpred)}
+.board.hasdraft{outline:4px dashed var(--mars);outline-offset:3px}
 .post .who{
   display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;
   letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-bottom:3px;
@@ -278,6 +290,11 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
 .netbar.on{display:flex}
 .netbar .why{font-family:'Bitter',serif;font-size:12px;letter-spacing:0;text-transform:none;color:#e4f1f1;display:block;margin-top:5px;max-width:70ch}
 .netbar .btn{padding:7px 13px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+#draftNote{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--chrome);flex:none;opacity:0;transition:opacity .3s;
+}
+#draftNote.on{opacity:1}
 #whoTag{
   font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;
   text-transform:uppercase;color:var(--jet);background:var(--chrome);border:3px solid var(--jet);
@@ -445,6 +462,7 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
     <option value="5">Question 6</option>
   </select>
   <input type="text" id="wordInput" placeholder="Type your answer, then press Post" autocomplete="off"/>
+  <span id="draftNote">Draft kept</span>
   <div class="press-btns">
     <button id="whoTag" type="button">Artist ?</button>
     <button class="btn btn-ink" id="dropBtn" type="button">Post my answer</button>
@@ -498,6 +516,11 @@ const SHOW_ARCHIVE_TO_STUDENTS = true;
 // Ask each student for their artist number before their first post. The
 // browser remembers it after that. Set to false for anonymous boards.
 const ASK_FOR_NUMBER = true;
+
+// Can students remove their own answers? They only ever see the delete
+// button on answers carrying their own artist number. You get one on
+// every answer once the instructor desk is unlocked.
+const LET_STUDENTS_DELETE = true;
 
 // Only digits, or anything they type? Leave true to keep the boards tidy.
 const NUMBERS_ONLY = true;
@@ -583,8 +606,13 @@ function countPosts(bag) {
   return range(QUESTIONS).reduce((n, q) => n + Object.keys((bag && bag["q" + q]) || {}).length, 0);
 }
 
+// Each answer keeps its own database key so a single one can be removed
+// without touching the rest of the board.
 function rowsFor(bag, q) {
-  return Object.values((bag && bag["q" + q]) || {}).sort((a, b) => (a.at || 0) - (b.at || 0));
+  const box = (bag && bag["q" + q]) || {};
+  return Object.keys(box)
+    .map((k) => Object.assign({ id: k }, box[k]))
+    .sort((a, b) => (a.at || 0) - (b.at || 0));
 }
 
 /* ── drawing the six boards ─────────────────────────────────────── */
@@ -605,18 +633,23 @@ function boardsHTML(m, bag, live) {
         <div class="board-posts">${
           rows.length
             ? rows
-                .map(
-                  (r) =>
-                    `<div class="post">${
-                      r.who ? `<span class="who">${esc(whoLabel(r.who))}</span>` : ""
-                    }${esc(r.text)}</div>`
-                )
+                .map((r) => {
+                  const own = !!r.who && r.who === artistNo;
+                  const canDrop = live && ((own && LET_STUDENTS_DELETE) || unlocked);
+                  return `<div class="post${own ? " self" : ""}${canDrop ? " hasdel" : ""}">${
+                    canDrop
+                      ? `<button class="del" data-del="${g}:${esc(r.id)}" type="button" title="Delete this answer" aria-label="Delete this answer">&times;</button>`
+                      : ""
+                  }${
+                    r.who ? `<span class="who">${esc(whoLabel(r.who))}${own ? " (you)" : ""}</span>` : ""
+                  }${esc(r.text)}</div>`;
+                })
                 .join("")
             : '<div class="post-empty">Nothing on this board yet</div>'
         }</div>
         ${
           live
-            ? `<div class="board-foot"><button class="btn board-post" data-q="${g}" type="button">Answer Question ${g + 1}</button></div>`
+            ? `<div class="board-foot"><button class="btn board-post" data-q="${g}" type="button">${hasDraft(g) ? "Finish your draft" : "Answer Question " + (g + 1)}</button></div>`
             : ""
         }
       </article>`;
@@ -634,12 +667,83 @@ function renderBoards() {
 }
 
 $("boardGrid").addEventListener("click", (e) => {
+  const kill = e.target.closest("[data-del]");
+  if (kill) {
+    const [i, key] = kill.dataset.del.split(":");
+    if (previewId) return;
+    if (!confirm("Delete this answer? It cannot be brought back.")) return;
+    db.ref(`${POSTS}/${sessionId}/q${i}/${key}`).remove()
+      .then(() => { $("barState").textContent = "Answer deleted"; })
+      .catch(dbTrouble);
+    return;
+  }
   const b = e.target.closest("[data-q]");
   if (!b) return;
+  saveDraft();
   $("qPick").value = b.dataset.q;
+  loadDraft(+b.dataset.q, true);
   $("wordInput").focus();
   $("barState").textContent = "Question " + (+b.dataset.q + 1) + " picked. Type your answer.";
 });
+
+/* ── drafts ─────────────────────────────────────────────────────────
+   Whatever is in the box saves to this browser a moment after typing
+   stops, filed under the day and the board it belongs to. Nothing goes
+   to the database until Post is pressed, so half finished sentences stay
+   private. Switching boards parks the draft and brings back whatever was
+   waiting on the new one. A refresh, a closed tab and a dead battery all
+   survive it.
+   ─────────────────────────────────────────────────────────────────── */
+let draftTimer = null;
+
+function draftKey(i) { return ROOT + "-draft:" + sessionId + ":" + i; }
+
+function saveDraft() {
+  if (!sessionId || previewId) return;
+  const i = +$("qPick").value || 0;
+  const t = $("wordInput").value;
+  try {
+    if (t.trim()) localStorage.setItem(draftKey(i), t);
+    else localStorage.removeItem(draftKey(i));
+  } catch (e) { return; }
+  const note = $("draftNote");
+  note.classList.add("on");
+  setTimeout(() => note.classList.remove("on"), 1200);
+  markDrafts();
+}
+
+function hasDraft(i) {
+  try { return !!localStorage.getItem(draftKey(i)); } catch (e) { return false; }
+}
+
+// force is true on a deliberate board switch. Without it an existing
+// draft never overwrites something already half typed.
+function loadDraft(i, force) {
+  if (!sessionId) return;
+  if (!force && $("wordInput").value.trim()) return;
+  let t = "";
+  try { t = localStorage.getItem(draftKey(i)) || ""; } catch (e) {}
+  $("wordInput").value = t;
+}
+
+function clearDraft(i) {
+  try { localStorage.removeItem(draftKey(i)); } catch (e) {}
+  markDrafts();
+}
+
+// Flips the dashed outline on and off without redrawing the boards.
+function markDrafts() {
+  document.querySelectorAll("#boardGrid .board").forEach((el, i) => {
+    el.classList.toggle("hasdraft", hasDraft(i));
+  });
+}
+
+$("wordInput").addEventListener("input", () => {
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(saveDraft, 250);
+});
+window.addEventListener("beforeunload", saveDraft);
+$("qPick").addEventListener("change", () => loadDraft(+$("qPick").value || 0, true));
 
 /* ── posting ────────────────────────────────────────────────────── */
 function post() {
@@ -676,6 +780,7 @@ function send(text, g) {
     .catch(dbTrouble);
 
   $("wordInput").value = "";
+  clearDraft(g);
   $("barState").textContent = "Posted under Question " + (g + 1) + ". Add another whenever you like.";
   const stamp = $("saveStamp");
   stamp.classList.add("on");
@@ -711,6 +816,7 @@ function takeNumber() {
   localStorage.setItem("boardArtistNo", artistNo);
   $("numGate").classList.remove("open");
   showWho();
+  renderBoards();
   if (pending) {
     send(pending.text, pending.g);
     pending = null;
@@ -787,6 +893,8 @@ function attachDay(id) {
   postsRef.on("value", (s) => {
     posts = s.val() || {};
     renderBoards();
+    markDrafts();
+    loadDraft(+$("qPick").value || 0, false);
   }, dbTrouble);
 }
 
@@ -1029,6 +1137,7 @@ function tryCode() {
   $("gateCode").value = "";
   $("editor").classList.add("open");
   fillDesk();
+  renderBoards();
   $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
