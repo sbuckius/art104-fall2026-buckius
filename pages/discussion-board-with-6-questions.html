@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Discussion Board with 6 Questions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  /* Same palette, turned one more notch. Teal has come forward onto the
+     big surfaces, pink has dropped back to every hard drop shadow, mars
+     magenta now does the accents and buttons, and deep grass green has
+     taken over the small caps labels. */
+  --cobalt:#2f7d7d;          /* teal, now the surface color */
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;          /* mint, still the light mark on dark */
+  --chrome-deep:#d63d84;     /* pink, now every drop shadow */
+  --pulpred:#a01e5c;         /* mars magenta, now the accent */
+  --mars:#5f7d1f;            /* deep grass green, now the label color */
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#7db8c4;            /* sea glass, back on the hairlines */
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+  --sea:#7db8c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--jet);
+  font-family:'IBM Plex Sans',sans-serif;
+  min-height:100vh;
+}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    linear-gradient(160deg,rgba(47,125,125,.14) 0%,rgba(139,168,56,.13) 50%,rgba(214,61,132,.13) 100%),
+    var(--cream);
+}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1240px;margin:0 auto;padding:14px 18px 0}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px;
+}
+.stripes{
+  height:22px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px);
+}
+h1.logo .the{
+  display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  font-size:clamp(11px,2vw,20px);letter-spacing:8px;
+  color:var(--chrome);margin-bottom:2px;
+}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(32px,8.6vw,88px);
+  line-height:.86;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:10px 0 4px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{
+  display:flex;align-items:center;gap:14px;
+  border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+  padding:9px 0;margin-top:12px;
+}
+.roundel{
+  width:56px;height:56px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);
+  box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px;
+}
+.cover-tag{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;
+  color:#fff;line-height:1.2;flex:1;min-width:0;
+}
+.cover-kicker{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block;
+}
+.cover-foot{
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:9px 0 12px;font-family:'Bitter',serif;font-size:12.5px;color:#e4f1f1;line-height:1.5;
+}
+.cover-foot b{color:var(--chrome);font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:11px}
+
+/* ══ the sheet ══════════════════════════════════════════════════════ */
+main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
+
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-bar{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.sheet-bar .arm{color:var(--chrome)}
+
+/* ══ the six boards ═════════════════════════════════════════════════ */
+.boardgrid{
+  display:grid;gap:14px;padding:14px;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+}
+.board{
+  --bg:#fff; --ink:var(--jet); --sh:var(--jet);
+  background:var(--bg);border:4px solid var(--jet);box-shadow:6px 6px 0 var(--sh);
+  display:flex;flex-direction:column;min-width:0;
+}
+/* The same six tints as the group boards, dealt to different positions
+   so the two pages never read as the same screen. Teal opens, sand and
+   pink sit in the middle, slate closes. */
+.board.q1{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
+.board.q2{--bg:#faead0;--ink:#8a5a16;--sh:#c9922f}
+.board.q3{--bg:#ffe1ef;--ink:#a01e5c;--sh:#d63d84}
+.board.q4{--bg:#eaf3cd;--ink:#4d661a;--sh:#8ba838}
+.board.q5{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
+.board.q6{--bg:#e2e6e8;--ink:#14202a;--sh:#5c6b74}
+
+.board-hd{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  border-bottom:3px solid var(--jet);padding:8px 11px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--ink);
+}
+.board-hd .count{color:var(--chrome);font-weight:600;font-size:10px;letter-spacing:1.5px}
+.board-slot{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;border:2px solid var(--jet);background:#fff;color:var(--jet);
+  padding:2px 7px;
+}
+.board-q{
+  font-family:'Bitter',serif;font-size:14px;line-height:1.55;color:var(--jet);
+  padding:11px 12px;border-bottom:3px dashed var(--jet);min-height:64px;
+}
+.board-q.unset{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83}
+.board-posts{
+  flex:1;display:flex;flex-direction:column;gap:7px;
+  padding:11px;max-height:300px;overflow-y:auto;
+}
+.post{
+  background:#fff;border:2px solid var(--jet);border-left:6px solid var(--ink);
+  box-shadow:3px 3px 0 rgba(20,32,42,.16);
+  font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);padding:7px 10px;
+}
+.post .who{
+  display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-bottom:3px;
+}
+.post-empty{
+  font-family:'Space Grotesk',sans-serif;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;
+  color:#6c7a83;text-align:center;padding:16px 8px;border:3px dashed rgba(20,32,42,.3);
+}
+.board-foot{padding:0 11px 11px}
+.board-foot .btn{width:100%;padding:8px;font-size:10px}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#press .pressmsg{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#fff;flex:1;min-width:140px}
+#press .pressmsg b{color:var(--chrome)}
+#qPick{
+  border:3px solid var(--jet);background:var(--chrome);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--jet);padding:10px;outline:none;cursor:pointer;
+}
+#qPick:focus{box-shadow:0 0 0 3px var(--pulpred)}
+#wordInput{
+  flex:2;min-width:200px;border:3px solid var(--jet);background:#fff;
+  font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:10px 12px;outline:none;
+}
+#wordInput:focus{border-color:var(--pulpred);box-shadow:0 0 0 3px var(--chrome)}
+.press-btns{display:flex;gap:9px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .btn{padding:10px 16px;font-size:11px}
+
+/* ══ posted roundel ═════════════════════════════════════════════════ */
+#saveStamp{
+  position:fixed;right:18px;bottom:100px;z-index:300;
+  width:74px;height:74px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;text-align:center;padding:6px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.15;
+  opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none;
+}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ instructor desk ════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--cobalt);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:14px 0 6px}
+.editor input[type=text],.editor textarea,.editor select{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);padding:10px 12px;outline:none}
+.editor textarea{resize:vertical;min-height:72px}
+.editor input:focus,.editor textarea:focus,.editor select:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+
+.qrow{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px}
+.qrow .qnum{
+  flex:none;width:34px;height:34px;display:grid;place-items:center;
+  border:3px solid var(--jet);background:var(--chrome);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;color:var(--jet);
+}
+.qrow textarea{min-height:52px}
+
+
+.archive{margin-top:22px;border:3px solid var(--jet);background:var(--glass);padding:14px 16px 16px;box-shadow:5px 5px 0 var(--chrome-deep)}
+.archive-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mars);border-bottom:2px solid var(--jet);padding-bottom:8px;margin-bottom:11px}
+.archive-hd .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 13px;cursor:pointer;border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip .dot{color:var(--chrome)}
+
+/* ══ every day, stacked ═════════════════════════════════════════════ */
+#allDays{margin-top:14px;display:none}
+#allDays.on{display:block}
+.dayblock{margin-bottom:20px;border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff}
+.dayblock-bar{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:8px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.dayblock-bar .arm{color:var(--chrome);font-weight:600}
+.dayblock.livedy .dayblock-bar{background:var(--pulpred)}
+
+.netbar{
+  display:none;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:9px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.6;
+}
+.netbar.on{display:flex}
+.netbar .why{font-family:'Bitter',serif;font-size:12px;letter-spacing:0;text-transform:none;color:#e4f1f1;display:block;margin-top:5px;max-width:70ch}
+.netbar .btn{padding:7px 13px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+#whoTag{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--jet);background:var(--chrome);border:3px solid var(--jet);
+  padding:9px 11px;cursor:pointer;
+}
+#whoTag:hover{background:#fff}
+
+.previewbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.previewbar.on{display:flex}
+.previewbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.sheet-frame.previewing{box-shadow:7px 7px 0 var(--mars)}
+
+.answers{display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto;border:3px solid var(--rule);background:#fff;padding:10px}
+.ansgroup{border-bottom:3px solid var(--pulp-deep);padding-bottom:10px;margin-bottom:10px}
+.ansgroup:last-child{border-bottom:none;margin-bottom:0}
+.ansgroup-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ansgroup-hd span{color:#6c7a83;font-weight:600}
+.ansgroup-q{font-family:'Bitter',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:#334051;margin:3px 0 8px}
+.ans{font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);border-left:5px solid var(--pulpred);padding:5px 10px}
+.ans:nth-child(even){border-left-color:var(--cobalt)}
+.ans-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;text-align:center;padding:12px}
+
+.daylist{display:flex;flex-direction:column;gap:9px}
+.wk{border:3px solid var(--jet);background:#fff;padding:11px 13px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.wk.live{background:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
+.wk-main{flex:1;min-width:200px}
+.wk-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mars);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wk.live .wk-name{color:var(--jet)}
+.wk-tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;border:2px solid var(--jet);background:var(--cobalt);color:#fff;padding:2px 7px}
+.wk-tag-you{background:var(--chrome-deep);color:#fff}
+.wk-q{font-family:'Bitter',serif;font-size:12.5px;line-height:1.5;color:#334051;margin-top:4px}
+.wk-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.wk-btns .btn{padding:7px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.wk-edit{flex:1;min-width:220px;display:flex;flex-direction:column;gap:7px}
+.wk-edit input,.wk-edit textarea{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:13px;padding:8px 10px;outline:none;color:var(--jet)}
+.wk-edit textarea{resize:vertical;min-height:60px}
+.wk-edit input:focus,.wk-edit textarea:focus{border-color:var(--pulpred)}
+.wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;border:3px dashed var(--rule);padding:16px;text-align:center}
+.ed-flag{border:3px solid var(--cobalt);color:var(--cobalt);background:#fff;padding:11px 14px;margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 0}
+  main{padding:18px 14px 210px}
+  .cover-band{flex-wrap:wrap}
+  .boardgrid{grid-template-columns:1fr;padding:11px;gap:12px}
+  #saveStamp{bottom:190px;right:10px;width:62px;height:62px;font-size:9px}
+  #press .pressmsg{min-width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo"><span class="the">Six Question</span>Discussion Board</h1>
+    <div class="cover-band">
+      <div class="roundel" id="dayRoundel">DAY<br>1</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">Today on the board</span>
+        <span id="promptText">Loading today's boards</span>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span><b>How it works</b> Six questions, all of them open. Answer whichever ones you have something to say about.</span>
+      <span><b>Live</b> Every question and every answer sits on this one page.</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">The floor is open</span><span class="pct" id="meterCount">0 answers</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <div class="sheet-frame" id="sheetFrame">
+    <div class="netbar" id="netBar">
+      <span id="netMsg">&nbsp;</span>
+      <button class="btn btn-quiet" id="netRetry" type="button">Try again</button>
+    </div>
+    <div class="previewbar" id="previewBar">
+      <span>You are reading an earlier day. The live board has not moved.</span>
+      <button class="btn btn-quiet" id="backLive" type="button">Back to live</button>
+    </div>
+    <div class="sheet-bar">
+      <span id="barDay">Day 1</span>
+      <span class="arm" id="barState">Pick a question below, then post</span>
+    </div>
+    <div class="boardgrid" id="boardGrid"></div>
+  </div>
+
+  <section class="archive" id="archive" hidden>
+    <div class="archive-hd">
+      <span>Every day</span>
+      <button class="btn btn-quiet" id="allDaysBtn" type="button">Show every day at once</button>
+    </div>
+    <div class="chips" id="dayChips"></div>
+    <div id="allDays"></div>
+  </section>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
+
+    <div class="groupmark"><span>Today's six questions</span></div>
+    <p class="ed-note">Write all six. They appear on the page in this order, and anyone in the room can answer any of them.</p>
+    <label class="bl" for="edLabel">Day name</label>
+    <input type="text" id="edLabel" placeholder="Day 3"/>
+    <div id="edQuestions"></div>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="saveQuestions" type="button">Save all six</button>
+      <button class="btn" id="clearDay" type="button">Clear this day's answers</button>
+    </div>
+
+
+    <div class="groupmark"><span>Add a day</span></div>
+    <p class="ed-note">Every day gets its own six blank questions and keeps its own answers. One question per line, six lines. Fewer is fine, the rest stay empty.</p>
+    <label class="bl" for="newLabel">Day name</label>
+    <input type="text" id="newLabel" placeholder="Day 4"/>
+    <label class="bl" for="newPrompts">Six questions, one per line</label>
+    <textarea id="newPrompts" rows="6" placeholder="What kind of labor goes unseen in your own household?&#10;Name a machine you were taught to be afraid of.&#10;Who taught you the skill you use most at work?&#10;Where does the care in this system actually happen?&#10;What does the interface hide from you?&#10;Whose name got left off the patent?"></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addDay" type="button">Add to the list</button>
+      <button class="btn btn-ink" id="startDay" type="button">Add and open now</button>
+    </div>
+
+    <div class="groupmark"><span>All days</span></div>
+    <p class="ed-note">Open puts the whole room on that day. Rename and delete only touch that one day.</p>
+    <div class="daylist" id="dayList"></div>
+
+    <div class="groupmark"><span>Read the answers</span></div>
+    <p class="ed-note">Every answer under its question, in the order it arrived. Easier to read aloud than the board itself.</p>
+    <div class="ed-actions" style="margin-top:0;margin-bottom:12px">
+      <button class="btn" id="allAnswersBtn" type="button">Show every day</button>
+      <button class="btn btn-quiet" id="downloadAnswers" type="button">Download as text</button>
+    </div>
+    <div class="answers" id="answerList"></div>
+
+    <div class="ed-flag" id="edFlag"></div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div id="press">
+  <span class="pressmsg"><b>Answering</b></span>
+  <select id="qPick" aria-label="Which question are you answering">
+    <option value="0">Question 1</option>
+    <option value="1">Question 2</option>
+    <option value="2">Question 3</option>
+    <option value="3">Question 4</option>
+    <option value="4">Question 5</option>
+    <option value="5">Question 6</option>
+  </select>
+  <input type="text" id="wordInput" placeholder="Type your answer, then press Post" autocomplete="off"/>
+  <div class="press-btns">
+    <button id="whoTag" type="button">Artist ?</button>
+    <button class="btn btn-ink" id="dropBtn" type="button">Post my answer</button>
+  </div>
+</div>
+
+<div id="saveStamp">Answer<br>posted</div>
+
+<div class="overlay" id="numGate">
+  <div class="box">
+    <h3>Your artist number</h3>
+    <p>This sits above every answer you post. Your browser remembers it, so you only type it once.</p>
+    <input type="text" id="numCode" inputmode="numeric" placeholder="ARTIST NUMBER"/>
+    <div class="err" id="numErr">Enter your artist number</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="numCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="numGo" type="button">That's me</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to write questions or open a new day.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Passcode for the instructor desk. Change this to whatever you like.
+const TEACHER_CODE = "questions";
+
+// How many questions each day carries. Six is the point of this page, but
+// the code follows this number if you ever want four or eight.
+const QUESTIONS = 6;
+
+// Let students browse earlier days from the strip under the boards.
+// Set this to false to keep old days visible only from the instructor desk.
+const SHOW_ARCHIVE_TO_STUDENTS = true;
+
+// Ask each student for their artist number before their first post. The
+// browser remembers it after that. Set to false for anonymous boards.
+const ASK_FOR_NUMBER = true;
+
+// Only digits, or anything they type? Leave true to keep the boards tidy.
+const NUMBERS_ONLY = true;
+
+// The six questions the very first day starts with, if the database is empty.
+const FIRST_LABEL = "Day 1";
+const FIRST_QUESTIONS = [
+  "Describe a time when you feel that your work was displaced by AI.",
+  "What kind of labor goes unseen in your own household?",
+  "Name a machine you were taught to be afraid of.",
+  "Who taught you the skill you use most at work?",
+  "What does an interface hide from the person using it?",
+  "Whose name got left off the patent?"
+];
+
+// Same Firebase project as the collage and the group boards. This tool has
+// its own key in the database, so none of the three touch each other's data.
+// Add a matching "openboards" branch to the database rules before class.
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+let db = null;
+
+const ROOT    = "openboards";
+const CURRENT = ROOT + "/current";
+const INDEX   = ROOT + "/index";
+const POSTS   = ROOT + "/posts";
+
+let sessionId  = null;
+let postsRef   = null;
+let metaRef    = null;
+let meta       = {};
+let posts      = {};          // { g0: {id: post}, g1: {...} }
+let unlocked   = false;
+let dayIndex   = {};
+let editingDay = null;
+let liveId     = null;
+let previewId  = null;
+let allDaysOn  = false;
+let allPosts   = {};
+let allMode    = false;
+let artistNo   = localStorage.getItem("boardArtistNo") || "";
+let pending    = null;   // an answer waiting on an artist number
+
+const $ = (id) => document.getElementById(id);
+const range = (n) => Array.from({ length: n }, (_, i) => i);
+
+/* ── small helpers ──────────────────────────────────────────────── */
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+
+// Firebase hands arrays back as either arrays or numbered objects.
+// This flattens both into a plain array of the right length.
+function listOf(val, len, fill) {
+  const out = [];
+  for (let i = 0; i < len; i++) {
+    const v = val ? val[i] : undefined;
+    out.push(v == null ? fill : v);
+  }
+  return out;
+}
+
+function whoLabel(w) { return w ? "Artist " + w : ""; }
+
+function questionsOf(m) { return listOf(m && m.questions, QUESTIONS, ""); }
+
+function countPosts(bag) {
+  return range(QUESTIONS).reduce((n, q) => n + Object.keys((bag && bag["q" + q]) || {}).length, 0);
+}
+
+function rowsFor(bag, q) {
+  return Object.values((bag && bag["q" + q]) || {}).sort((a, b) => (a.at || 0) - (b.at || 0));
+}
+
+/* ── drawing the six boards ─────────────────────────────────────── */
+function boardsHTML(m, bag, live) {
+  const qs = questionsOf(m);
+  return range(QUESTIONS)
+    .map((g) => {
+      const q = qs[g] || "";
+      const rows = rowsFor(bag, g);
+      return `<article class="board q${g + 1}">
+        <div class="board-hd">
+          <span>Question ${g + 1}</span>
+          <span class="count">${rows.length} ${rows.length === 1 ? "answer" : "answers"}</span>
+        </div>
+        <div class="board-q${q ? "" : " unset"}">${
+          q ? esc(q) : "No question written here yet"
+        }</div>
+        <div class="board-posts">${
+          rows.length
+            ? rows
+                .map(
+                  (r) =>
+                    `<div class="post">${
+                      r.who ? `<span class="who">${esc(whoLabel(r.who))}</span>` : ""
+                    }${esc(r.text)}</div>`
+                )
+                .join("")
+            : '<div class="post-empty">Nothing on this board yet</div>'
+        }</div>
+        ${
+          live
+            ? `<div class="board-foot"><button class="btn board-post" data-q="${g}" type="button">Answer Question ${g + 1}</button></div>`
+            : ""
+        }
+      </article>`;
+    })
+    .join("");
+}
+
+function renderBoards() {
+  $("boardGrid").innerHTML = boardsHTML(meta, posts, !previewId);
+  const n = countPosts(posts);
+  $("meterCount").textContent = n === 1 ? "1 answer" : n + " answers";
+  $("meterFill").style.width = Math.min(100, n * 4) + "%";
+  $("meterLabel").textContent = n === 0 ? "The floor is open" : "The floor is filling up";
+  renderAnswers();
+}
+
+$("boardGrid").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-q]");
+  if (!b) return;
+  $("qPick").value = b.dataset.q;
+  $("wordInput").focus();
+  $("barState").textContent = "Question " + (+b.dataset.q + 1) + " picked. Type your answer.";
+});
+
+/* ── posting ────────────────────────────────────────────────────── */
+function post() {
+  const field = $("wordInput");
+  const text = field.value.trim();
+  if (!text) {
+    $("barState").textContent = "Type an answer first";
+    field.focus();
+    return;
+  }
+  if (previewId) {
+    $("barState").textContent = "This is an earlier day. Go back to live to post.";
+    return;
+  }
+  if (!db || !sessionId) {
+    $("barState").textContent = "Not connected yet. Give it a second and try again.";
+    return;
+  }
+
+  const g = +$("qPick").value || 0;
+
+  if (ASK_FOR_NUMBER && !artistNo) {
+    pending = { text, g };
+    openNumGate();
+    return;
+  }
+
+  send(text, g);
+}
+
+function send(text, g) {
+  db.ref(`${POSTS}/${sessionId}/q${g}`)
+    .push({ text: text.slice(0, 600), who: artistNo || null, at: Date.now() })
+    .catch(dbTrouble);
+
+  $("wordInput").value = "";
+  $("barState").textContent = "Posted under Question " + (g + 1) + ". Add another whenever you like.";
+  const stamp = $("saveStamp");
+  stamp.classList.add("on");
+  setTimeout(() => stamp.classList.remove("on"), 1400);
+}
+
+$("dropBtn").addEventListener("click", post);
+$("wordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") post(); });
+
+/* ── the artist number ──────────────────────────────────────────── */
+function showWho() {
+  $("whoTag").textContent = artistNo ? "Artist " + artistNo : "Artist ?";
+  $("whoTag").title = artistNo ? "Tap to change your artist number" : "Tap to set your artist number";
+}
+showWho();
+
+function openNumGate() {
+  $("numCode").value = artistNo;
+  $("numErr").classList.remove("on");
+  $("numGate").classList.add("open");
+  $("numCode").focus();
+}
+
+function takeNumber() {
+  let v = $("numCode").value.trim();
+  if (NUMBERS_ONLY) v = v.replace(/\D/g, "");
+  v = v.slice(0, 8);
+  if (!v) {
+    $("numErr").classList.add("on");
+    return;
+  }
+  artistNo = v;
+  localStorage.setItem("boardArtistNo", artistNo);
+  $("numGate").classList.remove("open");
+  showWho();
+  if (pending) {
+    send(pending.text, pending.g);
+    pending = null;
+  }
+}
+
+$("whoTag").addEventListener("click", openNumGate);
+$("numGo").addEventListener("click", takeNumber);
+$("numCode").addEventListener("keydown", (e) => { if (e.key === "Enter") takeNumber(); });
+$("numCancel").addEventListener("click", () => {
+  pending = null;
+  $("numGate").classList.remove("open");
+});
+
+/* ── live day or private preview ────────────────────────────────── */
+function syncDay() {
+  const target = previewId || liveId;
+  if (target) attachDay(target);
+  const previewing = !!previewId;
+  $("sheetFrame").classList.toggle("previewing", previewing);
+  renderChips();
+  $("previewBar").classList.toggle("on", previewing);
+  $("wordInput").disabled = previewing || !db;
+  $("dropBtn").disabled = previewing || !db;
+  $("qPick").disabled = previewing;
+  $("barDay").textContent = previewing
+    ? "Preview"
+    : (dayIndex[liveId] && dayIndex[liveId].label) || "This day";
+  renderDays();
+}
+
+function endPreview() {
+  previewId = null;
+  syncDay();
+}
+$("backLive").addEventListener("click", endPreview);
+
+/* ── when the database says no ──────────────────────────────────── */
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  const msg = denied
+    ? "Firebase blocked that. The database rules need updating."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  $("barState").textContent = msg;
+  console.error("[six question board]", err);
+}
+
+/* ── the day ────────────────────────────────────────────────────── */
+function attachDay(id) {
+  if (id === sessionId) return;
+  if (postsRef) postsRef.off();
+  if (metaRef) metaRef.off();
+
+  sessionId = id;
+  posts = {};
+  meta = {};
+  renderBoards();
+
+  metaRef = db.ref(`${INDEX}/${id}`);
+  metaRef.on("value", (s) => {
+    meta = s.val() || {};
+    const label = meta.label || "This day";
+    if (!previewId) $("barDay").textContent = label;
+    $("promptText").textContent = countQuestions(meta)
+      ? countQuestions(meta) + " questions open for answers"
+      : "No questions written for this day yet";
+    $("dayRoundel").innerHTML = roundelText(meta.label);
+    document.title = (meta.label ? meta.label + " · " : "") + "Discussion Board with 6 Questions";
+    renderBoards();
+    if (unlocked) fillDesk();
+  }, dbTrouble);
+
+  postsRef = db.ref(`${POSTS}/${id}`);
+  postsRef.on("value", (s) => {
+    posts = s.val() || {};
+    renderBoards();
+  }, dbTrouble);
+}
+
+function countQuestions(m) {
+  return questionsOf(m).filter((q) => q && q.trim()).length;
+}
+
+function roundelText(label) {
+  if (!label) return "DAY";
+  const n = label.match(/\d+/);
+  return n ? "DAY<br>" + n[0] : label.slice(0, 6).toUpperCase();
+}
+
+
+/* ── the instructor desk question fields ────────────────────────── */
+$("edQuestions").innerHTML = range(QUESTIONS)
+  .map(
+    (i) => `<div class="qrow">
+      <div class="qnum">Q${i + 1}</div>
+      <textarea id="edQ${i}" placeholder="Question ${i + 1}"></textarea>
+    </div>`
+  )
+  .join("");
+
+function fillDesk() {
+  $("edLabel").value = meta.label || "";
+  const qs = questionsOf(meta);
+  range(QUESTIONS).forEach((i) => { $("edQ" + i).value = qs[i] || ""; });
+}
+
+$("saveQuestions").addEventListener("click", () => {
+  if (!db || !sessionId) return flag("Not connected to Firebase yet");
+  const qs = range(QUESTIONS).map((i) => $("edQ" + i).value.trim());
+  if (!qs.some(Boolean)) return flag("Write at least one question first");
+  db.ref(`${INDEX}/${sessionId}`)
+    .update({ questions: qs, label: $("edLabel").value.trim() || "This day" })
+    .then(() => flag("Saved. Every browser has the questions now."))
+    .catch(() => flag("Firebase refused the write. Check the database rules."));
+});
+
+$("clearDay").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (previewId) return flag("Stop the preview first, then clear");
+  if (!confirm("Clear every answer from " + (meta.label || "this day") + "? The questions stay.")) return;
+  db.ref(`${POSTS}/${sessionId}`).remove().then(() => flag("All six questions wiped clean")).catch(dbTrouble);
+});
+
+/* ── reading the answers ────────────────────────────────────────── */
+function answerBlock(m, bag) {
+  const qs = questionsOf(m);
+  return range(QUESTIONS)
+    .map((g) => {
+      const rows = rowsFor(bag, g);
+      return `<div class="ansgroup">
+        <div class="ansgroup-hd">Question ${g + 1}<span>${rows.length} ${rows.length === 1 ? "answer" : "answers"}</span></div>
+        <div class="ansgroup-q">${qs[g] ? esc(qs[g]) : "No question written"}</div>
+        ${
+          rows.length
+            ? rows.map((r) => `<div class="ans">${r.who ? esc(whoLabel(r.who)) + ": " : ""}${esc(r.text)}</div>`).join("")
+            : '<div class="ans-empty">Nobody answered this one</div>'
+        }
+      </div>`;
+    })
+    .join("");
+}
+
+function renderAnswers() {
+  const box = $("answerList");
+  if (!box) return;
+  if (!allMode) {
+    box.innerHTML = answerBlock(meta, posts);
+    return;
+  }
+  const ids = dayOrder();
+  box.innerHTML = ids.length
+    ? ids
+        .map(
+          (id) =>
+            `<div class="ansgroup"><div class="ansgroup-hd">${esc(dayIndex[id].label) || "Untitled"}</div></div>` +
+            answerBlock(dayIndex[id], allPosts[id] || {})
+        )
+        .join("")
+    : '<div class="ans-empty">No days yet</div>';
+}
+
+function loadAllPosts() {
+  if (!db) return Promise.reject(new Error("no db"));
+  return db.ref(POSTS).once("value").then((snap) => {
+    allPosts = snap.val() || {};
+    return allPosts;
+  });
+}
+
+$("allAnswersBtn").addEventListener("click", () => {
+  if (allMode) {
+    allMode = false;
+    $("allAnswersBtn").textContent = "Show every day";
+    renderAnswers();
+    return;
+  }
+  $("allAnswersBtn").textContent = "Loading";
+  loadAllPosts()
+    .then(() => {
+      allMode = true;
+      $("allAnswersBtn").textContent = "Show this day only";
+      renderAnswers();
+    })
+    .catch((e) => {
+      $("allAnswersBtn").textContent = "Show every day";
+      dbTrouble(e);
+    });
+});
+
+function answersAsText() {
+  const lines = [];
+  const ids = allMode ? dayOrder() : [sessionId];
+  ids.forEach((id) => {
+    const m = allMode ? dayIndex[id] || {} : meta;
+    const bag = allMode ? allPosts[id] || {} : posts;
+    const qs = questionsOf(m);
+    lines.push((m.label || "Untitled").toUpperCase());
+    lines.push("");
+    range(QUESTIONS).forEach((g) => {
+      lines.push("QUESTION " + (g + 1) + ": " + (qs[g] || "no question"));
+      rowsFor(bag, g).forEach((r) => lines.push("- " + (r.who ? whoLabel(r.who) + ": " : "") + r.text));
+      lines.push("");
+    });
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+$("downloadAnswers").addEventListener("click", () => {
+  const blob = new Blob([answersAsText()], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = allMode ? "discussion_board_all_days.txt" : "discussion_board.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  flag("Text file downloaded");
+});
+
+/* ── every day, stacked on one page ─────────────────────────────── */
+function renderAllDays() {
+  const wrap = $("allDays");
+  const ids = dayOrder();
+  wrap.innerHTML = ids.length
+    ? ids
+        .map((id) => {
+          const m = dayIndex[id];
+          const bag = allPosts[id] || {};
+          const n = countPosts(bag);
+          return `<div class="dayblock${id === liveId ? " livedy" : ""}">
+            <div class="dayblock-bar">
+              <span>${esc(m.label) || "Untitled"}${id === liveId ? " &#9679; on screen now" : ""}</span>
+              <span class="arm">${n} ${n === 1 ? "answer" : "answers"}</span>
+            </div>
+            <div class="boardgrid">${boardsHTML(m, bag, false)}</div>
+          </div>`;
+        })
+        .join("")
+    : '<div class="wk-empty">No days yet</div>';
+}
+
+$("allDaysBtn").addEventListener("click", () => {
+  if (allDaysOn) {
+    allDaysOn = false;
+    $("allDays").classList.remove("on");
+    $("allDaysBtn").textContent = "Show every day at once";
+    return;
+  }
+  $("allDaysBtn").textContent = "Loading";
+  loadAllPosts()
+    .then(() => {
+      allDaysOn = true;
+      $("allDays").classList.add("on");
+      $("allDaysBtn").textContent = "Hide the other days";
+      renderAllDays();
+      $("allDays").scrollIntoView({ behavior: "smooth", block: "start" });
+    })
+    .catch((e) => {
+      $("allDaysBtn").textContent = "Show every day at once";
+      dbTrouble(e);
+    });
+});
+
+/* ── watching the database ──────────────────────────────────────── */
+function watchCurrentDay() {
+  db.ref(CURRENT).on("value", (s) => {
+    const id = s.val();
+    if (id) {
+      liveId = id;
+      syncDay();
+    } else {
+      const first = "d" + Date.now();
+      db.ref(CURRENT).transaction((held) => (held ? undefined : first));
+      db.ref(`${INDEX}/${first}`)
+        .set({ label: FIRST_LABEL, questions: FIRST_QUESTIONS, created: Date.now() })
+        .catch(dbTrouble);
+    }
+  }, dbTrouble);
+
+  db.ref(INDEX).on("value", (s) => {
+    dayIndex = s.val() || {};
+    renderDays();
+    renderChips();
+    if (allDaysOn) renderAllDays();
+  }, dbTrouble);
+
+  db.ref(".info/connected").on("value", (s) => {
+    if (previewId) return;
+    $("barState").textContent = s.val() === true
+      ? "Live. Pick a question, then post."
+      : "Reconnecting to the database";
+  });
+}
+
+/* ── the instructor gate ────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) {
+    $("editor").classList.toggle("open");
+    $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    $("gate").classList.add("open");
+    $("gateCode").focus();
+  }
+});
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateGo").addEventListener("click", tryCode);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) {
+    $("gateErr").classList.add("on");
+    return;
+  }
+  unlocked = true;
+  $("gate").classList.remove("open");
+  $("gateErr").classList.remove("on");
+  $("gateCode").value = "";
+  $("editor").classList.add("open");
+  fillDesk();
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
+
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  setTimeout(() => f.classList.remove("on"), 3200);
+}
+
+/* ── the day list ───────────────────────────────────────────────── */
+function nextDayNumber() {
+  let top = 0;
+  Object.values(dayIndex).forEach((d) => {
+    const n = String(d.label || "").match(/\d+/);
+    if (n && +n[0] > top) top = +n[0];
+  });
+  return top + 1;
+}
+
+function dayOrder() {
+  return Object.keys(dayIndex).sort((a, b) => (dayIndex[a].created || 0) - (dayIndex[b].created || 0));
+}
+
+function renderChips() {
+  const strip = $("archive");
+  if (!strip) return;
+  if (!SHOW_ARCHIVE_TO_STUDENTS) {
+    strip.hidden = true;
+    return;
+  }
+  const ids = dayOrder();
+  strip.hidden = ids.length < 2;
+  $("dayChips").innerHTML = ids
+    .map((id) => {
+      const d = dayIndex[id];
+      const showing = (previewId || liveId) === id;
+      const live = id === liveId;
+      return `<button class="chip" data-day="${id}" type="button" aria-current="${showing}">${
+        esc(d.label) || "Untitled"
+      }${live ? ' <span class="dot">&#9679;</span>' : ""}</button>`;
+    })
+    .join("");
+}
+
+$("dayChips").addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-day]");
+  if (!chip) return;
+  const id = chip.dataset.day;
+  previewId = id === liveId ? null : id;
+  syncDay();
+  $("sheetFrame").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+function renderDays() {
+  const list = $("dayList");
+  if (!list) return;
+  const ids = dayOrder();
+  if (!ids.length) {
+    list.innerHTML = '<div class="wk-empty">No days yet. Add one above.</div>';
+    return;
+  }
+  list.innerHTML = ids
+    .map((id) => {
+      const d = dayIndex[id];
+      const here = id === sessionId;
+      if (id === editingDay) {
+        return `<div class="wk${here ? " live" : ""}">
+          <div class="wk-edit">
+            <input type="text" data-field="label" value="${esc(d.label)}" placeholder="Day name"/>
+          </div>
+          <div class="wk-btns">
+            <button class="btn btn-ink" data-act="save" data-id="${id}" type="button">Save</button>
+            <button class="btn btn-quiet" data-act="cancel" data-id="${id}" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      const n = countQuestions(d);
+      return `<div class="wk${here ? " live" : ""}">
+        <div class="wk-main">
+          <div class="wk-name">${esc(d.label) || "Untitled"}${
+            id === liveId ? '<span class="wk-tag">On screen now</span>' : ""
+          }${id === previewId ? '<span class="wk-tag wk-tag-you">You are reading this</span>' : ""}</div>
+          <div class="wk-q">${n} of ${QUESTIONS} questions written</div>
+        </div>
+        <div class="wk-btns">
+          ${id === liveId ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
+          ${
+            id === previewId
+              ? `<button class="btn" data-act="unpreview" type="button">Stop preview</button>`
+              : `<button class="btn" data-act="preview" data-id="${id}" type="button">Preview</button>`
+          }
+          <button class="btn" data-act="edit" data-id="${id}" type="button">Rename</button>
+          <button class="btn btn-quiet" data-act="delete" data-id="${id}" type="button">Delete</button>
+        </div>
+      </div>`;
+    })
+    .join("");
+}
+
+$("dayList").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.act;
+
+  if (act === "open") {
+    if (!db) return flag("Not connected to Firebase yet");
+    db.ref(CURRENT).set(id)
+      .then(() => {
+        previewId = null;
+        flag("Everyone is on " + (dayIndex[id].label || "that day") + " now");
+      })
+      .catch(dbTrouble);
+  }
+
+  if (act === "preview") {
+    previewId = id === liveId ? null : id;
+    syncDay();
+    $("sheetFrame").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  if (act === "unpreview") endPreview();
+
+  if (act === "edit") {
+    editingDay = id;
+    renderDays();
+  }
+
+  if (act === "cancel") {
+    editingDay = null;
+    renderDays();
+  }
+
+  if (act === "save") {
+    const row = btn.closest(".wk");
+    const label = row.querySelector('[data-field="label"]').value.trim();
+    db.ref(`${INDEX}/${id}`).update({ label: label || "Untitled" })
+      .then(() => {
+        editingDay = null;
+        flag("Day renamed");
+      })
+      .catch(dbTrouble);
+  }
+
+  if (act === "delete") {
+    if (id === liveId) return flag("Open a different day before deleting this one");
+    const d = dayIndex[id];
+    if (!confirm(`Delete ${d.label || "this day"} and every answer under all six questions? This cannot be undone.`)) return;
+    db.ref(`${POSTS}/${id}`).remove()
+      .then(() => db.ref(`${INDEX}/${id}`).remove())
+      .then(() => flag("Day deleted"))
+      .catch(dbTrouble);
+  }
+});
+
+/* ── adding days ────────────────────────────────────────────────── */
+function makeDay(label, questions, openIt) {
+  const id = "d" + Date.now() + Math.floor(Math.random() * 1000);
+  return db.ref(`${INDEX}/${id}`)
+    .set({
+      label: label || "Day " + nextDayNumber(),
+      questions: listOf(questions, QUESTIONS, ""),
+      created: Date.now()
+    })
+    .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
+}
+
+function addFromForm(openIt) {
+  if (!db) return flag("Not connected to Firebase yet");
+  const lines = $("newPrompts").value.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return flag("Write the questions first, one per line");
+  if (lines.length > QUESTIONS) return flag("That is more than " + QUESTIONS + " lines. Trim it down.");
+  makeDay($("newLabel").value.trim(), lines, openIt)
+    .then(() => {
+      $("newPrompts").value = "";
+      $("newLabel").value = "";
+      flag(openIt ? "New day is open. Six blank questions on screen." : "Added to the list. Open it when you are ready.");
+    })
+    .catch(dbTrouble);
+}
+
+$("addDay").addEventListener("click", () => addFromForm(false));
+$("startDay").addEventListener("click", () => addFromForm(true));
+
+/* ── loading Firebase ───────────────────────────────────────────────
+   Some networks and browser extensions block gstatic.com, which is
+   where Firebase normally lives. If that happens the page tries two
+   other mirrors before giving up, and says so on screen instead of
+   only in the console.
+   ─────────────────────────────────────────────────────────────────── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) {
+      /* try the next mirror */
+    }
+  }
+  return false;
+}
+
+// Draw the empty boards straight away so the page never sits blank.
+renderBoards();
+
+/* ── signing in ─────────────────────────────────────────────────────
+   Students never see a login. This signs each browser in silently so the
+   database rules can require a signed-in visitor instead of standing wide
+   open, which is what gets a database deactivated.
+
+   auth/network-request-failed means the browser could not reach Google's
+   sign-in server at all. Nearly always one of three things, in this order
+   of likelihood: the page was opened straight off the hard drive as a
+   file:// address, a privacy extension is blocking identitytoolkit.googleapis.com,
+   or the domain the page is served from is not on the Authorized domains
+   list in the Firebase console under Authentication, Settings.
+   ─────────────────────────────────────────────────────────────────── */
+function netTrouble(err) {
+  const code = (err && err.code) || "";
+  const off = /operation-not-allowed|configuration-not-found/.test(code);
+  const net = /network-request-failed|timeout/.test(code);
+  const onDisk = location.protocol === "file:";
+
+  let head = "Sign-in failed: " + ((err && err.message) || code);
+  let why = "";
+
+  if (off) {
+    head = "Anonymous sign-in is switched off";
+    why = "In the Firebase console open Authentication, then Sign-in method, and enable Anonymous.";
+  } else if (net && onDisk) {
+    head = "This page is running off the hard drive";
+    why = "Firebase sign-in will not run from a file:// address. Open the page from its web address instead, or serve the folder locally with python3 -m http.server 8000 and visit localhost:8000.";
+  } else if (net) {
+    head = "Cannot reach the sign-in server";
+    why = "Three things to check. A privacy extension or campus network blocking identitytoolkit.googleapis.com. Whether this address sits on the Authorized domains list in the Firebase console under Authentication, Settings. Or the wifi itself. Try again once you have looked.";
+  }
+
+  $("netMsg").innerHTML = esc(head) + (why ? '<span class="why">' + esc(why) + "</span>" : "");
+  $("netBar").classList.add("on");
+  $("barState").textContent = head;
+  $("wordInput").disabled = true;
+  $("dropBtn").disabled = true;
+  console.error("[six question board]", err);
+}
+
+function signIn(tries) {
+  return firebase.auth().signInAnonymously().catch((err) => {
+    const net = /network-request-failed|timeout/.test((err && err.code) || "");
+    if (net && tries > 0) {
+      $("barState").textContent = "Connection dropped. Trying again.";
+      return new Promise((go) => setTimeout(go, 1500)).then(() => signIn(tries - 1));
+    }
+    throw err;
+  });
+}
+
+function startUp() {
+  $("netBar").classList.remove("on");
+  $("barState").textContent = "Connecting";
+  signIn(3)
+    .then(() => {
+      db = firebase.database();
+      $("wordInput").disabled = false;
+      $("dropBtn").disabled = false;
+      watchCurrentDay();
+      $("barState").textContent = "Pick a question, then post";
+    })
+    .catch(netTrouble);
+}
+
+$("netRetry").addEventListener("click", startUp);
+
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("promptText").textContent = "Cannot reach Firebase";
+    $("netMsg").innerHTML =
+      "The Firebase library did not load" +
+      '<span class="why">All three mirrors were blocked. Usually an ad blocker, or a network that filters gstatic.com, jsdelivr and unpkg.</span>';
+    $("netBar").classList.add("on");
+    $("barState").textContent = "Offline. Check the network or an ad blocker.";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  startUp();
+});
+
+/* ── date stamp ─────────────────────────────────────────────────── */
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
