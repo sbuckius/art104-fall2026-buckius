@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blob Timer — 60 seconds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#171029;
+    --cream:#FFF6E8;
+    --butter:#FFD34E;
+    --magenta:#FF5FA2;
+    --display:'Fredoka','Trebuchet MS',system-ui,sans-serif;
+    --data:'Space Mono','SFMono-Regular',ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+
+  body{
+    margin:0;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    background:#120B1F;
+    font-family:var(--display);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .timer{
+    --size:300px;
+    --fit:min(var(--size), calc(100vw - 40px), calc(100vh - 130px));
+    position:relative;
+    width:var(--fit);
+    height:var(--fit);
+    border-radius:26px;
+    border:4px solid var(--ink);
+    background:radial-gradient(125% 100% at 50% 4%, #3E7A55 0%, #1E4A33 48%, #12261E 100%);
+    box-shadow:0 9px 0 var(--ink), 0 20px 38px rgba(0,0,0,.5);
+    overflow:hidden;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+
+  .bg{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    transition:opacity .45s ease;
+  }
+
+  .scrim{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+      linear-gradient(to top, rgba(18,11,31,.62) 0%, rgba(18,11,31,0) 30%),
+      radial-gradient(72% 62% at 50% 44%, rgba(18,11,31,0) 38%, rgba(18,11,31,.5) 100%);
+  }
+
+  .timer canvas{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:block;
+    width:100%;
+    height:100%;
+  }
+
+  .flash{
+    position:absolute;
+    inset:0;
+    z-index:3;
+    background:radial-gradient(60% 50% at 50% 46%, #FFF0B0 0%, rgba(255,240,176,0) 72%);
+    opacity:0;
+    pointer-events:none;
+  }
+  .flash.is-on{animation:flash-out .5s ease-out forwards;}
+  @keyframes flash-out{0%{opacity:.62;}100%{opacity:0;}}
+
+  .readout{
+    position:absolute;
+    top:11px;
+    left:50%;
+    z-index:4;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--data);
+    font-size:23px;
+    line-height:1;
+    padding:7px 13px 6px;
+    border-radius:11px;
+    border:3px solid var(--ink);
+    box-shadow:3px 3px 0 rgba(0,0,0,.4);
+    transform:translateX(-50%) rotate(-2deg);
+    font-variant-numeric:tabular-nums;
+    transition:background-color .18s ease,transform .18s ease;
+  }
+  .readout.is-urgent{background:var(--butter);transform:translateX(-50%) rotate(2deg) scale(1.07);}
+  .readout.is-done{background:var(--magenta);color:var(--cream);}
+
+  .swap{
+    position:absolute;
+    top:11px;
+    left:11px;
+    z-index:4;
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    border:3px solid var(--ink);
+    border-radius:50%;
+    background:var(--cream);
+    color:var(--ink);
+    cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);
+    transition:transform .08s ease,box-shadow .08s ease,background-color .15s ease;
+  }
+  .swap:hover{background:var(--butter);}
+  .swap:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink);}
+  .swap:focus-visible{outline:3px solid var(--butter);outline-offset:3px;}
+  .swap[hidden]{display:none;}
+  .swap svg{width:15px;height:15px;display:block;}
+
+  .controls{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:12px;
+    z-index:4;
+    display:flex;
+    justify-content:center;
+    gap:8px;
+  }
+
+  .btn{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink);
+    background:var(--butter);
+    border:3px solid var(--ink);
+    border-radius:999px;
+    padding:7px 16px 8px;
+    cursor:pointer;
+    box-shadow:0 4px 0 var(--ink);
+    transition:transform .08s ease,box-shadow .08s ease,background-color .15s ease;
+  }
+  .btn:hover{background:#FFE07A;}
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink);}
+  .btn:focus-visible{outline:3px solid var(--butter);outline-offset:3px;}
+  .btn.secondary{background:var(--magenta);color:var(--cream);padding:7px 13px 8px;}
+  .btn.secondary:hover{background:#FF7CB5;}
+
+  .shout{
+    position:absolute;
+    left:50%;
+    top:42%;
+    z-index:5;
+    font-family:var(--display);
+    font-weight:700;
+    font-size:46px;
+    letter-spacing:-.02em;
+    color:var(--butter);
+    text-shadow:0 4px 0 #B8341A, 0 9px 18px rgba(0,0,0,.55);
+    opacity:0;
+    pointer-events:none;
+    transform:translate(-50%,-50%) scale(.2) rotate(-7deg);
+    transition:opacity .4s ease;
+  }
+  .shout.is-up{animation:shout-pop .9s cubic-bezier(.2,1.7,.4,1) forwards, shout-wobble 1.5s .8s ease-in-out infinite;}
+  @keyframes shout-pop{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-14deg);}
+    55%{opacity:1;transform:translate(-50%,-50%) scale(1.2) rotate(4deg);}
+    100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-2deg);}
+  }
+  @keyframes shout-wobble{
+    0%,100%{transform:translate(-50%,-50%) scale(1) rotate(-2deg);}
+    50%{transform:translate(-50%,-50%) scale(1.05) rotate(2.5deg);}
+  }
+
+  .caption{
+    margin:0;
+    max-width:380px;
+    font-family:var(--data);
+    font-size:10px;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    color:#6E5C8C;
+    text-align:center;
+    line-height:1.8;
+    word-break:break-word;
+  }
+  .caption b{color:#A98FC9;font-weight:700;}
+
+  @media (prefers-reduced-motion: reduce){
+    .shout.is-up{animation:shout-pop .4s ease-out forwards;}
+    .flash.is-on{animation:none;}
+    .btn,.swap,.bg{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="timer" id="frame">
+  <div class="bg" id="bgA"></div>
+  <div class="bg" id="bgB"></div>
+  <div class="scrim"></div>
+  <canvas id="stage"></canvas>
+  <div class="flash" id="flash"></div>
+  <div class="shout" id="shout">TIME!</div>
+  <div class="readout" id="readout" role="timer" aria-live="off">1:00</div>
+
+  <button class="swap" id="swap" type="button" aria-label="Change background" title="Change background" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+      <path d="M3 16l5-5 4 4 3-3 6 6"></path>
+      <circle cx="9" cy="9" r="1.4"></circle>
+    </svg>
+  </button>
+
+  <div class="controls">
+    <button class="btn" id="go" type="button" title="Space">Start</button>
+    <button class="btn secondary" id="reset" type="button" title="R">Reset</button>
+  </div>
+</div>
+
+<p class="caption" id="caption">Loading&hellip;</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ==================================================================
+ *  BLOB TIMER — 60 seconds. Your model, your backgrounds, your sound.
+ *
+ *    your-folder/
+ *      hairy-blob-timer.html
+ *      models/
+ *        blob.glb           <- YOUR 3D OBJECT. This becomes the creature.
+ *      sounds/
+ *        boop_01.wav        <- plays once, only when the minute is up
+ *        boop_02.wav  ...
+ *      images/
+ *        background_01.png  <- shuffled by the corner button
+ *        background_02.png  ...
+ *
+ *  THE MODEL NEEDS A LOCAL SERVER.
+ *  Browsers refuse to load model files straight off the disk. Backgrounds and
+ *  sounds are fine on a double-click, but the .glb will quietly fail. Open a
+ *  terminal in this folder and run:
+ *
+ *      python3 -m http.server
+ *
+ *  then visit http://localhost:8000 in your browser. Without that the timer
+ *  still runs — it just falls back to the built-in green hairy blob.
+ *
+ *  EXPORTING (Blender: File > Export > glTF 2.0, format GLB):
+ *    - any size or position works; it gets centred and scaled to fit
+ *    - +Y up, facing +Z (toward the camera)
+ *    - apply your modifiers; keep it under roughly 50k triangles
+ *    - it shatters into pieces of itself at zero, so solid shapes read best
+ * ================================================================== */
+
+var CONFIG = {
+  imagePath:  'images/',
+  imageBase:  'background_',
+  imageExts:  ['png', 'jpg', 'jpeg', 'webp', 'gif'],
+
+  soundPath:  'sounds/',
+  soundBase:  'boop_',
+  soundExts:  ['mp4', 'mp3', 'm4a', 'wav', 'ogg', 'webm'],
+
+  modelPath:   'models/',
+  modelNames:  ['blob', 'blob_01', 'blob_1', 'creature', 'model'],
+  modelExts:   ['glb', 'gltf'],
+  modelHeight: 2.6,        // your model is scaled to this many world units
+
+  maxIndex:   40,
+  missStreak: 3
+};
+
+var DURATION = 60;
+var REDUCED  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var TAU      = Math.PI * 2;
+var GROUND_Y = -1.40;
+var PIECES   = REDUCED ? 12 : 24;
+
+/* ==================================================================
+ *  Finding your files
+ * ================================================================== */
+
+function pad(n){ return n < 10 ? '0' + n : '' + n; }
+
+function candidates(path, base, i, exts){
+  var out = [];
+  [pad(i), String(i)].forEach(function(num){
+    exts.forEach(function(ext){ out.push(path + base + num + '.' + ext); });
+  });
+  return out;
+}
+
+function probeImage(url){
+  return new Promise(function(resolve){
+    var img = new Image();
+    img.onload  = function(){ resolve(url); };
+    img.onerror = function(){ resolve(null); };
+    img.src = url;
+  });
+}
+
+function probeSound(url){
+  return new Promise(function(resolve){
+    var el = new Audio();
+    var settled = false;
+    function hit(){ if (!settled){ settled = true; resolve(url); } }
+    function miss(){ if (!settled){ settled = true; resolve(null); } }
+    el.addEventListener('loadedmetadata', hit);
+    el.addEventListener('canplaythrough', hit);
+    el.addEventListener('error', miss);
+    setTimeout(miss, 3000);
+    el.preload = 'auto';
+    el.src = url;
+    el.load();
+  });
+}
+
+/* All spellings of one number are checked at once — one at a time made an
+   empty folder take painfully long to give up on. */
+function discover(path, base, exts, probe){
+  var found = [], misses = 0;
+  function step(i){
+    if (i > CONFIG.maxIndex || misses >= CONFIG.missStreak) return Promise.resolve(found);
+    return Promise.all(candidates(path, base, i, exts).map(probe)).then(function(results){
+      var hit = null;
+      for (var k = 0; k < results.length; k++){ if (results[k]){ hit = results[k]; break; } }
+      if (hit){ found.push(hit); misses = 0; } else { misses++; }
+      return step(i + 1);
+    });
+  }
+  return step(1);
+}
+
+/* Models get tried one at a time: GLTFLoader is the only way to know whether
+   a file is really there, and a dozen parallel loads would be wasteful. */
+function loadModel(){
+  if (typeof THREE.GLTFLoader !== 'function') return Promise.resolve(null);
+
+  var loader = new THREE.GLTFLoader();
+  var urls = [];
+  CONFIG.modelNames.forEach(function(name){
+    CONFIG.modelExts.forEach(function(ext){ urls.push(CONFIG.modelPath + name + '.' + ext); });
+  });
+
+  function tryAt(i){
+    if (i >= urls.length) return Promise.resolve(null);
+    return new Promise(function(resolve){
+      loader.load(
+        urls[i],
+        function(gltf){ resolve({ scene: gltf.scene, url: urls[i] }); },
+        undefined,
+        function(){ resolve(null); }
+      );
+    }).then(function(res){ return res || tryAt(i + 1); });
+  }
+  return tryAt(0);
+}
+
+/* ==================================================================
+ *  Backgrounds
+ * ================================================================== */
+
+var frame    = document.getElementById('frame');
+var bgLayers = [document.getElementById('bgA'), document.getElementById('bgB')];
+var swapBtn  = document.getElementById('swap');
+var caption  = document.getElementById('caption');
+
+var bgUrls = [], bgIndex = -1, bgFront = 0;
+
+function showBackground(url){
+  var next = bgLayers[1 - bgFront];
+  next.style.backgroundImage = 'url("' + encodeURI(url) + '")';
+  next.style.opacity = '1';
+  bgLayers[bgFront].style.opacity = '0';
+  bgFront = 1 - bgFront;
+}
+
+function shuffleBackground(){
+  if (!bgUrls.length) return;
+  var i = 0;
+  if (bgUrls.length > 1){
+    do { i = Math.floor(Math.random() * bgUrls.length); } while (i === bgIndex);
+  }
+  bgIndex = i;
+  showBackground(bgUrls[i]);
+}
+
+swapBtn.addEventListener('click', shuffleBackground);
+
+/* ==================================================================
+ *  Sound — one clip, only when the minute is up
+ * ================================================================== */
+
+var soundPool = [], soundIndex = -1, soundsPrimed = false;
+
+/* Browsers only allow audio after a gesture, so the first Start silently arms
+   every clip. This is the only time a clip is touched before the end, so it is
+   belt-and-braces silent: muted AND zero volume, restored once it is stopped. */
+function primeSounds(){
+  if (soundsPrimed || !soundPool.length) return;
+  soundsPrimed = true;
+  soundPool.forEach(function(el){
+    el.muted = true;
+    el.volume = 0;
+    function silence(){
+      el.pause();
+      el.currentTime = 0;
+      el.muted = false;
+      el.volume = 1;
+    }
+    try {
+      var p = el.play();
+      if (p && p.then) p.then(silence).catch(silence);
+      else silence();
+    } catch (err){ silence(); }
+  });
+}
+
+function stopSounds(){
+  soundPool.forEach(function(el){
+    try { el.pause(); el.currentTime = 0; } catch (err){ /* ignore */ }
+  });
+}
+
+function playEndSound(){
+  if (soundPool.length){
+    var i = 0;
+    if (soundPool.length > 1){
+      do { i = Math.floor(Math.random() * soundPool.length); } while (i === soundIndex);
+    }
+    soundIndex = i;
+    var el = soundPool[i];
+    try {
+      el.currentTime = 0;
+      var p = el.play();
+      if (p && p.catch) p.catch(function(){ fallbackBoom(); });
+      return;
+    } catch (err){ /* fall through */ }
+  }
+  fallbackBoom();
+}
+
+/* Stand-in so the timer still lands before you add any files. */
+var actx = null;
+function fallbackBoom(){
+  try {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!actx) actx = new AC();
+    if (actx.state === 'suspended') actx.resume();
+    var t = actx.currentTime + 0.01;
+
+    var len = Math.floor(actx.sampleRate * 0.5);
+    var buf = actx.createBuffer(1, len, actx.sampleRate);
+    var data = buf.getChannelData(0);
+    for (var n = 0; n < len; n++) data[n] = (Math.random() * 2 - 1) * Math.pow(1 - n / len, 2.5);
+    var noise = actx.createBufferSource(); noise.buffer = buf;
+    var nf = actx.createBiquadFilter(); nf.type = 'lowpass'; nf.frequency.value = 1400;
+    var ng = actx.createGain(); ng.gain.value = 0.35;
+    noise.connect(nf).connect(ng).connect(actx.destination);
+    noise.start(t);
+
+    var osc = actx.createOscillator(), og = actx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(180, t);
+    osc.frequency.exponentialRampToValueAtTime(34, t + 0.55);
+    og.gain.setValueAtTime(0.0001, t);
+    og.gain.exponentialRampToValueAtTime(0.4, t + 0.02);
+    og.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+    osc.connect(og).connect(actx.destination);
+    osc.start(t); osc.stop(t + 0.65);
+  } catch (err){ /* silence is survivable */ }
+}
+
+/* ==================================================================
+ *  Scene
+ * ================================================================== */
+
+var canvas = document.getElementById('stage');
+var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+var camHome = new THREE.Vector3(0, 0.85, 7.0);
+var LOOK_Y = -0.05;
+camera.position.copy(camHome);
+
+function resize(){
+  var r = frame.getBoundingClientRect();
+  var w = Math.max(1, Math.round(r.width));
+  var h = Math.max(1, Math.round(r.height));
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camHome.z = camera.aspect < 1 ? 7.0 / camera.aspect : 7.0;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+if (window.ResizeObserver) new ResizeObserver(resize).observe(frame);
+
+scene.add(new THREE.HemisphereLight(0xE9FFD9, 0x1B2A18, 0.8));
+
+var key = new THREE.DirectionalLight(0xFFF6E8, 1.05);
+key.position.set(3.2, 5.4, 4.2);
+key.castShadow = true;
+key.shadow.mapSize.set(512, 512);
+key.shadow.camera.near = 1;
+key.shadow.camera.far = 20;
+key.shadow.camera.left = -5;
+key.shadow.camera.right = 5;
+key.shadow.camera.top = 5;
+key.shadow.camera.bottom = -5;
+key.shadow.radius = 3;
+scene.add(key);
+
+var rim = new THREE.PointLight(0xFF9BD0, 0.7, 18);
+rim.position.set(-3.4, 1.2, -2.6);
+scene.add(rim);
+
+/* shadow-only ground, so your background photo shows through */
+var ground = new THREE.Mesh(
+  new THREE.CircleGeometry(7, 48),
+  new THREE.ShadowMaterial({ opacity: 0.34 })
+);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = GROUND_Y;
+ground.receiveShadow = true;
+scene.add(ground);
+
+/* --- progress ring --- */
+var RING_R = 1.35;
+var RING_CALM = new THREE.Color('#FFD34E');
+var RING_HOT  = new THREE.Color('#FF5A2B');
+
+var ringMat = new THREE.MeshStandardMaterial({ color: RING_CALM.clone(), roughness: 0.35, metalness: 0.05 });
+var ring = new THREE.Mesh(new THREE.TorusGeometry(RING_R, 0.085, 8, 96, TAU), ringMat);
+ring.rotation.x = -Math.PI / 2;
+ring.position.y = GROUND_Y + 0.03;
+scene.add(ring);
+
+var ringTrack = new THREE.Mesh(
+  new THREE.TorusGeometry(RING_R, 0.05, 8, 96, TAU),
+  new THREE.MeshStandardMaterial({ color: 0x1C1230, roughness: 1, transparent: true, opacity: 0.55 })
+);
+ringTrack.rotation.x = -Math.PI / 2;
+ringTrack.position.y = GROUND_Y + 0.01;
+scene.add(ringTrack);
+
+var lastArc = -1;
+function setRing(fraction){
+  var arc = Math.max(0.0001, Math.min(1, fraction)) * TAU;
+  if (Math.abs(arc - lastArc) < 0.01) return;
+  lastArc = arc;
+  ring.geometry.dispose();
+  ring.geometry = new THREE.TorusGeometry(RING_R, 0.085, 8, 96, arc);
+}
+
+/* ==================================================================
+ *  The creature
+ *
+ *    blob -> squash -> creature -> (your model, or the built-in fallback)
+ *
+ *  `squash` carries the breathing deformation. `creature` is what gets swapped
+ *  out wholesale once your model arrives, so nothing else has to change.
+ * ================================================================== */
+
+var blob = new THREE.Group();
+scene.add(blob);
+
+var squash = new THREE.Group();
+blob.add(squash);
+
+var creature = new THREE.Group();
+squash.add(creature);
+
+/* --- built-in fallback: a green hairy lump, no face --- */
+var fallback = new THREE.Group();
+creature.add(fallback);
+
+var bodyGeo = new THREE.IcosahedronGeometry(1.15, 4);
+(function lumpify(g){
+  var p = g.attributes.position;
+  var v = new THREE.Vector3();
+  for (var i = 0; i < p.count; i++){
+    v.fromBufferAttribute(p, i);
+    var n = v.clone().normalize();
+    var d = 1
+      + 0.055 * Math.sin(n.x * 3.1 + n.y * 2.2)
+      + 0.045 * Math.sin(n.y * 4.4 - n.z * 3.0)
+      + 0.030 * Math.sin(n.z * 5.2 + n.x * 1.7);
+    v.multiplyScalar(d);
+    p.setXYZ(i, v.x, v.y * 1.1, v.z * 0.96);
+  }
+  g.computeVertexNormals();
+})(bodyGeo);
+
+var bodyMat = new THREE.MeshStandardMaterial({ color: 0x45B364, roughness: 0.78, metalness: 0 });
+var body = new THREE.Mesh(bodyGeo, bodyMat);
+body.castShadow = true;
+body.position.y = GROUND_Y + 1.28;
+fallback.add(body);
+
+/* hair rooted at real vertices of the body, aimed down its surface normals */
+var HAIR_N = REDUCED ? 90 : 210;
+var hairGeo = new THREE.ConeGeometry(0.05, 0.42, 5);
+hairGeo.translate(0, 0.21, 0);
+var UP = new THREE.Vector3(0, 1, 0);
+
+var hairSets = [
+  { mat: new THREE.MeshStandardMaterial({ color: 0x2C7A42, roughness: 0.9, flatShading: true }), n: 0, mesh: null },
+  { mat: new THREE.MeshStandardMaterial({ color: 0x7ED95E, roughness: 0.9, flatShading: true }), n: 0, mesh: null }
+];
+var hairItems = [];
+
+(function growHair(){
+  var pAttr = bodyGeo.attributes.position, nAttr = bodyGeo.attributes.normal;
+  var vp = new THREE.Vector3(), vn = new THREE.Vector3(), rnd = new THREE.Vector3();
+  for (var i = 0; i < HAIR_N; i++){
+    var idx = Math.floor(Math.random() * pAttr.count);
+    vp.fromBufferAttribute(pAttr, idx);
+    vn.fromBufferAttribute(nAttr, idx).normalize();
+
+    rnd.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
+    var axis = new THREE.Vector3().crossVectors(vn, rnd);
+    if (axis.lengthSq() < 0.02) axis.set(1, 0, 0);
+    axis.normalize();
+
+    var set = Math.random() < 0.58 ? 0 : 1;
+    hairItems.push({
+      set: set,
+      slot: hairSets[set].n++,
+      pos: vp.clone().multiplyScalar(0.93),
+      quat: new THREE.Quaternion().setFromUnitVectors(UP, vn.clone()),
+      axis: axis,
+      len: 0.55 + Math.random() * 1.0,
+      thick: 0.65 + Math.random() * 0.75,
+      phase: Math.random() * TAU,
+      freq: 1.3 + Math.random() * 2.6
+    });
+  }
+  hairSets.forEach(function(s){
+    s.mesh = new THREE.InstancedMesh(hairGeo, s.mat, Math.max(1, s.n));
+    s.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    s.mesh.frustumCulled = false;
+    s.mesh.position.y = body.position.y;
+    fallback.add(s.mesh);
+  });
+})();
+
+var hairDummy = new THREE.Object3D();
+var hairQuat = new THREE.Quaternion();
+
+function stepHair(now, amp){
+  for (var i = 0; i < hairItems.length; i++){
+    var h = hairItems[i];
+    hairDummy.position.copy(h.pos);
+    hairQuat.setFromAxisAngle(h.axis, Math.sin(now * h.freq + h.phase) * amp);
+    hairDummy.quaternion.copy(hairQuat).multiply(h.quat);
+    hairDummy.scale.set(h.thick, h.len, h.thick);
+    hairDummy.updateMatrix();
+    hairSets[h.set].mesh.setMatrixAt(h.slot, hairDummy.matrix);
+  }
+  hairSets[0].mesh.instanceMatrix.needsUpdate = true;
+  hairSets[1].mesh.instanceMatrix.needsUpdate = true;
+}
+
+var usingModel = false;
+
+/* Drop your model in where the fallback was: centred on the ring, scaled to a
+   predictable height, standing on the ground. */
+function installModel(root){
+  var inner = new THREE.Group();
+  inner.add(root);
+
+  var box = new THREE.Box3().setFromObject(root);
+  if (box.isEmpty()) return null;
+
+  var size = new THREE.Vector3(), centre = new THREE.Vector3();
+  box.getSize(size);
+  box.getCenter(centre);
+
+  var largest = Math.max(size.x, size.y, size.z) || 1;
+  var scale = CONFIG.modelHeight / largest;
+
+  /* Offset the wrapper rather than the model itself — the exported scene may
+     carry its own rotation or scale, and shifting its local position by a
+     world-space centre would land in the wrong place. */
+  inner.position.copy(centre).negate();
+
+  var holder = new THREE.Group();
+  holder.add(inner);
+  holder.scale.setScalar(scale);
+  holder.position.y = GROUND_Y + (size.y * scale) / 2 + 0.02;   // stand it up
+
+  root.traverse(function(o){
+    if (o.isMesh){
+      o.castShadow = true;
+      o.frustumCulled = false;
+    }
+  });
+
+  creature.remove(fallback);
+  creature.add(holder);
+  usingModel = true;
+  return holder;
+}
+
+/* ==================================================================
+ *  Explosion — the creature shatters into real pieces of itself
+ * ================================================================== */
+
+var pieces = [];
+
+/* Split every mesh under `root` into clusters of triangles. Each cluster
+   becomes its own mesh keeping the original material, so the debris is
+   actually made of your model rather than stand-in shapes. */
+function buildPieces(root, targetCount){
+  pieces.forEach(function(p){
+    scene.remove(p.mesh);
+    p.mesh.geometry.dispose();
+  });
+  pieces = [];
+
+  root.updateMatrixWorld(true);
+  var invRoot = new THREE.Matrix4().copy(root.matrixWorld).invert();
+
+  var meshes = [];
+  root.traverse(function(o){
+    /* InstancedMesh also reports isMesh, but its geometry is one prototype
+       shape — fragmenting it would produce a stray cone, not 210 hairs. */
+    if (o.isInstancedMesh) return;
+    if (o.isMesh && o.geometry && o.geometry.attributes && o.geometry.attributes.position) meshes.push(o);
+  });
+  if (!meshes.length) return;
+
+  var totalTris = 0;
+  meshes.forEach(function(m){
+    var g = m.geometry;
+    totalTris += Math.floor((g.index ? g.index.count : g.attributes.position.count) / 3);
+  });
+  if (!totalTris) return;
+
+  var a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+  var na = new THREE.Vector3(), nb = new THREE.Vector3(), nc = new THREE.Vector3();
+
+  meshes.forEach(function(m){
+    var g = m.geometry;
+    var pos = g.attributes.position;
+    var nrm = g.attributes.normal;
+    var index = g.index;
+    var triCount = Math.floor((index ? index.count : pos.count) / 3);
+    if (!triCount) return;
+
+    var buckets = Math.max(1, Math.round(targetCount * triCount / totalTris));
+
+    var xf = new THREE.Matrix4().multiplyMatrices(invRoot, m.matrixWorld);
+    var nMat = new THREE.Matrix3().getNormalMatrix(xf);
+
+    var verts = new Float32Array(triCount * 9);
+    var norms = nrm ? new Float32Array(triCount * 9) : null;
+    var cents = new Float32Array(triCount * 3);
+    var t, s, k;
+
+    for (t = 0; t < triCount; t++){
+      var i0 = index ? index.getX(t * 3)     : t * 3;
+      var i1 = index ? index.getX(t * 3 + 1) : t * 3 + 1;
+      var i2 = index ? index.getX(t * 3 + 2) : t * 3 + 2;
+
+      a.fromBufferAttribute(pos, i0).applyMatrix4(xf);
+      b.fromBufferAttribute(pos, i1).applyMatrix4(xf);
+      c.fromBufferAttribute(pos, i2).applyMatrix4(xf);
+
+      var o9 = t * 9;
+      verts[o9]     = a.x; verts[o9 + 1] = a.y; verts[o9 + 2] = a.z;
+      verts[o9 + 3] = b.x; verts[o9 + 4] = b.y; verts[o9 + 5] = b.z;
+      verts[o9 + 6] = c.x; verts[o9 + 7] = c.y; verts[o9 + 8] = c.z;
+
+      cents[t * 3]     = (a.x + b.x + c.x) / 3;
+      cents[t * 3 + 1] = (a.y + b.y + c.y) / 3;
+      cents[t * 3 + 2] = (a.z + b.z + c.z) / 3;
+
+      if (norms){
+        na.fromBufferAttribute(nrm, i0).applyMatrix3(nMat).normalize();
+        nb.fromBufferAttribute(nrm, i1).applyMatrix3(nMat).normalize();
+        nc.fromBufferAttribute(nrm, i2).applyMatrix3(nMat).normalize();
+        norms[o9]     = na.x; norms[o9 + 1] = na.y; norms[o9 + 2] = na.z;
+        norms[o9 + 3] = nb.x; norms[o9 + 4] = nb.y; norms[o9 + 5] = nb.z;
+        norms[o9 + 6] = nc.x; norms[o9 + 7] = nc.y; norms[o9 + 8] = nc.z;
+      }
+    }
+
+    /* seed each cluster on a random triangle, then hand every triangle to
+       whichever seed it sits closest to */
+    var seeds = [];
+    for (s = 0; s < buckets; s++){
+      var pick = Math.floor(Math.random() * triCount) * 3;
+      seeds.push([cents[pick], cents[pick + 1], cents[pick + 2]]);
+    }
+
+    var groups = [];
+    for (s = 0; s < buckets; s++) groups.push({ pos: [], nrm: [] });
+
+    for (t = 0; t < triCount; t++){
+      var cx = cents[t * 3], cy = cents[t * 3 + 1], cz = cents[t * 3 + 2];
+      var best = 0, bestD = Infinity;
+      for (s = 0; s < buckets; s++){
+        var dx = cx - seeds[s][0], dy = cy - seeds[s][1], dz = cz - seeds[s][2];
+        var d = dx * dx + dy * dy + dz * dz;
+        if (d < bestD){ bestD = d; best = s; }
+      }
+      var G = groups[best];
+      for (k = 0; k < 9; k++){
+        G.pos.push(verts[t * 9 + k]);
+        if (norms) G.nrm.push(norms[t * 9 + k]);
+      }
+    }
+
+    var material = Array.isArray(m.material) ? m.material[0] : m.material;
+
+    groups.forEach(function(G){
+      if (!G.pos.length) return;
+      var geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(G.pos, 3));
+      if (G.nrm.length) geo.setAttribute('normal', new THREE.Float32BufferAttribute(G.nrm, 3));
+      else geo.computeVertexNormals();
+      geo.computeBoundingSphere();
+
+      var home = geo.boundingSphere ? geo.boundingSphere.center.clone() : new THREE.Vector3();
+      geo.translate(-home.x, -home.y, -home.z);    // pivot each piece on itself
+
+      var pm = new THREE.Mesh(geo, material);
+      pm.castShadow = true;
+      pm.visible = false;
+      pm.frustumCulled = false;
+      scene.add(pm);
+
+      pieces.push({
+        mesh: pm,
+        home: home,
+        radius: geo.boundingSphere ? geo.boundingSphere.radius : 0.2,
+        vel: new THREE.Vector3(),
+        spin: new THREE.Vector3()
+      });
+    });
+  });
+}
+
+function randomDirection(v){
+  var z = Math.random() * 2 - 1;
+  var ang = Math.random() * TAU;
+  var r = Math.sqrt(Math.max(0, 1 - z * z));
+  return v.set(Math.cos(ang) * r, z, Math.sin(ang) * r);
+}
+
+var scratch = new THREE.Vector3();
+
+function blowUp(){
+  creature.visible = false;
+  pieces.forEach(function(p){
+    p.mesh.visible = true;
+    p.mesh.position.copy(p.home);
+    p.mesh.rotation.set(0, 0, 0);
+
+    scratch.copy(p.home);
+    if (scratch.lengthSq() < 1e-6) randomDirection(scratch); else scratch.normalize();
+    p.vel.copy(scratch).multiplyScalar(1.9 + Math.random() * 2.3);
+    p.vel.y += 1.5;
+    p.spin.set((Math.random() - 0.5) * 13, (Math.random() - 0.5) * 13, (Math.random() - 0.5) * 13);
+  });
+}
+
+function hidePieces(){
+  pieces.forEach(function(p){ p.mesh.visible = false; });
+}
+
+function stepPieces(dt, pull){
+  for (var i = 0; i < pieces.length; i++){
+    var p = pieces[i];
+    if (!p.mesh.visible) continue;
+
+    if (pull > 0){
+      /* it pulls itself back together */
+      var k = Math.min(1, pull * dt * 6);
+      p.mesh.position.lerp(p.home, k);
+      p.mesh.rotation.x *= (1 - k);
+      p.mesh.rotation.y *= (1 - k);
+      p.mesh.rotation.z *= (1 - k);
+      continue;
+    }
+
+    p.vel.y -= 11 * dt;
+    p.vel.multiplyScalar(1 - 0.5 * dt);
+    p.mesh.position.addScaledVector(p.vel, dt);
+    p.mesh.rotation.x += p.spin.x * dt;
+    p.mesh.rotation.y += p.spin.y * dt;
+    p.mesh.rotation.z += p.spin.z * dt;
+
+    var floor = GROUND_Y + p.radius * 0.6;
+    if (p.mesh.position.y < floor){
+      p.mesh.position.y = floor;
+      p.vel.y *= -0.36;
+      p.vel.x *= 0.7; p.vel.z *= 0.7;
+      p.spin.multiplyScalar(0.55);
+      if (Math.abs(p.vel.y) < 0.4) p.vel.y = 0;
+    }
+  }
+}
+
+/* --- fuzz: small debris tinted to match whatever the creature is made of --- */
+var FUZZ_N = REDUCED ? 40 : 110;
+var fuzzMeshes = [], fuzz = [];
+var fuzzGroup = new THREE.Group();
+scene.add(fuzzGroup);
+var fuzzDummy = new THREE.Object3D();
+
+function creatureColours(root){
+  var out = [];
+  root.traverse(function(o){
+    if (o.isMesh && o.material){
+      var mats = Array.isArray(o.material) ? o.material : [o.material];
+      mats.forEach(function(mat){
+        if (mat.color && out.length < 5) out.push(mat.color.getHex());
+      });
+    }
+  });
+  var spare = [0xFFD34E, 0xFFF6E8, 0x7ED95E];
+  while (out.length < 3) out.push(spare[out.length]);
+  return out;
+}
+
+function buildFuzz(colours){
+  fuzzMeshes.forEach(function(m){ fuzzGroup.remove(m); });
+  fuzzMeshes = []; fuzz = [];
+
+  var per = Math.ceil(FUZZ_N / colours.length);
+  var geo = new THREE.ConeGeometry(0.045, 0.26, 4);
+  colours.forEach(function(c){
+    var m = new THREE.InstancedMesh(geo, new THREE.MeshStandardMaterial({ color: c, roughness: 0.85, flatShading: true }), per);
+    m.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    m.frustumCulled = false;
+    m.visible = false;
+    fuzzGroup.add(m);
+    fuzzMeshes.push(m);
+    for (var i = 0; i < per; i++){
+      fuzz.push({
+        mesh: m, index: i, alive: false,
+        pos: new THREE.Vector3(), vel: new THREE.Vector3(),
+        spin: new THREE.Vector3(), rot: new THREE.Euler()
+      });
+    }
+  });
+}
+
+function burstFuzz(){
+  fuzzMeshes.forEach(function(m){ m.visible = true; });
+  fuzz.forEach(function(f){
+    randomDirection(scratch);
+    f.alive = true;
+    f.pos.copy(scratch).multiplyScalar(0.3 + Math.random() * 0.7);
+    f.vel.copy(scratch).multiplyScalar(2.0 + Math.random() * 2.8);
+    f.vel.y += 1.1;
+    f.spin.set((Math.random() - 0.5) * 16, (Math.random() - 0.5) * 16, (Math.random() - 0.5) * 16);
+    f.rot.set(Math.random() * TAU, Math.random() * TAU, Math.random() * TAU);
+  });
+}
+
+function hideFuzz(){
+  fuzz.forEach(function(f){ f.alive = false; });
+  fuzzMeshes.forEach(function(m){ m.visible = false; });
+}
+
+function stepFuzz(dt){
+  var any = false;
+  for (var i = 0; i < fuzz.length; i++){
+    var f = fuzz[i];
+    if (!f.alive) continue;
+    f.vel.y -= 8.5 * dt;
+    f.vel.multiplyScalar(1 - 0.75 * dt);
+    f.pos.addScaledVector(f.vel, dt);
+    f.rot.x += f.spin.x * dt; f.rot.y += f.spin.y * dt; f.rot.z += f.spin.z * dt;
+    if (f.pos.y < GROUND_Y + 0.05){
+      f.pos.y = GROUND_Y + 0.05;
+      f.vel.y *= -0.28;
+      f.vel.x *= 0.6; f.vel.z *= 0.6;
+      f.spin.multiplyScalar(0.5);
+      if (Math.abs(f.vel.y) < 0.3) f.vel.y = 0;
+    }
+    fuzzDummy.position.copy(f.pos);
+    fuzzDummy.rotation.copy(f.rot);
+    fuzzDummy.updateMatrix();
+    f.mesh.setMatrixAt(f.index, fuzzDummy.matrix);
+    any = true;
+  }
+  if (any) fuzzMeshes.forEach(function(m){ m.instanceMatrix.needsUpdate = true; });
+}
+
+/* ==================================================================
+ *  Timer state
+ * ================================================================== */
+
+var STATE = { IDLE: 0, RUN: 1, PAUSE: 2, BOOM: 3 };
+var IMPLODE = 3.8, REFORM = 4.6, DONE = 7.0;
+
+var state = STATE.IDLE;
+var remaining = DURATION;
+var boomT = 0;
+var shake = 0;
+var lastWhole = DURATION;
+
+var readout  = document.getElementById('readout');
+var goBtn    = document.getElementById('go');
+var resetBtn = document.getElementById('reset');
+var shout    = document.getElementById('shout');
+var flash    = document.getElementById('flash');
+
+function fmt(s){
+  s = Math.max(0, Math.ceil(s - 0.0001));
+  var m = Math.floor(s / 60), r = s % 60;
+  return m + ':' + (r < 10 ? '0' : '') + r;
+}
+
+function paintReadout(){
+  readout.textContent = state === STATE.BOOM ? '0:00' : fmt(remaining);
+  readout.classList.toggle('is-urgent', state === STATE.RUN && remaining <= 10);
+  readout.classList.toggle('is-done', state === STATE.BOOM);
+}
+
+function setButton(){
+  goBtn.textContent =
+    state === STATE.RUN   ? 'Pause'  :
+    state === STATE.PAUSE ? 'Resume' :
+    state === STATE.BOOM  ? 'Again'  : 'Start';
+}
+
+function start(){
+  primeSounds();
+  if (state === STATE.BOOM) reset();
+  state = STATE.RUN;
+  lastWhole = Math.ceil(remaining);
+  shout.classList.remove('is-up');
+  setButton(); paintReadout();
+}
+
+function pause(){ state = STATE.PAUSE; setButton(); }
+
+function reset(){
+  state = STATE.IDLE;
+  stopSounds();
+  remaining = DURATION;
+  boomT = 0;
+  shake = 0;
+  lastWhole = DURATION;
+  creature.visible = true;
+  hidePieces();
+  hideFuzz();
+  blob.position.set(0, 0, 0);
+  blob.rotation.set(0, 0, 0);
+  squash.scale.set(1, 1, 1);
+  shout.classList.remove('is-up');
+  flash.classList.remove('is-on');
+  setRing(1);
+  setButton(); paintReadout();
+}
+
+function toggle(){ if (state === STATE.RUN) pause(); else start(); }
+
+goBtn.addEventListener('click', toggle);
+resetBtn.addEventListener('click', function(){ primeSounds(); reset(); });
+
+window.addEventListener('keydown', function(e){
+  if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if (e.code === 'Space'){
+    if (e.target && e.target.tagName === 'BUTTON') return;   // the button handles its own space
+    e.preventDefault();
+    toggle();
+  }
+  else if (e.key === 'r' || e.key === 'R'){ reset(); }
+  else if (e.key === 'b' || e.key === 'B'){ shuffleBackground(); }
+});
+
+/* ==================================================================
+ *  Loop
+ * ================================================================== */
+
+var clock = new THREE.Clock();
+
+function advance(dt){
+  if (state === STATE.RUN){
+    remaining -= dt;
+    var whole = Math.ceil(remaining);
+    if (whole < lastWhole && whole >= 0){
+      lastWhole = whole;
+      paintReadout();
+    }
+    if (remaining <= 0){
+      remaining = 0;
+      state = STATE.BOOM;
+      boomT = 0;
+      shake = REDUCED ? 0 : 0.26;
+      playEndSound();
+      blowUp();
+      burstFuzz();
+      shout.classList.add('is-up');
+      flash.classList.remove('is-on');
+      void flash.offsetWidth;
+      flash.classList.add('is-on');
+      setButton(); paintReadout();
+    }
+  } else if (state === STATE.BOOM){
+    boomT += dt;
+    if (boomT > REFORM - 0.2) shout.classList.remove('is-up');
+    if (boomT > DONE){
+      state = STATE.IDLE;
+      remaining = DURATION;
+      lastWhole = DURATION;
+      hideFuzz();
+      setButton(); paintReadout();
+    }
+  }
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  var dt = Math.min(clock.getDelta(), 0.05);
+  var now = clock.elapsedTime;
+
+  advance(dt);
+
+  var frac = remaining / DURATION;
+  var tension = state === STATE.RUN ? Math.pow(1 - frac, 2.2) : 0;
+
+  setRing(state === STATE.BOOM ? 0.0001 : frac);
+  ringMat.color.copy(RING_CALM).lerp(RING_HOT, tension);
+
+  var sx = 1, sy = 1, sz = 1, py = 0, rz = 0;
+
+  if (state === STATE.BOOM){
+    var t = boomT;
+    stepPieces(dt, t > IMPLODE ? (t - IMPLODE) / (REFORM - IMPLODE) : 0);
+
+    if (t < REFORM){
+      creature.visible = false;
+    } else {
+      var u = t - REFORM;
+      var grow = 1 - Math.exp(-u * 9);
+      var wob = Math.sin(u * 13) * 0.34 * Math.exp(-u * 3.2);
+      sy = Math.max(0.01, grow + wob);
+      sx = sz = Math.max(0.01, grow - wob * 0.6);
+      creature.visible = true;
+      if (u > 0.12 && pieces.length && pieces[0].mesh.visible) hidePieces();
+    }
+  } else if (state === STATE.RUN){
+    var speed = 1.8 + tension * 7.5;
+    var breathe = Math.sin(now * speed);
+    sy = 1 + breathe * (0.05 + tension * 0.1);
+    sx = sz = 1 - breathe * (0.035 + tension * 0.08);
+    py = Math.abs(Math.sin(now * speed * 0.5)) * (0.03 + tension * 0.16);
+    rz = Math.sin(now * speed * 0.7) * tension * 0.1;
+    blob.position.x = (tension > 0.72 && !REDUCED) ? (Math.random() - 0.5) * (tension - 0.72) * 0.5 : 0;
+  } else {
+    var b2 = Math.sin(now * 1.7);
+    sy = 1 + b2 * 0.045;
+    sx = sz = 1 - b2 * 0.03;
+    py = Math.abs(Math.sin(now * 0.85)) * 0.04;
+    blob.position.x = 0;
+  }
+
+  squash.scale.set(sx, sy, sz);
+  blob.position.y = py;
+  blob.rotation.z = rz;
+
+  if (!usingModel && creature.visible) stepHair(now, 0.07 + tension * 0.45);
+
+  stepFuzz(dt);
+
+  shake = Math.max(0, shake - dt * 0.9);
+  camera.position.set(
+    camHome.x + (Math.random() - 0.5) * shake,
+    camHome.y + (Math.random() - 0.5) * shake,
+    camHome.z
+  );
+  camera.lookAt(0, LOOK_Y, 0);
+
+  renderer.render(scene, camera);
+}
+
+/* ==================================================================
+ *  Go
+ * ================================================================== */
+
+resize();
+buildFuzz(creatureColours(fallback));
+buildPieces(fallback, PIECES);
+reset();
+animate();
+
+var modelNote = 'built-in blob';
+
+function describeAssets(){
+  var bits = [];
+  bits.push('<b>' + modelNote + '</b>');
+  bits.push(bgUrls.length
+    ? '<b>' + bgUrls.length + '</b> background' + (bgUrls.length > 1 ? 's' : '')
+    : 'no backgrounds');
+  bits.push(soundPool.length
+    ? '<b>' + soundPool.length + '</b> sound' + (soundPool.length > 1 ? 's' : '')
+    : 'no sounds');
+  caption.innerHTML = bits.join(' &middot; ') + '<br>Space start &middot; R reset &middot; B background';
+}
+
+Promise.all([
+  discover(CONFIG.imagePath, CONFIG.imageBase, CONFIG.imageExts, probeImage),
+  discover(CONFIG.soundPath, CONFIG.soundBase, CONFIG.soundExts, probeSound),
+  loadModel()
+]).then(function(results){
+  bgUrls = results[0];
+
+  soundPool = results[1].map(function(url){
+    var el = new Audio(url);
+    el.preload = 'auto';
+    return el;
+  });
+
+  var model = results[2];
+  if (model){
+    var holder = installModel(model.scene);
+    if (holder){
+      buildPieces(holder, PIECES);
+      buildFuzz(creatureColours(holder));
+      modelNote = model.url;
+    }
+  } else if (typeof THREE.GLTFLoader !== 'function'){
+    modelNote = 'model loader offline';
+  }
+
+  if (bgUrls.length){
+    swapBtn.hidden = false;
+    shuffleBackground();
+  }
+  describeAssets();
+});
+
+})();
+</script>
+</body>
+</html>
