@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>What I Learned or Remember</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<style>
+:root{
+  /* Same palette as the word collage, rotated to different jobs.
+     Dark pink now carries the big surfaces, teal carries every hard
+     drop shadow, and the brighter pink carries the accents. */
+  --cobalt:#a01e5c;          /* dark pink, the main surface color */
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;          /* mint, still the light mark on dark */
+  --chrome-deep:#2f7d7d;     /* teal, now every drop shadow */
+  --pulpred:#d63d84;         /* bright pink, now the accent */
+  --mars:#a01e5c;            /* dark pink, also the small caps labels */
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#8ba838;            /* grass green, now the quiet rules */
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--jet);
+  font-family:'IBM Plex Sans',sans-serif;
+  min-height:100vh;
+}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    linear-gradient(160deg,rgba(160,30,92,.15) 0%,rgba(214,61,132,.12) 50%,rgba(47,125,125,.14) 100%),
+    var(--cream);
+}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1100px;margin:0 auto;padding:14px 18px 0}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px;
+}
+.stripes{
+  height:22px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px);
+}
+h1.logo .the{
+  display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  font-size:clamp(11px,2vw,20px);letter-spacing:8px;
+  color:var(--chrome);margin-bottom:2px;
+}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(27px,7.4vw,74px);
+  line-height:.86;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:10px 0 4px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{
+  display:flex;align-items:center;gap:14px;
+  border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+  padding:9px 0;margin-top:12px;
+}
+.roundel{
+  width:56px;height:56px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);
+  box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px;
+}
+.cover-tag{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;
+  color:#fff;line-height:1.2;flex:1;min-width:0;
+}
+.cover-kicker{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block;
+}
+.cover-foot{
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:9px 0 12px;font-family:'Bitter',serif;font-size:12.5px;color:#e9edf1;line-height:1.5;
+}
+.cover-foot b{color:var(--chrome);font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:11px}
+
+/* ══ the sheet ══════════════════════════════════════════════════════ */
+main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
+
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-bar{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.sheet-bar .arm{color:var(--chrome)}
+#canvasWrap{position:relative;width:100%;height:min(62vh,620px);min-height:320px;overflow:hidden;cursor:crosshair}
+#canvasWrap canvas{display:block}
+.emptynote{
+  position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;padding:24px;text-align:center;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--rule);
+}
+.emptynote.off{display:none}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#press .pressmsg{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#fff;flex:1;min-width:180px}
+#press .pressmsg b{color:var(--chrome)}
+#wordInput{
+  flex:2;min-width:220px;border:3px solid var(--jet);background:#fff;
+  font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:10px 12px;outline:none;
+}
+#wordInput:focus{border-color:var(--pulpred);box-shadow:0 0 0 3px var(--chrome)}
+.press-btns{display:flex;gap:9px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .btn{padding:10px 16px;font-size:11px}
+
+/* ══ save roundel ═══════════════════════════════════════════════════ */
+#saveStamp{
+  position:fixed;right:18px;bottom:100px;z-index:300;
+  width:74px;height:74px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;text-align:center;padding:6px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.15;
+  opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none;
+}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ instructor desk ════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--pulpred);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:14px 0 6px}
+.editor input[type=text],.editor textarea,.editor select{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);padding:10px 12px;outline:none}
+.editor textarea{resize:vertical;min-height:72px}
+.editor input:focus,.editor textarea:focus,.editor select:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.archive{margin-top:22px;border:3px solid var(--jet);background:var(--glass);padding:14px 16px 16px;box-shadow:5px 5px 0 var(--chrome-deep)}
+.archive-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mars);border-bottom:2px solid var(--jet);padding-bottom:8px;margin-bottom:11px}
+.archive-hd .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 13px;cursor:pointer;border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip .dot{color:var(--chrome)}
+#publicList{margin-top:12px}
+.previewbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.previewbar.on{display:flex}
+.sheet-frame.previewing{box-shadow:7px 7px 0 var(--rule)}
+.wk-tag-you{background:var(--chrome-deep);color:#fff}
+.ansgroup{border-bottom:3px solid var(--pulp-deep);padding-bottom:10px;margin-bottom:10px}
+.ansgroup:last-child{border-bottom:none;margin-bottom:0}
+.ansgroup-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ansgroup-hd span{color:var(--rule);font-weight:600}
+.ansgroup-q{font-family:'Bitter',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:#334051;margin:3px 0 8px}
+.answers{display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto;border:3px solid var(--rule);background:#fff;padding:10px}
+.ans{font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);border-left:5px solid var(--pulpred);padding:5px 10px}
+.ans:nth-child(even){border-left-color:var(--chrome-deep)}
+.ans-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rule);text-align:center;padding:12px}
+.weeklist{display:flex;flex-direction:column;gap:9px}
+.wk{border:3px solid var(--jet);background:#fff;padding:11px 13px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.wk.live{background:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
+.wk-main{flex:1;min-width:200px}
+.wk-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mars);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wk.live .wk-name{color:var(--jet)}
+.wk-tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;border:2px solid var(--jet);background:var(--pulpred);color:#fff;padding:2px 7px}
+.wk-q{font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:#334051;margin-top:4px}
+.wk-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.wk-btns .btn{padding:7px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.wk-edit{flex:1;min-width:220px;display:flex;flex-direction:column;gap:7px}
+.wk-edit input,.wk-edit textarea{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:13px;padding:8px 10px;outline:none;color:var(--jet)}
+.wk-edit textarea{resize:vertical;min-height:60px}
+.wk-edit input:focus,.wk-edit textarea:focus{border-color:var(--pulpred)}
+.wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rule);border:3px dashed var(--rule);padding:16px;text-align:center}
+.ed-flag{border:3px solid var(--pulpred);color:var(--pulpred);background:#fff;padding:11px 14px;margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 0}
+  main{padding:18px 14px 190px}
+  .cover-band{flex-wrap:wrap}
+  #canvasWrap{height:min(52vh,440px)}
+  #saveStamp{bottom:170px;right:10px;width:62px;height:62px;font-size:9px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo"><span class="the">What I</span>Learned or Remember</h1>
+    <div class="cover-band">
+      <div class="roundel" id="weekRoundel">WK<br>1</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">Topic of the week</span>
+        <span id="promptText">Loading the week's topic</span>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span><b>How it works</b> Type one thing you learned, remember, or think matters, then tap the sheet to set it down.</span>
+      <span><b>Live</b> Everyone in the room sees every recollection as it lands.</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">Nothing recalled yet</span><span class="pct" id="meterCount">0 recollections</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <div class="sheet-frame" id="sheetFrame">
+    <div class="previewbar" id="previewBar">
+      <span>You are reading a past week. The class sheet has not moved.</span>
+      <button class="btn btn-quiet" id="backLive" type="button">Back to live</button>
+    </div>
+    <div class="sheet-bar">
+      <span id="barWeek">Week 1</span>
+      <span class="arm" id="barState">Tap anywhere to set down what you remember</span>
+    </div>
+    <div id="canvasWrap">
+      <div class="emptynote" id="emptyNote">Nothing recalled yet. Be the first.</div>
+    </div>
+  </div>
+
+  <section class="archive" id="archive" hidden>
+    <div class="archive-hd">
+      <span>Past weeks</span>
+      <button class="btn btn-quiet" id="publicListBtn" type="button">Read as a list</button>
+    </div>
+    <div class="chips" id="weekChips"></div>
+    <div class="answers" id="publicList" hidden></div>
+  </section>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
+
+    <div class="groupmark"><span>This week's topic</span></div>
+    <label class="bl" for="edLabel">Week name</label>
+    <input type="text" id="edLabel" placeholder="Week 3"/>
+    <label class="bl" for="edPrompt">Prompt</label>
+    <textarea id="edPrompt" placeholder="What is one thing you learned, remember, or think is important about this week's topic?"></textarea>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="savePrompt" type="button">Save prompt</button>
+      <button class="btn" id="clearWeek" type="button">Clear this week's recollections</button>
+    </div>
+
+    <div class="groupmark"><span>Add a week</span></div>
+    <p class="ed-note">Every week gets its own blank sheet and keeps its own recollections. Add them one at a time, or plan the whole run below.</p>
+    <label class="bl" for="newLabel">Week name</label>
+    <input type="text" id="newLabel" placeholder="Week 4"/>
+    <label class="bl" for="newPrompt">Prompt</label>
+    <textarea id="newPrompt" placeholder="Name one thing from the reading on care labor that you want to keep."></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addWeek" type="button">Add to the list</button>
+      <button class="btn btn-ink" id="startWeek" type="button">Add and open now</button>
+    </div>
+
+    <div class="groupmark"><span>Plan several at once</span></div>
+    <p class="ed-note">One prompt per line. Each line becomes its own week, numbered on from the highest week already on the list. Nothing opens until you choose it.</p>
+    <textarea id="bulkPrompts" rows="4" placeholder="What do you remember most from the film we watched?&#10;Name one useful thing you learned about how these machines were built.&#10;What from this unit do you think everyone should know?"></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addBulk" type="button">Add every line</button>
+    </div>
+
+    <div class="groupmark"><span>All weeks</span></div>
+    <p class="ed-note">Open puts the whole room on that sheet. Rename and Delete only touch that one week.</p>
+    <div class="weeklist" id="weekList"></div>
+
+    <div class="groupmark"><span>Read the recollections</span></div>
+    <p class="ed-note">Everything on whichever sheet you are looking at, in the order it arrived. Easier to read aloud than the collage.</p>
+    <div class="ed-actions" style="margin-top:0;margin-bottom:12px">
+      <button class="btn" id="allWeeksBtn" type="button">Show every week</button>
+      <button class="btn btn-quiet" id="downloadAnswers" type="button">Download as text</button>
+    </div>
+    <div class="answers" id="answerList"></div>
+
+    <div class="ed-flag" id="edFlag"></div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div id="press">
+  <span class="pressmsg"><b>What you remember</b></span>
+  <input type="text" id="wordInput" placeholder="Type what you learned or remember, then tap the sheet" autocomplete="off"/>
+  <div class="press-btns">
+    <button class="btn btn-ink" id="dropBtn" type="button">Drop it anywhere</button>
+    <button class="btn" id="saveBtn" type="button">Save image</button>
+  </div>
+</div>
+
+<div id="saveStamp">Image<br>saved</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to change the prompt or open a new week.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Passcode for the instructor desk. Change this to whatever you like.
+const TEACHER_CODE = "recall";
+
+// Let students browse past weeks from the strip under the sheet.
+// Set this to false to keep old weeks visible only from the instructor desk.
+const SHOW_ARCHIVE_TO_STUDENTS = true;
+
+// The prompt the very first week starts with, if the database is empty.
+const FIRST_PROMPT = "What is one thing you learned, remember, or think is important about this week's topic?";
+const FIRST_LABEL  = "Week 1";
+
+// How big the words sit on the sheet. Raise both for a projector at the
+// back of a large room, lower them to fit more recollections before overlap.
+const WORD_MIN = 13;
+const WORD_MAX = 30;
+
+// Palette the words are drawn in, straight from the site's color scheme.
+const INK = [
+  [47,125,125],   // teal
+  [160,30,92],    // mars
+  [20,32,42],     // jet
+  [139,168,56],   // grass green
+  [214,61,132],   // pink
+  [125,184,196]   // sea glass
+];
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+// This tool keeps its own corner of the same database, so it never mixes
+// with the word collage. Change the word below to split it off further.
+const ROOT = "recall";
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+let db = null;
+
+const CURRENT  = ROOT + "/current";
+const INDEX    = ROOT + "/index";
+const WORDS    = ROOT + "/words";
+
+let sessionId = null;
+let wordsRef  = null;
+let metaRef   = null;
+let words     = [];
+let sketch    = null;
+let unlocked  = false;
+let connected = false;
+let weekIndex = {};
+let editingWeek = null;
+let liveId = null;
+let previewId = null;
+
+const $ = (id) => document.getElementById(id);
+
+/* ── the canvas ─────────────────────────────────────────────────── */
+new p5((p) => {
+  sketch = p;
+  let wrap;
+
+  p.setup = () => {
+    wrap = $("canvasWrap");
+    const c = p.createCanvas(wrap.clientWidth, wrap.clientHeight);
+    c.parent(wrap);
+    p.textAlign(p.CENTER, p.CENTER);
+    p.noStroke();
+    p.angleMode(p.DEGREES);
+    p.background(255);
+    p.noLoop();
+
+    c.elt.addEventListener("pointerdown", (e) => {
+      const r = c.elt.getBoundingClientRect();
+      place((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(redrawAll);
+    }
+  };
+
+  p.windowResized = () => {
+    p.resizeCanvas(wrap.clientWidth, wrap.clientHeight);
+    redrawAll();
+  };
+}, document.createElement("div"));
+
+function drawWord(w) {
+  if (!sketch) return;
+  const p = sketch;
+  const scale = p.height / 700;
+  p.push();
+  p.translate(w.nx * p.width, w.ny * p.height);
+  p.rotate(w.angle);
+  p.fill(w.color[0], w.color[1], w.color[2]);
+  p.textFont("'Space Grotesk', sans-serif");
+  p.textSize(Math.max(10, Math.min(WORD_MAX, w.size) * scale));
+  p.text(w.text, 0, 0);
+  p.pop();
+}
+
+function redrawAll() {
+  if (!sketch) return;
+  sketch.background(255);
+  words.forEach(drawWord);
+  $("emptyNote").classList.toggle("off", words.length > 0);
+}
+
+function place(nx, ny) {
+  const field = $("wordInput");
+  const text = field.value.trim();
+  if (!text) {
+    $("barState").textContent = "Type something first, then tap the sheet";
+    field.focus();
+    return;
+  }
+  if (previewId) {
+    $("barState").textContent = "This is a preview of an old week. Go back to live to add to the sheet.";
+    return;
+  }
+  if (!db || !sessionId) {
+    $("barState").textContent = "Not connected yet. Give it a second and try again.";
+    return;
+  }
+
+  const ink = INK[Math.floor(Math.random() * INK.length)];
+  db.ref(`${WORDS}/${sessionId}`).push({
+    text: text.slice(0, 140),
+    nx: Math.min(0.97, Math.max(0.03, nx)),
+    ny: Math.min(0.96, Math.max(0.04, ny)),
+    size: WORD_MIN + Math.random() * (WORD_MAX - WORD_MIN),
+    angle: -45 + Math.random() * 90,
+    color: ink,
+    at: Date.now()
+  }).catch(dbTrouble);
+
+  field.value = "";
+  $("barState").textContent = "Set down. Add another whenever you like.";
+}
+
+/* ── live sheet or private preview ──────────────────────────────── */
+function syncWeek() {
+  const target = previewId || liveId;
+  if (target) attachSession(target);
+  const previewing = !!previewId;
+  $("sheetFrame").classList.toggle("previewing", previewing);
+  renderChips();
+  $("previewBar").classList.toggle("on", previewing);
+  if (previewing) {
+    $("barWeek").textContent = "Preview";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+  } else {
+    $("wordInput").disabled = false;
+    $("dropBtn").disabled = false;
+  }
+  renderWeeks();
+}
+
+function endPreview() {
+  previewId = null;
+  syncWeek();
+}
+
+/* ── when the database says no ──────────────────────────────────── */
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  const msg = denied
+    ? "Firebase blocked that. The database rules need updating."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  $("barState").textContent = msg;
+  $("emptyNote").textContent = denied
+    ? "The database rules are blocking reads and writes. Nothing can save until they change."
+    : msg;
+  $("emptyNote").classList.remove("off");
+  console.error("[what i learned]", err);
+}
+
+/* ── the week ───────────────────────────────────────────────────── */
+function attachSession(id) {
+  if (id === sessionId) return;
+  if (wordsRef) wordsRef.off();
+  if (metaRef) metaRef.off();
+
+  sessionId = id;
+  words = [];
+  redrawAll();
+  updateMeter();
+  renderWeeks();
+
+  metaRef = db.ref(`${INDEX}/${id}`);
+  metaRef.on("value", (s) => {
+    const m = s.val() || {};
+    $("promptText").textContent = m.prompt || "No prompt set yet";
+    $("barWeek").textContent = m.label || "This week";
+    $("weekRoundel").innerHTML = roundelText(m.label);
+    document.title = (m.label ? m.label + " · " : "") + "What I Learned or Remember";
+    if (!unlocked) return;
+    $("edLabel").value = m.label || "";
+    $("edPrompt").value = m.prompt || "";
+  });
+
+  wordsRef = db.ref(`${WORDS}/${id}`);
+  wordsRef.on("child_added", (s) => {
+    words.push(s.val());
+    drawWord(s.val());
+    $("emptyNote").classList.add("off");
+    updateMeter();
+  }, dbTrouble);
+  wordsRef.on("value", (s) => {
+    if (!s.exists()) {
+      words = [];
+      redrawAll();
+      updateMeter();
+    }
+  });
+}
+
+function roundelText(label) {
+  if (!label) return "WK";
+  const n = label.match(/\d+/);
+  return n ? "WK<br>" + n[0] : label.slice(0, 6).toUpperCase();
+}
+
+function updateMeter() {
+  const n = words.length;
+  $("meterCount").textContent = n === 1 ? "1 recollection" : n + " recollections";
+  $("meterFill").style.width = Math.min(100, n * 4) + "%";
+  $("meterLabel").textContent = n === 0 ? "Nothing recalled yet" : "The sheet is filling up";
+  renderAnswers();
+}
+
+let allMode = false;
+let allWords = {};
+
+function renderAnswers() {
+  const box = $("answerList");
+  if (!box) return;
+
+  const pub = $("publicList");
+  if (pub && !pub.hidden) {
+    pub.innerHTML = words.length
+      ? words.map((w) => `<div class="ans">${esc(w.text)}</div>`).join("")
+      : '<div class="ans-empty">Nothing on this sheet yet</div>';
+  }
+
+  if (!allMode) {
+    box.innerHTML = words.length
+      ? words.map((w) => `<div class="ans">${esc(w.text)}</div>`).join("")
+      : '<div class="ans-empty">Nothing on this sheet yet</div>';
+    return;
+  }
+
+  const ids = weekOrder();
+  const blocks = ids.map((id) => {
+    const w = weekIndex[id];
+    const rows = Object.values(allWords[id] || {}).sort((a, b) => (a.at || 0) - (b.at || 0));
+    return `<div class="ansgroup">
+      <div class="ansgroup-hd">${esc(w.label) || "Untitled"}<span>${rows.length} ${rows.length === 1 ? "recollection" : "recollections"}</span></div>
+      <div class="ansgroup-q">${esc(w.prompt)}</div>
+      ${
+        rows.length
+          ? rows.map((r) => `<div class="ans">${esc(r.text)}</div>`).join("")
+          : '<div class="ans-empty">Nobody answered this one</div>'
+      }
+    </div>`;
+  });
+  box.innerHTML = blocks.length ? blocks.join("") : '<div class="ans-empty">No weeks yet</div>';
+}
+
+function loadAllAnswers() {
+  if (!db) return flag("Not connected to Firebase yet");
+  $("allWeeksBtn").textContent = "Loading";
+  db.ref(WORDS).once("value")
+    .then((snap) => {
+      allWords = snap.val() || {};
+      allMode = true;
+      $("allWeeksBtn").textContent = "Show this sheet only";
+      renderAnswers();
+    })
+    .catch((e) => {
+      $("allWeeksBtn").textContent = "Show every week";
+      dbTrouble(e);
+    });
+}
+
+function answersAsText() {
+  const lines = [];
+  const ids = allMode ? weekOrder() : [sessionId];
+  ids.forEach((id) => {
+    const w = weekIndex[id] || {};
+    const rows = allMode
+      ? Object.values(allWords[id] || {}).sort((a, b) => (a.at || 0) - (b.at || 0))
+      : words;
+    lines.push((w.label || "Untitled").toUpperCase());
+    lines.push(w.prompt || "");
+    lines.push("");
+    rows.forEach((r) => lines.push("- " + r.text));
+    lines.push("");
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+function watchCurrentWeek() {
+db.ref(CURRENT).on("value", (s) => {
+  connected = true;
+  const id = s.val();
+  if (id) {
+    liveId = id;
+    syncWeek();
+  } else {
+    const first = "s" + Date.now();
+    db.ref(CURRENT).transaction((held) => (held ? undefined : first));
+    db.ref(`${INDEX}/${first}`).set({ label: FIRST_LABEL, prompt: FIRST_PROMPT, created: Date.now() }).catch(dbTrouble);
+  }
+}, dbTrouble);
+
+db.ref(INDEX).on("value", (s) => {
+  weekIndex = s.val() || {};
+  renderWeeks();
+  renderChips();
+}, dbTrouble);
+
+db.ref(".info/connected").on("value", (s) => {
+  const live = s.val() === true;
+  $("barState").textContent = live
+    ? "Live. Tap anywhere to set down what you remember."
+    : "Reconnecting to the database";
+});
+}
+
+/* ── the press bar ──────────────────────────────────────────────── */
+$("dropBtn").addEventListener("click", () =>
+  place(0.12 + Math.random() * 0.76, 0.12 + Math.random() * 0.76)
+);
+
+$("wordInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") $("dropBtn").click();
+});
+
+$("saveBtn").addEventListener("click", () => {
+  const name = ($("barWeek").textContent || "what_i_learned").replace(/\s+/g, "_").toLowerCase();
+  sketch.saveCanvas(name + "_learned_or_remember", "png");
+  const stamp = $("saveStamp");
+  stamp.classList.add("on");
+  setTimeout(() => stamp.classList.remove("on"), 1600);
+});
+
+/* ── the instructor desk ────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) {
+    $("editor").classList.toggle("open");
+    $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    $("gate").classList.add("open");
+    $("gateCode").focus();
+  }
+});
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateGo").addEventListener("click", tryCode);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) {
+    $("gateErr").classList.add("on");
+    return;
+  }
+  unlocked = true;
+  $("gate").classList.remove("open");
+  $("gateErr").classList.remove("on");
+  $("gateCode").value = "";
+  $("editor").classList.add("open");
+  $("edLabel").value = $("barWeek").textContent;
+  $("edPrompt").value = $("promptText").textContent;
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("allWeeksBtn").addEventListener("click", () => {
+  if (allMode) {
+    allMode = false;
+    $("allWeeksBtn").textContent = "Show every week";
+    renderAnswers();
+  } else {
+    loadAllAnswers();
+  }
+});
+
+$("downloadAnswers").addEventListener("click", () => {
+  const blob = new Blob([answersAsText()], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = allMode ? "what_i_learned_all_weeks.txt" : "what_i_learned_answers.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  flag("Text file downloaded");
+});
+
+$("backLive").addEventListener("click", endPreview);
+
+$("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
+
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  setTimeout(() => f.classList.remove("on"), 3200);
+}
+
+$("savePrompt").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const prompt = $("edPrompt").value.trim();
+  const label = $("edLabel").value.trim();
+  if (!prompt) return flag("Write a prompt first");
+  db.ref(`${INDEX}/${sessionId}`).update({ prompt, label: label || "This week" })
+    .then(() => flag("Prompt saved. Every browser has it now."))
+    .catch(() => flag("Firebase refused the write. Check the database rules."));
+});
+
+$("clearWeek").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (!confirm("Clear everything from " + $("barWeek").textContent + "? The prompt stays.")) return;
+  if (previewId) return flag("Stop the preview first, then clear");
+  db.ref(`${WORDS}/${sessionId}`).remove().then(() => flag("Sheet wiped clean")).catch(dbTrouble);
+});
+
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+
+function nextWeekNumber() {
+  let top = 0;
+  Object.values(weekIndex).forEach((w) => {
+    const n = String(w.label || "").match(/\d+/);
+    if (n && +n[0] > top) top = +n[0];
+  });
+  return top + 1;
+}
+
+function weekOrder() {
+  return Object.keys(weekIndex).sort(
+    (a, b) => (weekIndex[a].created || 0) - (weekIndex[b].created || 0)
+  );
+}
+
+function renderChips() {
+  const strip = $("archive");
+  if (!strip) return;
+  if (!SHOW_ARCHIVE_TO_STUDENTS) {
+    strip.hidden = true;
+    return;
+  }
+  const ids = weekOrder();
+  strip.hidden = ids.length < 2;
+  $("weekChips").innerHTML = ids
+    .map((id) => {
+      const w = weekIndex[id];
+      const showing = (previewId || liveId) === id;
+      const live = id === liveId;
+      return `<button class="chip" data-week="${id}" type="button" aria-current="${showing}">${
+        esc(w.label) || "Untitled"
+      }${live ? ' <span class="dot">&#9679;</span>' : ""}</button>`;
+    })
+    .join("");
+}
+
+$("weekChips").addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-week]");
+  if (!chip) return;
+  const id = chip.dataset.week;
+  previewId = id === liveId ? null : id;
+  syncWeek();
+  document.querySelector(".sheet-frame").scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+$("publicListBtn").addEventListener("click", () => {
+  const box = $("publicList");
+  box.hidden = !box.hidden;
+  $("publicListBtn").textContent = box.hidden ? "Read as a list" : "Hide the list";
+  renderAnswers();
+});
+
+function renderWeeks() {
+  const list = $("weekList");
+  const ids = weekOrder();
+  if (!ids.length) {
+    list.innerHTML = '<div class="wk-empty">No weeks yet. Add one above.</div>';
+    return;
+  }
+  list.innerHTML = ids
+    .map((id) => {
+      const w = weekIndex[id];
+      const live = id === sessionId;
+      if (id === editingWeek) {
+        return `<div class="wk${live ? " live" : ""}">
+          <div class="wk-edit">
+            <input type="text" data-field="label" value="${esc(w.label)}" placeholder="Week name"/>
+            <textarea data-field="prompt" placeholder="Prompt">${esc(w.prompt)}</textarea>
+          </div>
+          <div class="wk-btns">
+            <button class="btn btn-ink" data-act="save" data-id="${id}" type="button">Save</button>
+            <button class="btn btn-quiet" data-act="cancel" data-id="${id}" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      return `<div class="wk${live ? " live" : ""}">
+        <div class="wk-main">
+          <div class="wk-name">${esc(w.label) || "Untitled"}${live ? '<span class="wk-tag">On screen now</span>' : ""}${id === previewId ? '<span class="wk-tag wk-tag-you">You are reading this</span>' : ""}</div>
+          <div class="wk-q">${esc(w.prompt)}</div>
+        </div>
+        <div class="wk-btns">
+          ${live ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
+          ${
+            id === previewId
+              ? `<button class="btn" data-act="unpreview" type="button">Stop preview</button>`
+              : `<button class="btn" data-act="preview" data-id="${id}" type="button">Preview</button>`
+          }
+          <button class="btn" data-act="edit" data-id="${id}" type="button">Rename</button>
+          <button class="btn btn-quiet" data-act="delete" data-id="${id}" type="button">Delete</button>
+        </div>
+      </div>`;
+    })
+    .join("");
+}
+
+$("weekList").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.act;
+
+  if (act === "open") {
+    if (!db) return flag("Not connected to Firebase yet");
+    db.ref(CURRENT).set(id)
+      .then(() => {
+        previewId = null;
+        flag("Everyone is on " + (weekIndex[id].label || "that week") + " now");
+      })
+      .catch(dbTrouble);
+  }
+
+  if (act === "preview") {
+    previewId = id === liveId ? null : id;
+    syncWeek();
+    document.querySelector(".sheet-frame").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  if (act === "unpreview") endPreview();
+
+  if (act === "edit") {
+    editingWeek = id;
+    renderWeeks();
+  }
+
+  if (act === "cancel") {
+    editingWeek = null;
+    renderWeeks();
+  }
+
+  if (act === "save") {
+    const row = btn.closest(".wk");
+    const label = row.querySelector('[data-field="label"]').value.trim();
+    const prompt = row.querySelector('[data-field="prompt"]').value.trim();
+    if (!prompt) return flag("A week needs a prompt");
+    db.ref(`${INDEX}/${id}`).update({ label: label || "Untitled", prompt })
+      .then(() => {
+        editingWeek = null;
+        flag("Week updated");
+      })
+      .catch(dbTrouble);
+  }
+
+  if (act === "delete") {
+    if (id === sessionId) return flag("Open a different week before deleting this one");
+    const w = weekIndex[id];
+    if (!confirm(`Delete ${w.label || "this week"} and everything on it? This cannot be undone.`)) return;
+    db.ref(`${WORDS}/${id}`).remove()
+      .then(() => db.ref(`${INDEX}/${id}`).remove())
+      .then(() => flag("Week deleted"))
+      .catch(dbTrouble);
+  }
+});
+
+function makeWeek(label, prompt, openIt) {
+  const id = "s" + Date.now() + Math.floor(Math.random() * 1000);
+  return db.ref(`${INDEX}/${id}`)
+    .set({ label: label || "Week " + nextWeekNumber(), prompt, created: Date.now() })
+    .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
+}
+
+function addFromForm(openIt) {
+  if (!db) return flag("Not connected to Firebase yet");
+  const prompt = $("newPrompt").value.trim();
+  const label = $("newLabel").value.trim();
+  if (!prompt) return flag("Write the prompt first");
+  makeWeek(label, prompt, openIt)
+    .then(() => {
+      $("newPrompt").value = "";
+      $("newLabel").value = "";
+      flag(openIt ? "New week is open. The room is on a blank sheet." : "Added to the list. Open it when you are ready.");
+    })
+    .catch(dbTrouble);
+}
+
+$("addWeek").addEventListener("click", () => addFromForm(false));
+$("startWeek").addEventListener("click", () => addFromForm(true));
+
+$("addBulk").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const lines = $("bulkPrompts").value.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return flag("Put one prompt on each line first");
+  let n = nextWeekNumber();
+  let chain = Promise.resolve();
+  lines.forEach((line, i) => {
+    chain = chain.then(
+      () =>
+        new Promise((go) =>
+          setTimeout(() => go(makeWeek("Week " + (n + i), line, false)), 25)
+        )
+    );
+  });
+  chain
+    .then(() => {
+      $("bulkPrompts").value = "";
+      flag(lines.length + " weeks added to the list");
+    })
+    .catch(dbTrouble);
+});
+
+/* ── loading Firebase ───────────────────────────────────────────────
+   Some networks and browser extensions block gstatic.com, which is
+   where Firebase normally lives. If that happens the page tries two
+   other mirrors before giving up, and says so on screen instead of
+   only in the console.
+   ─────────────────────────────────────────────────────────────────── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) {
+      /* try the next mirror */
+    }
+  }
+  return false;
+}
+
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("promptText").textContent = "Cannot reach Firebase";
+    $("barState").textContent = "Offline. Check the network or an ad blocker.";
+    $("emptyNote").textContent = "Firebase did not load, so the sheet cannot sync.";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+
+  // Students never see a login. This signs each browser in silently so the
+  // database rules can require a signed-in visitor instead of standing wide
+  // open, which is what gets a database deactivated.
+  firebase.auth().signInAnonymously()
+    .then(() => {
+      db = firebase.database();
+      watchCurrentWeek();
+      $("barState").textContent = "Tap anywhere to set down what you remember";
+    })
+    .catch((err) => {
+      const off = /operation-not-allowed|configuration-not-found/.test(err.code || "");
+      $("barState").textContent = off
+        ? "Turn on Anonymous sign-in in the Firebase console"
+        : "Sign-in failed: " + (err.message || err.code);
+      $("emptyNote").textContent = off
+        ? "Firebase console, Authentication, Sign-in method, enable Anonymous."
+        : "Sign-in failed, so nothing can save yet.";
+      $("emptyNote").classList.remove("off");
+      console.error("[what i learned]", err);
+    });
+});
+
+/* ── date stamp ─────────────────────────────────────────────────── */
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
