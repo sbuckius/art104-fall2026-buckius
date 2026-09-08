@@ -963,18 +963,20 @@ a{color:inherit}
 <script>
 /* ============================================================
    1. SETTINGS
-   Paste your Firebase Realtime Database config below to turn on
-   live sync between everyone in the class. Leave it as is and the
-   board still runs, just on this one screen with no sharing.
+   Live sync is on, pointed at the collaborative-drawing-sound
+   Realtime Database. Everything this tool writes lives under the
+   single ROOM branch below, so it sits beside the other tools in
+   that project without touching them. Blank the apiKey out and the
+   board still runs, just on one screen with no sharing.
    ============================================================ */
 const FIREBASE_CONFIG = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE.firebaseapp.com",
-  databaseURL: "https://PASTE-default-rtdb.firebaseio.com",
-  projectId: "PASTE",
-  storageBucket: "PASTE.appspot.com",
-  messagingSenderId: "PASTE",
-  appId: "PASTE"
+  apiKey: "AIzaSyAzI3_tm8jgRIu7UR-Mn78wZfgYcwSXwfQ",
+  authDomain: "collaborative-drawing-sound.firebaseapp.com",
+  databaseURL: "https://collaborative-drawing-sound-default-rtdb.firebaseio.com",
+  projectId: "collaborative-drawing-sound",
+  storageBucket: "collaborative-drawing-sound.firebasestorage.app",
+  messagingSenderId: "993511016512",
+  appId: "1:993511016512:web:f7aa39d3b0157dbf0af7a5"
 };
 const ROOM = "riffroom-fall2026";   // change per class session to start fresh
 let GROUP_COUNT = 8;                // 6, 7 or 8, also switchable in the header
@@ -1017,7 +1019,8 @@ const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36
    3. CONNECTION
    ============================================================ */
 function connect(){
-  if(String(FIREBASE_CONFIG.apiKey).startsWith("PASTE")) return false;
+  const key = String(FIREBASE_CONFIG.apiKey || "");
+  if(!key || key.startsWith("PASTE")) return false;
   try{
     firebase.initializeApp(FIREBASE_CONFIG);
     db = firebase.database();
