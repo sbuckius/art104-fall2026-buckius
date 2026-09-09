@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Artwork Discussion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  /* Same palette, arranged a fourth way. Deep sea glass has come forward
+     onto the big surfaces, grass green now throws every hard drop shadow,
+     mars magenta does the accents and buttons, and teal has taken the
+     small caps labels. The six board tints move too: instead of sitting
+     under six boards they run down the comment stream, one per response. */
+  --cobalt:#2b6478;          /* deep sea glass, now the surface color */
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;          /* mint, still the light mark on dark */
+  --chrome-deep:#8ba838;     /* grass green, now every drop shadow */
+  --pulpred:#a01e5c;         /* mars magenta, now the accent */
+  --mars:#2f7d7d;            /* teal, now the label color */
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#cbb894;            /* warm sand on the hairlines */
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+  --sea:#7db8c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--jet);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    linear-gradient(160deg,rgba(43,100,120,.14) 0%,rgba(139,168,56,.12) 50%,rgba(160,30,92,.12) 100%),
+    var(--cream);
+}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1080px;margin:0 auto;padding:14px 18px 0}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px;
+}
+.stripes{height:22px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px)}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,8.6vw,88px);
+  line-height:.86;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:12px 0 4px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{display:flex;align-items:center;gap:14px;border-top:3px solid var(--jet);
+  border-bottom:3px solid var(--jet);padding:9px 0;margin-top:12px}
+.roundel{
+  width:56px;height:56px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px;
+}
+.cover-tag{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(14px,2.4vw,24px);
+  letter-spacing:1px;color:#fff;line-height:1.2;flex:1;min-width:0}
+.cover-kicker{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block}
+.cover-foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:9px 0 12px;font-family:'Bitter',serif;font-size:12.5px;color:#dfeef2;line-height:1.5}
+.cover-foot b{color:var(--chrome);font-family:'Space Grotesk',sans-serif;letter-spacing:1px;
+  text-transform:uppercase;font-size:11px}
+
+main{max-width:1080px;margin:0 auto;padding:22px 18px 150px}
+
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;
+  background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+/* ══ the artwork ════════════════════════════════════════════════════ */
+.artcard{border:4px solid var(--jet);background:#fff;box-shadow:8px 8px 0 var(--chrome-deep);margin-bottom:16px}
+.artcard-bar{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:8px 14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.artcard-bar .arm{color:var(--chrome);font-weight:600;letter-spacing:1.5px}
+.artcard-body{display:flex;gap:0;flex-wrap:wrap}
+.artshot{
+  flex:1 1 300px;min-width:0;border-right:3px solid var(--jet);
+  background:var(--pulp-deep);display:grid;place-items:center;min-height:180px;padding:14px;
+}
+.artshot img{max-width:100%;max-height:340px;display:block;border:3px solid var(--jet);
+  box-shadow:5px 5px 0 var(--pulpred)}
+.artshot.none{display:none}
+.artmeta{flex:2 1 380px;min-width:0;padding:16px 18px 18px}
+.arttitle{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,3.4vw,30px);
+  line-height:1.1;text-transform:uppercase;letter-spacing:-.01em;color:var(--jet)}
+.artby{font-family:'Bitter',serif;font-style:italic;font-size:14px;color:var(--mars);margin-top:5px}
+.artq{
+  border:3px solid var(--jet);background:var(--pulp-pale);box-shadow:4px 4px 0 var(--chrome);
+  padding:12px 14px;margin-top:14px;
+}
+.artq b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;
+  letter-spacing:3px;text-transform:uppercase;color:var(--pulpred);margin-bottom:6px}
+.artq p{font-family:'Bitter',serif;font-size:15px;line-height:1.55;color:var(--jet)}
+.artlink{display:inline-flex;align-items:center;gap:8px;margin-top:14px;text-decoration:none}
+.artlink .host{font-family:'Space Mono',monospace;font-size:11px;color:#5a6a72;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:230px}
+
+/* ══ the board ══════════════════════════════════════════════════════ */
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-bar{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sheet-bar .arm{color:var(--chrome)}
+.sortbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  border-bottom:3px dashed var(--jet);padding:8px 12px;background:var(--pulp-pale)}
+.sortbar .lbl{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--mars)}
+.sortbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+
+.stream{display:flex;flex-direction:column;gap:11px;padding:14px}
+.note{
+  --bg:#fff; --ink:var(--jet); --sh:var(--jet);
+  position:relative;background:var(--bg);border:3px solid var(--jet);box-shadow:5px 5px 0 var(--sh);
+  padding:11px 13px;font-family:'Bitter',serif;font-size:14.5px;line-height:1.6;color:var(--jet);
+}
+/* The six tints run down the stream instead of sitting under six boards. */
+.note.c1{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
+.note.c2{--bg:#ffe1ef;--ink:#a01e5c;--sh:#d63d84}
+.note.c3{--bg:#eaf3cd;--ink:#4d661a;--sh:#8ba838}
+.note.c4{--bg:#faead0;--ink:#8a5a16;--sh:#c9922f}
+.note.c5{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
+.note.c6{--bg:#e2e6e8;--ink:#14202a;--sh:#5c6b74}
+.note.self{box-shadow:5px 5px 0 var(--pulpred)}
+.note.hasdel{padding-right:58px}
+.note-hd{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:5px}
+.note-who{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--ink)}
+.note-when{font-family:'Space Mono',monospace;font-size:10px;color:#5a6a72}
+.note .edited{font-weight:400;letter-spacing:1px;opacity:.75}
+.note .del,.note .fix{
+  position:absolute;top:8px;width:22px;height:22px;line-height:1;padding:0;cursor:pointer;
+  border:2px solid var(--jet);background:#fff;color:var(--jet);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;
+}
+.note .del{right:8px}
+.note .fix{right:34px}
+.note .del:hover{background:var(--pulpred);color:#fff}
+.note .fix:hover{background:var(--chrome)}
+.note-edit textarea{width:100%;border:2px solid var(--jet);background:#fff;resize:vertical;min-height:70px;
+  font-family:'Bitter',serif;font-size:14px;line-height:1.55;color:var(--jet);padding:7px 9px;outline:none}
+.note-edit textarea:focus{border-color:var(--pulpred)}
+.note-edit .row{display:flex;gap:7px;margin-top:7px}
+.note-edit .row .btn{padding:6px 12px;font-size:10px;box-shadow:2px 2px 0 var(--jet)}
+.stream-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#6c7a83;text-align:center;padding:34px 12px;
+  border:3px dashed rgba(20,32,42,.3)}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);
+  border-top:5px solid var(--jet);padding:11px 18px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+#press .pressmsg{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;flex:none}
+#press .pressmsg b{color:var(--chrome)}
+#wordInput{flex:1;min-width:220px;border:3px solid var(--jet);background:#fff;
+  font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:10px 12px;outline:none}
+#wordInput:focus{border-color:var(--pulpred);box-shadow:0 0 0 3px var(--chrome)}
+#draftNote{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--chrome);flex:none;opacity:0;transition:opacity .3s}
+#draftNote.on{opacity:1}
+.press-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);
+  background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);
+  transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .btn{padding:10px 15px;font-size:11px}
+#whoTag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--jet);background:var(--chrome);border:3px solid var(--jet);
+  padding:9px 11px;cursor:pointer}
+#whoTag:hover{background:#fff}
+
+#saveStamp{position:fixed;right:18px;bottom:100px;z-index:300;width:74px;height:74px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;text-align:center;padding:6px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.15;
+  opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+.netbar{display:none;background:var(--pulpred);border-bottom:3px solid var(--jet);padding:9px 12px;
+  align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.6}
+.netbar.on{display:flex}
+.netbar .why{font-family:'Bitter',serif;font-size:12px;letter-spacing:0;text-transform:none;
+  color:#f8e4ee;display:block;margin-top:5px;max-width:70ch}
+.netbar .btn{padding:7px 13px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.previewbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:8px 12px;
+  align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff}
+.previewbar.on{display:flex}
+.previewbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.sheet-frame.previewing{box-shadow:7px 7px 0 var(--mars)}
+
+/* ══ instructor desk ════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;
+  align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);
+  box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;
+  color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;
+  font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--pulpred);font-family:'Space Grotesk',sans-serif;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:14px 0 6px}
+.editor input[type=text],.editor textarea,.editor select{width:100%;border:3px solid var(--rule);
+  background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);
+  padding:10px 12px;outline:none}
+.editor textarea{resize:vertical;min-height:72px}
+.editor input:focus,.editor textarea:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.two{grid-template-columns:1fr}}
+
+.archive{margin-top:22px;border:3px solid var(--jet);background:var(--glass);padding:14px 16px 16px;
+  box-shadow:5px 5px 0 var(--chrome-deep)}
+.archive-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--mars);border-bottom:2px solid var(--jet);
+  padding-bottom:8px;margin-bottom:11px}
+.archive-hd .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;padding:8px 13px;cursor:pointer;border:3px solid var(--jet);
+  background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip .dot{color:var(--chrome)}
+
+#allWorks{margin-top:14px;display:none}
+#allWorks.on{display:block}
+.workblock{margin-bottom:20px;border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff}
+.workblock-bar{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:8px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.workblock-bar .arm{color:var(--chrome);font-weight:600}
+.workblock.livew .workblock-bar{background:var(--pulpred)}
+.workblock-q{font-family:'Bitter',serif;font-style:italic;font-size:13px;line-height:1.5;
+  color:#334051;padding:10px 14px;border-bottom:3px dashed var(--jet)}
+
+.worklist{display:flex;flex-direction:column;gap:9px}
+.wk{border:3px solid var(--jet);background:#fff;padding:11px 13px;display:flex;gap:12px;
+  align-items:flex-start;flex-wrap:wrap}
+.wk.live{background:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
+.wk-main{flex:1;min-width:200px}
+.wk-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--mars);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wk.live .wk-name{color:var(--jet)}
+.wk-tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;border:2px solid var(--jet);background:var(--cobalt);color:#fff;padding:2px 7px}
+.wk-tag-you{background:var(--chrome-deep);color:#fff}
+.wk-q{font-family:'Bitter',serif;font-size:12.5px;line-height:1.5;color:#334051;margin-top:4px}
+.wk-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.wk-btns .btn{padding:7px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:#6c7a83;border:3px dashed var(--rule);padding:16px;text-align:center}
+.ed-flag{border:3px solid var(--pulpred);color:var(--pulpred);background:#fff;padding:11px 14px;
+  margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);
+  text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 0}
+  main{padding:18px 14px 200px}
+  .artshot{border-right:none;border-bottom:3px solid var(--jet)}
+  #saveStamp{bottom:180px;right:10px;width:62px;height:62px;font-size:9px}
+  #press .pressmsg{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo">Artwork Discussion</h1>
+    <div class="cover-band">
+      <div class="roundel" id="workRoundel">LOOK</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">On the wall today</span>
+        <span id="promptText">Loading today's artwork</span>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span><b>How it works</b> Open the artwork, look at it properly, then leave your response on the board below.</span>
+      <span><b>Live</b> Everyone's responses land on this page as they are written.</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">The board is open</span><span class="pct" id="meterCount">0 responses</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <article class="artcard">
+    <div class="artcard-bar">
+      <span id="workLabel">Today's artwork</span>
+      <span class="arm" id="workCount">0 responses</span>
+    </div>
+    <div class="artcard-body">
+      <div class="artshot none" id="artShot"><img id="artImg" alt=""/></div>
+      <div class="artmeta">
+        <div class="arttitle" id="artTitle">Waiting on the artwork</div>
+        <div class="artby" id="artBy"></div>
+        <div class="artq" id="artQBox" hidden>
+          <b>The question</b>
+          <p id="artQ"></p>
+        </div>
+        <a class="artlink" id="artLink" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          <span class="btn btn-ink">Open the artwork</span>
+          <span class="host" id="artHost"></span>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <div class="sheet-frame" id="sheetFrame">
+    <div class="netbar" id="netBar">
+      <span id="netMsg">&nbsp;</span>
+      <button class="btn btn-quiet" id="netRetry" type="button">Try again</button>
+    </div>
+    <div class="previewbar" id="previewBar">
+      <span>You are reading an earlier artwork. The live board has not moved.</span>
+      <button class="btn btn-quiet" id="backLive" type="button">Back to live</button>
+    </div>
+    <div class="sheet-bar">
+      <span id="barWork">The board</span>
+      <span class="arm" id="barState">Write your response below</span>
+    </div>
+    <div class="sortbar">
+      <span class="lbl" id="sortLabel">Oldest first</span>
+      <button class="btn btn-quiet" id="sortBtn" type="button">Flip the order</button>
+    </div>
+    <div class="stream" id="stream"></div>
+  </div>
+
+  <section class="archive" id="archive" hidden>
+    <div class="archive-hd">
+      <span>Every artwork</span>
+      <button class="btn btn-quiet" id="allWorksBtn" type="button">Show every artwork at once</button>
+    </div>
+    <div class="chips" id="workChips"></div>
+    <div id="allWorks"></div>
+  </section>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
+
+    <div class="groupmark"><span>This artwork</span></div>
+    <p class="ed-note">The link opens in a new tab so nobody loses the board. The image is optional and only needs a direct address ending in jpg, png, gif or webp.</p>
+    <div class="two">
+      <div>
+        <label class="bl" for="edTitle">Title of the work</label>
+        <input type="text" id="edTitle" placeholder="Sun Tunnels"/>
+      </div>
+      <div>
+        <label class="bl" for="edBy">Artist and year</label>
+        <input type="text" id="edBy" placeholder="Nancy Holt, 1976"/>
+      </div>
+    </div>
+    <label class="bl" for="edUrl">Link to the artwork</label>
+    <input type="text" id="edUrl" placeholder="https://"/>
+    <label class="bl" for="edImg">Image address (optional)</label>
+    <input type="text" id="edImg" placeholder="https://example.org/image.jpg"/>
+    <label class="bl" for="edQ">The question</label>
+    <textarea id="edQ" rows="3" placeholder="What is this work asking you to notice, and what does it keep out of view?"></textarea>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="saveWork" type="button">Save this artwork</button>
+      <button class="btn" id="clearWork" type="button">Clear the responses</button>
+    </div>
+
+    <div class="groupmark"><span>Add an artwork</span></div>
+    <p class="ed-note">Each one keeps its own question, its own link and its own board of responses.</p>
+    <div class="two">
+      <div>
+        <label class="bl" for="newTitle">Title</label>
+        <input type="text" id="newTitle" placeholder="Title of the work"/>
+      </div>
+      <div>
+        <label class="bl" for="newBy">Artist and year</label>
+        <input type="text" id="newBy" placeholder="Artist, year"/>
+      </div>
+    </div>
+    <label class="bl" for="newUrl">Link</label>
+    <input type="text" id="newUrl" placeholder="https://"/>
+    <label class="bl" for="newImg">Image address (optional)</label>
+    <input type="text" id="newImg" placeholder="https://example.org/image.jpg"/>
+    <label class="bl" for="newQ">The question</label>
+    <textarea id="newQ" rows="3" placeholder="What should they be looking for?"></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addWork" type="button">Add to the list</button>
+      <button class="btn btn-ink" id="startWork" type="button">Add and put it on screen</button>
+    </div>
+
+    <div class="groupmark"><span>All artworks</span></div>
+    <p class="ed-note">Open puts the whole room on that one. Preview lets you read an earlier board without moving anybody.</p>
+    <div class="worklist" id="workList"></div>
+
+    <div class="groupmark"><span>Read the responses</span></div>
+    <div class="ed-actions" style="margin-top:0;margin-bottom:12px">
+      <button class="btn btn-quiet" id="downloadAnswers" type="button">Download as text</button>
+    </div>
+
+    <div class="ed-flag" id="edFlag"></div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div id="press">
+  <span class="pressmsg"><b>Your response</b></span>
+  <input type="text" id="wordInput" placeholder="What do you see, and what do you make of it?" autocomplete="off"/>
+  <span id="draftNote">Draft kept</span>
+  <div class="press-btns">
+    <button id="whoTag" type="button">Artist ?</button>
+    <button class="btn btn-ink" id="dropBtn" type="button">Post</button>
+  </div>
+</div>
+
+<div id="saveStamp">Response<br>posted</div>
+
+<div class="overlay" id="numGate">
+  <div class="box">
+    <h3>Your artist number</h3>
+    <p>This sits above every response you post. Your browser remembers it, so you only type it once.</p>
+    <input type="text" id="numCode" inputmode="numeric" placeholder="ARTIST NUMBER"/>
+    <div class="err" id="numErr">Enter your artist number</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="numCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="numGo" type="button">That's me</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to set the artwork, the link and the question.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+const TEACHER_CODE = "artwork";
+
+// Ask each student for their artist number before their first response.
+const ASK_FOR_NUMBER = true;
+const NUMBERS_ONLY = true;
+
+// Can students remove and change their own responses? They only ever see
+// the buttons on responses carrying their own artist number. You get them
+// on everything once the instructor desk is unlocked.
+const LET_STUDENTS_DELETE = true;
+
+// Let students browse earlier artworks from the strip under the board.
+const SHOW_ARCHIVE_TO_STUDENTS = true;
+
+// The artwork the board starts on, if the database is empty.
+const FIRST_WORK = {
+  label: "Artwork 1",
+  title: "Waiting on the artwork",
+  by: "",
+  url: "",
+  img: "",
+  question: "Set the artwork, the link and the question from the instructor desk."
+};
+
+// Same Firebase project as the other class tools, under its own key, so
+// none of them touch each other's data. Add an "artworks" branch to the
+// database rules before class.
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+let db = null;
+
+const ROOT    = "artworks";
+const CURRENT = ROOT + "/current";
+const INDEX   = ROOT + "/index";
+const POSTS   = ROOT + "/posts";
+
+let sessionId   = null;
+let postsRef    = null;
+let metaRef     = null;
+let meta        = {};
+let posts       = {};
+let unlocked    = false;
+let workIndex   = {};
+let editingWork = null;
+let liveId      = null;
+let previewId   = null;
+let allWorksOn  = false;
+let allPosts    = {};
+let newestFirst = false;
+let artistNo    = localStorage.getItem("boardArtistNo") || "";
+let pending     = null;
+let editingPost = null;
+let editDraft   = null;
+let draftTimer  = null;
+
+const $ = (id) => document.getElementById(id);
+
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+function whoLabel(w) { return w ? "Artist " + w : "Anonymous"; }
+
+// Only http and https links are ever put into the page, so a pasted
+// javascript: address cannot ride along into the anchor.
+function safeUrl(u) {
+  const s = String(u || "").trim();
+  return /^https?:\/\//i.test(s) ? s : "";
+}
+function hostOf(u) {
+  try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return ""; }
+}
+function whenOf(t) {
+  if (!t) return "";
+  return new Date(t).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+}
+
+// Each response carries its own database key so one can be changed or
+// removed without touching the rest of the board.
+function rowsOf(bag) {
+  const box = bag || {};
+  const list = Object.keys(box)
+    .map((k) => Object.assign({ id: k }, box[k]))
+    .sort((a, b) => (a.at || 0) - (b.at || 0));
+  return newestFirst ? list.reverse() : list;
+}
+function countOf(bag) { return Object.keys(bag || {}).length; }
+
+/* ── the artwork card ───────────────────────────────────────────── */
+function renderWork() {
+  const url = safeUrl(meta.url);
+  $("workLabel").textContent = meta.label || "Today's artwork";
+  $("artTitle").textContent = meta.title || "Waiting on the artwork";
+  $("artBy").textContent = meta.by || "";
+  $("artQBox").hidden = !meta.question;
+  $("artQ").textContent = meta.question || "";
+  $("artLink").hidden = !url;
+  if (url) {
+    $("artLink").href = url;
+    $("artHost").textContent = hostOf(url);
+  }
+  const img = safeUrl(meta.img);
+  $("artShot").classList.toggle("none", !img);
+  if (img) {
+    $("artImg").src = img;
+    $("artImg").alt = meta.title ? "Image of " + meta.title : "The artwork";
+  }
+  $("promptText").textContent = meta.title || "No artwork set yet";
+  $("workRoundel").innerHTML = roundelText(meta.label);
+  document.title = (meta.title ? meta.title + " · " : "") + "Artwork Discussion";
+}
+
+function roundelText(label) {
+  if (!label) return "LOOK";
+  const n = String(label).match(/\d+/);
+  return n ? "NO.<br>" + n[0] : "LOOK";
+}
+
+/* ── the stream ─────────────────────────────────────────────────── */
+function streamHTML(bag, live) {
+  const rows = rowsOf(bag);
+  if (!rows.length) {
+    return '<div class="stream-empty">Nothing on the board yet. Be the first.</div>';
+  }
+  return rows
+    .map((r, n) => {
+      const own = !!r.who && r.who === artistNo;
+      const canDrop = live && ((own && LET_STUDENTS_DELETE) || unlocked);
+      const head = `<div class="note-hd">
+          <span class="note-who">${esc(whoLabel(r.who))}${own ? " (you)" : ""}${
+        r.editedAt ? ' <span class="edited">· edited</span>' : ""
+      }</span>
+          <span class="note-when">${esc(whenOf(r.at))}</span>
+        </div>`;
+      if (canDrop && editingPost === r.id) {
+        return `<div class="note c${(n % 6) + 1}${own ? " self" : ""}">${head}
+          <div class="note-edit">
+            <textarea data-etext="${r.id}">${esc(editDraft == null ? r.text : editDraft)}</textarea>
+            <div class="row">
+              <button class="btn btn-ink" data-esave="${r.id}" type="button">Save</button>
+              <button class="btn btn-quiet" data-ecancel="1" type="button">Cancel</button>
+            </div>
+          </div></div>`;
+      }
+      return `<div class="note c${(n % 6) + 1}${own ? " self" : ""}${canDrop ? " hasdel" : ""}">${
+        canDrop
+          ? `<button class="fix" data-fix="${r.id}" type="button" title="Edit this response" aria-label="Edit this response">&#9998;</button>
+             <button class="del" data-del="${r.id}" type="button" title="Delete this response" aria-label="Delete this response">&times;</button>`
+          : ""
+      }${head}${esc(r.text)}</div>`;
+    })
+    .join("");
+}
+
+function renderStream() {
+  $("stream").innerHTML = streamHTML(posts, !previewId);
+  const n = countOf(posts);
+  const mine = artistNo ? Object.values(posts).filter((r) => r.who === artistNo).length : 0;
+  $("meterCount").textContent = n === 1 ? "1 response" : n + " responses";
+  $("workCount").textContent = n === 1 ? "1 response" : n + " responses";
+  $("meterFill").style.width = Math.min(100, n * 4) + "%";
+  $("meterLabel").textContent = !n
+    ? "The board is open"
+    : mine
+    ? "You have added " + mine + (mine === 1 ? " response" : " responses")
+    : "The board is filling up";
+}
+
+$("sortBtn").addEventListener("click", () => {
+  newestFirst = !newestFirst;
+  $("sortLabel").textContent = newestFirst ? "Newest first" : "Oldest first";
+  renderStream();
+});
+
+/* ── drafts ─────────────────────────────────────────────────────────
+   Whatever is in the box saves to this browser a moment after typing
+   stops, filed under the artwork it belongs to. Nothing reaches the
+   database until Post is pressed, so an unfinished thought stays private
+   while surviving a refresh or a closed tab.
+   ─────────────────────────────────────────────────────────────────── */
+function draftKey() { return ROOT + "-draft:" + sessionId; }
+
+function saveDraft() {
+  if (!sessionId || previewId) return;
+  const t = $("wordInput").value;
+  try {
+    if (t.trim()) localStorage.setItem(draftKey(), t);
+    else localStorage.removeItem(draftKey());
+  } catch (e) { return; }
+  const note = $("draftNote");
+  note.classList.add("on");
+  setTimeout(() => note.classList.remove("on"), 1200);
+}
+
+function loadDraft(force) {
+  if (!sessionId) return;
+  if (!force && $("wordInput").value.trim()) return;
+  try { $("wordInput").value = localStorage.getItem(draftKey()) || ""; } catch (e) {}
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(draftKey()); } catch (e) {}
+}
+
+$("wordInput").addEventListener("input", () => {
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(saveDraft, 250);
+});
+window.addEventListener("beforeunload", saveDraft);
+
+// A live update from someone else redraws the stream. This keeps whatever
+// is in an open editor from being thrown away when that happens.
+$("stream").addEventListener("input", (e) => {
+  if (e.target.matches("[data-etext]")) editDraft = e.target.value;
+});
+
+/* ── posting ────────────────────────────────────────────────────── */
+function post() {
+  const text = $("wordInput").value.trim();
+  if (!text) {
+    $("barState").textContent = "Write something first";
+    $("wordInput").focus();
+    return;
+  }
+  if (previewId) {
+    $("barState").textContent = "This is an earlier artwork. Go back to live to post.";
+    return;
+  }
+  if (!db || !sessionId) {
+    $("barState").textContent = "Not connected yet. Give it a second and try again.";
+    return;
+  }
+  if (ASK_FOR_NUMBER && !artistNo) {
+    pending = text;
+    openNumGate();
+    return;
+  }
+  send(text);
+}
+
+function send(text) {
+  db.ref(`${POSTS}/${sessionId}`)
+    .push({ text: text.slice(0, 1200), who: artistNo || null, at: Date.now() })
+    .catch(dbTrouble);
+  $("wordInput").value = "";
+  clearDraft();
+  $("barState").textContent = "Posted. Add another whenever you like.";
+  const stamp = $("saveStamp");
+  stamp.classList.add("on");
+  setTimeout(() => stamp.classList.remove("on"), 1400);
+}
+
+$("dropBtn").addEventListener("click", post);
+$("wordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") post(); });
+
+/* ── editing and deleting ───────────────────────────────────────── */
+$("stream").addEventListener("click", (e) => {
+  const fix = e.target.closest("[data-fix]");
+  if (fix) {
+    editingPost = fix.dataset.fix;
+    editDraft = null;
+    renderStream();
+    const box = document.querySelector('[data-etext="' + editingPost + '"]');
+    if (box) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); }
+    return;
+  }
+  if (e.target.closest("[data-ecancel]")) {
+    editingPost = null;
+    editDraft = null;
+    renderStream();
+    return;
+  }
+  const keep = e.target.closest("[data-esave]");
+  if (keep) {
+    const box = document.querySelector('[data-etext="' + keep.dataset.esave + '"]');
+    const next = (box ? box.value : "").trim();
+    if (!next) return;
+    editingPost = null;
+    editDraft = null;
+    db.ref(`${POSTS}/${sessionId}/${keep.dataset.esave}`)
+      .update({ text: next.slice(0, 1200), editedAt: Date.now() })
+      .then(() => { $("barState").textContent = "Response updated"; })
+      .catch(dbTrouble);
+    return;
+  }
+  const kill = e.target.closest("[data-del]");
+  if (kill) {
+    if (previewId) return;
+    if (!confirm("Delete this response? It cannot be brought back.")) return;
+    db.ref(`${POSTS}/${sessionId}/${kill.dataset.del}`).remove()
+      .then(() => { $("barState").textContent = "Response deleted"; })
+      .catch(dbTrouble);
+  }
+});
+
+/* ── the artist number ──────────────────────────────────────────── */
+function showWho() {
+  $("whoTag").textContent = artistNo ? "Artist " + artistNo : "Artist ?";
+  $("whoTag").title = artistNo ? "Tap to change your artist number" : "Tap to set your artist number";
+}
+showWho();
+
+function openNumGate() {
+  $("numCode").value = artistNo;
+  $("numErr").classList.remove("on");
+  $("numGate").classList.add("open");
+  $("numCode").focus();
+}
+
+function takeNumber() {
+  let v = $("numCode").value.trim();
+  if (NUMBERS_ONLY) v = v.replace(/\D/g, "");
+  v = v.slice(0, 8);
+  if (!v) { $("numErr").classList.add("on"); return; }
+  artistNo = v;
+  localStorage.setItem("boardArtistNo", artistNo);
+  $("numGate").classList.remove("open");
+  showWho();
+  renderStream();
+  if (pending) { send(pending); pending = null; }
+}
+
+$("whoTag").addEventListener("click", openNumGate);
+$("numGo").addEventListener("click", takeNumber);
+$("numCode").addEventListener("keydown", (e) => { if (e.key === "Enter") takeNumber(); });
+$("numCancel").addEventListener("click", () => { pending = null; $("numGate").classList.remove("open"); });
+
+/* ── live artwork or private preview ────────────────────────────── */
+function syncWork() {
+  const target = previewId || liveId;
+  if (target) attachWork(target);
+  const previewing = !!previewId;
+  $("sheetFrame").classList.toggle("previewing", previewing);
+  renderChips();
+  $("previewBar").classList.toggle("on", previewing);
+  $("wordInput").disabled = previewing || !db;
+  $("dropBtn").disabled = previewing || !db;
+  $("barWork").textContent = previewing ? "Preview" : "The board";
+  renderWorks();
+}
+
+function endPreview() { previewId = null; syncWork(); }
+$("backLive").addEventListener("click", endPreview);
+
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  $("barState").textContent = denied
+    ? "Firebase blocked that. The database rules need an artworks branch."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  console.error("[artwork discussion]", err);
+}
+
+function attachWork(id) {
+  if (id === sessionId) return;
+  if (postsRef) postsRef.off();
+  if (metaRef) metaRef.off();
+
+  sessionId = id;
+  posts = {};
+  meta = {};
+  editingPost = null;
+  renderWork();
+  renderStream();
+
+  metaRef = db.ref(`${INDEX}/${id}`);
+  metaRef.on("value", (s) => {
+    meta = s.val() || {};
+    renderWork();
+    if (unlocked) fillDesk();
+  }, dbTrouble);
+
+  postsRef = db.ref(`${POSTS}/${id}`);
+  postsRef.on("value", (s) => {
+    posts = s.val() || {};
+    renderStream();
+    loadDraft(false);
+  }, dbTrouble);
+}
+
+/* ── the desk ───────────────────────────────────────────────────── */
+function fillDesk() {
+  $("edTitle").value = meta.title || "";
+  $("edBy").value = meta.by || "";
+  $("edUrl").value = meta.url || "";
+  $("edImg").value = meta.img || "";
+  $("edQ").value = meta.question || "";
+}
+
+$("saveWork").addEventListener("click", () => {
+  if (!db || !sessionId) return flag("Not connected to Firebase yet");
+  const url = $("edUrl").value.trim();
+  const img = $("edImg").value.trim();
+  if (url && !safeUrl(url)) return flag("The link needs to start with http or https");
+  if (img && !safeUrl(img)) return flag("The image address needs to start with http or https");
+  db.ref(`${INDEX}/${sessionId}`)
+    .update({
+      title: $("edTitle").value.trim() || "Untitled",
+      by: $("edBy").value.trim() || null,
+      url: url || null,
+      img: img || null,
+      question: $("edQ").value.trim() || null
+    })
+    .then(() => flag("Saved. Every browser has it now."))
+    .catch(() => flag("Firebase refused the write. Check the database rules."));
+});
+
+$("clearWork").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (previewId) return flag("Stop the preview first, then clear");
+  if (!confirm("Clear every response from this artwork? The artwork and question stay.")) return;
+  db.ref(`${POSTS}/${sessionId}`).remove().then(() => flag("Board wiped clean")).catch(dbTrouble);
+});
+
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  setTimeout(() => f.classList.remove("on"), 3200);
+}
+
+/* ── the gate ───────────────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) {
+    $("editor").classList.toggle("open");
+    $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    $("gate").classList.add("open");
+    $("gateCode").focus();
+  }
+});
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateGo").addEventListener("click", tryCode);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) {
+    $("gateErr").classList.add("on");
+    return;
+  }
+  unlocked = true;
+  $("gate").classList.remove("open");
+  $("gateErr").classList.remove("on");
+  $("gateCode").value = "";
+  $("editor").classList.add("open");
+  fillDesk();
+  renderStream();
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+$("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
+
+/* ── the list of artworks ───────────────────────────────────────── */
+function workOrder() {
+  return Object.keys(workIndex).sort((a, b) => (workIndex[a].created || 0) - (workIndex[b].created || 0));
+}
+function nextWorkNumber() {
+  let top = 0;
+  Object.values(workIndex).forEach((d) => {
+    const n = String(d.label || "").match(/\d+/);
+    if (n && +n[0] > top) top = +n[0];
+  });
+  return top + 1;
+}
+
+function renderChips() {
+  const strip = $("archive");
+  if (!strip) return;
+  if (!SHOW_ARCHIVE_TO_STUDENTS) { strip.hidden = true; return; }
+  const ids = workOrder();
+  strip.hidden = ids.length < 2;
+  $("workChips").innerHTML = ids
+    .map((id) => {
+      const d = workIndex[id];
+      const showing = (previewId || liveId) === id;
+      return `<button class="chip" data-work="${id}" type="button" aria-current="${showing}">${
+        esc(d.title || d.label) || "Untitled"
+      }${id === liveId ? ' <span class="dot">&#9679;</span>' : ""}</button>`;
+    })
+    .join("");
+}
+
+$("workChips").addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-work]");
+  if (!chip) return;
+  previewId = chip.dataset.work === liveId ? null : chip.dataset.work;
+  syncWork();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+function renderWorks() {
+  const list = $("workList");
+  if (!list) return;
+  const ids = workOrder();
+  if (!ids.length) { list.innerHTML = '<div class="wk-empty">Nothing yet. Add one above.</div>'; return; }
+  list.innerHTML = ids
+    .map((id) => {
+      const d = workIndex[id];
+      const here = id === sessionId;
+      return `<div class="wk${here ? " live" : ""}">
+        <div class="wk-main">
+          <div class="wk-name">${esc(d.title || d.label) || "Untitled"}${
+            id === liveId ? '<span class="wk-tag">On screen now</span>' : ""
+          }${id === previewId ? '<span class="wk-tag wk-tag-you">You are reading this</span>' : ""}</div>
+          <div class="wk-q">${esc(d.by || "")}${d.by && d.question ? " · " : ""}${esc(
+        (d.question || "").slice(0, 90)
+      )}${(d.question || "").length > 90 ? "…" : ""}</div>
+        </div>
+        <div class="wk-btns">
+          ${id === liveId ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
+          ${
+            id === previewId
+              ? `<button class="btn" data-act="unpreview" type="button">Stop preview</button>`
+              : `<button class="btn" data-act="preview" data-id="${id}" type="button">Preview</button>`
+          }
+          <button class="btn btn-quiet" data-act="delete" data-id="${id}" type="button">Delete</button>
+        </div>
+      </div>`;
+    })
+    .join("");
+}
+
+$("workList").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.act;
+
+  if (act === "open") {
+    if (!db) return flag("Not connected to Firebase yet");
+    db.ref(CURRENT).set(id)
+      .then(() => { previewId = null; flag("Everyone is on that artwork now"); })
+      .catch(dbTrouble);
+  }
+  if (act === "preview") {
+    previewId = id === liveId ? null : id;
+    syncWork();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  if (act === "unpreview") endPreview();
+  if (act === "delete") {
+    if (id === liveId) return flag("Open a different artwork before deleting this one");
+    if (!confirm(`Delete ${workIndex[id].title || "this artwork"} and every response on it? This cannot be undone.`)) return;
+    db.ref(`${POSTS}/${id}`).remove()
+      .then(() => db.ref(`${INDEX}/${id}`).remove())
+      .then(() => flag("Artwork deleted"))
+      .catch(dbTrouble);
+  }
+});
+
+function makeWork(fields, openIt) {
+  const id = "w" + Date.now() + Math.floor(Math.random() * 1000);
+  return db.ref(`${INDEX}/${id}`)
+    .set(Object.assign({ label: "Artwork " + nextWorkNumber(), created: Date.now() }, fields))
+    .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
+}
+
+function addFromForm(openIt) {
+  if (!db) return flag("Not connected to Firebase yet");
+  const url = $("newUrl").value.trim();
+  const img = $("newImg").value.trim();
+  if (url && !safeUrl(url)) return flag("The link needs to start with http or https");
+  if (img && !safeUrl(img)) return flag("The image address needs to start with http or https");
+  if (!$("newTitle").value.trim() && !url) return flag("Give it a title or a link first");
+  makeWork(
+    {
+      title: $("newTitle").value.trim() || "Untitled",
+      by: $("newBy").value.trim() || null,
+      url: url || null,
+      img: img || null,
+      question: $("newQ").value.trim() || null
+    },
+    openIt
+  )
+    .then(() => {
+      ["newTitle", "newBy", "newUrl", "newImg", "newQ"].forEach((k) => ($(k).value = ""));
+      flag(openIt ? "It is on screen now." : "Added to the list.");
+    })
+    .catch(dbTrouble);
+}
+$("addWork").addEventListener("click", () => addFromForm(false));
+$("startWork").addEventListener("click", () => addFromForm(true));
+
+/* ── every artwork, stacked ─────────────────────────────────────── */
+function loadAllPosts() {
+  if (!db) return Promise.reject(new Error("no db"));
+  return db.ref(POSTS).once("value").then((s) => { allPosts = s.val() || {}; return allPosts; });
+}
+
+function renderAllWorks() {
+  const ids = workOrder();
+  $("allWorks").innerHTML = ids.length
+    ? ids
+        .map((id) => {
+          const d = workIndex[id];
+          const bag = allPosts[id] || {};
+          const n = countOf(bag);
+          return `<div class="workblock${id === liveId ? " livew" : ""}">
+            <div class="workblock-bar">
+              <span>${esc(d.title || d.label) || "Untitled"}${esc(d.by ? " · " + d.by : "")}${
+            id === liveId ? " &#9679; on screen now" : ""
+          }</span>
+              <span class="arm">${n} ${n === 1 ? "response" : "responses"}</span>
+            </div>
+            ${d.question ? `<div class="workblock-q">${esc(d.question)}</div>` : ""}
+            <div class="stream">${streamHTML(bag, false)}</div>
+          </div>`;
+        })
+        .join("")
+    : '<div class="wk-empty">Nothing yet</div>';
+}
+
+$("allWorksBtn").addEventListener("click", () => {
+  if (allWorksOn) {
+    allWorksOn = false;
+    $("allWorks").classList.remove("on");
+    $("allWorksBtn").textContent = "Show every artwork at once";
+    return;
+  }
+  $("allWorksBtn").textContent = "Loading";
+  loadAllPosts()
+    .then(() => {
+      allWorksOn = true;
+      $("allWorks").classList.add("on");
+      $("allWorksBtn").textContent = "Hide the others";
+      renderAllWorks();
+      $("allWorks").scrollIntoView({ behavior: "smooth", block: "start" });
+    })
+    .catch((e) => {
+      $("allWorksBtn").textContent = "Show every artwork at once";
+      dbTrouble(e);
+    });
+});
+
+$("downloadAnswers").addEventListener("click", () => {
+  const lines = [(meta.title || "Untitled").toUpperCase()];
+  if (meta.by) lines.push(meta.by);
+  if (meta.url) lines.push(meta.url);
+  if (meta.question) lines.push("", "QUESTION: " + meta.question);
+  lines.push("", countOf(posts) + " responses", "");
+  rowsOf(posts).forEach((r) => lines.push("- " + whoLabel(r.who) + ": " + r.text));
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "artwork_discussion.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  flag("Text file downloaded");
+});
+
+/* ── watching the database ──────────────────────────────────────── */
+function watchCurrent() {
+  db.ref(CURRENT).on("value", (s) => {
+    const id = s.val();
+    if (id) { liveId = id; syncWork(); }
+    else {
+      const first = "w" + Date.now();
+      db.ref(CURRENT).transaction((held) => (held ? undefined : first));
+      db.ref(`${INDEX}/${first}`)
+        .set(Object.assign({ created: Date.now() }, FIRST_WORK))
+        .catch(dbTrouble);
+    }
+  }, dbTrouble);
+
+  db.ref(INDEX).on("value", (s) => {
+    workIndex = s.val() || {};
+    renderWorks();
+    renderChips();
+    if (allWorksOn) renderAllWorks();
+  }, dbTrouble);
+
+  db.ref(".info/connected").on("value", (s) => {
+    if (previewId) return;
+    $("barState").textContent = s.val() === true
+      ? "Live. Write your response below."
+      : "Reconnecting to the database";
+  });
+}
+
+/* ── loading Firebase ───────────────────────────────────────────── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) { /* next mirror */ }
+  }
+  return false;
+}
+
+function netTrouble(err) {
+  const code = (err && err.code) || "";
+  const off = /operation-not-allowed|configuration-not-found/.test(code);
+  const net = /network-request-failed|timeout/.test(code);
+  const onDisk = location.protocol === "file:";
+
+  let head = "Sign-in failed: " + ((err && err.message) || code);
+  let why = "";
+
+  if (off) {
+    head = "Anonymous sign-in is switched off";
+    why = "In the Firebase console open Authentication, then Sign-in method, and enable Anonymous.";
+  } else if (net && onDisk) {
+    head = "This page is running off the hard drive";
+    why = "Firebase sign-in will not run from a file:// address. Open the page from its web address instead, or serve the folder locally with python3 -m http.server 8000 and visit localhost:8000.";
+  } else if (net) {
+    head = "Cannot reach the sign-in server";
+    why = "Three things to check. A privacy extension or campus network blocking identitytoolkit.googleapis.com. Whether this address sits on the Authorized domains list in the Firebase console under Authentication, Settings. Or the wifi itself.";
+  }
+
+  $("netMsg").innerHTML = esc(head) + (why ? '<span class="why">' + esc(why) + "</span>" : "");
+  $("netBar").classList.add("on");
+  $("barState").textContent = head;
+  $("wordInput").disabled = true;
+  $("dropBtn").disabled = true;
+  console.error("[artwork discussion]", err);
+}
+
+function signIn(tries) {
+  return firebase.auth().signInAnonymously().catch((err) => {
+    const net = /network-request-failed|timeout/.test((err && err.code) || "");
+    if (net && tries > 0) {
+      $("barState").textContent = "Connection dropped. Trying again.";
+      return new Promise((go) => setTimeout(go, 1500)).then(() => signIn(tries - 1));
+    }
+    throw err;
+  });
+}
+
+function startUp() {
+  $("netBar").classList.remove("on");
+  $("barState").textContent = "Connecting";
+  signIn(3)
+    .then(() => {
+      db = firebase.database();
+      $("wordInput").disabled = false;
+      $("dropBtn").disabled = false;
+      watchCurrent();
+      $("barState").textContent = "Write your response below";
+    })
+    .catch(netTrouble);
+}
+$("netRetry").addEventListener("click", startUp);
+
+// Draw the empty board straight away so the page never sits blank.
+renderStream();
+
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("promptText").textContent = "Cannot reach Firebase";
+    $("netMsg").innerHTML =
+      "The Firebase library did not load" +
+      '<span class="why">All three mirrors were blocked. Usually an ad blocker, or a network that filters gstatic.com, jsdelivr and unpkg.</span>';
+    $("netBar").classList.add("on");
+    $("barState").textContent = "Offline. Check the network or an ad blocker.";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  startUp();
+});
+
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
