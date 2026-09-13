@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Yes And</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  /* Same palette, combined a seventh way. Teal carries the big surfaces,
+     mars magenta throws every hard drop shadow, deep ochre does the accents
+     and buttons, and grass green has taken the small caps labels. The six
+     tints sit under the six group boards in an order of their own. */
+  --cobalt:#2f7d7d;          /* teal, the surface color */
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;          /* mint, the light mark on dark */
+  --chrome-deep:#a01e5c;     /* mars magenta, every drop shadow */
+  --pulpred:#8a5a16;         /* deep ochre, the accent */
+  --mars:#4d661a;            /* deep grass green, the label color */
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#d9b7c6;
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--jet);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(160deg,rgba(47,125,125,.14) 0%,rgba(160,30,92,.11) 50%,rgba(138,90,22,.13) 100%),var(--cream)}
+
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1240px;margin:0 auto;padding:14px 18px 0}
+.cover-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px}
+.stripes{height:22px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px)}
+h1.logo .the{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  font-size:clamp(11px,2vw,20px);letter-spacing:8px;color:var(--chrome);margin-bottom:2px}
+h1.logo{font-family:'Space Grotesk',sans-serif;font-size:clamp(38px,11vw,104px);line-height:.86;
+  letter-spacing:-.02em;text-transform:uppercase;color:#fff;text-align:center;margin:10px 0 4px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4)}
+.cover-band{display:flex;align-items:center;gap:14px;border-top:3px solid var(--jet);
+  border-bottom:3px solid var(--jet);padding:9px 0;margin-top:12px}
+.roundel{width:56px;height:56px;flex:none;border-radius:50%;background:var(--pulpred);
+  border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);display:grid;place-items:center;
+  color:#fff;text-align:center;line-height:1.05;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  font-size:12px;letter-spacing:.5px;text-transform:uppercase;padding:4px}
+.cover-tag{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(14px,2.4vw,24px);
+  letter-spacing:1px;color:#fff;line-height:1.2;flex:1;min-width:0}
+.cover-kicker{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block}
+.cover-foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:9px 0 12px;
+  font-family:'Bitter',serif;font-size:12.5px;color:#dff0ef;line-height:1.5}
+.cover-foot b{color:var(--chrome);font-family:'Space Grotesk',sans-serif;letter-spacing:1px;
+  text-transform:uppercase;font-size:11px}
+
+main{max-width:1240px;margin:0 auto;padding:22px 18px 176px}
+
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;
+  background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+/* ══ the artwork ════════════════════════════════════════════════════ */
+.artcard{border:4px solid var(--jet);background:#fff;box-shadow:8px 8px 0 var(--chrome-deep);margin-bottom:16px}
+.artcard-bar{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:8px 14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.artcard-bar .arm{color:var(--chrome);font-weight:600;letter-spacing:1.5px}
+.artcard-body{display:flex;flex-wrap:wrap}
+.artshot{flex:1 1 280px;min-width:0;border-right:3px solid var(--jet);background:var(--pulp-deep);
+  display:grid;place-items:center;min-height:170px;padding:14px}
+.artshot img{max-width:100%;max-height:300px;display:block;border:3px solid var(--jet);
+  box-shadow:5px 5px 0 var(--pulpred)}
+.artshot.none{display:none}
+.artmeta{flex:2 1 380px;min-width:0;padding:16px 18px 18px}
+.arttitle{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,3.4vw,30px);
+  line-height:1.1;text-transform:uppercase;letter-spacing:-.01em;color:var(--jet)}
+.artby{font-family:'Bitter',serif;font-style:italic;font-size:14px;color:var(--mars);margin-top:5px}
+.artlink{display:inline-flex;align-items:center;gap:9px;margin-top:13px;text-decoration:none;flex-wrap:wrap}
+.artlink .host{font-family:'Space Mono',monospace;font-size:11px;color:#5a6a72;max-width:220px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ══ how it works ═══════════════════════════════════════════════════ */
+.howto{border:4px solid var(--jet);background:#fff;box-shadow:7px 7px 0 var(--chrome-deep);
+  padding:15px 17px 17px;margin-bottom:18px}
+.howto h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--mars);margin-bottom:9px}
+.howto p{font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);max-width:78ch}
+.formula{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:12px 0;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;
+  text-transform:uppercase}
+.formula span{border:3px solid var(--jet);padding:7px 11px;background:var(--pulp-pale)}
+.formula span.a{background:#d5efee}
+.formula span.b{background:#ffe1ef}
+.formula span.c{background:#eaf3cd;box-shadow:4px 4px 0 var(--pulpred)}
+.formula i{font-style:normal;font-size:17px}
+.howto .eg{font-family:'Bitter',serif;font-style:italic;font-size:13px;line-height:1.6;color:#334051;
+  border-left:5px solid var(--pulpred);padding-left:11px;margin-top:11px;max-width:78ch}
+
+/* ══ the boards ═════════════════════════════════════════════════════ */
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-bar{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sheet-bar .arm{color:var(--chrome)}
+.boardgrid{display:grid;gap:14px;padding:14px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.board{--bg:#fff;--ink:var(--jet);--sh:var(--jet);background:var(--bg);border:4px solid var(--jet);
+  box-shadow:6px 6px 0 var(--sh);display:flex;flex-direction:column;min-width:0}
+.board.g1{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
+.board.g2{--bg:#faead0;--ink:#8a5a16;--sh:#c9922f}
+.board.g3{--bg:#eaf3cd;--ink:#4d661a;--sh:#8ba838}
+.board.g4{--bg:#e2e6e8;--ink:#14202a;--sh:#5c6b74}
+.board.g5{--bg:#ffe1ef;--ink:#a01e5c;--sh:#d63d84}
+.board.g6{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
+.board.hasdraft{outline:4px dashed var(--chrome-deep);outline-offset:3px}
+.board-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  border-bottom:3px solid var(--jet);padding:8px 11px;font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--ink)}
+.board-hd .count{color:var(--chrome);font-weight:600;font-size:10px;letter-spacing:1.5px}
+.quote{border-bottom:3px dashed var(--jet);padding:12px;background:rgba(255,255,255,.55)}
+.quote p{font-family:'Bitter',serif;font-style:italic;font-size:14.5px;line-height:1.5;color:var(--jet)}
+.quote .src{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9.5px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-top:7px}
+.quote.unset p{font-family:'Space Grotesk',sans-serif;font-style:normal;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#6c7a83}
+
+.chain{flex:1;display:flex;flex-direction:column;gap:0;padding:12px;max-height:440px;overflow-y:auto}
+.link{position:relative;background:#fff;border:3px solid var(--jet);box-shadow:4px 4px 0 rgba(20,32,42,.18);
+  padding:9px 11px}
+.link.self{box-shadow:4px 4px 0 var(--pulpred)}
+.link.hasdel{padding-right:58px}
+.linkarrow{text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;
+  color:var(--ink);line-height:1;padding:7px 0}
+.link-hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.link-no{font-family:'Space Mono',monospace;font-weight:700;font-size:10px;border:2px solid var(--jet);
+  background:var(--ink);color:#fff;padding:1px 6px}
+.link-who{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9.5px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--ink)}
+.link .edited{font-weight:400;letter-spacing:1px;opacity:.75}
+.link-prompt{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10.5px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;background:var(--mars);border:2px solid var(--jet);
+  padding:3px 8px;display:inline-block;margin-bottom:7px;line-height:1.45}
+.link-seed{background:var(--pulpred)}
+.link-text{font-family:'Bitter',serif;font-size:13.5px;line-height:1.55;color:var(--jet)}
+.link .del,.link .fix{position:absolute;top:7px;width:21px;height:21px;line-height:1;padding:0;cursor:pointer;
+  border:2px solid var(--jet);background:#fff;color:var(--jet);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px}
+.link .del{right:7px}
+.link .fix{right:32px}
+.link .del:hover{background:var(--chrome-deep);color:#fff}
+.link .fix:hover{background:var(--chrome)}
+.edit-box textarea{width:100%;border:2px solid var(--jet);background:#fff;resize:vertical;min-height:64px;
+  font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);padding:6px 8px;outline:none}
+.edit-box textarea:focus{border-color:var(--pulpred)}
+.edit-box .row{display:flex;gap:6px;margin-top:6px}
+.edit-box .row .btn{padding:5px 11px;font-size:10px;box-shadow:2px 2px 0 var(--jet);flex:1}
+.chain-empty{font-family:'Space Grotesk',sans-serif;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;
+  color:#6c7a83;text-align:center;padding:20px 8px;border:3px dashed rgba(20,32,42,.3)}
+.board-foot{padding:0 11px 11px}
+.board-foot .btn{width:100%;padding:9px;font-size:10px}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);
+  border-top:5px solid var(--jet);padding:10px 18px 11px}
+.press-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.press-turn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--jet);background:var(--chrome);border:3px solid var(--jet);
+  padding:5px 10px;flex:none}
+.press-prompt{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:.5px;
+  color:#fff;flex:1;min-width:180px;line-height:1.4}
+.press-prompt b{color:var(--chrome);text-transform:uppercase;letter-spacing:2px;font-size:10px;
+  display:block;margin-bottom:2px}
+.press-top .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.press-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#groupPick{border:3px solid var(--jet);background:var(--chrome);font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--jet);
+  padding:10px;outline:none;cursor:pointer}
+#groupPick:focus{box-shadow:0 0 0 3px var(--pulpred)}
+#wordInput{flex:2;min-width:200px;border:3px solid var(--jet);background:#fff;font-family:'Bitter',serif;
+  font-size:15px;color:var(--jet);padding:10px 12px;outline:none}
+#wordInput:focus{border-color:var(--pulpred);box-shadow:0 0 0 3px var(--chrome)}
+#draftNote{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--chrome);flex:none;opacity:0;transition:opacity .3s}
+#draftNote.on{opacity:1}
+.press-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);
+  background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);
+  transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .press-row .btn{padding:10px 15px;font-size:11px}
+#whoTag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--jet);background:var(--chrome);border:3px solid var(--jet);
+  padding:9px 11px;cursor:pointer}
+#whoTag:hover{background:#fff}
+
+#saveStamp{position:fixed;right:18px;bottom:132px;z-index:300;width:74px;height:74px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;text-align:center;padding:6px;font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1.15;
+  opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+.netbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:9px 12px;
+  align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.6}
+.netbar.on{display:flex}
+.netbar .why{font-family:'Bitter',serif;font-size:12px;letter-spacing:0;text-transform:none;color:#f8e4ee;
+  display:block;margin-top:5px;max-width:70ch}
+.netbar .btn{padding:7px 13px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.previewbar{display:none;background:var(--pulpred);border-bottom:3px solid var(--jet);padding:8px 12px;
+  align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff}
+.previewbar.on{display:flex}
+.previewbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.sheet-frame.previewing{box-shadow:7px 7px 0 var(--mars)}
+
+/* ══ desk ═══════════════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;
+  align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);
+  box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;
+  padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--chrome-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:14px 0 6px}
+.editor input[type=text],.editor textarea{width:100%;border:3px solid var(--rule);background:#fff;
+  font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);padding:10px 12px;outline:none}
+.editor textarea{resize:vertical;min-height:72px}
+.editor input:focus,.editor textarea:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.two{grid-template-columns:1fr}}
+.qrow{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px}
+.qrow .qnum{flex:none;width:42px;height:34px;display:grid;place-items:center;border:3px solid var(--jet);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;color:var(--jet)}
+.qrow.g1 .qnum{background:#d5efee}
+.qrow.g2 .qnum{background:#faead0}
+.qrow.g3 .qnum{background:#eaf3cd}
+.qrow.g4 .qnum{background:#e2e6e8}
+.qrow.g5 .qnum{background:#ffe1ef}
+.qrow.g6 .qnum{background:#dde9f7}
+.qrow .stack{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.qrow textarea{min-height:54px}
+
+.archive{margin-top:22px;border:3px solid var(--jet);background:var(--glass);padding:14px 16px 16px;
+  box-shadow:5px 5px 0 var(--chrome-deep)}
+.archive-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--mars);border-bottom:2px solid var(--jet);padding-bottom:8px;margin-bottom:11px}
+.archive-hd .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;padding:8px 13px;cursor:pointer;border:3px solid var(--jet);
+  background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip .dot{color:var(--chrome)}
+#allRounds{margin-top:14px;display:none}
+#allRounds.on{display:block}
+.roundblock{margin-bottom:20px;border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff}
+.roundblock-bar{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:8px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.roundblock-bar .arm{color:var(--chrome);font-weight:600}
+.roundblock.liveone .roundblock-bar{background:var(--pulpred)}
+
+.roundlist{display:flex;flex-direction:column;gap:9px}
+.wk{border:3px solid var(--jet);background:#fff;padding:11px 13px;display:flex;gap:12px;
+  align-items:flex-start;flex-wrap:wrap}
+.wk.live{background:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
+.wk-main{flex:1;min-width:200px}
+.wk-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--mars);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wk.live .wk-name{color:var(--jet)}
+.wk-tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;border:2px solid var(--jet);background:var(--cobalt);color:#fff;padding:2px 7px}
+.wk-tag-you{background:var(--pulpred);color:#fff}
+.wk-q{font-family:'Bitter',serif;font-size:12.5px;line-height:1.5;color:#334051;margin-top:4px}
+.wk-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.wk-btns .btn{padding:7px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.wk-edit{flex:1;min-width:220px}
+.wk-edit input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;
+  font-size:13px;padding:8px 10px;outline:none;color:var(--jet)}
+.wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:#6c7a83;border:3px dashed var(--rule);padding:16px;text-align:center}
+.ed-flag{border:3px solid var(--pulpred);color:var(--pulpred);background:#fff;padding:11px 14px;margin-top:14px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;
+  text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);
+  text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 0}
+  main{padding:18px 14px 250px}
+  .boardgrid{grid-template-columns:1fr;padding:11px;gap:12px}
+  .artshot{border-right:none;border-bottom:3px solid var(--jet)}
+  #saveStamp{bottom:230px;right:10px;width:62px;height:62px;font-size:9px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo"><span class="the">Build it together</span>Yes And</h1>
+    <div class="cover-band">
+      <div class="roundel" id="roundRoundel">RD<br>1</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">One equation per group, six hands on it</span>
+        <span id="promptText">Loading this round</span>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span><b>How it works</b> Someone starts the equation. Everyone after gets a prompt and has to rewrite the whole thing with their bit added.</span>
+      <span><b>The rule</b> Nothing gets deleted. It only grows.</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">The boards are open</span><span class="pct" id="meterCount">0 links</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <article class="artcard" id="artCard">
+    <div class="artcard-bar">
+      <span id="workLabel">The artwork</span>
+      <span class="arm" id="workCount">0 links in the chains</span>
+    </div>
+    <div class="artcard-body">
+      <div class="artshot none" id="artShot"><img id="artImg" alt=""/></div>
+      <div class="artmeta">
+        <div class="arttitle" id="artTitle">Waiting on the artwork</div>
+        <div class="artby" id="artBy"></div>
+        <a class="artlink" id="artLink" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          <span class="btn btn-ink">Open the artwork</span>
+          <span class="host" id="artHost"></span>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <section class="howto">
+    <h2>What you are doing</h2>
+    <p id="howtoText">Pull one idea or one aesthetic out of the artwork above. Add it to your group's quote. Write the result as an equation, and say what the new artwork actually is: material, scale, where it lives. One sentence is enough.</p>
+    <div class="formula">
+      <span class="a">Something from the artwork</span><i>+</i><span class="b">The idea in the quote</span><i>=</i><span class="c">A new artwork</span>
+    </div>
+    <p class="eg" id="howtoEg">3D modeling of plants + infrastructure can be a type of resistance = a seed library disguised as a utility box, bolted to a pole on every block.</p>
+    <p style="margin-top:11px">Then the next person hits <b>Yes and</b>. They get one prompt, and they rewrite the whole equation with it folded in. Do not just add your bit at the end. Rebuild the sentence so it still makes sense.</p>
+  </section>
+
+  <div class="sheet-frame" id="sheetFrame">
+    <div class="netbar" id="netBar">
+      <span id="netMsg">&nbsp;</span>
+      <button class="btn btn-quiet" id="netRetry" type="button">Try again</button>
+    </div>
+    <div class="previewbar" id="previewBar">
+      <span>You are reading an earlier round. The live boards have not moved.</span>
+      <button class="btn btn-quiet" id="backLive" type="button">Back to live</button>
+    </div>
+    <div class="sheet-bar">
+      <span id="barRound">This round</span>
+      <span class="arm" id="barState">Pick your group, then build</span>
+    </div>
+    <div class="boardgrid" id="boardGrid"></div>
+  </div>
+
+  <section class="archive" id="archive" hidden>
+    <div class="archive-hd">
+      <span>Every round</span>
+      <button class="btn btn-quiet" id="allRoundsBtn" type="button">Show every round at once</button>
+    </div>
+    <div class="chips" id="roundChips"></div>
+    <div id="allRounds"></div>
+  </section>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
+
+    <div class="groupmark"><span>The artwork</span></div>
+    <div class="two">
+      <div>
+        <label class="bl" for="edTitle">Title of the work</label>
+        <input type="text" id="edTitle" placeholder="swell of spæc(i)es"/>
+      </div>
+      <div>
+        <label class="bl" for="edBy">Artist and year</label>
+        <input type="text" id="edBy" placeholder="Josèfa Ntjam, 2025"/>
+      </div>
+    </div>
+    <label class="bl" for="edUrl">Link to the artwork</label>
+    <input type="text" id="edUrl" placeholder="https://"/>
+    <label class="bl" for="edImg">Image address (optional)</label>
+    <input type="text" id="edImg" placeholder="https://example.org/image.jpg"/>
+    <label class="bl" for="edRound">Round name</label>
+    <input type="text" id="edRound" placeholder="Round 1"/>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="saveWork" type="button">Save the artwork</button>
+    </div>
+
+    <div class="groupmark"><span>Six quotes, one per group</span></div>
+    <p class="ed-note">Each group builds off its own quote. Put who said it underneath so it gets credited on the board.</p>
+    <div id="edQuotes"></div>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="saveQuotes" type="button">Save the quotes</button>
+      <button class="btn" id="shuffleQuotes" type="button">Shuffle which group gets which</button>
+      <button class="btn btn-quiet" id="clearChains" type="button">Clear every chain</button>
+    </div>
+
+    <div class="groupmark"><span>The Yes and prompts</span></div>
+    <p class="ed-note">One per line. Students get one at random each turn, and a board will not repeat a prompt until it has run out. Edit the list to suit the week.</p>
+    <textarea id="edPrompts" rows="10"></textarea>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="savePrompts" type="button">Save the prompts</button>
+      <button class="btn btn-quiet" id="resetPrompts" type="button">Back to the built in list</button>
+    </div>
+
+    <div class="groupmark"><span>Add a round</span></div>
+    <label class="bl" for="newLabel">Round name</label>
+    <input type="text" id="newLabel" placeholder="Round 2"/>
+    <label class="bl" for="newQuotes">Six quotes, one per line</label>
+    <textarea id="newQuotes" rows="6" placeholder="Infrastructure can be a type of resistance."></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addRound" type="button">Add to the list</button>
+      <button class="btn btn-ink" id="startRound" type="button">Add and open now</button>
+    </div>
+
+    <div class="groupmark"><span>All rounds</span></div>
+    <div class="roundlist" id="roundList"></div>
+
+    <div class="groupmark"><span>Read it all</span></div>
+    <div class="ed-actions" style="margin-top:0">
+      <button class="btn btn-quiet" id="downloadAll" type="button">Download this round as text</button>
+    </div>
+
+    <div class="ed-flag" id="edFlag"></div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div id="press">
+  <div class="press-top">
+    <span class="press-turn" id="turnTag">Link 1</span>
+    <span class="press-prompt" id="promptSlot"><b>Your prompt</b>Pick a group to get one</span>
+    <button class="btn btn-quiet" id="redraw" type="button">Draw another</button>
+  </div>
+  <div class="press-row">
+    <select id="groupPick" aria-label="Which group are you in">
+      <option value="0">Group 1</option>
+      <option value="1">Group 2</option>
+      <option value="2">Group 3</option>
+      <option value="3">Group 4</option>
+      <option value="4">Group 5</option>
+      <option value="5">Group 6</option>
+    </select>
+    <input type="text" id="wordInput" placeholder="Rewrite the whole equation with your bit folded in" autocomplete="off"/>
+    <span id="draftNote">Draft kept</span>
+    <div class="press-btns">
+      <button id="whoTag" type="button">Artist ?</button>
+      <button class="btn btn-ink" id="dropBtn" type="button">Add my link</button>
+    </div>
+  </div>
+</div>
+
+<div id="saveStamp">Link<br>added</div>
+
+<div class="overlay" id="numGate">
+  <div class="box">
+    <h3>Your artist number</h3>
+    <p>This sits on every link you add, so the chain shows who built what.</p>
+    <input type="text" id="numCode" inputmode="numeric" placeholder="ARTIST NUMBER"/>
+    <div class="err" id="numErr">Enter your artist number</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="numCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="numGo" type="button">That's me</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to set the artwork, the quotes and the prompts.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+const TEACHER_CODE = "yesand";
+const GROUPS = 6;
+
+const ASK_FOR_NUMBER = true;
+const NUMBERS_ONLY = true;
+const LET_STUDENTS_DELETE = true;
+const SHOW_ARCHIVE_TO_STUDENTS = true;
+
+// How long a chain can get before a board stops taking new links.
+// Set to 0 for no limit.
+const CHAIN_CAP = 8;
+
+// The Yes and prompts. Students get one at random on every turn after the
+// first, and a board will not repeat one until it has used them all. You
+// can edit this list from the instructor desk without touching the file.
+const BUILT_IN_PROMPTS = [
+  "and it is built only from what was already in the room",
+  "and no part of it is new",
+  "and it is made of something that will rot",
+  "and it holds no screen and no battery",
+  "and it lives where nobody goes looking for art",
+  "and it is installed in a laundromat",
+  "and it only exists underground, or underwater",
+  "and it has to move to survive",
+  "and one cycle of it takes a full year",
+  "and it only runs at night",
+  "and it is built to outlast everyone who made it",
+  "and it happens once, for ten minutes, and never again",
+  "and someone has to feed it every day",
+  "and it fails unless three people maintain it",
+  "and whoever maintains it is credited as a co-author",
+  "and the maintenance is the artwork",
+  "and it must be heard rather than seen",
+  "and it can only be understood by touch",
+  "and it changes with the temperature of the room",
+  "and a smell carries the meaning",
+  "and it refuses to be documented",
+  "and it cannot be photographed",
+  "and it is free and cannot be sold",
+  "and it turns down the funding it is offered",
+  "and it fits in a pocket",
+  "and there are five hundred of them",
+  "and there is only ever one",
+  "and it is the size of a building",
+  "and part of it is designed to break",
+  "and it only works when it rains",
+  "and it breaks down in public, on purpose",
+  "and it is made for someone not yet born",
+  "and it is made for one specific person in this room",
+  "and its audience is birds, or fungi, or machines"
+];
+
+// What the very first round starts with, if the database is empty.
+const FIRST_LABEL = "Round 1";
+const FIRST_QUOTES = ["Infrastructure can be a type of resistance."];
+
+// Same Firebase project as the other class tools, under its own key. Add a
+// "yesand" branch to the database rules before class.
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+let db = null;
+
+const ROOT    = "yesand";
+const CURRENT = ROOT + "/current";
+const INDEX   = ROOT + "/index";
+const POSTS   = ROOT + "/posts";
+
+let sessionId    = null;
+let postsRef     = null;
+let metaRef      = null;
+let meta         = {};
+let posts        = {};
+let unlocked     = false;
+let roundIndex   = {};
+let editingRound = null;
+let liveId       = null;
+let previewId    = null;
+let allRoundsOn  = false;
+let allPosts     = {};
+let artistNo     = localStorage.getItem("boardArtistNo") || "";
+let pending      = null;
+let editingPost  = null;
+let editDraft    = null;
+let draftTimer   = null;
+let myPrompt     = null;   // the prompt this student is holding right now
+let myPromptFor  = null;   // which group it was drawn for
+
+const $ = (id) => document.getElementById(id);
+const range = (n) => Array.from({ length: n }, (_, i) => i);
+
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+function whoLabel(w) { return w ? "Artist " + w : "Anonymous"; }
+function safeUrl(u) {
+  const s = String(u || "").trim();
+  return /^https?:\/\//i.test(s) ? s : "";
+}
+function hostOf(u) {
+  try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return ""; }
+}
+function listOf(val, len, fill) {
+  const out = [];
+  for (let i = 0; i < len; i++) {
+    const v = val ? val[i] : undefined;
+    out.push(v == null ? fill : v);
+  }
+  return out;
+}
+function quotesOf(m) { return listOf(m && m.quotes, GROUPS, ""); }
+function saidByOf(m) { return listOf(m && m.saidBy, GROUPS, ""); }
+function promptsOf(m) {
+  const list = (m && m.prompts) || null;
+  if (!list) return BUILT_IN_PROMPTS.slice();
+  return String(list).split("\n").map((l) => l.trim()).filter(Boolean);
+}
+
+function chainFor(bag, g) {
+  const box = (bag && bag["g" + g]) || {};
+  return Object.keys(box)
+    .map((k) => Object.assign({ id: k }, box[k]))
+    .sort((a, b) => (a.at || 0) - (b.at || 0));
+}
+function countAll(bag) {
+  return range(GROUPS).reduce((n, g) => n + Object.keys((bag && bag["g" + g]) || {}).length, 0);
+}
+
+/* ── the artwork ────────────────────────────────────────────────── */
+function renderWork() {
+  const url = safeUrl(meta.url);
+  const img = safeUrl(meta.img);
+  $("workLabel").textContent = meta.label || "The artwork";
+  $("artTitle").textContent = meta.title || "Waiting on the artwork";
+  $("artBy").textContent = meta.by || "";
+  $("artLink").hidden = !url;
+  if (url) {
+    $("artLink").href = url;
+    $("artHost").textContent = hostOf(url);
+  }
+  $("artShot").classList.toggle("none", !img);
+  if (img) {
+    $("artImg").src = img;
+    $("artImg").alt = meta.title ? "Image of " + meta.title : "The artwork";
+  }
+  $("promptText").textContent = meta.title || "No artwork set yet";
+  $("roundRoundel").innerHTML = roundelText(meta.label);
+  document.title = (meta.label ? meta.label + " · " : "") + "Yes And";
+}
+function roundelText(label) {
+  if (!label) return "RD";
+  const n = String(label).match(/\d+/);
+  return n ? "RD<br>" + n[0] : String(label).slice(0, 6).toUpperCase();
+}
+
+/* ── the chains ─────────────────────────────────────────────────── */
+function boardsHTML(m, bag, live) {
+  const quotes = quotesOf(m);
+  const said = saidByOf(m);
+  return range(GROUPS)
+    .map((g) => {
+      const chain = chainFor(bag, g);
+      const full = CHAIN_CAP > 0 && chain.length >= CHAIN_CAP;
+      return `<article class="board g${g + 1}${live && hasDraft(g) ? " hasdraft" : ""}">
+        <div class="board-hd">
+          <span>Group ${g + 1}</span>
+          <span class="count">${chain.length} ${chain.length === 1 ? "link" : "links"}</span>
+        </div>
+        <div class="quote${quotes[g] ? "" : " unset"}">
+          <p>${quotes[g] ? "“" + esc(quotes[g]) + "”" : "No quote for this group yet"}</p>
+          ${said[g] ? `<span class="src">${esc(said[g])}</span>` : ""}
+        </div>
+        <div class="chain">${
+          chain.length
+            ? chain.map((r, n) => linkHTML(r, n, g, live)).join('<div class="linkarrow">&#8595;</div>')
+            : '<div class="chain-empty">Nobody has started the equation yet</div>'
+        }</div>
+        ${
+          live && quotes[g]
+            ? `<div class="board-foot"><button class="btn board-post" data-group="${g}" type="button"${
+                full ? " disabled" : ""
+              }>${
+                full
+                  ? "This chain is full"
+                  : chain.length
+                  ? hasDraft(g)
+                    ? "Finish your draft"
+                    : "Yes and on Group " + (g + 1)
+                  : "Start Group " + (g + 1)
+              }</button></div>`
+            : ""
+        }
+      </article>`;
+    })
+    .join("");
+}
+
+function linkHTML(r, n, g, live) {
+  const own = !!r.who && r.who === artistNo;
+  const canDrop = live && ((own && LET_STUDENTS_DELETE) || unlocked);
+  const tag = g + ":" + r.id;
+  const head = `<div class="link-hd">
+      <span class="link-no">${n + 1}</span>
+      <span class="link-who">${esc(whoLabel(r.who))}${own ? " (you)" : ""}${
+    r.editedAt ? ' <span class="edited">· edited</span>' : ""
+  }</span>
+    </div>`;
+  const badge = r.prompt
+    ? `<span class="link-prompt">Yes ${esc(r.prompt)}</span>`
+    : `<span class="link-prompt link-seed">The opening equation</span>`;
+  if (canDrop && editingPost === tag) {
+    return `<div class="link${own ? " self" : ""}">${head}${badge}
+      <div class="edit-box">
+        <textarea data-etext="${tag}">${esc(editDraft == null ? r.text : editDraft)}</textarea>
+        <div class="row">
+          <button class="btn btn-ink" data-esave="${tag}" type="button">Save</button>
+          <button class="btn btn-quiet" data-ecancel="1" type="button">Cancel</button>
+        </div>
+      </div></div>`;
+  }
+  return `<div class="link${own ? " self" : ""}${canDrop ? " hasdel" : ""}">${
+    canDrop
+      ? `<button class="fix" data-fix="${tag}" type="button" title="Edit" aria-label="Edit">&#9998;</button>
+         <button class="del" data-del="${tag}" type="button" title="Delete" aria-label="Delete">&times;</button>`
+      : ""
+  }${head}${badge}<div class="link-text">${esc(r.text)}</div></div>`;
+}
+
+function render() {
+  const live = !previewId;
+  $("boardGrid").innerHTML = boardsHTML(meta, posts, live);
+  const n = countAll(posts);
+  $("meterCount").textContent = n === 1 ? "1 link" : n + " links";
+  $("workCount").textContent = n + (n === 1 ? " link in the chains" : " links in the chains");
+  $("meterFill").style.width = Math.min(100, (n / (GROUPS * 5)) * 100) + "%";
+  $("meterLabel").textContent = n === 0 ? "The boards are open" : "The chains are growing";
+  $("wordInput").disabled = !!previewId || !db;
+  $("dropBtn").disabled = !!previewId || !db;
+  $("groupPick").disabled = !!previewId;
+  refreshTurn();
+}
+
+// The press bar tells you whether you are opening a chain or adding to one,
+// and shows the prompt you are holding.
+function refreshTurn() {
+  const g = +$("groupPick").value || 0;
+  const chain = chainFor(posts, g);
+  $("turnTag").textContent = chain.length ? "Link " + (chain.length + 1) : "Opening link";
+  if (!chain.length) {
+    myPrompt = null;
+    myPromptFor = g;
+    $("promptSlot").innerHTML = "<b>Your turn</b>Write the opening equation. No prompt on the first link.";
+    $("redraw").disabled = true;
+    $("wordInput").placeholder = "something from the artwork + the idea in the quote = a new artwork";
+    return;
+  }
+  $("redraw").disabled = false;
+  if (myPromptFor !== g || !myPrompt) drawPrompt(g);
+  $("promptSlot").innerHTML = "<b>Yes and, your prompt</b>" + esc(myPrompt || "");
+  $("wordInput").placeholder = "Rewrite the whole equation with your bit folded in";
+}
+
+// A board will not hand out a prompt it has already used until it has run
+// through the whole list.
+function drawPrompt(g) {
+  const all = promptsOf(meta);
+  if (!all.length) { myPrompt = null; return; }
+  const used = chainFor(posts, g).map((r) => r.prompt).filter(Boolean);
+  let pick = all.filter((p) => used.indexOf(p) < 0);
+  if (!pick.length) pick = all;
+  myPrompt = pick[Math.floor(Math.random() * pick.length)];
+  myPromptFor = g;
+}
+
+$("redraw").addEventListener("click", () => {
+  const g = +$("groupPick").value || 0;
+  drawPrompt(g);
+  $("promptSlot").innerHTML = "<b>Yes and, your prompt</b>" + esc(myPrompt || "");
+});
+
+$("groupPick").addEventListener("change", () => {
+  const g = +$("groupPick").value || 0;
+  myPrompt = null;
+  loadDraft(g, true);
+  refreshTurn();
+});
+
+$("boardGrid").addEventListener("click", (e) => {
+  if (handleEdits(e)) return;
+  const b = e.target.closest("[data-group]");
+  if (!b) return;
+  saveDraft();
+  myPrompt = null;
+  $("groupPick").value = b.dataset.group;
+  loadDraft(+b.dataset.group, true);
+  refreshTurn();
+  $("wordInput").focus();
+});
+
+/* ── editing and deleting ───────────────────────────────────────── */
+function handleEdits(e) {
+  const fix = e.target.closest("[data-fix]");
+  if (fix) {
+    editingPost = fix.dataset.fix;
+    editDraft = null;
+    render();
+    const box = document.querySelector('[data-etext="' + editingPost + '"]');
+    if (box) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); }
+    return true;
+  }
+  if (e.target.closest("[data-ecancel]")) {
+    editingPost = null;
+    editDraft = null;
+    render();
+    return true;
+  }
+  const keep = e.target.closest("[data-esave]");
+  if (keep) {
+    const box = document.querySelector('[data-etext="' + keep.dataset.esave + '"]');
+    const next = (box ? box.value : "").trim();
+    if (!next) return true;
+    const [g, key] = keep.dataset.esave.split(":");
+    editingPost = null;
+    editDraft = null;
+    db.ref(`${POSTS}/${sessionId}/g${g}/${key}`)
+      .update({ text: next.slice(0, 900), editedAt: Date.now() })
+      .then(() => { $("barState").textContent = "Link updated"; })
+      .catch(dbTrouble);
+    return true;
+  }
+  const kill = e.target.closest("[data-del]");
+  if (kill) {
+    if (previewId) return true;
+    const [g, key] = kill.dataset.del.split(":");
+    if (!confirm("Delete this link? Everything built on top of it stays, so the chain may stop making sense.")) return true;
+    db.ref(`${POSTS}/${sessionId}/g${g}/${key}`).remove()
+      .then(() => { $("barState").textContent = "Link deleted"; })
+      .catch(dbTrouble);
+    return true;
+  }
+  return false;
+}
+
+document.addEventListener("input", (e) => {
+  if (e.target.matches("[data-etext]")) editDraft = e.target.value;
+});
+
+/* ── drafts ─────────────────────────────────────────────────────── */
+function draftKey(g) { return ROOT + "-draft:" + sessionId + ":" + g; }
+function saveDraft() {
+  if (!sessionId || previewId) return;
+  const g = +$("groupPick").value || 0;
+  const t = $("wordInput").value;
+  try {
+    if (t.trim()) localStorage.setItem(draftKey(g), t);
+    else localStorage.removeItem(draftKey(g));
+  } catch (e) { return; }
+  const note = $("draftNote");
+  note.classList.add("on");
+  setTimeout(() => note.classList.remove("on"), 1200);
+}
+function hasDraft(g) {
+  if (!sessionId) return false;
+  try { return !!localStorage.getItem(draftKey(g)); } catch (e) { return false; }
+}
+function loadDraft(g, force) {
+  if (!sessionId) return;
+  if (!force && $("wordInput").value.trim()) return;
+  try { $("wordInput").value = localStorage.getItem(draftKey(g)) || ""; } catch (e) {}
+}
+function clearDraft(g) {
+  try { localStorage.removeItem(draftKey(g)); } catch (e) {}
+}
+$("wordInput").addEventListener("input", () => {
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(saveDraft, 250);
+});
+window.addEventListener("beforeunload", saveDraft);
+
+/* ── adding a link ──────────────────────────────────────────────── */
+function post() {
+  const text = $("wordInput").value.trim();
+  if (!text) {
+    $("barState").textContent = "Write the equation first";
+    $("wordInput").focus();
+    return;
+  }
+  if (previewId) {
+    $("barState").textContent = "This is an earlier round. Go back to live to add.";
+    return;
+  }
+  if (!db || !sessionId) {
+    $("barState").textContent = "Not connected yet. Give it a second and try again.";
+    return;
+  }
+  const g = +$("groupPick").value || 0;
+  if (!quotesOf(meta)[g]) {
+    $("barState").textContent = "Group " + (g + 1) + " has no quote yet";
+    return;
+  }
+  if (CHAIN_CAP > 0 && chainFor(posts, g).length >= CHAIN_CAP) {
+    $("barState").textContent = "That chain is full";
+    return;
+  }
+  if (ASK_FOR_NUMBER && !artistNo) {
+    pending = { text, g };
+    openNumGate();
+    return;
+  }
+  send(text, g);
+}
+
+function send(text, g) {
+  const chain = chainFor(posts, g);
+  const entry = { text: text.slice(0, 900), who: artistNo || null, at: Date.now() };
+  if (chain.length && myPrompt) entry.prompt = myPrompt;
+  db.ref(`${POSTS}/${sessionId}/g${g}`).push(entry).catch(dbTrouble);
+  $("wordInput").value = "";
+  clearDraft(g);
+  myPrompt = null;
+  $("barState").textContent = "Added to Group " + (g + 1) + ". Somebody else takes it from here.";
+  const stamp = $("saveStamp");
+  stamp.classList.add("on");
+  setTimeout(() => stamp.classList.remove("on"), 1400);
+}
+
+$("dropBtn").addEventListener("click", post);
+$("wordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") post(); });
+
+/* ── the artist number ──────────────────────────────────────────── */
+function showWho() {
+  $("whoTag").textContent = artistNo ? "Artist " + artistNo : "Artist ?";
+  $("whoTag").title = artistNo ? "Tap to change your artist number" : "Tap to set your artist number";
+}
+showWho();
+function openNumGate() {
+  $("numCode").value = artistNo;
+  $("numErr").classList.remove("on");
+  $("numGate").classList.add("open");
+  $("numCode").focus();
+}
+function takeNumber() {
+  let v = $("numCode").value.trim();
+  if (NUMBERS_ONLY) v = v.replace(/\D/g, "");
+  v = v.slice(0, 8);
+  if (!v) { $("numErr").classList.add("on"); return; }
+  artistNo = v;
+  localStorage.setItem("boardArtistNo", artistNo);
+  $("numGate").classList.remove("open");
+  showWho();
+  render();
+  if (pending) { send(pending.text, pending.g); pending = null; }
+}
+$("whoTag").addEventListener("click", openNumGate);
+$("numGo").addEventListener("click", takeNumber);
+$("numCode").addEventListener("keydown", (e) => { if (e.key === "Enter") takeNumber(); });
+$("numCancel").addEventListener("click", () => { pending = null; $("numGate").classList.remove("open"); });
+
+/* ── the desk ───────────────────────────────────────────────────── */
+$("edQuotes").innerHTML = range(GROUPS)
+  .map(
+    (i) => `<div class="qrow g${i + 1}">
+      <div class="qnum">G${i + 1}</div>
+      <div class="stack">
+        <textarea id="edQ${i}" placeholder="Quote for group ${i + 1}"></textarea>
+        <input type="text" id="edS${i}" placeholder="Who said it"/>
+      </div>
+    </div>`
+  )
+  .join("");
+
+function fillDesk() {
+  $("edRound").value = meta.label || "";
+  $("edTitle").value = meta.title || "";
+  $("edBy").value = meta.by || "";
+  $("edUrl").value = meta.url || "";
+  $("edImg").value = meta.img || "";
+  const qs = quotesOf(meta);
+  const ss = saidByOf(meta);
+  range(GROUPS).forEach((i) => {
+    $("edQ" + i).value = qs[i] || "";
+    $("edS" + i).value = ss[i] || "";
+  });
+  $("edPrompts").value = promptsOf(meta).join("\n");
+}
+
+$("saveWork").addEventListener("click", () => {
+  if (!db || !sessionId) return flag("Not connected to Firebase yet");
+  const url = $("edUrl").value.trim();
+  const img = $("edImg").value.trim();
+  if (url && !safeUrl(url)) return flag("The link needs to start with http or https");
+  if (img && !safeUrl(img)) return flag("The image address needs to start with http or https");
+  db.ref(`${INDEX}/${sessionId}`)
+    .update({
+      label: $("edRound").value.trim() || "This round",
+      title: $("edTitle").value.trim() || null,
+      by: $("edBy").value.trim() || null,
+      url: url || null,
+      img: img || null
+    })
+    .then(() => flag("Saved"))
+    .catch(() => flag("Firebase refused the write. Check the database rules."));
+});
+
+$("saveQuotes").addEventListener("click", () => {
+  if (!db || !sessionId) return flag("Not connected to Firebase yet");
+  const qs = range(GROUPS).map((i) => $("edQ" + i).value.trim());
+  const ss = range(GROUPS).map((i) => $("edS" + i).value.trim());
+  if (!qs.some(Boolean)) return flag("Write at least one quote first");
+  db.ref(`${INDEX}/${sessionId}`).update({ quotes: qs, saidBy: ss })
+    .then(() => flag("Quotes saved. Every board has them now."))
+    .catch(dbTrouble);
+});
+
+$("shuffleQuotes").addEventListener("click", () => {
+  const qs = quotesOf(meta);
+  const ss = saidByOf(meta);
+  const order = range(GROUPS);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  db.ref(`${INDEX}/${sessionId}`)
+    .update({ quotes: order.map((i) => qs[i]), saidBy: order.map((i) => ss[i]) })
+    .then(() => flag("Shuffled. Every group just got a different quote."))
+    .catch(dbTrouble);
+});
+
+$("savePrompts").addEventListener("click", () => {
+  const list = $("edPrompts").value.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!list.length) return flag("Write at least one prompt");
+  db.ref(`${INDEX}/${sessionId}`).update({ prompts: list.join("\n") })
+    .then(() => flag(list.length + " prompts saved"))
+    .catch(dbTrouble);
+});
+
+$("resetPrompts").addEventListener("click", () => {
+  db.ref(`${INDEX}/${sessionId}/prompts`).remove()
+    .then(() => flag("Back to the built in list"))
+    .catch(dbTrouble);
+});
+
+$("clearChains").addEventListener("click", () => {
+  if (previewId) return flag("Stop the preview first");
+  if (!confirm("Clear every chain in this round? The artwork and quotes stay.")) return;
+  db.ref(`${POSTS}/${sessionId}`).remove().then(() => flag("Chains cleared")).catch(dbTrouble);
+});
+
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  setTimeout(() => f.classList.remove("on"), 3200);
+}
+
+/* ── live round or private preview ──────────────────────────────── */
+function syncRound() {
+  const target = previewId || liveId;
+  if (target) attachRound(target);
+  const previewing = !!previewId;
+  $("sheetFrame").classList.toggle("previewing", previewing);
+  renderChips();
+  $("previewBar").classList.toggle("on", previewing);
+  $("barRound").textContent = previewing
+    ? "Preview"
+    : (roundIndex[liveId] && roundIndex[liveId].label) || "This round";
+  renderRounds();
+}
+function endPreview() { previewId = null; syncRound(); }
+$("backLive").addEventListener("click", endPreview);
+
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  $("barState").textContent = denied
+    ? "Firebase blocked that. The rules need a yesand branch."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  console.error("[yes and]", err);
+}
+
+function attachRound(id) {
+  if (id === sessionId) return;
+  if (postsRef) postsRef.off();
+  if (metaRef) metaRef.off();
+
+  sessionId = id;
+  posts = {};
+  meta = {};
+  editingPost = null;
+  myPrompt = null;
+  renderWork();
+  render();
+
+  metaRef = db.ref(`${INDEX}/${id}`);
+  metaRef.on("value", (s) => {
+    meta = s.val() || {};
+    if (!previewId) $("barRound").textContent = meta.label || "This round";
+    renderWork();
+    render();
+    if (unlocked) fillDesk();
+  }, dbTrouble);
+
+  postsRef = db.ref(`${POSTS}/${id}`);
+  postsRef.on("value", (s) => {
+    posts = s.val() || {};
+    render();
+    loadDraft(+$("groupPick").value || 0, false);
+  }, dbTrouble);
+}
+
+/* ── the gate ───────────────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) {
+    $("editor").classList.toggle("open");
+    $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    $("gate").classList.add("open");
+    $("gateCode").focus();
+  }
+});
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateGo").addEventListener("click", tryCode);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) {
+    $("gateErr").classList.add("on");
+    return;
+  }
+  unlocked = true;
+  $("gate").classList.remove("open");
+  $("gateErr").classList.remove("on");
+  $("gateCode").value = "";
+  $("editor").classList.add("open");
+  fillDesk();
+  render();
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+$("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
+
+/* ── rounds ─────────────────────────────────────────────────────── */
+function roundOrder() {
+  return Object.keys(roundIndex).sort((a, b) => (roundIndex[a].created || 0) - (roundIndex[b].created || 0));
+}
+function nextRoundNumber() {
+  let top = 0;
+  Object.values(roundIndex).forEach((d) => {
+    const n = String(d.label || "").match(/\d+/);
+    if (n && +n[0] > top) top = +n[0];
+  });
+  return top + 1;
+}
+
+function renderChips() {
+  const strip = $("archive");
+  if (!strip) return;
+  if (!SHOW_ARCHIVE_TO_STUDENTS) { strip.hidden = true; return; }
+  const ids = roundOrder();
+  strip.hidden = ids.length < 2;
+  $("roundChips").innerHTML = ids
+    .map((id) => {
+      const showing = (previewId || liveId) === id;
+      return `<button class="chip" data-round="${id}" type="button" aria-current="${showing}">${
+        esc(roundIndex[id].label) || "Untitled"
+      }${id === liveId ? ' <span class="dot">&#9679;</span>' : ""}</button>`;
+    })
+    .join("");
+}
+
+$("roundChips").addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-round]");
+  if (!chip) return;
+  previewId = chip.dataset.round === liveId ? null : chip.dataset.round;
+  syncRound();
+  $("sheetFrame").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+function renderRounds() {
+  const list = $("roundList");
+  if (!list) return;
+  const ids = roundOrder();
+  if (!ids.length) { list.innerHTML = '<div class="wk-empty">No rounds yet. Add one above.</div>'; return; }
+  list.innerHTML = ids
+    .map((id) => {
+      const d = roundIndex[id];
+      const here = id === sessionId;
+      if (id === editingRound) {
+        return `<div class="wk${here ? " live" : ""}">
+          <div class="wk-edit"><input type="text" data-field="label" value="${esc(d.label)}" placeholder="Round name"/></div>
+          <div class="wk-btns">
+            <button class="btn btn-ink" data-act="save" data-id="${id}" type="button">Save</button>
+            <button class="btn btn-quiet" data-act="cancel" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      const n = listOf(d.quotes, GROUPS, "").filter((q) => q && q.trim()).length;
+      return `<div class="wk${here ? " live" : ""}">
+        <div class="wk-main">
+          <div class="wk-name">${esc(d.label) || "Untitled"}${
+            id === liveId ? '<span class="wk-tag">On screen now</span>' : ""
+          }${id === previewId ? '<span class="wk-tag wk-tag-you">You are reading this</span>' : ""}</div>
+          <div class="wk-q">${esc(d.title || "No artwork set")} · ${n} of ${GROUPS} quotes</div>
+        </div>
+        <div class="wk-btns">
+          ${id === liveId ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
+          ${
+            id === previewId
+              ? `<button class="btn" data-act="unpreview" type="button">Stop preview</button>`
+              : `<button class="btn" data-act="preview" data-id="${id}" type="button">Preview</button>`
+          }
+          <button class="btn" data-act="edit" data-id="${id}" type="button">Rename</button>
+          <button class="btn btn-quiet" data-act="delete" data-id="${id}" type="button">Delete</button>
+        </div>
+      </div>`;
+    })
+    .join("");
+}
+
+$("roundList").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.act;
+  if (act === "open") {
+    db.ref(CURRENT).set(id).then(() => { previewId = null; flag("Everyone is on that round now"); }).catch(dbTrouble);
+  }
+  if (act === "preview") {
+    previewId = id === liveId ? null : id;
+    syncRound();
+    $("sheetFrame").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  if (act === "unpreview") endPreview();
+  if (act === "edit") { editingRound = id; renderRounds(); }
+  if (act === "cancel") { editingRound = null; renderRounds(); }
+  if (act === "save") {
+    const label = btn.closest(".wk").querySelector('[data-field="label"]').value.trim();
+    db.ref(`${INDEX}/${id}`).update({ label: label || "Untitled" })
+      .then(() => { editingRound = null; flag("Renamed"); })
+      .catch(dbTrouble);
+  }
+  if (act === "delete") {
+    if (id === liveId) return flag("Open a different round before deleting this one");
+    if (!confirm(`Delete ${roundIndex[id].label || "this round"} and every chain in it? This cannot be undone.`)) return;
+    db.ref(`${POSTS}/${id}`).remove()
+      .then(() => db.ref(`${INDEX}/${id}`).remove())
+      .then(() => flag("Round deleted"))
+      .catch(dbTrouble);
+  }
+});
+
+function makeRound(label, quotes, openIt) {
+  const id = "r" + Date.now() + Math.floor(Math.random() * 1000);
+  return db.ref(`${INDEX}/${id}`)
+    .set({
+      label: label || "Round " + nextRoundNumber(),
+      quotes: listOf(quotes, GROUPS, ""),
+      saidBy: listOf([], GROUPS, ""),
+      created: Date.now()
+    })
+    .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
+}
+
+function addFromForm(openIt) {
+  if (!db) return flag("Not connected to Firebase yet");
+  const lines = $("newQuotes").value.split("\n").map((l) => l.trim()).filter(Boolean).slice(0, GROUPS);
+  makeRound($("newLabel").value.trim(), lines, openIt)
+    .then(() => {
+      $("newQuotes").value = "";
+      $("newLabel").value = "";
+      flag(openIt ? "New round is open. Set the artwork above." : "Added to the list.");
+    })
+    .catch(dbTrouble);
+}
+$("addRound").addEventListener("click", () => addFromForm(false));
+$("startRound").addEventListener("click", () => addFromForm(true));
+
+/* ── every round, stacked ───────────────────────────────────────── */
+function loadAllPosts() {
+  if (!db) return Promise.reject(new Error("no db"));
+  return db.ref(POSTS).once("value").then((s) => { allPosts = s.val() || {}; return allPosts; });
+}
+function renderAllRounds() {
+  const ids = roundOrder();
+  $("allRounds").innerHTML = ids.length
+    ? ids
+        .map((id) => {
+          const m = roundIndex[id];
+          const bag = allPosts[id] || {};
+          const n = countAll(bag);
+          return `<div class="roundblock${id === liveId ? " liveone" : ""}">
+            <div class="roundblock-bar">
+              <span>${esc(m.label) || "Untitled"}${esc(m.title ? " · " + m.title : "")}${
+            id === liveId ? " &#9679; on screen now" : ""
+          }</span>
+              <span class="arm">${n} ${n === 1 ? "link" : "links"}</span>
+            </div>
+            <div class="boardgrid">${boardsHTML(m, bag, false)}</div>
+          </div>`;
+        })
+        .join("")
+    : '<div class="wk-empty">No rounds yet</div>';
+}
+
+$("allRoundsBtn").addEventListener("click", () => {
+  if (allRoundsOn) {
+    allRoundsOn = false;
+    $("allRounds").classList.remove("on");
+    $("allRoundsBtn").textContent = "Show every round at once";
+    return;
+  }
+  $("allRoundsBtn").textContent = "Loading";
+  loadAllPosts()
+    .then(() => {
+      allRoundsOn = true;
+      $("allRounds").classList.add("on");
+      $("allRoundsBtn").textContent = "Hide the other rounds";
+      renderAllRounds();
+      $("allRounds").scrollIntoView({ behavior: "smooth", block: "start" });
+    })
+    .catch((e) => {
+      $("allRoundsBtn").textContent = "Show every round at once";
+      dbTrouble(e);
+    });
+});
+
+$("downloadAll").addEventListener("click", () => {
+  const qs = quotesOf(meta);
+  const ss = saidByOf(meta);
+  const lines = [(meta.label || "Untitled").toUpperCase()];
+  if (meta.title) lines.push(meta.title + (meta.by ? ", " + meta.by : ""));
+  if (meta.url) lines.push(meta.url);
+  lines.push("");
+  range(GROUPS).forEach((g) => {
+    lines.push("GROUP " + (g + 1) + " — " + (qs[g] || "no quote") + (ss[g] ? " (" + ss[g] + ")" : ""));
+    chainFor(posts, g).forEach((r, n) => {
+      lines.push("   " + (n + 1) + ". " + whoLabel(r.who) + (r.prompt ? " [yes " + r.prompt + "]" : " [opening]"));
+      lines.push("      " + r.text);
+    });
+    lines.push("");
+  });
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "yes_and.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  flag("Text file downloaded");
+});
+
+/* ── watching the database ──────────────────────────────────────── */
+function watchCurrent() {
+  db.ref(CURRENT).on("value", (s) => {
+    const id = s.val();
+    if (id) { liveId = id; syncRound(); }
+    else {
+      const first = "r" + Date.now();
+      db.ref(CURRENT).transaction((held) => (held ? undefined : first));
+      db.ref(`${INDEX}/${first}`)
+        .set({
+          label: FIRST_LABEL,
+          quotes: listOf(FIRST_QUOTES, GROUPS, ""),
+          saidBy: listOf([], GROUPS, ""),
+          created: Date.now()
+        })
+        .catch(dbTrouble);
+    }
+  }, dbTrouble);
+
+  db.ref(INDEX).on("value", (s) => {
+    roundIndex = s.val() || {};
+    renderRounds();
+    renderChips();
+    if (allRoundsOn) renderAllRounds();
+  }, dbTrouble);
+
+  db.ref(".info/connected").on("value", (s) => {
+    if (previewId) return;
+    $("barState").textContent = s.val() === true ? "Live. Pick your group, then build." : "Reconnecting to the database";
+  });
+}
+
+/* ── loading Firebase ───────────────────────────────────────────── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) { /* next mirror */ }
+  }
+  return false;
+}
+
+function netTrouble(err) {
+  const code = (err && err.code) || "";
+  const off = /operation-not-allowed|configuration-not-found/.test(code);
+  const net = /network-request-failed|timeout/.test(code);
+  const onDisk = location.protocol === "file:";
+  let head = "Sign-in failed: " + ((err && err.message) || code);
+  let why = "";
+  if (off) {
+    head = "Anonymous sign-in is switched off";
+    why = "In the Firebase console open Authentication, then Sign-in method, and enable Anonymous.";
+  } else if (net && onDisk) {
+    head = "This page is running off the hard drive";
+    why = "Firebase sign-in will not run from a file:// address. Open the page from its web address instead, or serve the folder locally with python3 -m http.server 8000 and visit localhost:8000.";
+  } else if (net) {
+    head = "Cannot reach the sign-in server";
+    why = "Three things to check. A privacy extension or campus network blocking identitytoolkit.googleapis.com. Whether this address sits on the Authorized domains list in the Firebase console under Authentication, Settings. Or the wifi itself.";
+  }
+  $("netMsg").innerHTML = esc(head) + (why ? '<span class="why">' + esc(why) + "</span>" : "");
+  $("netBar").classList.add("on");
+  $("barState").textContent = head;
+  $("wordInput").disabled = true;
+  $("dropBtn").disabled = true;
+  console.error("[yes and]", err);
+}
+
+function signIn(tries) {
+  return firebase.auth().signInAnonymously().catch((err) => {
+    const net = /network-request-failed|timeout/.test((err && err.code) || "");
+    if (net && tries > 0) {
+      $("barState").textContent = "Connection dropped. Trying again.";
+      return new Promise((go) => setTimeout(go, 1500)).then(() => signIn(tries - 1));
+    }
+    throw err;
+  });
+}
+
+function startUp() {
+  $("netBar").classList.remove("on");
+  $("barState").textContent = "Connecting";
+  signIn(3)
+    .then(() => {
+      db = firebase.database();
+      watchCurrent();
+      $("barState").textContent = "Pick your group, then build";
+    })
+    .catch(netTrouble);
+}
+$("netRetry").addEventListener("click", startUp);
+
+// Draw the empty boards straight away so the page never sits blank.
+render();
+
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("promptText").textContent = "Cannot reach Firebase";
+    $("netMsg").innerHTML =
+      "The Firebase library did not load" +
+      '<span class="why">All three mirrors were blocked. Usually an ad blocker, or a network that filters gstatic.com, jsdelivr and unpkg.</span>';
+    $("netBar").classList.add("on");
+    $("barState").textContent = "Offline. Check the network or an ad blocker.";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  startUp();
+});
+
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
