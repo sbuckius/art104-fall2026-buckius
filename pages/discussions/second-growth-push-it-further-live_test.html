@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Second Growth — push it further</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDEFE0;
+  --ink:#1C3229;
+  --green:#14A05A;
+  --marigold:#F2B134;
+  --pink:#FF5C8A;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Newsreader",Georgia,"Times New Roman",serif;
+  font-size:18px;line-height:1.55;
+}
+.wrap{max-width:760px;margin:0 auto;padding:24px 20px 80px}
+
+/* ---------- masthead ---------- */
+.masthead{
+  position:relative;border:3px solid var(--ink);
+  background:
+    radial-gradient(circle at 2px 2px, rgba(20,160,90,.45) 1.6px, transparent 1.7px) 0 0/9px 9px,
+    var(--paper);
+  padding:26px 22px 20px;margin-bottom:8px;overflow:hidden;
+}
+.masthead h1{
+  font-family:"Archivo Black",Impact,"Haettenschweiler",sans-serif;
+  font-weight:400;font-size:clamp(2.6rem,10.5vw,4.6rem);
+  line-height:.86;letter-spacing:-.02em;margin:0;text-transform:uppercase;
+  color:var(--ink);text-shadow:3px 3px 0 var(--marigold);
+}
+.masthead .strap{
+  margin:14px 0 0;font-size:.95rem;line-height:1.35;max-width:44ch;
+  background:var(--paper);display:inline-block;padding:2px 0;
+}
+.stamp{
+  position:absolute;right:-6px;bottom:8px;transform:rotate(-7deg);
+  border:2.5px solid var(--pink);color:var(--pink);
+  font-family:"Archivo Black",Impact,sans-serif;
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:6px 10px;background:var(--paper);line-height:1.1;text-align:center;
+}
+.stamp span{display:block;font-size:.62rem;letter-spacing:.14em}
+
+/* ---------- group bar ---------- */
+.groupbar{
+  border:2.5px solid var(--ink);border-top:0;
+  padding:12px 16px 14px;margin-bottom:22px;
+  display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;
+}
+.groupbar .lab{font-size:.8rem;font-weight:600}
+.gbtns{display:flex;flex-wrap:wrap;gap:6px}
+.gbtn{
+  font-family:"Archivo Black",Impact,sans-serif;font-size:.95rem;
+  width:36px;height:34px;padding:0;box-shadow:2px 2px 0 var(--ink);
+}
+.gbtn[aria-pressed=true]{background:var(--green);color:var(--paper)}
+.session{width:120px}
+.status{
+  margin-left:auto;font-size:.8rem;display:flex;align-items:center;gap:7px;
+}
+.dot{width:10px;height:10px;border-radius:50%;background:#9aa;flex:0 0 auto}
+.dot.live{background:var(--green)}
+.dot.local{background:var(--marigold)}
+.dot.err{background:var(--pink)}
+
+/* ---------- controls ---------- */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px}
+button{
+  font-family:"Newsreader",Georgia,serif;font-size:.92rem;font-weight:600;
+  background:var(--paper);color:var(--ink);border:2px solid var(--ink);
+  padding:7px 13px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:none;
+}
+button:hover{background:var(--marigold)}
+button:active{transform:translate(3px,3px);box-shadow:none}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+button.primary{background:var(--green);color:var(--paper)}
+button.primary:hover{background:var(--ink)}
+
+/* ---------- fields ---------- */
+.groupbox{border:2.5px solid var(--ink);padding:16px 18px;margin-bottom:34px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.82rem;font-weight:600;margin-bottom:3px}
+input[type=text]{
+  width:100%;font-family:inherit;font-size:1rem;color:var(--ink);
+  background:transparent;border:0;border-bottom:2px dotted var(--ink);padding:4px 2px;
+}
+.heard{margin-bottom:34px}
+.heard h2,.section h2{
+  font-family:"Archivo Black",Impact,sans-serif;font-weight:400;
+  font-size:1.35rem;line-height:1.1;margin:0 0 4px;
+}
+.heard .note{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.heard .bullet{flex:0 0 auto;width:11px;height:11px;background:var(--pink);margin-top:9px}
+.heard input{border-bottom:1px dotted var(--ink)}
+
+.section{
+  display:grid;grid-template-columns:56px 1fr;gap:0 16px;
+  padding:22px 0 26px;border-top:2px solid var(--ink);
+}
+.section:first-of-type{border-top-width:5px}
+.num{
+  font-family:"Archivo Black",Impact,sans-serif;font-size:1.5rem;line-height:1;
+  color:var(--paper);background:var(--green);width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;margin-top:2px;
+}
+.section.alt .num{background:var(--pink)}
+.section .head{grid-column:2}
+.section .ask{margin:2px 0 12px;font-size:1rem;max-width:62ch;font-style:italic}
+.section .body{grid-column:2}
+@media(max-width:560px){
+  .section{grid-template-columns:1fr;gap:10px}
+  .section .head,.section .body{grid-column:1}
+}
+textarea{
+  width:100%;min-height:104px;font-family:inherit;font-size:1.02rem;line-height:1.5;
+  color:var(--ink);
+  background:repeating-linear-gradient(to bottom,transparent 0 30px,rgba(28,50,41,.18) 30px 31px);
+  border:2px solid var(--ink);padding:5px 10px 8px;resize:none;overflow:hidden;
+}
+.hint{font-size:.8rem;margin-top:5px;opacity:.75}
+.footer{
+  margin-top:36px;border-top:5px solid var(--ink);padding-top:14px;font-size:.85rem;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.filled{border:2px solid var(--ink);padding:6px 10px;min-height:34px;white-space:pre-wrap;font-size:1rem}
+.filled.line{border:0;border-bottom:2px dotted var(--ink);padding:4px 2px;min-height:0}
+
+@media print{
+  @page{margin:14mm}
+  body{font-size:11.5pt;background:#fff}
+  .wrap{padding:0;max-width:none}
+  .noprint{display:none !important}
+  button{display:none}
+  .section{break-inside:avoid;page-break-inside:avoid}
+  textarea{background:#fff;min-height:90px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <h1>Second<br>Growth</h1>
+  <p class="strap">Your zine is out. Now pick one part of it and take it further. Second growth is what comes back after the first cut, and it is usually denser than what was there before.</p>
+  <div class="stamp">Push it further<span>group sheet</span></div>
+</header>
+
+<div class="groupbar noprint">
+  <span class="lab">Group</span>
+  <div class="gbtns" id="gbtns"></div>
+  <span class="lab">Session</span>
+  <input type="text" id="session" class="session" value="fall2026">
+  <span class="status"><span class="dot" id="dot"></span><span id="statusText">connecting</span></span>
+</div>
+
+<div class="toolbar noprint">
+  <button class="primary" onclick="saveHTML()">Save filled sheet</button>
+  <button onclick="window.print()">Print or PDF</button>
+  <button onclick="saveTXT()">Download .txt</button>
+  <button onclick="saveCSV()">Download .csv</button>
+  <button onclick="allGroupsCSV()" title="Instructor: pulls every group in this session">All groups .csv</button>
+</div>
+
+<section class="groupbox">
+  <div class="grid">
+    <div><label for="f-group">Group name</label><input type="text" id="f-group" data-f="group" data-k="Group name"></div>
+    <div><label for="f-date">Date</label><input type="text" id="f-date" data-f="date" data-k="Date"></div>
+    <div><label for="f-members">Who is here</label><input type="text" id="f-members" data-f="members" data-k="Members"></div>
+    <div><label for="f-made">What you made for the zine</label><input type="text" id="f-made" data-f="made" data-k="What we made"></div>
+  </div>
+</section>
+
+<section class="heard">
+  <h2>What we heard</h2>
+  <p class="ask" style="margin:2px 0 12px;font-style:italic">Before you choose, write down the reactions from the share-out. Other groups, the instructor, anything that landed or stung.</p>
+  <div id="notes"></div>
+  <button class="noprint" onclick="addNote()">Add another</button>
+</section>
+
+<section class="section">
+  <div class="num">1</div>
+  <div class="head"><h2>Pick one thing</h2></div>
+  <div class="body">
+    <p class="ask">What one part of the project do you want to push further? It can come from the notes above, or from something you already knew was unfinished.</p>
+    <textarea data-f="q1" data-k="1. Pick one thing"></textarea>
+    <p class="hint">One thing. Not three. Name it specifically enough that someone else could point at it.</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="num">2</div>
+  <div class="head"><h2>Why this one</h2></div>
+  <div class="body">
+    <p class="ask">What is thin, unresolved, or more interesting than you first thought it was?</p>
+    <textarea data-f="q2" data-k="2. Why this one"></textarea>
+  </div>
+</section>
+
+<section class="section">
+  <div class="num">3</div>
+  <div class="head"><h2>If you had more time</h2></div>
+  <div class="body">
+    <p class="ask">Describe the version with no limits. More pages, more sound, more research, a whole second issue, a physical object, a working site.</p>
+    <textarea data-f="q3" data-k="3. If you had more time"></textarea>
+    <p class="hint">Go past what you think is doable. You will cut it back in the next box.</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="num">4</div>
+  <div class="head"><h2>The next move</h2></div>
+  <div class="body">
+    <p class="ask">Now the small version. What is the one addition you could actually finish and drop into the zine this week?</p>
+    <textarea data-f="q4" data-k="4. The next move"></textarea>
+    <p class="hint">Write it as a file: one page, one recording, one image, one link.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="num">5</div>
+  <div class="head"><h2>What it needs</h2></div>
+  <div class="body">
+    <p class="ask">Tools, files, permissions, people, minutes. Who does which part, and by when.</p>
+    <textarea data-f="q5" data-k="5. What it needs"></textarea>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="num">6</div>
+  <div class="head"><h2>How you will know it worked</h2></div>
+  <div class="body">
+    <p class="ask">What would make you say the zine got better rather than just bigger? Finish the sentence: this worked if a reader…</p>
+    <textarea data-f="q6" data-k="6. How we will know"></textarea>
+  </div>
+</section>
+
+<div class="footer">
+  <span>Second Growth — push it further</span>
+  <span id="footNote">Your answers save as you type.</span>
+</div>
+
+</div>
+
+<!-- ============================================================
+     FIREBASE CONFIG — paste the same config object you use for
+     your other ART 104 tools. Data is written to:
+       secondgrowth / <session> / <group>
+     Add "secondgrowth" to your database rules alongside
+     collage, boards, openboards, crits, words.
+     ============================================================ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+const BRANCH = "secondgrowth";
+const GROUP_COUNT = 8;
+</script>
+
+<script>
+/* ---------- state ---------- */
+let group = 1, session = "fall2026";
+let db = null, ref = null, live = false;
+let heardCount = 3, applying = false, lastWrite = 0, saveTimer = null;
+
+/* ---------- heard rows ---------- */
+function buildNotes(n){
+  const box = document.getElementById('notes');
+  box.innerHTML = '';
+  for(let i=0;i<n;i++){
+    const row = document.createElement('div');
+    row.className = 'note';
+    row.innerHTML = '<span class="bullet"></span><input type="text" data-f="heard'+i+'" data-k="Heard '+(i+1)+'">';
+    box.appendChild(row);
+  }
+  wireInputs();
+}
+function addNote(){
+  heardCount++;
+  const vals = collect();
+  buildNotes(heardCount);
+  apply(vals, true);
+  document.querySelector('[data-f="heard'+(heardCount-1)+'"]').focus();
+  queueSave();
+}
+
+/* ---------- fields ---------- */
+function fields(){ return Array.from(document.querySelectorAll('[data-f]')); }
+function collect(){
+  const o = {};
+  fields().forEach(el => { o[el.dataset.f] = el.value || ''; });
+  return o;
+}
+function apply(vals, force){
+  applying = true;
+  fields().forEach(el => {
+    if(!force && document.activeElement === el) return;
+    const v = vals[el.dataset.f];
+    if(typeof v === 'string' && el.value !== v){
+      el.value = v;
+      if(el.tagName === 'TEXTAREA') grow(el);
+    }
+  });
+  applying = false;
+}
+function grow(el){ el.style.height='auto'; el.style.height=Math.max(104, el.scrollHeight+4)+'px'; }
+
+function wireInputs(){
+  fields().forEach(el => {
+    if(el.dataset.wired) return;
+    el.dataset.wired = '1';
+    el.addEventListener('input', () => {
+      if(el.tagName === 'TEXTAREA') grow(el);
+      if(!applying) queueSave();
+    });
+    if(el.tagName === 'TEXTAREA') grow(el);
+  });
+}
+
+/* ---------- saving ---------- */
+function lsKey(){ return 'secondgrowth:'+session+':'+group; }
+function saveLocal(payload){
+  try{ localStorage.setItem(lsKey(), JSON.stringify(payload)); }catch(e){}
+}
+function loadLocal(){
+  try{ const s = localStorage.getItem(lsKey()); return s ? JSON.parse(s) : null; }catch(e){ return null; }
+}
+function queueSave(){
+  setStatus('saving', 'saving');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(save, 500);
+}
+function save(){
+  const payload = { fields: collect(), heardCount: heardCount, updated: Date.now() };
+  lastWrite = payload.updated;
+  saveLocal(payload);
+  if(live && ref){
+    ref.set(payload)
+      .then(() => setStatus('live', 'saved for the whole group'))
+      .catch(() => setStatus('err', 'could not reach the server, saved on this device'));
+  } else {
+    setStatus('local', 'saved on this device only');
+  }
+}
+function setStatus(kind, text){
+  const dot = document.getElementById('dot');
+  dot.className = 'dot ' + (kind === 'saving' ? '' : kind);
+  document.getElementById('statusText').textContent = text;
+}
+
+/* ---------- group switching ---------- */
+function buildGroupButtons(){
+  const box = document.getElementById('gbtns');
+  for(let i=1;i<=GROUP_COUNT;i++){
+    const b = document.createElement('button');
+    b.className = 'gbtn'; b.textContent = i;
+    b.setAttribute('aria-pressed', i === group);
+    b.onclick = () => setGroup(i);
+    box.appendChild(b);
+  }
+}
+function markGroupButtons(){
+  document.querySelectorAll('.gbtn').forEach((b,i) => b.setAttribute('aria-pressed', (i+1) === group));
+}
+function setGroup(n){
+  clearTimeout(saveTimer);
+  save();
+  group = n;
+  markGroupButtons();
+  history.replaceState(null,'','?group='+group+'&session='+encodeURIComponent(session));
+  attach();
+}
+
+/* ---------- firebase ---------- */
+function attach(){
+  const localCopy = loadLocal();
+  if(localCopy){
+    heardCount = localCopy.heardCount || 3;
+    buildNotes(heardCount);
+    apply(localCopy.fields, true);
+    setStatus('local', 'saved on this device only');
+  } else {
+    heardCount = 3;
+    buildNotes(heardCount);
+    apply({}, true);
+    fields().forEach(el => el.value = '');
+  }
+
+  if(!db) return;
+  if(ref) ref.off();
+  ref = db.ref(BRANCH + '/' + session + '/' + group);
+  ref.on('value', snap => {
+    const v = snap.val();
+    if(!v || !v.fields) return;
+    if(v.updated === lastWrite) return;
+    if(localCopy && localCopy.updated > (v.updated || 0)) return;
+    if((v.heardCount || 3) !== heardCount){
+      const cur = collect();
+      heardCount = v.heardCount || 3;
+      buildNotes(heardCount);
+      apply(cur, true);
+    }
+    apply(v.fields, false);
+    saveLocal(v);
+    setStatus('live', 'saved for the whole group');
+  }, err => { console.error('Second Growth database error:', err); setStatus('err', 'database says: ' + (err.code || err.message)); });
+}
+
+function start(){
+  const p = new URLSearchParams(location.search);
+  group = parseInt(p.get('group')) || 1;
+  session = p.get('session') || 'fall2026';
+  document.getElementById('session').value = session;
+  buildGroupButtons();
+  buildNotes(heardCount);
+
+  document.getElementById('session').addEventListener('change', e => {
+    session = (e.target.value || 'fall2026').trim().replace(/[.#$\[\]\/]/g,'-');
+    e.target.value = session;
+    history.replaceState(null,'','?group='+group+'&session='+encodeURIComponent(session));
+    attach();
+  });
+
+  if(typeof firebase === 'undefined' || firebaseConfig.apiKey.indexOf('PASTE') === 0){
+    setStatus('local', 'saving on this device only');
+    document.getElementById('footNote').textContent =
+      'Saving on this device. Download your sheet before you close the tab.';
+    attach();
+    return;
+  }
+  try{
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    firebase.auth().signInAnonymously()
+      .then(() => { live = true; setStatus('live', 'connected'); attach(); })
+      .catch(e => { console.error('Second Growth sign-in failed:', e); setStatus('err', 'sign-in failed: ' + (e.code || e.message)); attach(); });
+  }catch(e){
+    setStatus('err', 'saving on this device'); attach();
+  }
+}
+window.addEventListener('beforeunload', () => { clearTimeout(saveTimer); save(); });
+
+/* ---------- exports ---------- */
+function pairs(){
+  return Array.from(document.querySelectorAll('[data-k]')).map(el => [el.dataset.k, (el.value||'').trim()]);
+}
+function slug(){
+  const g = (document.getElementById('f-group').value || ('group-'+group)).trim().toLowerCase();
+  return 'second-growth-' + (g.replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'group');
+}
+function download(name, text, type){
+  const b = new Blob([text], {type:type+';charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+}
+function saveTXT(){
+  let t = 'SECOND GROWTH — push it further\n\n';
+  pairs().forEach(([k,v]) => { t += k + '\n' + (v || '(blank)') + '\n\n'; });
+  download(slug()+'.txt', t, 'text/plain');
+}
+const esc = s => '"' + String(s == null ? '' : s).replace(/"/g,'""') + '"';
+function saveCSV(){
+  const p = pairs();
+  download(slug()+'.csv', p.map(x=>esc(x[0])).join(',') + '\n' + p.map(x=>esc(x[1])).join(',') + '\n', 'text/csv');
+}
+function allGroupsCSV(){
+  if(!live || !db){ alert('Connect to the database first. This button pulls every group in the session.'); return; }
+  db.ref(BRANCH + '/' + session).once('value').then(snap => {
+    const all = snap.val() || {};
+    const keys = ['group','members','date','made','q1','q2','q3','q4','q5','q6'];
+    const heardKeys = [];
+    Object.values(all).forEach(g => Object.keys(g.fields||{}).forEach(k => {
+      if(k.indexOf('heard') === 0 && heardKeys.indexOf(k) < 0) heardKeys.push(k);
+    }));
+    heardKeys.sort();
+    const cols = ['Board'].concat(keys, heardKeys);
+    const head = ['Board','Group name','Members','Date','What we made',
+      '1. Pick one thing','2. Why this one','3. If you had more time','4. The next move',
+      '5. What it needs','6. How we will know'].concat(heardKeys.map((k,i)=>'Heard '+(i+1)));
+    let csv = head.map(esc).join(',') + '\n';
+    Object.keys(all).sort((a,b)=>a-b).forEach(gk => {
+      const f = all[gk].fields || {};
+      csv += [esc(gk)].concat(cols.slice(1).map(c => esc(f[c]))).join(',') + '\n';
+    });
+    download('second-growth-' + session + '-all-groups.csv', csv, 'text/csv');
+  }).catch(() => alert('Could not read the session. Check your database rules.'));
+}
+function saveHTML(){
+  const css = document.querySelector('style').textContent;
+  const clone = document.querySelector('.wrap').cloneNode(true);
+  clone.querySelectorAll('.noprint').forEach(n => n.remove());
+  clone.querySelectorAll('input,textarea').forEach(el => {
+    const d = document.createElement('div');
+    d.className = 'filled' + (el.tagName === 'INPUT' ? ' line' : '');
+    d.textContent = el.value || '';
+    el.replaceWith(d);
+  });
+  const doc = '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<title>Second Growth — ' + ((document.getElementById('f-group').value) || ('group ' + group)) + '</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">' +
+    '<style>' + css + '</style></head><body>' + clone.outerHTML + '</body></html>';
+  download(slug()+'.html', doc, 'text/html');
+}
+
+start();
+</script>
+</body>
+</html>
