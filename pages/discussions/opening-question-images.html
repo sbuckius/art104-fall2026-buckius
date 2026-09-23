@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Collaborative Nature Collage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<style>
+:root{
+  /* Same palette as the word collage family, rotated once more.
+     Grass green carries the big surfaces, so the lettering on them is jet.
+     Mint is the mark that sits on the green, dark pink is every hard drop
+     shadow, bright pink is the accent, and teal carries the small labels. */
+  --cobalt:#8ba838;          /* grass green, the main surface color */
+  --on-cobalt:#14202a;       /* lettering on the green surfaces */
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;          /* mint, the mark on the green */
+  --chrome-deep:#a01e5c;     /* dark pink, every drop shadow */
+  --pulpred:#d63d84;         /* bright pink, the accent */
+  --mars:#2f7d7d;            /* teal, the small caps labels */
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#7db8c4;            /* sea glass, the quiet rules */
+  --glass:rgba(244,248,242,.92);
+  --cream:#f4f8f2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--jet);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    linear-gradient(160deg,rgba(125,184,196,.16) 0%,rgba(139,168,56,.14) 50%,rgba(160,30,92,.10) 100%),
+    var(--cream);
+}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1100px;margin:0 auto;padding:14px 18px 0}
+.cover-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--on-cobalt);padding-bottom:9px}
+.stripes{height:22px;border:3px solid var(--jet);background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px)}
+h1.logo .the{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(11px,2vw,20px);letter-spacing:8px;color:var(--on-cobalt);margin-bottom:2px;text-shadow:none}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,9.5vw,96px);
+  line-height:.86;letter-spacing:-.02em;text-transform:uppercase;color:#fff;text-align:center;margin:10px 0 4px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--chrome-deep), 10px 11px 0 var(--jet);
+}
+.cover-band{display:flex;align-items:center;gap:14px;border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);padding:9px 0;margin-top:12px}
+.roundel{width:56px;height:56px;flex:none;border-radius:50%;background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;text-transform:uppercase;padding:4px}
+.cover-tag{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;color:var(--on-cobalt);line-height:1.2;flex:1;min-width:0}
+.cover-kicker{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--on-cobalt);margin-bottom:4px;display:block;opacity:.8}
+.cover-foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:9px 0 12px;font-family:'Bitter',serif;font-size:12.5px;color:var(--on-cobalt);line-height:1.5}
+.cover-foot b{font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:11px;background:var(--chrome);border:2px solid var(--jet);padding:0 5px;margin-right:4px}
+
+/* ══ the sheet ══════════════════════════════════════════════════════ */
+main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--chrome-deep)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-bar{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--on-cobalt);background:var(--cobalt);border-bottom:3px solid var(--jet);padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#canvasWrap{position:relative;width:100%;height:min(66vh,660px);min-height:340px;overflow:hidden;cursor:pointer;background:#fbfdf9}
+#canvasWrap canvas{display:block}
+.emptynote{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;padding:24px;text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--rule)}
+.emptynote.off{display:none}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#press .pressmsg{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--on-cobalt);flex:1;min-width:150px}
+#capInput{flex:2;min-width:220px;border:3px solid var(--jet);background:#fff;font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:10px 12px;outline:none}
+#capInput:focus{border-color:var(--pulpred);box-shadow:0 0 0 3px var(--chrome)}
+#fileInput{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.press-btns{display:flex;gap:9px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .btn{padding:10px 16px;font-size:11px}
+
+/* ══ save roundel ═══════════════════════════════════════════════════ */
+#saveStamp{position:fixed;right:18px;bottom:100px;z-index:300;width:74px;height:74px;border-radius:50%;background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);display:grid;place-items:center;text-align:center;padding:6px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1.15;opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ overlays ═══════════════════════════════════════════════════════ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.84);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--mars);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--chrome-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+.lb{background:#fff;border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:12px;max-width:min(920px,100%);max-height:100%;display:flex;flex-direction:column;gap:10px}
+.lb img{display:block;max-width:100%;max-height:70vh;object-fit:contain;margin:0 auto;border:3px solid var(--jet)}
+.lb-cap{font-family:'Bitter',serif;font-size:15px;line-height:1.5;color:var(--jet);min-height:1em}
+.lb-cap:empty{display:none}
+.lb-actions{display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap}
+.lb-actions .btn{padding:8px 14px;font-size:11px}
+
+/* ══ instructor desk ════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--mars)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--chrome-deep)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--cobalt)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:14px 0 6px}
+.editor input[type=text],.editor textarea{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);padding:10px 12px;outline:none}
+.editor textarea{resize:vertical;min-height:72px}
+.editor input:focus,.editor textarea:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.archive{margin-top:22px;border:3px solid var(--jet);background:var(--glass);padding:14px 16px 16px;box-shadow:5px 5px 0 var(--chrome-deep)}
+.archive-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mars);border-bottom:2px solid var(--jet);padding-bottom:8px;margin-bottom:11px}
+.archive-hd .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 13px;cursor:pointer;border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.chip[aria-current="true"]{background:var(--cobalt);color:var(--on-cobalt);box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip .dot{color:var(--chrome-deep)}
+#publicList{margin-top:12px}
+.previewbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.previewbar.on{display:flex}
+.previewbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.sheet-frame.previewing{box-shadow:7px 7px 0 var(--rule)}
+.wk-tag-you{background:var(--chrome-deep)!important;color:#fff}
+
+.photos{max-height:420px;overflow-y:auto;border:3px solid var(--rule);background:#fff;padding:10px}
+.ansgroup{border-bottom:3px solid var(--pulp-deep);padding-bottom:12px;margin-bottom:12px}
+.ansgroup:last-child{border-bottom:none;margin-bottom:0}
+.ansgroup-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ansgroup-hd span{color:var(--rule);font-weight:600}
+.ansgroup-q{font-family:'Bitter',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:#334051;margin:3px 0 8px}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px}
+.thumb{border:3px solid var(--jet);background:#fff;padding:5px;box-shadow:3px 3px 0 var(--chrome-deep);display:flex;flex-direction:column;gap:5px}
+.thumb:nth-child(3n+2){box-shadow:3px 3px 0 var(--mars)}
+.thumb:nth-child(3n){box-shadow:3px 3px 0 var(--cobalt)}
+.thumb button.pic{border:0;padding:0;background:none;cursor:zoom-in;display:block}
+.thumb button.pic:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.thumb img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.thumb-cap{font-family:'Bitter',serif;font-size:12px;line-height:1.4;color:var(--jet);word-break:break-word}
+.thumb .btn{padding:5px 8px;font-size:9px;letter-spacing:1px;box-shadow:2px 2px 0 var(--jet)}
+.ans-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rule);text-align:center;padding:12px}
+.weeklist{display:flex;flex-direction:column;gap:9px}
+.wk{border:3px solid var(--jet);background:#fff;padding:11px 13px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.wk.live{background:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
+.wk-main{flex:1;min-width:200px}
+.wk-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mars);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wk.live .wk-name{color:var(--jet)}
+.wk-tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;border:2px solid var(--jet);background:var(--pulpred);color:#fff;padding:2px 7px}
+.wk-q{font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:#334051;margin-top:4px}
+.wk-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.wk-btns .btn{padding:7px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+.wk-edit{flex:1;min-width:220px;display:flex;flex-direction:column;gap:7px}
+.wk-edit input,.wk-edit textarea{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:13px;padding:8px 10px;outline:none;color:var(--jet)}
+.wk-edit textarea{resize:vertical;min-height:60px}
+.wk-edit input:focus,.wk-edit textarea:focus{border-color:var(--pulpred)}
+.wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rule);border:3px dashed var(--rule);padding:16px;text-align:center}
+.ed-flag{border:3px solid var(--pulpred);color:var(--chrome-deep);background:#fff;padding:11px 14px;margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--cobalt);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 0}
+  main{padding:18px 14px 200px}
+  .cover-band{flex-wrap:wrap}
+  #canvasWrap{height:min(58vh,480px)}
+  #saveStamp{bottom:180px;right:10px;width:62px;height:62px;font-size:9px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo"><span class="the">Collaborative</span>Nature Collage</h1>
+    <div class="cover-band">
+      <div class="roundel" id="weekRoundel">WK<br>1</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">Opening question</span>
+        <span id="promptText">Loading the week's question</span>
+      </div>
+    </div>
+    <div class="cover-foot">
+      <span><b>How it works</b> Add a photo from your week. Say where you found it if you like.</span>
+      <span><b>Live</b> Every photo takes its own spot, and the collage makes room as it grows.</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">The field is open</span><span class="pct" id="meterCount">0 photos</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <div class="sheet-frame" id="sheetFrame">
+    <div class="previewbar" id="previewBar">
+      <span>You are looking at a past week. The class collage has not moved.</span>
+      <button class="btn btn-quiet" id="backLive" type="button">Back to live</button>
+    </div>
+    <div class="sheet-bar">
+      <span id="barWeek">Week 1</span>
+      <span id="barState">Connecting</span>
+    </div>
+    <div id="canvasWrap">
+      <div class="emptynote" id="emptyNote">No photos yet. Tap here to add the first one.</div>
+    </div>
+  </div>
+
+  <section class="archive" id="archive" hidden>
+    <div class="archive-hd">
+      <span>Past weeks</span>
+      <button class="btn btn-quiet" id="publicListBtn" type="button">See every photo</button>
+    </div>
+    <div class="chips" id="weekChips"></div>
+    <div class="photos" id="publicList" hidden></div>
+  </section>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
+
+    <div class="groupmark"><span>This week's question</span></div>
+    <label class="bl" for="edLabel">Week name</label>
+    <input type="text" id="edLabel" placeholder="Week 3"/>
+    <label class="bl" for="edPrompt">Question</label>
+    <textarea id="edPrompt" placeholder="Share a photo of something in nature you encountered this past week."></textarea>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="savePrompt" type="button">Save question</button>
+      <button class="btn" id="clearWeek" type="button">Clear this week's photos</button>
+    </div>
+
+    <div class="groupmark"><span>Add a week</span></div>
+    <p class="ed-note">Every week gets its own blank collage and keeps its own photos. Add them one at a time, or plan the whole run below.</p>
+    <label class="bl" for="newLabel">Week name</label>
+    <input type="text" id="newLabel" placeholder="Week 4"/>
+    <label class="bl" for="newPrompt">Question</label>
+    <textarea id="newPrompt" placeholder="Photograph something growing where it was not planted."></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addWeek" type="button">Add to the list</button>
+      <button class="btn btn-ink" id="startWeek" type="button">Add and open now</button>
+    </div>
+
+    <div class="groupmark"><span>Plan several at once</span></div>
+    <p class="ed-note">One question per line. Each line becomes its own week, numbered on from the highest week already on the list. Nothing opens until you choose it.</p>
+    <textarea id="bulkPrompts" rows="4" placeholder="Photograph something growing where it was not planted.&#10;Find a trace of an animal you never actually saw.&#10;Show us the weather this week."></textarea>
+    <div class="ed-actions">
+      <button class="btn" id="addBulk" type="button">Add every line</button>
+    </div>
+
+    <div class="groupmark"><span>All weeks</span></div>
+    <p class="ed-note">Open puts the whole room on that collage. Rename and Delete only touch that one week.</p>
+    <div class="weeklist" id="weekList"></div>
+
+    <div class="groupmark"><span>The photos</span></div>
+    <p class="ed-note">Every photo on whichever collage you are looking at, in the order it arrived. Click one to see it large. Remove takes a photo off for everyone.</p>
+    <div class="ed-actions" style="margin-top:0;margin-bottom:12px">
+      <button class="btn" id="allWeeksBtn" type="button">Show every week</button>
+      <button class="btn btn-quiet" id="downloadPhotos" type="button">Download photos (.zip)</button>
+    </div>
+    <div class="photos" id="answerList"></div>
+
+    <div class="ed-flag" id="edFlag"></div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div id="press">
+  <span class="pressmsg">Your photo</span>
+  <input type="text" id="capInput" maxlength="120" placeholder="Where did you find it? (optional)" autocomplete="off"/>
+  <input type="file" id="fileInput" accept="image/*" multiple/>
+  <div class="press-btns">
+    <button class="btn btn-ink" id="addBtn" type="button">Add a photo</button>
+    <button class="btn" id="saveBtn" type="button">Save collage</button>
+  </div>
+</div>
+
+<div id="saveStamp">Collage<br>saved</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to change the question, open a new week, or remove photos.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="viewer" role="dialog" aria-modal="true" aria-label="Photo">
+  <figure class="lb">
+    <img id="lbImg" alt=""/>
+    <figcaption class="lb-cap" id="lbCap"></figcaption>
+    <div class="lb-actions">
+      <button class="btn btn-quiet" id="lbRemove" type="button" hidden>Remove this photo</button>
+      <button class="btn btn-ink" id="lbClose" type="button">Close</button>
+    </div>
+  </figure>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Passcode for the instructor desk.
+const TEACHER_CODE = "nature";
+
+// Let students browse past weeks from the strip under the collage.
+const SHOW_ARCHIVE_TO_STUDENTS = true;
+
+// The question the very first week starts with, if the database is empty.
+const FIRST_PROMPT = "Share a photo of something in nature you encountered this past week.";
+const FIRST_LABEL  = "Week 1";
+
+// Photos are shrunk in the browser before they are sent, so the database
+// stays small and the collage loads fast on classroom wifi.
+const MAX_SIDE      = 1000;   // longest edge in pixels
+const JPEG_QUALITY  = 0.74;
+const MAX_PER_DROP  = 6;      // most photos one student can add at a time
+
+// Colors of the little offset shadows behind each photo, from the palette.
+const SHADOW = [
+  [160,30,92],    // dark pink
+  [47,125,125],   // teal
+  [139,168,56],   // grass green
+  [125,184,196],  // sea glass
+  [214,61,132]    // bright pink
+];
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+let db = null;
+let myUid = null;
+
+// Its own branch, so it never mixes with the word collage.
+const ROOT    = "natureimages";
+const CURRENT = ROOT + "/current";
+const INDEX   = ROOT + "/index";
+const PHOTOS  = ROOT + "/photos";
+
+let sessionId = null;
+let photosRef = null;
+let metaRef   = null;
+let photos    = [];          // [{key, src, w, h, caption, at, uid}]
+let sketch    = null;
+let unlocked  = false;
+let weekIndex = {};
+let editingWeek = null;
+let liveId = null;
+let previewId = null;
+let tiles = [];              // what was drawn, for tapping
+let viewing = null;          // {week, key} open in the viewer
+
+const pics = new Map();      // key -> loaded Image
+const $ = (id) => document.getElementById(id);
+
+/* ── the canvas ─────────────────────────────────────────────────── */
+new p5((p) => {
+  sketch = p;
+  let wrap;
+  p.setup = () => {
+    wrap = $("canvasWrap");
+    const c = p.createCanvas(wrap.clientWidth, wrap.clientHeight);
+    c.parent(wrap);
+    p.angleMode(p.DEGREES);
+    p.noLoop();
+    c.elt.addEventListener("click", (e) => {
+      const r = c.elt.getBoundingClientRect();
+      const hit = hitTest(e.clientX - r.left, e.clientY - r.top);
+      if (hit) openViewer(sessionId, hit.key);
+      else pickFiles();
+    });
+    redrawAll();
+  };
+  p.windowResized = () => {
+    p.resizeCanvas(wrap.clientWidth, wrap.clientHeight);
+    redrawAll();
+  };
+}, document.createElement("div"));
+
+// A steady random number per photo, so every browser tilts it the same way.
+function seeded(key, salt) {
+  let h = 2166136261 ^ salt;
+  for (let i = 0; i < key.length; i++) {
+    h ^= key.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return ((h >>> 0) % 10000) / 10000;
+}
+
+/* Justified rows: find the tallest row height at which every photo fits
+   on the sheet side by side. Nothing stacks, so overlap only comes from
+   the small tilt each photo gets. */
+function layout(W, H, items) {
+  if (!items.length) return [];
+  const gap = Math.max(12, Math.min(W, H) * 0.035);
+  const innerW = W - gap * 2;
+
+  function pack(h) {
+    const rows = [];
+    let cur = [], sum = 0;
+    const close = (last) => {
+      const fit = (innerW - gap * (cur.length - 1)) / sum;   // height that fills the width
+      rows.push({ items: cur, h: last ? Math.min(h, fit) : Math.min(fit, h * 1.3) });
+    };
+    items.forEach((it) => {
+      if (cur.length && (sum + it.ar) * h + gap * cur.length > innerW) {
+        close(false);
+        cur = []; sum = 0;
+      }
+      cur.push(it); sum += it.ar;
+    });
+    close(true);
+    return rows;
+  }
+  const heightOf = (rows) => rows.reduce((a, r) => a + r.h, 0) + gap * (rows.length + 1);
+
+  let lo = 8, hi = H, best = pack(lo);
+  for (let i = 0; i < 28; i++) {
+    const mid = (lo + hi) / 2;
+    const rows = pack(mid);
+    if (heightOf(rows) <= H) { lo = mid; best = rows; } else hi = mid;
+  }
+
+  const out = [];
+  let y = (H - heightOf(best)) / 2 + gap;
+  best.forEach((row) => {
+    const rowW = row.items.reduce((a, it) => a + it.ar * row.h, 0) + gap * (row.items.length - 1);
+    let x = (W - rowW) / 2;
+    row.items.forEach((it) => {
+      const w = it.ar * row.h;
+      out.push({ key: it.key, cx: x + w / 2, cy: y + row.h / 2, w, h: row.h });
+      x += w + gap;
+    });
+    y += row.h + gap;
+  });
+  return out;
+}
+
+function redrawAll() {
+  if (!sketch) return;
+  const p = sketch;
+  p.clear();
+  p.background(251, 253, 249);
+  $("emptyNote").classList.toggle("off", photos.length > 0);
+
+  const items = photos.map((ph) => ({ key: ph.key, ar: Math.max(0.3, Math.min(3.5, (ph.w || 4) / (ph.h || 3))) }));
+  const cells = layout(p.width, p.height, items);
+  const ctx = p.drawingContext;
+  tiles = [];
+
+  cells.forEach((c, i) => {
+    const img = pics.get(c.key);
+    const tilt = (seeded(c.key, 7) - 0.5) * 6;              // about ±3 degrees
+    const nudge = Math.min(c.w, c.h) * 0.03;
+    const cx = c.cx + (seeded(c.key, 11) - 0.5) * nudge;
+    const cy = c.cy + (seeded(c.key, 13) - 0.5) * nudge;
+    const w = c.w * 0.96, h = c.h * 0.96;
+    const border = Math.max(3, Math.min(w, h) * 0.035);
+    const sh = SHADOW[Math.floor(seeded(c.key, 17) * SHADOW.length)];
+    const off = Math.max(3, border * 1.2);
+
+    p.push();
+    p.translate(cx, cy);
+    p.rotate(tilt);
+    p.noStroke();
+    p.fill(sh[0], sh[1], sh[2]);
+    p.rect(-w / 2 + off, -h / 2 + off, w, h);
+    p.fill(255);
+    p.stroke(20, 32, 42);
+    p.strokeWeight(Math.max(1.5, border * 0.45));
+    p.rect(-w / 2, -h / 2, w, h);
+    p.noStroke();
+    if (img && img.complete && img.naturalWidth) {
+      ctx.drawImage(img, -w / 2 + border, -h / 2 + border, w - border * 2, h - border * 2);
+    } else {
+      p.fill(219, 232, 221);
+      p.rect(-w / 2 + border, -h / 2 + border, w - border * 2, h - border * 2);
+    }
+    p.pop();
+    tiles.push({ key: c.key, cx, cy, w, h, tilt });
+  });
+}
+
+let redrawQueued = false;
+function queueRedraw() {
+  if (redrawQueued) return;
+  redrawQueued = true;
+  requestAnimationFrame(() => { redrawQueued = false; redrawAll(); });
+}
+
+function hitTest(x, y) {
+  for (let i = tiles.length - 1; i >= 0; i--) {
+    const t = tiles[i];
+    const a = (-t.tilt * Math.PI) / 180;
+    const dx = x - t.cx, dy = y - t.cy;
+    const lx = dx * Math.cos(a) - dy * Math.sin(a);
+    const ly = dx * Math.sin(a) + dy * Math.cos(a);
+    if (Math.abs(lx) <= t.w / 2 && Math.abs(ly) <= t.h / 2) return t;
+  }
+  return null;
+}
+
+function loadPic(key, src) {
+  if (pics.has(key)) return;
+  const img = new Image();
+  img.onload = queueRedraw;
+  img.src = src;
+  pics.set(key, img);
+}
+
+/* ── adding photos ──────────────────────────────────────────────── */
+function pickFiles() {
+  if (previewId) {
+    $("barState").textContent = "This is an old week. Go back to live to add photos.";
+    return;
+  }
+  if (!db || !sessionId) {
+    $("barState").textContent = "Not connected yet. Give it a second and try again.";
+    return;
+  }
+  $("fileInput").click();
+}
+
+function readAsImage(file) {
+  return new Promise((ok, no) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); ok(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); no(new Error("unreadable")); };
+    img.src = url;
+  });
+}
+
+async function shrink(file) {
+  const img = await readAsImage(file);
+  let side = MAX_SIDE, q = JPEG_QUALITY, out = null, w = 0, h = 0;
+  for (let tries = 0; tries < 4; tries++) {
+    const s = Math.min(1, side / Math.max(img.naturalWidth, img.naturalHeight));
+    w = Math.round(img.naturalWidth * s);
+    h = Math.round(img.naturalHeight * s);
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    const g = c.getContext("2d");
+    g.fillStyle = "#fff";
+    g.fillRect(0, 0, w, h);
+    g.drawImage(img, 0, 0, w, h);
+    out = c.toDataURL("image/jpeg", q);
+    if (out.length < 320000) break;            // about 240 KB of photo
+    side *= 0.8; q -= 0.08;
+  }
+  return { src: out, w, h };
+}
+
+$("fileInput").addEventListener("change", async (e) => {
+  const files = Array.from(e.target.files || []).filter((f) => /^image\//.test(f.type) || /\.(heic|heif)$/i.test(f.name));
+  e.target.value = "";
+  if (!files.length) return;
+  const batch = files.slice(0, MAX_PER_DROP);
+  const caption = $("capInput").value.trim().slice(0, 120);
+  const week = sessionId;
+  let sent = 0, failed = 0;
+  $("addBtn").disabled = true;
+
+  for (let i = 0; i < batch.length; i++) {
+    $("barState").textContent = `Sending photo ${i + 1} of ${batch.length}`;
+    try {
+      const pic = await shrink(batch[i]);
+      await db.ref(`${PHOTOS}/${week}`).push({ ...pic, caption, uid: myUid || "", at: Date.now() });
+      sent++;
+    } catch (err) {
+      failed++;
+      if (err && err.code) { dbTrouble(err); break; }
+    }
+  }
+
+  $("addBtn").disabled = false;
+  if (sent) $("capInput").value = "";
+  let msg = sent === 1 ? "Photo added. Add another whenever you like." : sent + " photos added.";
+  if (!sent) msg = "That file would not open. Try a JPG or PNG, or a screenshot of the photo.";
+  else if (failed) msg += ` ${failed} would not open. Try JPG or PNG.`;
+  if (files.length > MAX_PER_DROP) msg += ` Only the first ${MAX_PER_DROP} were sent.`;
+  $("barState").textContent = msg;
+});
+
+$("addBtn").addEventListener("click", pickFiles);
+$("capInput").addEventListener("keydown", (e) => { if (e.key === "Enter") pickFiles(); });
+
+/* ── the viewer ─────────────────────────────────────────────────── */
+let allMode = false;
+let allPhotos = {};
+
+function findPhoto(week, key) {
+  if (week === sessionId) return photos.find((p) => p.key === key);
+  const v = (allPhotos[week] || {})[key];
+  return v ? { key, ...v } : null;
+}
+
+function openViewer(week, key) {
+  const ph = findPhoto(week, key);
+  if (!ph) return;
+  viewing = { week, key };
+  $("lbImg").src = ph.src;
+  $("lbImg").alt = ph.caption ? "Photo: " + ph.caption : "A student's nature photo";
+  $("lbCap").textContent = ph.caption || "";
+  $("lbRemove").hidden = !(unlocked || (myUid && ph.uid === myUid));
+  $("lbRemove").textContent = unlocked ? "Remove this photo" : "Remove my photo";
+  $("viewer").classList.add("open");
+  $("lbClose").focus();
+}
+function closeViewer() {
+  $("viewer").classList.remove("open");
+  $("lbImg").removeAttribute("src");
+  viewing = null;
+}
+$("lbClose").addEventListener("click", closeViewer);
+$("viewer").addEventListener("click", (e) => { if (e.target.id === "viewer") closeViewer(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && viewing) closeViewer(); });
+$("lbRemove").addEventListener("click", () => {
+  if (!viewing) return;
+  const { week, key } = viewing;
+  if (!confirm("Take this photo off the collage for everyone?")) return;
+  removePhoto(week, key).then(closeViewer);
+});
+
+function removePhoto(week, key) {
+  return db.ref(`${PHOTOS}/${week}/${key}`).remove()
+    .then(() => {
+      if (allPhotos[week]) delete allPhotos[week][key];
+      renderPhotoLists();
+      if (unlocked) flag("Photo removed");
+    })
+    .catch(dbTrouble);
+}
+
+/* ── live collage or private preview ────────────────────────────── */
+function syncWeek() {
+  const target = previewId || liveId;
+  if (target) attachSession(target);
+  const previewing = !!previewId;
+  $("sheetFrame").classList.toggle("previewing", previewing);
+  renderChips();
+  $("previewBar").classList.toggle("on", previewing);
+  $("barWeek").textContent = previewing ? "Preview" : ((weekIndex[target] || {}).label || "This week");
+  $("addBtn").disabled = previewing;
+  $("capInput").disabled = previewing;
+  renderWeeks();
+}
+function endPreview() { previewId = null; syncWeek(); }
+
+/* ── when the database says no ──────────────────────────────────── */
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  const msg = denied
+    ? "Firebase blocked that. The rules need a natureimages branch."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  $("barState").textContent = msg;
+  $("emptyNote").textContent = denied
+    ? "The database rules are blocking this collage. Nothing can save until a natureimages branch is added."
+    : msg;
+  $("emptyNote").classList.remove("off");
+  console.error("[nature collage]", err);
+}
+
+/* ── the week ───────────────────────────────────────────────────── */
+function attachSession(id) {
+  if (id === sessionId) return;
+  if (photosRef) photosRef.off();
+  if (metaRef) metaRef.off();
+
+  sessionId = id;
+  photos = [];
+  redrawAll();
+  updateMeter();
+  renderWeeks();
+
+  metaRef = db.ref(`${INDEX}/${id}`);
+  metaRef.on("value", (s) => {
+    const m = s.val() || {};
+    $("promptText").textContent = m.prompt || "No question set yet";
+    if (!previewId) $("barWeek").textContent = m.label || "This week";
+    $("weekRoundel").innerHTML = roundelText(m.label);
+    document.title = (m.label ? m.label + " · " : "") + "Collaborative Nature Collage";
+    if (!unlocked) return;
+    $("edLabel").value = m.label || "";
+    $("edPrompt").value = m.prompt || "";
+  });
+
+  photosRef = db.ref(`${PHOTOS}/${id}`);
+  photosRef.on("child_added", (s) => {
+    const v = s.val() || {};
+    if (!v.src) return;
+    photos.push({ key: s.key, ...v });
+    photos.sort((a, b) => (a.at || 0) - (b.at || 0));
+    loadPic(s.key, v.src);
+    queueRedraw();
+    updateMeter();
+  }, dbTrouble);
+  photosRef.on("child_removed", (s) => {
+    photos = photos.filter((p) => p.key !== s.key);
+    pics.delete(s.key);
+    queueRedraw();
+    updateMeter();
+  });
+}
+
+function roundelText(label) {
+  if (!label) return "WK";
+  const n = label.match(/\d+/);
+  return n ? "WK<br>" + n[0] : esc(label.slice(0, 6).toUpperCase());
+}
+
+function updateMeter() {
+  const n = photos.length;
+  $("meterCount").textContent = n === 1 ? "1 photo" : n + " photos";
+  $("meterFill").style.width = Math.min(100, n * 4) + "%";
+  $("meterLabel").textContent = n === 0 ? "The field is open" : "The field is filling up";
+  renderPhotoLists();
+}
+
+function thumbHTML(week, key, ph, canRemove) {
+  return `<div class="thumb">
+    <button class="pic" type="button" data-view="${key}" data-week="${week}" aria-label="See photo larger">
+      <img src="${ph.src}" alt="${ph.caption ? "Photo: " + esc(ph.caption) : "A student's nature photo"}" loading="lazy"/>
+    </button>
+    ${ph.caption ? `<div class="thumb-cap">${esc(ph.caption)}</div>` : ""}
+    ${canRemove ? `<button class="btn btn-quiet" type="button" data-remove="${key}" data-week="${week}">Remove</button>` : ""}
+  </div>`;
+}
+
+function gridHTML(week, list, canRemove) {
+  return list.length
+    ? `<div class="thumbs">${list.map((ph) => thumbHTML(week, ph.key, ph, canRemove)).join("")}</div>`
+    : '<div class="ans-empty">No photos on this collage yet</div>';
+}
+
+function renderPhotoLists() {
+  const pub = $("publicList");
+  if (pub && !pub.hidden) pub.innerHTML = gridHTML(sessionId, photos, false);
+
+  const box = $("answerList");
+  if (!box || !unlocked) return;
+  if (!allMode) {
+    box.innerHTML = gridHTML(sessionId, photos, true);
+    return;
+  }
+  const blocks = weekOrder().map((id) => {
+    const w = weekIndex[id];
+    const rows = Object.entries(allPhotos[id] || {})
+      .map(([key, v]) => ({ key, ...v }))
+      .sort((a, b) => (a.at || 0) - (b.at || 0));
+    return `<div class="ansgroup">
+      <div class="ansgroup-hd">${esc(w.label) || "Untitled"}<span>${rows.length} ${rows.length === 1 ? "photo" : "photos"}</span></div>
+      <div class="ansgroup-q">${esc(w.prompt)}</div>
+      ${gridHTML(id, rows, true)}
+    </div>`;
+  });
+  box.innerHTML = blocks.length ? blocks.join("") : '<div class="ans-empty">No weeks yet</div>';
+}
+
+function listClicks(e) {
+  const v = e.target.closest("[data-view]");
+  if (v) {
+    const week = v.dataset.week;
+    if (week !== sessionId && !allPhotos[week]) return;
+    return openViewer(week, v.dataset.view);
+  }
+  const r = e.target.closest("[data-remove]");
+  if (r && unlocked) {
+    if (!confirm("Take this photo off the collage for everyone?")) return;
+    removePhoto(r.dataset.week, r.dataset.remove);
+  }
+}
+$("answerList").addEventListener("click", listClicks);
+$("publicList").addEventListener("click", listClicks);
+
+function loadAllPhotos() {
+  if (!db) return flag("Not connected to Firebase yet");
+  $("allWeeksBtn").textContent = "Loading";
+  return db.ref(PHOTOS).once("value")
+    .then((snap) => {
+      allPhotos = snap.val() || {};
+      allMode = true;
+      $("allWeeksBtn").textContent = "Show this collage only";
+      renderPhotoLists();
+    })
+    .catch((e) => {
+      $("allWeeksBtn").textContent = "Show every week";
+      dbTrouble(e);
+    });
+}
+
+function watchCurrentWeek() {
+  db.ref(CURRENT).on("value", (s) => {
+    const id = s.val();
+    if (id) {
+      liveId = id;
+      syncWeek();
+    } else {
+      const first = "s" + Date.now();
+      db.ref(CURRENT).transaction((held) => (held ? undefined : first));
+      db.ref(`${INDEX}/${first}`).set({ label: FIRST_LABEL, prompt: FIRST_PROMPT, created: Date.now() }).catch(dbTrouble);
+    }
+  }, dbTrouble);
+
+  db.ref(INDEX).on("value", (s) => {
+    weekIndex = s.val() || {};
+    renderWeeks();
+    renderChips();
+  }, dbTrouble);
+
+  db.ref(".info/connected").on("value", (s) => {
+    $("barState").textContent = s.val() === true
+      ? "Live. Tap the collage or Add a photo."
+      : "Reconnecting to the database";
+  });
+}
+
+/* ── saving the collage ─────────────────────────────────────────── */
+$("saveBtn").addEventListener("click", () => {
+  const name = ($("barWeek").textContent || "nature").replace(/\s+/g, "_").toLowerCase();
+  sketch.saveCanvas(name + "_nature_collage", "png");
+  const stamp = $("saveStamp");
+  stamp.classList.add("on");
+  setTimeout(() => stamp.classList.remove("on"), 1600);
+});
+
+/* ── the instructor desk ────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) {
+    $("editor").classList.toggle("open");
+    $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    $("gate").classList.add("open");
+    $("gateCode").focus();
+  }
+});
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateGo").addEventListener("click", tryCode);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) {
+    $("gateErr").classList.add("on");
+    return;
+  }
+  unlocked = true;
+  $("gate").classList.remove("open");
+  $("gateErr").classList.remove("on");
+  $("gateCode").value = "";
+  $("editor").classList.add("open");
+  const m = weekIndex[sessionId] || {};
+  $("edLabel").value = m.label || "";
+  $("edPrompt").value = m.prompt || "";
+  renderPhotoLists();
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("allWeeksBtn").addEventListener("click", () => {
+  if (allMode) {
+    allMode = false;
+    $("allWeeksBtn").textContent = "Show every week";
+    renderPhotoLists();
+  } else {
+    loadAllPhotos();
+  }
+});
+
+/* Zip download. JSZip only loads when someone asks for it. */
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+function slug(t) {
+  return String(t || "untitled").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 40) || "untitled";
+}
+
+$("downloadPhotos").addEventListener("click", async () => {
+  try {
+    if (!window.JSZip) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+  } catch (e) {
+    return flag("Could not load the zip library. Check the network.");
+  }
+  const zip = new JSZip();
+  const weeks = allMode ? weekOrder() : [sessionId];
+  let count = 0;
+  weeks.forEach((id) => {
+    const w = weekIndex[id] || {};
+    const folder = allMode ? zip.folder(slug(w.label)) : zip;
+    const rows = allMode
+      ? Object.entries(allPhotos[id] || {}).map(([key, v]) => ({ key, ...v })).sort((a, b) => (a.at || 0) - (b.at || 0))
+      : photos;
+    const notes = [(w.label || "Untitled").toUpperCase(), w.prompt || "", ""];
+    rows.forEach((ph, i) => {
+      const file = String(i + 1).padStart(2, "0") + (ph.caption ? "_" + slug(ph.caption) : "") + ".jpg";
+      folder.file(file, ph.src.split(",")[1], { base64: true });
+      notes.push(file + (ph.caption ? "  " + ph.caption : ""));
+      count++;
+    });
+    folder.file("captions.txt", notes.join("\n"));
+  });
+  if (!count) return flag("No photos to download yet");
+  const blob = await zip.generateAsync({ type: "blob" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = allMode ? "nature_collage_all_weeks.zip" : slug($("barWeek").textContent) + "_nature_photos.zip";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  flag(count + (count === 1 ? " photo" : " photos") + " downloaded");
+});
+
+$("backLive").addEventListener("click", endPreview);
+$("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
+
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  clearTimeout(flag.t);
+  flag.t = setTimeout(() => f.classList.remove("on"), 3200);
+}
+
+$("savePrompt").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const prompt = $("edPrompt").value.trim();
+  const label = $("edLabel").value.trim();
+  if (!prompt) return flag("Write a question first");
+  db.ref(`${INDEX}/${sessionId}`).update({ prompt, label: label || "This week" })
+    .then(() => flag("Question saved. Every browser has it now."))
+    .catch(() => flag("Firebase refused the write. Check the database rules."));
+});
+
+$("clearWeek").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (previewId) return flag("Stop the preview first, then clear");
+  if (!confirm("Clear every photo from " + $("barWeek").textContent + "? The question stays.")) return;
+  db.ref(`${PHOTOS}/${sessionId}`).remove().then(() => {
+    photos = []; pics.clear(); redrawAll(); updateMeter();
+    flag("Collage wiped clean");
+  }).catch(dbTrouble);
+});
+
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+
+function nextWeekNumber() {
+  let top = 0;
+  Object.values(weekIndex).forEach((w) => {
+    const n = String(w.label || "").match(/\d+/);
+    if (n && +n[0] > top) top = +n[0];
+  });
+  return top + 1;
+}
+
+function weekOrder() {
+  return Object.keys(weekIndex).sort((a, b) => (weekIndex[a].created || 0) - (weekIndex[b].created || 0));
+}
+
+function renderChips() {
+  const strip = $("archive");
+  if (!SHOW_ARCHIVE_TO_STUDENTS) { strip.hidden = true; return; }
+  const ids = weekOrder();
+  strip.hidden = ids.length < 2;
+  $("weekChips").innerHTML = ids.map((id) => {
+    const w = weekIndex[id];
+    const showing = (previewId || liveId) === id;
+    const live = id === liveId;
+    return `<button class="chip" data-week="${id}" type="button" aria-current="${showing}">${esc(w.label) || "Untitled"}${live ? ' <span class="dot">&#9679;</span>' : ""}</button>`;
+  }).join("");
+}
+
+$("weekChips").addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-week]");
+  if (!chip) return;
+  const id = chip.dataset.week;
+  previewId = id === liveId ? null : id;
+  syncWeek();
+  $("sheetFrame").scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+$("publicListBtn").addEventListener("click", () => {
+  const box = $("publicList");
+  box.hidden = !box.hidden;
+  $("publicListBtn").textContent = box.hidden ? "See every photo" : "Hide the photos";
+  renderPhotoLists();
+});
+
+function renderWeeks() {
+  const list = $("weekList");
+  const ids = weekOrder();
+  if (!ids.length) {
+    list.innerHTML = '<div class="wk-empty">No weeks yet. Add one above.</div>';
+    return;
+  }
+  list.innerHTML = ids.map((id) => {
+    const w = weekIndex[id];
+    const live = id === liveId;
+    if (id === editingWeek) {
+      return `<div class="wk${live ? " live" : ""}">
+        <div class="wk-edit">
+          <input type="text" data-field="label" value="${esc(w.label)}" placeholder="Week name"/>
+          <textarea data-field="prompt" placeholder="Question">${esc(w.prompt)}</textarea>
+        </div>
+        <div class="wk-btns">
+          <button class="btn btn-ink" data-act="save" data-id="${id}" type="button">Save</button>
+          <button class="btn btn-quiet" data-act="cancel" data-id="${id}" type="button">Cancel</button>
+        </div>
+      </div>`;
+    }
+    return `<div class="wk${live ? " live" : ""}">
+      <div class="wk-main">
+        <div class="wk-name">${esc(w.label) || "Untitled"}${live ? '<span class="wk-tag">On screen now</span>' : ""}${id === previewId ? '<span class="wk-tag wk-tag-you">You are looking at this</span>' : ""}</div>
+        <div class="wk-q">${esc(w.prompt)}</div>
+      </div>
+      <div class="wk-btns">
+        ${live ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
+        ${id === previewId
+          ? `<button class="btn" data-act="unpreview" type="button">Stop preview</button>`
+          : `<button class="btn" data-act="preview" data-id="${id}" type="button">Preview</button>`}
+        <button class="btn" data-act="edit" data-id="${id}" type="button">Rename</button>
+        <button class="btn btn-quiet" data-act="delete" data-id="${id}" type="button">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+$("weekList").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.act;
+
+  if (act === "open") {
+    if (!db) return flag("Not connected to Firebase yet");
+    db.ref(CURRENT).set(id)
+      .then(() => { previewId = null; flag("Everyone is on " + (weekIndex[id].label || "that week") + " now"); })
+      .catch(dbTrouble);
+  }
+  if (act === "preview") {
+    previewId = id === liveId ? null : id;
+    syncWeek();
+    $("sheetFrame").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  if (act === "unpreview") endPreview();
+  if (act === "edit") { editingWeek = id; renderWeeks(); }
+  if (act === "cancel") { editingWeek = null; renderWeeks(); }
+  if (act === "save") {
+    const row = btn.closest(".wk");
+    const label = row.querySelector('[data-field="label"]').value.trim();
+    const prompt = row.querySelector('[data-field="prompt"]').value.trim();
+    if (!prompt) return flag("A week needs a question");
+    db.ref(`${INDEX}/${id}`).update({ label: label || "Untitled", prompt })
+      .then(() => { editingWeek = null; flag("Week updated"); })
+      .catch(dbTrouble);
+  }
+  if (act === "delete") {
+    if (id === liveId) return flag("Open a different week before deleting this one");
+    const w = weekIndex[id];
+    if (!confirm(`Delete ${w.label || "this week"} and every photo on it? This cannot be undone.`)) return;
+    if (id === previewId) endPreview();
+    db.ref(`${PHOTOS}/${id}`).remove()
+      .then(() => db.ref(`${INDEX}/${id}`).remove())
+      .then(() => flag("Week deleted"))
+      .catch(dbTrouble);
+  }
+});
+
+function makeWeek(label, prompt, openIt) {
+  const id = "s" + Date.now() + Math.floor(Math.random() * 1000);
+  return db.ref(`${INDEX}/${id}`)
+    .set({ label: label || "Week " + nextWeekNumber(), prompt, created: Date.now() })
+    .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
+}
+
+function addFromForm(openIt) {
+  if (!db) return flag("Not connected to Firebase yet");
+  const prompt = $("newPrompt").value.trim();
+  const label = $("newLabel").value.trim();
+  if (!prompt) return flag("Write the question first");
+  makeWeek(label, prompt, openIt)
+    .then(() => {
+      $("newPrompt").value = "";
+      $("newLabel").value = "";
+      flag(openIt ? "New week is open. The room is on a blank collage." : "Added to the list. Open it when you are ready.");
+    })
+    .catch(dbTrouble);
+}
+$("addWeek").addEventListener("click", () => addFromForm(false));
+$("startWeek").addEventListener("click", () => addFromForm(true));
+
+$("addBulk").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const lines = $("bulkPrompts").value.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return flag("Put one question on each line first");
+  const n = nextWeekNumber();
+  let chain = Promise.resolve();
+  lines.forEach((line, i) => {
+    chain = chain.then(() => new Promise((go) => setTimeout(() => go(makeWeek("Week " + (n + i), line, false)), 25)));
+  });
+  chain.then(() => { $("bulkPrompts").value = ""; flag(lines.length + " weeks added to the list"); }).catch(dbTrouble);
+});
+
+/* ── loading Firebase ───────────────────────────────────────────────
+   Some networks block gstatic.com, so the page tries two mirrors
+   before giving up, and says so on screen.
+   ─────────────────────────────────────────────────────────────────── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) { /* try the next mirror */ }
+  }
+  return false;
+}
+
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("promptText").textContent = "Cannot reach Firebase";
+    $("barState").textContent = "Offline. Check the network or an ad blocker.";
+    $("emptyNote").textContent = "Firebase did not load, so the collage cannot sync.";
+    $("addBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  firebase.auth().signInAnonymously()
+    .then((cred) => {
+      myUid = cred && cred.user ? cred.user.uid : null;
+      db = firebase.database();
+      watchCurrentWeek();
+    })
+    .catch((err) => {
+      const off = /operation-not-allowed|configuration-not-found/.test(err.code || "");
+      $("barState").textContent = off
+        ? "Turn on Anonymous sign-in in the Firebase console"
+        : "Sign-in failed: " + (err.message || err.code);
+      $("emptyNote").textContent = off
+        ? "Firebase console, Authentication, Sign-in method, enable Anonymous."
+        : "Sign-in failed, so nothing can save yet.";
+      $("emptyNote").classList.remove("off");
+      console.error("[nature collage]", err);
+    });
+});
+
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
