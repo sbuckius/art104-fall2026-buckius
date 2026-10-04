@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parallel Worlds Zine, 2999 — the discussion</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Cdefs%3E%3CclipPath%20id%3D%27c%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%277%27%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20clip-path%3D%27url%28%23c%29%27%3E%3Crect%20x%3D%270%27%20y%3D%270%27%20width%3D%277%27%20height%3D%2732%27%20fill%3D%27%23457b7b%27%2F%3E%3Crect%20x%3D%276.4%27%20y%3D%270%27%20width%3D%277%27%20height%3D%2732%27%20fill%3D%27%2392a64a%27%2F%3E%3Crect%20x%3D%2712.8%27%20y%3D%270%27%20width%3D%277%27%20height%3D%2732%27%20fill%3D%27%23d7689d%27%2F%3E%3Crect%20x%3D%2719.2%27%20y%3D%270%27%20width%3D%277%27%20height%3D%2732%27%20fill%3D%27%23945276%27%2F%3E%3Crect%20x%3D%2725.6%27%20y%3D%270%27%20width%3D%277%27%20height%3D%2732%27%20fill%3D%27%236d2d5d%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#0f1b12; --ink:#f2edf0; --soft:#a6b4a6;
+  --plum:#271021; --purple:#c77bb2; --purpledeep:#6d2d5d;
+  --mauve:#d194b1; --pink:#d7689d;
+  --olive:#92a64a; --olivelt:#b9cc72;
+  --teal:#5fa3a3; --tealdk:#6fb0b0;
+  --rule:rgba(242,237,240,.22); --panel:rgba(255,255,255,.055);
+  --stripe:repeating-linear-gradient(90deg,
+    var(--teal) 0 13px, var(--olive) 13px 26px, var(--olivelt) 26px 39px,
+    var(--pink) 39px 52px, var(--mauve) 52px 65px, var(--purpledeep) 65px 78px);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.5;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:62rem;margin:0 auto;padding:0 1.1rem 5rem}
+h1,h2,h3,h4,.lbl,.kicker,button,select,input,textarea,th,.chip,.tag{
+  font-family:"Bricolage Grotesque",system-ui,sans-serif}
+h1{font-size:clamp(1.5rem,4.5vw,2.2rem);font-weight:800;letter-spacing:-.02em;margin:0}
+h1 .yr{color:var(--olivelt)}
+h2{font-size:clamp(1.3rem,3.2vw,1.9rem);font-weight:800;letter-spacing:-.018em;
+  margin:0 0 .5rem;padding-bottom:.3rem;border-bottom:3px solid var(--olivelt)}
+h3{font-size:1rem;font-weight:800;color:var(--mauve);margin:1.5rem 0 .4rem}
+h4{font-size:.76rem;font-weight:700;letter-spacing:.05em;color:var(--pink);margin:0 0 .4rem}
+p{margin:0 0 .8rem}
+a{color:var(--teal)}
+header.top{padding:1.3rem 0 .6rem;border-bottom:6px solid transparent;border-image:var(--stripe) 6}
+.titlerow{display:flex;gap:1rem;align-items:baseline;flex-wrap:wrap;margin-bottom:.7rem}
+.sub{font-style:italic;color:var(--soft);font-size:.95rem}
+.idbar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.6rem 0 .5rem}
+.idbar input,.idbar select{width:auto}
+.status{font-family:"Bricolage Grotesque",sans-serif;font-size:.74rem;font-weight:700;
+  letter-spacing:.03em;color:var(--soft)}
+.status.ok{color:var(--tealdk)}
+.here{margin-left:auto;display:flex;gap:.3rem;flex-wrap:wrap}
+.chip{font-size:.7rem;font-weight:700;padding:.18rem .45rem;border:2px solid var(--mauve);
+  color:var(--mauve);background:rgba(209,148,177,.14)}
+.chip.muted{border-color:var(--rule);color:var(--soft);background:none}
+.stepnav{display:flex;gap:.3rem;flex-wrap:wrap;padding:.3rem 0 .6rem}
+.stepnav button{min-width:2.3rem;font-size:.78rem;font-weight:700;padding:.3rem .5rem;
+  background:none;border:2px solid var(--rule);color:var(--ink);cursor:pointer}
+.stepnav button[aria-current="true"]{background:var(--teal);border-color:var(--teal);color:var(--paper)}
+.stepnav button.done{border-color:var(--mauve);color:var(--mauve);background:rgba(209,148,177,.16)}
+input,select,textarea{width:100%;background:rgba(255,255,255,.07);color:var(--ink);
+  border:2px solid var(--rule);padding:.45rem .55rem;font-size:.95rem;
+  font-family:"Newsreader",Georgia,serif;border-radius:0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);
+  box-shadow:0 0 0 3px rgba(95,163,163,.25)}
+textarea{resize:vertical;line-height:1.45}
+textarea[readonly]{opacity:.75;border-style:dashed}
+button{font-size:.82rem;font-weight:700;padding:.4rem .8rem;background:none;
+  border:2px solid var(--ink);color:var(--ink);cursor:pointer}
+button.primary{background:var(--teal);border-color:var(--teal);color:var(--paper)}
+button.ghost{border-color:var(--rule);color:var(--soft)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.f{margin:.9rem 0}
+.f .lbl{display:block;font-size:.72rem;font-weight:700;letter-spacing:.05em;
+  color:var(--tealdk);margin-bottom:.15rem}
+.f .hint{display:block;font-size:.85rem;color:var(--soft);font-style:italic;margin-bottom:.3rem}
+.note{font-size:.9rem;color:var(--soft)}
+.q{margin:1.1rem 0;padding:.8rem 1rem;background:var(--panel);border-left:6px solid var(--olivelt)}
+.q:nth-of-type(6n+2){border-left-color:var(--mauve)}
+.q:nth-of-type(6n+3){border-left-color:var(--teal)}
+.q:nth-of-type(6n+4){border-left-color:var(--purple)}
+.q:nth-of-type(6n+5){border-left-color:var(--pink)}
+.q h4{color:var(--ink);font-size:.95rem;font-weight:800;letter-spacing:0;margin-bottom:.5rem}
+.band{margin:1.1rem 0;padding:.8rem 1rem;background:var(--pink);color:#0f1b12;font-size:.95rem}
+.band b{font-weight:800}
+.silence{margin:1.1rem 0;padding:.8rem 1rem;background:rgba(199,123,178,.16);
+  border-left:6px solid var(--purple);font-size:.95rem}
+.timer{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.6rem 0 1rem;
+  padding:.5rem .8rem;background:var(--panel);border-left:6px solid var(--olivelt)}
+.timer .clock{font-family:"Bricolage Grotesque",sans-serif;font-size:1.5rem;font-weight:800;
+  min-width:4.5rem;color:var(--tealdk)}
+.timer .clock.low{color:var(--pink)}
+.cards{display:grid;gap:.5rem;margin:.6rem 0}
+@media(min-width:44rem){.cards{grid-template-columns:1fr 1fr}}
+.card{padding:.5rem .7rem;background:var(--panel);border-left:4px solid var(--olivelt)}
+.card:nth-child(5n+2){border-left-color:var(--mauve)}
+.card:nth-child(5n+3){border-left-color:var(--teal)}
+.card:nth-child(5n+4){border-left-color:var(--purple)}
+.card:nth-child(5n){border-left-color:var(--pink)}
+.card .who{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:.66rem;
+  font-weight:700;letter-spacing:.04em;color:var(--soft)}
+.card .tx{white-space:pre-wrap}
+.empty{color:var(--soft);font-style:italic;font-size:.9rem}
+.shots{display:grid;gap:.5rem;grid-template-columns:repeat(2,1fr);margin:.6rem 0}
+@media(min-width:44rem){.shots{grid-template-columns:repeat(4,1fr)}}
+.shot{background:rgba(255,255,255,.05);border:2px solid var(--rule);padding:.3rem}
+.shot img{width:100%;display:block;cursor:zoom-in}
+.shot.big{grid-column:1 / -1}
+.shot.big img{max-height:75vh;width:auto;margin:0 auto}
+.shot span{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:.62rem;
+  font-weight:700;color:var(--soft);margin-top:.15rem}
+.foot{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:2rem;
+  padding-top:1rem;border-top:6px solid transparent;border-image:var(--stripe) 6}
+.foot .spacer{flex:1}
+.warn{padding:.9rem 1rem;background:rgba(146,166,74,.14);border-left:6px solid var(--olivelt);
+  font-size:.92rem;margin:1rem 0}
+@media print{
+  .stepnav,.foot,.idbar,.here,.timer,button{display:none!important}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="titlerow">
+    <h1>Parallel Worlds Zine, <span class="yr">2999</span></h1>
+    <span class="sub">the discussion</span>
+  </div>
+  <div class="idbar">
+    <input type="text" id="name" placeholder="your name" autocomplete="name" style="max-width:11rem">
+    <select id="group"></select>
+    <select id="reading"></select>
+    <span class="status" id="status">connecting…</span>
+    <span class="here" id="here"></span>
+  </div>
+  <nav class="stepnav" id="nav"></nav>
+</header>
+
+<main id="step"></main>
+
+<div class="foot">
+  <button id="prev">← Back</button>
+  <button id="mark" class="ghost">Mark this step done</button>
+  <button id="pdf" class="ghost">Export this page as PDF</button>
+  <span class="spacer"></span>
+  <span class="status" id="prog"></span>
+  <button id="next" class="primary">Next →</button>
+</div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, collection, setDoc, onSnapshot }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ===================================================================
+   SETTINGS
+
+   TALK_ROOM   where this workshop's answers are stored. Give each
+               class section its own.
+   LIVE_ROOM   the walkthrough's room, so this tool can read the
+               draft page images your groups uploaded. It must match
+               the ROOM setting in parallel-worlds-zine1-2999.html.
+   STAGE       which draft to show: draft, d2, d3, d4 or fin.
+   GROUPS      a number, or your own labels, e.g. ["Kitchen","Harbor"]
+   =================================================================== */
+const firebaseConfig = {
+  apiKey:            "AIzaSyCZFDU-WlSmHqjXTs1Ox0nf9xeJU_xbaX0",
+  authDomain:        "collaborativemashup.firebaseapp.com",
+  projectId:         "collaborativemashup",
+  storageBucket:     "collaborativemashup.firebasestorage.app",
+  messagingSenderId: "562437984610",
+  appId:             "1:562437984610:web:9f3711c26e097bc8ef9c3b"
+};
+const TALK_ROOM = "art104-fall-talk";
+const LIVE_ROOM = "art104-fall-live";
+const STAGE     = "d3";
+const GROUPS    = 8;
+
+const PAGES = ["Cover", "Manifesto", "Company history", "Product / service 1",
+               "Product / service 2", "Product / service 3", "Back cover"];
+
+const ROLES = [
+  ["art", "Art director", [
+    "Which image is carrying the most weight, and is it finished enough to carry it?",
+    "Which image is still standing in for an idea rather than being one?",
+    "Do any two images look like they came from different worlds? Which two?",
+    "What is the next image to make, and who is making it?"]],
+  ["design", "Design director", [
+    "Does the grid hold, and on which page does it break first?",
+    "Where does the eye go first on each spread, and is that where they wanted it?",
+    "Which page has too much on it?",
+    "What one change to the template would improve every page at once?"]],
+  ["editor", "Text editor", [
+    "Which sentence is doing the most work, and is it on the right page?",
+    "Where does the voice slip out of the organization and into the writer's?",
+    "What is explained that could be shown instead?",
+    "What needs cutting rather than fixing?"]],
+  ["world", "World keeper", [
+    "Does anything contradict a law or the manifesto?",
+    "Which part of the world is mentioned but never shown?",
+    "Is the divergence legible to a reader who did not build this?"]],
+  ["through", "Throughline", [
+    "Which page could be removed without anyone noticing?",
+    "Does the order make sense, or is it the order they made them in?",
+    "What is the one thing this zine argues, and which page says it?"]],
+  ["pm", "Project manager", [
+    "What is blocking the next step, and whose is it?",
+    "What has been agreed but not done?",
+    "What will not get finished, and what are they doing about it now?"]]
+];
+
+const COLD = [
+  ["c1", "What is this organization, as far as you can tell?"],
+  ["c2", "What is different about this version of Earth?"],
+  ["c3", "What is this zine asking of you?"],
+  ["c4", "Which page is furthest along?"],
+  ["c5", "Which page is furthest behind?"],
+  ["c6", "What is missing that you can already tell is missing?"]
+];
+
+const STEPS = [
+  { id: "cold", tag: "1", title: "Cold pass", mins: 12, kind: "cold",
+    blurb: ["Open a group's draft that is not your own. Answer alone, in writing, before anybody says anything out loud.",
+            "It saves privately as you type. Nobody sees it until you post."] },
+  { id: "saw", tag: "2", title: "What the room saw", mins: 20, kind: "saw",
+    blurb: ["Everyone's cold readings, by group. Readers say what they wrote.",
+            "The group being read stays silent and writes down what they hear."] },
+  { id: "present", tag: "3", title: "Now present", mins: 25, kind: "present",
+    blurb: ["Two minutes each, spoken, no slides. Only now does your group get the floor.",
+            "Three sentences, then the two things the room got right and wrong."] },
+  { id: "role", tag: "4", title: "Role reading", mins: 33, kind: "role",
+    blurb: ["Pair up and swap drafts. Read the other group's pages through your own role's questions.",
+            "Sixteen minutes each way. The group being read asks questions but does not defend."] },
+  { id: "back", tag: "5", title: "Back to your group", mins: 20, kind: "back",
+    blurb: ["Read your notes together. Decide what you are doing about them."] },
+  { id: "ask", tag: "6", title: "Questions we would ask", mins: 15, kind: "ask",
+    blurb: ["Having read somebody else's draft, what should we be asking of these zines that nobody asked today?",
+            "Write a question, not a verdict. Everyone votes. The ones that rise to the top get used at the next discussion, and you can keep them for the final evaluation."] },
+  { id: "commit", tag: "7", title: "Commitments", mins: 10, kind: "commit",
+    blurb: ["Two sentences out loud. One thing we are changing, one thing we are cutting. Nothing else."] }
+];
+
+/* ---------------------------------------------------------- helpers */
+const $ = (id) => document.getElementById(id);
+function el(t, c, x) {
+  const e = document.createElement(t);
+  if (c) e.className = c;
+  if (x != null) e.textContent = x;
+  return e;
+}
+const timers = {};
+function debounce(k, fn, ms) { clearTimeout(timers[k]); timers[k] = setTimeout(fn, ms); }
+function lsGet(k, d) { try { return localStorage.getItem(k) ?? d; } catch (e) { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function status(t, ok) {
+  const s = $("status");
+  s.textContent = t; s.className = "status" + (ok ? " ok" : "");
+}
+const groupList = Array.isArray(GROUPS)
+  ? GROUPS.slice()
+  : Array.from({ length: GROUPS }, (_, i) => String(i + 1));
+
+let db = null, uid = null, app = null, auth = null;
+let me = { name: "", group: "", reading: "" };
+let cur = 0;
+let draft = {}, gdoc = {}, readers = [], notes = {}, shots = {}, allGroups = {};
+let asks = [], votes = {};
+let unsubs = [];
+
+/* ---------------------------------------------------------- paths */
+const talkGroup = (g) => collection(db, "rooms/" + TALK_ROOM + "/groups/" + g + "/members");
+const talkNotes = (g) => collection(db, "rooms/" + TALK_ROOM + "/groups/" + g + "/proposals");
+const talkDoc   = (g) => doc(db, "rooms/" + TALK_ROOM + "/groups", g);
+const privDoc   = ()  => doc(db, "rooms/" + TALK_ROOM + "/private", uid);
+const liveProps = (g) => collection(db, "rooms/" + LIVE_ROOM + "/groups/" + g + "/proposals");
+const presence  = (g) => collection(db, "rooms/" + TALK_ROOM + "/groups/" + g + "/presence");
+const askCol    = ()  => collection(db, "rooms/" + TALK_ROOM + "/groups/class/proposals");
+
+/* ---------------------------------------------------------- boot */
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  auth = getAuth(app);
+  onAuthStateChanged(auth, (u) => {
+    if (u) { uid = u.uid; status("connected", true); loadPrivate(); resubscribe(); renderStep(); }
+  });
+  signInAnonymously(auth).catch(() => status("sign-in failed"));
+} catch (e) { status("firebase did not start"); }
+
+/* ---------------------------------------------------------- identity */
+me.name = lsGet("talk-name", "");
+me.group = lsGet("talk-group", "");
+me.reading = lsGet("talk-reading", "");
+$("name").value = me.name;
+
+function fillSelect(sel, blank, chosen) {
+  sel.innerHTML = "";
+  const o0 = document.createElement("option");
+  o0.value = ""; o0.textContent = blank; sel.appendChild(o0);
+  groupList.forEach((g) => {
+    const o = document.createElement("option");
+    o.value = g; o.textContent = (sel.id === "group" ? "your group " : "reading group ") + g;
+    sel.appendChild(o);
+  });
+  sel.value = chosen || "";
+}
+fillSelect($("group"), "your group…", me.group);
+fillSelect($("reading"), "group you are reading…", me.reading);
+
+$("name").addEventListener("input", () => {
+  me.name = $("name").value.trim(); lsSet("talk-name", me.name);
+  debounce("beat", beat, 600);
+});
+$("group").addEventListener("change", () => {
+  me.group = $("group").value; lsSet("talk-group", me.group);
+  if (!me.reading && me.group) {
+    const i = groupList.indexOf(me.group);
+    me.reading = groupList[(i + 1) % groupList.length];
+    $("reading").value = me.reading; lsSet("talk-reading", me.reading);
+  }
+  resubscribe(); renderStep();
+});
+$("reading").addEventListener("change", () => {
+  me.reading = $("reading").value; lsSet("talk-reading", me.reading);
+  resubscribe(); renderStep();
+});
+
+/* ---------------------------------------------------------- data */
+function loadPrivate() {
+  try { draft = JSON.parse(lsGet("talk-draft", "{}")) || {}; } catch (e) { draft = {}; }
+}
+function saveDraft() {
+  if (!db || !uid) return;
+  setDoc(privDoc(), { answers: draft, updated: Date.now() })
+    .then(() => status("saved privately", true)).catch(() => {});
+}
+function postCold() {
+  if (!db || !uid || !me.reading) { status("pick a group to read"); return; }
+  setDoc(doc(talkGroup(me.reading), uid), {
+    name: me.name || "Someone", fromGroup: me.group || "",
+    answers: draft, updated: Date.now()
+  }).then(() => { status("posted", true); lsSet("talk-posted-" + me.reading, "1"); renderStep(); })
+    .catch(() => status("not posted"));
+}
+function writeGroup(g, patch) {
+  if (!db || !g) return;
+  setDoc(talkDoc(g), patch, { merge: true })
+    .then(() => status("saved", true)).catch(() => status("not saved"));
+}
+function saveNote(g, key, text) {
+  if (!db || !uid || !g) return;
+  setDoc(doc(talkNotes(g), key + "__" + uid), {
+    key: key, uid: uid, name: me.name || "Someone",
+    fromGroup: me.group || "", text: text, updated: Date.now()
+  }).then(() => status("saved", true)).catch(() => status("not saved"));
+}
+function postAsk(text) {
+  if (!db || !uid) return;
+  const id = "q__" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5) + "__" + uid;
+  setDoc(doc(askCol(), id), {
+    key: "q", uid: uid, name: me.name || "Someone", fromGroup: me.group || "",
+    text: text, updated: Date.now()
+  }).then(() => status("posted", true)).catch(() => status("not posted"));
+}
+function saveVotes(ids) {
+  if (!db || !uid) return;
+  setDoc(doc(askCol(), "votes__" + uid), {
+    key: "votes", uid: uid, name: me.name || "Someone",
+    text: ids.join("|"), updated: Date.now()
+  }).then(() => status("saved", true)).catch(() => status("not saved"));
+}
+function myVotes() { return (votes[uid] || []); }
+function voteCount(id) {
+  let n = 0;
+  Object.keys(votes).forEach((u) => { if (votes[u].indexOf(id) > -1) n++; });
+  return n;
+}
+function topAsks(limit) {
+  return asks.slice()
+    .map((a) => ({ a: a, n: voteCount(a.id) }))
+    .sort((x, y) => y.n - x.n)
+    .slice(0, limit || 5);
+}
+
+function beat() {
+  if (!db || !uid || !me.group || !me.name) return;
+  setDoc(doc(presence(me.group), uid), { name: me.name, at: Date.now() }).catch(() => {});
+}
+setInterval(beat, 30000);
+
+function clearSubs() { unsubs.forEach((f) => { try { f(); } catch (e) {} }); unsubs = []; }
+
+function resubscribe() {
+  if (!db || !uid) return;
+  clearSubs();
+
+  if (me.reading) {
+    unsubs.push(onSnapshot(talkGroup(me.reading), (snap) => {
+      readers = snap.docs.map((d) => Object.assign({ id: d.id }, d.data()));
+      if (["cold", "saw"].indexOf(STEPS[cur].kind) > -1) renderStep();
+    }, () => {}));
+    unsubs.push(onSnapshot(liveProps(me.reading), (snap) => {
+      shots = {};
+      snap.docs.forEach((d) => {
+        const v = d.data() || {};
+        if (!v.key || !v.img) return;
+        (shots[v.key] = shots[v.key] || []).push({ id: d.id, img: v.img, name: v.name, updated: v.updated || 0 });
+      });
+      if (["cold", "role"].indexOf(STEPS[cur].kind) > -1) renderStep();
+    }, () => {}));
+    unsubs.push(onSnapshot(talkNotes(me.reading), (snap) => {
+      notes = {};
+      snap.docs.forEach((d) => {
+        const v = d.data() || {};
+        if (!v.key) return;
+        (notes[v.key] = notes[v.key] || []).push(Object.assign({ id: d.id }, v));
+      });
+      if (STEPS[cur].kind === "role") renderStep();
+    }, () => {}));
+  }
+
+  if (me.group) {
+    unsubs.push(onSnapshot(talkDoc(me.group), (snap) => {
+      gdoc = snap.exists() ? snap.data() : {};
+      if (["present", "back", "saw"].indexOf(STEPS[cur].kind) > -1) applyGroup();
+    }, () => {}));
+    unsubs.push(onSnapshot(presence(me.group), (snap) => {
+      const now = Date.now(), live = [];
+      snap.docs.forEach((d) => {
+        const v = d.data() || {};
+        if (v.name && now - (v.at || 0) < 90000) live.push(v.name);
+      });
+      const h = $("here"); h.innerHTML = "";
+      live.forEach((n) => h.appendChild(el("span", "chip" + (n === me.name ? "" : " muted"),
+        n === me.name ? n + " (you)" : n)));
+    }, () => {}));
+    beat();
+  }
+
+  unsubs.push(onSnapshot(askCol(), (snap) => {
+    asks = []; votes = {};
+    snap.docs.forEach((d) => {
+      const v = d.data() || {};
+      if (v.key === "q" && String(v.text || "").trim()) {
+        asks.push({ id: d.id, text: v.text, name: v.name, fromGroup: v.fromGroup, updated: v.updated || 0 });
+      } else if (v.key === "votes") {
+        votes[v.uid] = String(v.text || "").split("|").filter(Boolean);
+      }
+    });
+    asks.sort((a, b) => (a.updated || 0) - (b.updated || 0));
+    if (["ask", "role"].indexOf(STEPS[cur].kind) > -1) renderStep();
+  }, () => {}));
+
+  groupList.forEach((g) => {
+    unsubs.push(onSnapshot(talkDoc(g), (snap) => {
+      allGroups[g] = snap.exists() ? snap.data() : {};
+      if (["commit", "present"].indexOf(STEPS[cur].kind) > -1) renderStep();
+    }, () => {}));
+  });
+}
+
+function applyGroup() {
+  document.querySelectorAll("[data-gkey]").forEach((n) => {
+    if (document.activeElement === n) return;
+    const v = gdoc[n.dataset.gkey];
+    if (v != null && n.value !== v) n.value = v;
+  });
+}
+function bindGroup(node, key) {
+  node.dataset.gkey = key;
+  node.value = gdoc[key] || "";
+  node.addEventListener("input", () => {
+    const patch = {}; patch[key] = node.value;
+    debounce("g-" + key, () => writeGroup(me.group, patch), 700);
+  });
+}
+
+/* ---------------------------------------------------------- blocks */
+function field(label, hint, rows) {
+  const w = el("div", "f");
+  w.appendChild(el("span", "lbl", label));
+  if (hint) w.appendChild(el("span", "hint", hint));
+  const t = el("textarea"); t.rows = rows || 2;
+  w.appendChild(t);
+  return { box: w, input: t };
+}
+function groupField(key, label, hint, rows) {
+  const f = field(label, hint, rows);
+  bindGroup(f.input, key);
+  return f.box;
+}
+function pageShots(host) {
+  if (!me.reading) { host.appendChild(el("p", "empty", "Pick the group you are reading.")); return; }
+  let any = 0;
+  const grid = el("div", "shots");
+  PAGES.forEach((pg, i) => {
+    const list = (shots[STAGE + "pg" + (i + 1)] || []).slice()
+      .sort((a, b) => (b.updated || 0) - (a.updated || 0));
+    if (!list.length) return;
+    any++;
+    const c = el("div", "shot");
+    const im = el("img"); im.src = list[0].img; im.alt = pg;
+    im.addEventListener("click", () => c.classList.toggle("big"));
+    c.appendChild(im);
+    c.appendChild(el("span", null, pg));
+    grid.appendChild(c);
+  });
+  if (!any) {
+    host.appendChild(el("p", "empty",
+      "No pages uploaded for group " + me.reading + " at this stage yet."));
+    return;
+  }
+  host.appendChild(grid);
+}
+
+/* ---------------------------------------------------------- steps */
+function buildCold(host) {
+  host.appendChild(el("h3", null, "Group " + (me.reading || "—") + ", as it stands"));
+  pageShots(host);
+
+  host.appendChild(el("h3", null, "Answer alone"));
+  COLD.forEach(([k, q], i) => {
+    const w = el("div", "q");
+    w.appendChild(el("h4", null, (i + 1) + ".  " + q));
+    const t = el("textarea"); t.rows = 2;
+    t.value = draft[k] || "";
+    t.addEventListener("input", () => {
+      draft[k] = t.value; lsSet("talk-draft", JSON.stringify(draft));
+      debounce("d", saveDraft, 900);
+    });
+    w.appendChild(t);
+    host.appendChild(w);
+  });
+
+  const posted = (readers || []).some((r) => r.id === uid);
+  const b = el("button", posted ? "ghost" : "primary",
+    posted ? "Update my reading" : "Post my reading");
+  b.addEventListener("click", postCold);
+  host.appendChild(b);
+  host.appendChild(el("p", "note",
+    posted ? "Group " + me.reading + " can see this." : "Nobody sees this until you post."));
+}
+
+function buildSaw(host) {
+  const sel = el("div", "f");
+  sel.appendChild(el("span", "lbl", "SHOWING READINGS OF GROUP " + (me.reading || "—")));
+  sel.appendChild(el("span", "hint", "Change the group at the top of the page to read another."));
+  host.appendChild(sel);
+
+  const list = (readers || []).filter((r) => r.answers);
+  if (!list.length) { host.appendChild(el("p", "empty", "Nothing posted yet.")); }
+  COLD.forEach(([k, q], i) => {
+    const got = list.filter((r) => String((r.answers || {})[k] || "").trim());
+    if (!got.length) return;
+    const w = el("div", "q");
+    w.appendChild(el("h4", null, (i + 1) + ".  " + q));
+    const cards = el("div", "cards");
+    got.forEach((r) => {
+      const c = el("div", "card");
+      c.appendChild(el("span", "who", (r.name || "Someone") +
+        (r.fromGroup ? "  ·  group " + r.fromGroup : "")));
+      c.appendChild(el("div", "tx", r.answers[k]));
+      cards.appendChild(c);
+    });
+    w.appendChild(cards);
+    host.appendChild(w);
+  });
+
+  host.appendChild(el("div", "silence",
+    "If this is your group being read, stay silent and write down what you hear. You get the floor in step 3."));
+  if (me.group) {
+    host.appendChild(el("h3", null, "What we heard"));
+    host.appendChild(groupField("heard", "What the room said about us",
+      "Write it as they said it, not as you wish they had.", 3));
+  }
+}
+
+function buildPresent(host) {
+  host.appendChild(el("div", "band", "Two minutes. Spoken, no slides. Three sentences, then the two things."));
+  if (!me.group) { host.appendChild(el("p", "empty", "Pick your group at the top.")); return; }
+  host.appendChild(groupField("presDiv", "The divergence, in one sentence with a date", null, 2));
+  host.appendChild(groupField("presWorld", "The world, in one sentence", null, 2));
+  host.appendChild(groupField("presOrg", "The organization, in one sentence", null, 2));
+  host.appendChild(groupField("presSaw", "One thing the room saw that we did not intend", null, 2));
+  host.appendChild(groupField("presMissed", "One thing the room missed that we meant to be there", null, 2));
+
+  host.appendChild(el("h3", null, "Everyone's three sentences"));
+  const cards = el("div", "cards");
+  let any = 0;
+  groupList.forEach((g) => {
+    const d = allGroups[g] || {};
+    const bits = [d.presDiv, d.presWorld, d.presOrg].filter((x) => String(x || "").trim());
+    if (!bits.length) return;
+    any++;
+    const c = el("div", "card");
+    c.appendChild(el("span", "who", "GROUP " + g));
+    c.appendChild(el("div", "tx", bits.join("\n")));
+    cards.appendChild(c);
+  });
+  if (!any) cards.appendChild(el("p", "empty", "Nothing written yet."));
+  host.appendChild(cards);
+}
+
+function buildRole(host) {
+  host.appendChild(el("div", "band",
+    "You are reading group " + (me.reading || "—") + ". Sixteen minutes each way. Ask questions, do not defend."));
+  pageShots(host);
+
+  const classQ = topAsks(5).filter((x) => x.n > 0);
+  if (classQ.length) {
+    const cw = el("div", "q");
+    cw.appendChild(el("h4", null, "The class's own questions"));
+    cw.appendChild(el("p", "note", "Voted for in step 6. Answer these as well as your role's."));
+    const ul = el("ul");
+    classQ.forEach((x) => ul.appendChild(el("li", null, x.a.text)));
+    ul.style.cssText = "margin:.2rem 0 .6rem 1.1rem;padding:0;font-size:.92rem";
+    cw.appendChild(ul);
+    const t0 = el("textarea"); t0.rows = 3;
+    t0.placeholder = "answers for group " + (me.reading || "—");
+    const m0 = (notes["classq"] || []).filter((x) => x.uid === uid)[0];
+    t0.value = m0 ? m0.text : "";
+    t0.addEventListener("input", () => {
+      debounce("n-classq", () => saveNote(me.reading, "classq", t0.value), 900);
+    });
+    cw.appendChild(t0);
+    host.appendChild(cw);
+  }
+
+  ROLES.forEach((r) => {
+    const w = el("div", "q");
+    w.appendChild(el("h4", null, r[1]));
+    const ul = el("ul");
+    r[2].forEach((q) => ul.appendChild(el("li", null, q)));
+    ul.style.cssText = "margin:.2rem 0 .6rem 1.1rem;padding:0;font-size:.92rem;color:var(--soft)";
+    w.appendChild(ul);
+
+    const t = el("textarea"); t.rows = 3;
+    t.placeholder = "notes for group " + (me.reading || "—");
+    const mine = (notes[r[0]] || []).filter((x) => x.uid === uid)[0];
+    t.value = mine ? mine.text : "";
+    t.addEventListener("input", () => {
+      debounce("n-" + r[0], () => saveNote(me.reading, r[0], t.value), 900);
+    });
+    w.appendChild(t);
+
+    const others = (notes[r[0]] || []).filter((x) => x.uid !== uid && String(x.text || "").trim());
+    if (others.length) {
+      const cards = el("div", "cards");
+      others.forEach((x) => {
+        const c = el("div", "card");
+        c.appendChild(el("span", "who", (x.name || "Someone") +
+          (x.fromGroup ? "  ·  group " + x.fromGroup : "")));
+        c.appendChild(el("div", "tx", x.text));
+        cards.appendChild(c);
+      });
+      w.appendChild(cards);
+    }
+    host.appendChild(w);
+  });
+}
+
+function buildBack(host) {
+  if (!me.group) { host.appendChild(el("p", "empty", "Pick your group at the top.")); return; }
+  host.appendChild(el("p", "note", "Read your notes together before you fill this in."));
+  [
+    ["b1", "Which note did more than one person give us?", null],
+    ["b2", "Which note do we disagree with, and are we sure?", null],
+    ["b3", "What broke that was working before?", null],
+    ["b4", "What did the room misread, and is that their problem or ours?",
+     "Both answers are allowed. Decide which."],
+    ["b5", "The three things to do before the next draft, in order", null]
+  ].forEach(([k, q, h]) => {
+    const w = el("div", "q");
+    w.appendChild(el("h4", null, q));
+    if (h) w.appendChild(el("p", "note", h));
+    const t = el("textarea"); t.rows = 2;
+    bindGroup(t, k);
+    w.appendChild(t);
+    host.appendChild(w);
+  });
+
+  host.appendChild(el("h3", null, "Each person, one line"));
+  [["l1", "The single most useful change we could make this week is:"],
+   ["l2", "The thing we keep avoiding is:"],
+   ["l3", "By the next draft, this page will be finished:"]].forEach(([k, q]) => {
+    const w = el("div", "q");
+    w.appendChild(el("h4", null, q));
+    const t = el("textarea"); t.rows = 2;
+    const mine = (notes[k] || []).filter((x) => x.uid === uid)[0];
+    t.value = mine ? mine.text : "";
+    t.addEventListener("input", () => {
+      debounce("l-" + k, () => saveNote(me.group, k, t.value), 900);
+    });
+    w.appendChild(t);
+    host.appendChild(w);
+  });
+}
+
+function buildCommit(host) {
+  host.appendChild(el("div", "band",
+    "Two sentences out loud. One thing you are changing, one thing you are cutting. Nothing else."));
+  if (me.group) {
+    host.appendChild(groupField("cChange", "One thing we are changing", null, 2));
+    host.appendChild(groupField("cCut", "One thing we are cutting",
+      "Name a subtraction, not another addition.", 2));
+  }
+  host.appendChild(el("h3", null, "The whole class"));
+  const cards = el("div", "cards");
+  let any = 0;
+  groupList.forEach((g) => {
+    const d = allGroups[g] || {};
+    const ch = String(d.cChange || "").trim(), ct = String(d.cCut || "").trim();
+    if (!ch && !ct) return;
+    any++;
+    const c = el("div", "card");
+    c.appendChild(el("span", "who", "GROUP " + g));
+    c.appendChild(el("div", "tx",
+      (ch ? "Changing: " + ch : "") + (ch && ct ? "\n" : "") + (ct ? "Cutting: " + ct : "")));
+    cards.appendChild(c);
+  });
+  if (!any) cards.appendChild(el("p", "empty", "Nothing committed yet."));
+  host.appendChild(cards);
+}
+
+function buildAsk(host) {
+  const w = el("div", "q");
+  w.appendChild(el("h4", null, "Add a question"));
+  w.appendChild(el("p", "note",
+    "Something that would tell you whether one of these zines is any good. A question, not a judgement."));
+  const t = el("textarea"); t.rows = 2;
+  t.placeholder = "e.g. Does the world give anything up, or does it only gain things?";
+  const b = el("button", "primary", "Post my question");
+  b.style.marginTop = ".5rem";
+  b.addEventListener("click", () => {
+    const v = t.value.trim();
+    if (!v) { status("write something first"); return; }
+    postAsk(v); t.value = "";
+  });
+  w.appendChild(t); w.appendChild(b);
+  host.appendChild(w);
+
+  host.appendChild(el("h3", null, "Vote for the ones worth keeping"));
+  host.appendChild(el("p", "note", "Pick as many as you like. Counts update live."));
+  const mineV = myVotes();
+  const list = asks.slice()
+    .map((a) => ({ a: a, n: voteCount(a.id) }))
+    .sort((x, y) => y.n - x.n || (x.a.updated - y.a.updated));
+  if (!list.length) host.appendChild(el("p", "empty", "No questions yet."));
+  list.forEach((row) => {
+    const on = mineV.indexOf(row.a.id) > -1;
+    const c = el("div", "card");
+    c.style.display = "flex"; c.style.gap = ".6rem"; c.style.alignItems = "flex-start";
+    const vb = el("button", on ? "primary" : "ghost", on ? "Voted ✓" : "Vote");
+    vb.style.cssText = "flex:0 0 auto;font-size:.7rem;padding:.2rem .5rem;min-width:4.6rem";
+    vb.addEventListener("click", () => {
+      const ids = myVotes().slice();
+      const at = ids.indexOf(row.a.id);
+      if (at > -1) ids.splice(at, 1); else ids.push(row.a.id);
+      votes[uid] = ids;
+      saveVotes(ids);
+      renderStep();
+    });
+    const mid = el("div"); mid.style.flex = "1 1 auto";
+    mid.appendChild(el("span", "who", (row.a.name || "Someone") +
+      (row.a.fromGroup ? "  ·  group " + row.a.fromGroup : "")));
+    mid.appendChild(el("div", "tx", row.a.text));
+    const cnt = el("span", "who", row.n ? String(row.n) : "");
+    cnt.style.cssText = "flex:0 0 auto;font-size:.95rem;color:var(--olivelt);min-width:1.4rem;text-align:right";
+    c.appendChild(vb); c.appendChild(mid); c.appendChild(cnt);
+    host.appendChild(c);
+  });
+
+  const top = topAsks(5).filter((x) => x.n > 0);
+  if (top.length) {
+    host.appendChild(el("h3", null, "Top of the list"));
+    host.appendChild(el("p", "note", "These appear on the role reading page for everyone."));
+    top.forEach((x, i) => {
+      const c = el("div", "card");
+      c.appendChild(el("span", "who", (i + 1) + "  ·  " + x.n + " votes"));
+      c.appendChild(el("div", "tx", x.a.text));
+      host.appendChild(c);
+    });
+  }
+}
+
+/* ---------------------------------------------------------- timer */
+let tLeft = 0, tId = null;
+function buildTimer(host, mins) {
+  const w = el("div", "timer");
+  const clock = el("span", "clock", "00:00");
+  const start = el("button", "primary", "Start " + mins + " min");
+  const stop = el("button", "ghost", "Stop");
+  function paint() {
+    const m = Math.floor(tLeft / 60), s = tLeft % 60;
+    clock.textContent = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    clock.className = "clock" + (tLeft > 0 && tLeft <= 120 ? " low" : "");
+  }
+  start.addEventListener("click", () => {
+    clearInterval(tId); tLeft = mins * 60; paint();
+    tId = setInterval(() => { tLeft--; paint(); if (tLeft <= 0) clearInterval(tId); }, 1000);
+  });
+  stop.addEventListener("click", () => { clearInterval(tId); tLeft = 0; paint(); });
+  paint();
+  w.appendChild(clock); w.appendChild(start); w.appendChild(stop);
+  w.appendChild(el("span", "status", "suggested length, not a rule"));
+  host.appendChild(w);
+}
+
+/* ---------------------------------------------------------- render */
+function renderStep() {
+  const s = STEPS[cur];
+  const host = $("step");
+  host.innerHTML = "";
+  host.appendChild(el("p", "status", "STEP " + s.tag));
+  host.appendChild(el("h2", null, s.title));
+  (s.blurb || []).forEach((t) => host.appendChild(el("p", null, t)));
+  buildTimer(host, s.mins);
+
+  if (!uid) { host.appendChild(el("div", "warn", "Connecting…")); }
+  else if (s.kind === "cold") buildCold(host);
+  else if (s.kind === "saw") buildSaw(host);
+  else if (s.kind === "present") buildPresent(host);
+  else if (s.kind === "role") buildRole(host);
+  else if (s.kind === "back") buildBack(host);
+  else if (s.kind === "ask") buildAsk(host);
+  else if (s.kind === "commit") buildCommit(host);
+
+  renderNav();
+  applyGroup();
+  try { window.scrollTo(0, 0); } catch (e) {}
+}
+
+function doneKey(id) { return "talk-done-" + id; }
+function renderNav() {
+  const nav = $("nav"); nav.innerHTML = "";
+  STEPS.forEach((s, i) => {
+    const b = el("button", lsGet(doneKey(s.id), "") === "1" ? "done" : null, s.tag);
+    b.title = s.title;
+    b.setAttribute("aria-current", i === cur ? "true" : "false");
+    b.addEventListener("click", () => { cur = i; renderStep(); });
+    nav.appendChild(b);
+  });
+  const n = STEPS.filter((s) => lsGet(doneKey(s.id), "") === "1").length;
+  $("prog").textContent = n + " of " + STEPS.length + " done";
+  $("mark").textContent = lsGet(doneKey(STEPS[cur].id), "") === "1"
+    ? "Done ✓" : "Mark this step done";
+  $("prev").disabled = cur === 0;
+  $("next").textContent = cur === STEPS.length - 1 ? "End" : "Next →";
+}
+
+$("prev").addEventListener("click", () => { if (cur > 0) { cur--; renderStep(); } });
+$("next").addEventListener("click", () => { if (cur < STEPS.length - 1) { cur++; renderStep(); } });
+$("mark").addEventListener("click", () => {
+  const k = doneKey(STEPS[cur].id);
+  lsSet(k, lsGet(k, "") === "1" ? "" : "1");
+  renderNav();
+});
+$("pdf").addEventListener("click", () => window.print());
+
+renderStep();
+</script>
+</body>
+</html>
