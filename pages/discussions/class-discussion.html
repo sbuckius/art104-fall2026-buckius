@@ -45,7 +45,7 @@ body{
 
 /* ══ THE COVER ══════════════════════════════════════════════════════ */
 header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
-.cover{max-width:1240px;margin:0 auto;padding:14px 18px 0}
+.cover{max-width:1240px;margin:0 auto;padding:14px 18px 16px}
 .cover-top{
   display:flex;justify-content:space-between;align-items:baseline;gap:12px;
   font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
@@ -366,7 +366,7 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
 .divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
 
 @media (max-width:720px){
-  .cover{padding:12px 14px 0}
+  .cover{padding:12px 14px 14px}
   main{padding:18px 14px 210px}
   .cover-band{flex-wrap:wrap}
   .boardgrid{grid-template-columns:1fr;padding:11px;gap:12px}
@@ -387,20 +387,15 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
     <div class="cover-band">
       <div class="roundel" id="dayRoundel">DAY<br>1</div>
       <div class="cover-tag">
-        <span class="cover-kicker">Today on the board</span>
         <span id="promptText">Loading today's boards</span>
       </div>
-    </div>
-    <div class="cover-foot">
-      <span><b>How it works</b> Every question is open. Answer whichever ones you have something to say about.</span>
-      <span><b>Live</b> Every question and every answer sits on this one page.</span>
     </div>
   </div>
 </header>
 
 <main>
   <div class="runmeter">
-    <div class="runmeter-top"><span id="meterLabel">The floor is open</span><span class="pct" id="meterCount">0 answers</span></div>
+    <div class="runmeter-top"><span id="meterLabel">Responses</span><span class="pct" id="meterCount">0 answers</span></div>
     <div class="track"><div class="fill" id="meterFill"></div></div>
   </div>
 
@@ -439,22 +434,28 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
     <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
 
     <div class="groupmark"><span>Edit the day on screen</span></div>
-    <p class="ed-note">These boxes change the day that is on screen right now. To start a new day, use Add a day below instead.</p>
+    <p class="ed-note">These boxes change the day that is on screen right now. To start a new day, use Add a day below instead. To drop a question, clear its box. Questions keep their numbers so answers stay with the right one.</p>
     <label class="bl" for="edLabel">Day name</label>
     <input type="text" id="edLabel" placeholder="Day 3"/>
+    <label class="bl" for="edHead">Headline at the top of the page</label>
+    <input type="text" id="edHead" placeholder="Pick any question below and add your answer"/>
     <div id="edQuestions"></div>
     <div class="ed-actions">
+      <button class="btn" id="edMore" type="button">Add another question</button>
       <button class="btn btn-ink" id="saveQuestions" type="button">Save changes to this day</button>
       <button class="btn" id="clearDay" type="button">Clear this day's answers</button>
     </div>
 
 
     <div class="groupmark"><span>Add a day</span></div>
-    <p class="ed-note">Every day gets its own blank boards and keeps its own answers. Fill in as many questions as you need, the rest stay empty.</p>
+    <p class="ed-note">Every day gets its own blank boards and keeps its own answers. Write as many questions as you like. Add another question gives you more boxes, and empty boxes are skipped.</p>
     <label class="bl" for="newLabel">Day name</label>
     <input type="text" id="newLabel" placeholder="Day 2"/>
+    <label class="bl" for="newHead">Headline at the top of the page</label>
+    <input type="text" id="newHead" placeholder="Pick any question below and add your answer"/>
     <div id="newQuestions"></div>
     <div class="ed-actions">
+      <button class="btn" id="newMore" type="button">Add another question</button>
       <button class="btn" id="addDay" type="button">Add to the list</button>
       <button class="btn btn-ink" id="startDay" type="button">Add and open now</button>
     </div>
@@ -524,9 +525,13 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
 // Passcode for the instructor desk. Change this to whatever you like.
 const TEACHER_CODE = "questions";
 
-// How many questions each day carries. Everything follows this number:
-// the boards, the picker, the desk fields and the colors.
-const QUESTIONS = 7;
+// Each day can carry any number of questions. This is only how many empty
+// boxes the Add a day form starts with. Add another question adds more.
+const STARTING_BOXES = 7;
+
+// The headline next to the day roundel when a day has no headline of its
+// own. Each day can set its own in the instructor desk.
+const DEFAULT_HEADLINE = "Pick any question below and add your answer";
 
 // Let students browse earlier days from the strip under the boards.
 // Set this to false to keep old days visible only from the instructor desk.
@@ -622,10 +627,41 @@ function listOf(val, len, fill) {
 
 function whoLabel(w) { return w ? "Artist " + w : ""; }
 
-function questionsOf(m) { return listOf(m && m.questions, QUESTIONS, ""); }
+// A day's questions in order, however many there are. Empty slots at the
+// end are dropped so a day never shows blank boards after its last question.
+function questionsOf(m) {
+  const raw = (m && m.questions) || [];
+  const keys = Object.keys(raw).map(Number).filter((n) => !isNaN(n));
+  const len = keys.length ? Math.max(...keys) + 1 : 0;
+  const qs = listOf(raw, len, "").map((q) => String(q));
+  while (qs.length && !qs[qs.length - 1].trim()) qs.pop();
+  return qs;
+}
+
+// How many boards a day needs: one per question, plus any board that
+// still holds answers after its question was cleared, so nothing vanishes.
+function slotsFor(m, bag) {
+  let n = questionsOf(m).length;
+  Object.keys(bag || {}).forEach((k) => {
+    const i = +String(k).slice(1);
+    if (k[0] === "q" && !isNaN(i) && i + 1 > n) n = i + 1;
+  });
+  return n;
+}
 
 function countPosts(bag) {
-  return range(QUESTIONS).reduce((n, q) => n + Object.keys((bag && bag["q" + q]) || {}).length, 0);
+  return Object.keys(bag || {}).reduce((n, k) => n + Object.keys(bag[k] || {}).length, 0);
+}
+
+// The question picker in the bottom bar follows the day on screen.
+function buildPicker() {
+  const pick = $("qPick");
+  const n = Math.max(1, questionsOf(meta).length);
+  const keep = Math.min(+pick.value || 0, n - 1);
+  pick.innerHTML = range(n)
+    .map((i) => `<option value="${i}">Question ${i + 1}</option>`)
+    .join("");
+  pick.value = String(keep);
 }
 
 // Each answer keeps its own database key so a single one can be removed
@@ -640,7 +676,11 @@ function rowsFor(bag, q) {
 /* ── drawing the boards ────────────────────────────────────────── */
 function boardsHTML(m, bag, live) {
   const qs = questionsOf(m);
-  return range(QUESTIONS)
+  const slots = slotsFor(m, bag);
+  if (!slots) {
+    return '<div class="wk-empty" style="grid-column:1/-1">No questions on this day yet</div>';
+  }
+  return range(slots)
     .map((g) => {
       const q = qs[g] || "";
       const rows = rowsFor(bag, g);
@@ -685,7 +725,7 @@ function boardsHTML(m, bag, live) {
             : '<div class="post-empty">Nothing on this board yet</div>'
         }</div>
         ${
-          live
+          live && q
             ? `<div class="board-foot"><button class="btn board-post" data-q="${g}" type="button">${hasDraft(g) ? "Finish your draft" : "Answer Question " + (g + 1)}</button></div>`
             : ""
         }
@@ -715,7 +755,6 @@ function renderBoards() {
   const n = countPosts(posts);
   $("meterCount").textContent = n === 1 ? "1 answer" : n + " answers";
   $("meterFill").style.width = Math.min(100, n * 4) + "%";
-  $("meterLabel").textContent = n === 0 ? "The floor is open" : "The floor is filling up";
   renderAnswers();
 }
 
@@ -975,12 +1014,13 @@ function attachDay(id) {
     const label = meta.label || "This day";
     if (!previewId) $("barDay").textContent = label;
     $("promptText").textContent = countQuestions(meta)
-      ? countQuestions(meta) + " questions open for answers"
+      ? (meta.headline || DEFAULT_HEADLINE)
       : "No questions written for this day yet";
     $("dayRoundel").innerHTML = roundelText(meta.label);
     document.title = (meta.label ? meta.label + " · " : "") + "Class Discussion";
+    buildPicker();
     renderBoards();
-    if (unlocked) fillDesk();
+    if (unlocked && deskFor !== sessionId) fillDesk();
   }, dbTrouble);
 
   postsRef = db.ref(`${POSTS}/${id}`);
@@ -1004,33 +1044,55 @@ function roundelText(label) {
 
 
 /* ── the instructor desk question fields ────────────────────────── */
-function questionFields(prefix) {
-  return range(QUESTIONS)
-    .map(
-      (i) => `<div class="qrow">
-        <div class="qnum">Q${i + 1}</div>
-        <textarea id="${prefix}${i}" placeholder="Question ${i + 1}"></textarea>
-      </div>`
-    )
-    .join("");
+// Top section edits the day on screen. Bottom section builds a new day.
+// Both grow one box at a time with Add another question.
+function fieldRow(i, text) {
+  return `<div class="qrow">
+    <div class="qnum">Q${i + 1}</div>
+    <textarea placeholder="Question ${i + 1}">${esc(text || "")}</textarea>
+  </div>`;
 }
 
-// Top section edits the day on screen. Bottom section builds a new day.
-$("edQuestions").innerHTML = questionFields("edQ");
-$("newQuestions").innerHTML = questionFields("newQ");
+function setFields(boxId, values) {
+  $(boxId).innerHTML = values.map((t, i) => fieldRow(i, t)).join("");
+}
 
+function addField(boxId) {
+  const box = $(boxId);
+  const i = box.querySelectorAll("textarea").length;
+  box.insertAdjacentHTML("beforeend", fieldRow(i, ""));
+  box.lastElementChild.querySelector("textarea").focus();
+}
+
+function readFields(boxId) {
+  return Array.from($(boxId).querySelectorAll("textarea")).map((t) => t.value.trim());
+}
+
+$("edMore").addEventListener("click", () => addField("edQuestions"));
+$("newMore").addEventListener("click", () => addField("newQuestions"));
+
+setFields("newQuestions", range(STARTING_BOXES).map(() => ""));
+
+let deskFor = null;   // which day the top section was last filled from
 function fillDesk() {
+  deskFor = sessionId;
   $("edLabel").value = meta.label || "";
+  $("edHead").value = meta.headline || "";
   const qs = questionsOf(meta);
-  range(QUESTIONS).forEach((i) => { $("edQ" + i).value = qs[i] || ""; });
+  setFields("edQuestions", qs.length ? qs : [""]);
 }
 
 $("saveQuestions").addEventListener("click", () => {
   if (!db || !sessionId) return flag("Not connected to Firebase yet");
-  const qs = range(QUESTIONS).map((i) => $("edQ" + i).value.trim());
-  if (!qs.some(Boolean)) return flag("Write at least one question first");
+  const qs = readFields("edQuestions");
+  while (qs.length && !qs[qs.length - 1]) qs.pop();
+  if (!qs.length) return flag("Write at least one question first");
   db.ref(`${INDEX}/${sessionId}`)
-    .update({ questions: qs, label: $("edLabel").value.trim() || "This day" })
+    .update({
+      questions: qs,
+      label: $("edLabel").value.trim() || "This day",
+      headline: $("edHead").value.trim()
+    })
     .then(() => flag("Saved. Every browser has the questions now."))
     .catch(dbTrouble);
 });
@@ -1045,7 +1107,7 @@ $("clearDay").addEventListener("click", () => {
 /* ── reading the answers ────────────────────────────────────────── */
 function answerBlock(m, bag) {
   const qs = questionsOf(m);
-  return range(QUESTIONS)
+  return range(slotsFor(m, bag))
     .map((g) => {
       const rows = rowsFor(bag, g);
       return `<div class="ansgroup">
@@ -1117,7 +1179,7 @@ function answersAsText() {
     const qs = questionsOf(m);
     lines.push((m.label || "Untitled").toUpperCase());
     lines.push("");
-    range(QUESTIONS).forEach((g) => {
+    range(slotsFor(m, bag)).forEach((g) => {
       lines.push("QUESTION " + (g + 1) + ": " + (qs[g] || "no question"));
       rowsFor(bag, g).forEach((r) => lines.push("- " + (r.who ? whoLabel(r.who) + ": " : "") + r.text));
       lines.push("");
@@ -1325,7 +1387,7 @@ function renderDays() {
           <div class="wk-name">${esc(d.label) || "Untitled"}${
             id === liveId ? '<span class="wk-tag">On screen now</span>' : ""
           }${id === previewId ? '<span class="wk-tag wk-tag-you">You are reading this</span>' : ""}</div>
-          <div class="wk-q">${n} of ${QUESTIONS} questions written</div>
+          <div class="wk-q">${n} ${n === 1 ? "question" : "questions"}</div>
         </div>
         <div class="wk-btns">
           ${id === liveId ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
@@ -1400,31 +1462,33 @@ $("dayList").addEventListener("click", (e) => {
 });
 
 /* ── adding days ────────────────────────────────────────────────── */
-function makeDay(label, questions, openIt) {
+function makeDay(label, questions, openIt, headline) {
   const id = "d" + Date.now() + Math.floor(Math.random() * 1000);
   return db.ref(`${INDEX}/${id}`)
     .set({
       label: label || "Day " + nextDayNumber(),
-      questions: listOf(questions, QUESTIONS, ""),
+      headline: headline || "",
+      questions: questions,
       created: Date.now()
     })
     .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
 }
 
-// Reads the seven Add a day boxes. Each question keeps its slot, so a
-// blank Q3 leaves Question 3 empty instead of shifting the rest up.
+// Reads every Add a day box. Empty boxes are skipped, so the new day's
+// questions are numbered 1, 2, 3 with no gaps.
 function addFromForm(openIt) {
   if (!db) return flag("Not connected to Firebase yet");
-  const qs = range(QUESTIONS).map((i) => $("newQ" + i).value.trim());
-  if (!qs.some(Boolean)) return flag("Write at least one question in the Add a day boxes");
+  const qs = readFields("newQuestions").filter(Boolean);
+  if (!qs.length) return flag("Write at least one question in the Add a day boxes");
 
   const btns = [$("addDay"), $("startDay")];
   btns.forEach((b) => (b.disabled = true));
 
-  makeDay($("newLabel").value.trim(), qs, openIt)
+  makeDay($("newLabel").value.trim(), qs, openIt, $("newHead").value.trim())
     .then(() => {
-      range(QUESTIONS).forEach((i) => ($("newQ" + i).value = ""));
+      setFields("newQuestions", range(STARTING_BOXES).map(() => ""));
       $("newLabel").value = "";
+      $("newHead").value = "";
       if (openIt) {
         previewId = null;
         syncDay();
@@ -1481,10 +1545,8 @@ async function loadFirebase() {
   return false;
 }
 
-// The picker follows however many questions the page is set to carry.
-$("qPick").innerHTML = range(QUESTIONS)
-  .map((i) => `<option value="${i}">Question ${i + 1}</option>`)
-  .join("");
+// The picker follows however many questions the day on screen carries.
+buildPicker();
 
 // Draw the empty boards straight away so the page never sits blank.
 renderBoards();
