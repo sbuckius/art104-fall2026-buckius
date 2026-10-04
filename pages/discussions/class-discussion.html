@@ -166,7 +166,7 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
   font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);padding:7px 10px;
 }
 .post.self{border-left-color:var(--pulpred);background:#f8fbfa}
-.post.hasdel{padding-right:32px}
+.post.hasdel{padding-right:56px}
 .post .del{
   position:absolute;top:5px;right:5px;
   width:21px;height:21px;line-height:1;padding:0;cursor:pointer;
@@ -174,7 +174,6 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
   font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;
 }
 .post .del:hover{background:var(--pulpred);color:#fff}
-.post.hasdel{padding-right:56px}
 .post .fix{
   position:absolute;top:5px;right:29px;
   width:21px;height:21px;line-height:1;padding:0;cursor:pointer;
@@ -352,7 +351,16 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
 .wk-edit textarea{resize:vertical;min-height:60px}
 .wk-edit input:focus,.wk-edit textarea:focus{border-color:var(--pulpred)}
 .wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;border:3px dashed var(--rule);padding:16px;text-align:center}
-.ed-flag{border:3px solid var(--cobalt);color:var(--cobalt);background:#fff;padding:11px 14px;margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+
+/* Desk messages float at the top of the screen so they show wherever
+   you happen to be scrolled. */
+.ed-flag{
+  position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:1200;
+  max-width:min(560px,92vw);border:3px solid var(--jet);color:#fff;background:var(--cobalt);
+  box-shadow:5px 5px 0 var(--chrome-deep);padding:11px 14px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  line-height:1.6;text-transform:uppercase;display:none;
+}
 .ed-flag.on{display:block}
 
 .divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
@@ -430,23 +438,22 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
     </div>
     <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
 
-    <div class="groupmark"><span>Today's questions</span></div>
-    <p class="ed-note">They appear on the page in this order, and anyone in the room can answer any of them.</p>
+    <div class="groupmark"><span>Edit the day on screen</span></div>
+    <p class="ed-note">These boxes change the day that is on screen right now. To start a new day, use Add a day below instead.</p>
     <label class="bl" for="edLabel">Day name</label>
     <input type="text" id="edLabel" placeholder="Day 3"/>
     <div id="edQuestions"></div>
     <div class="ed-actions">
-      <button class="btn btn-ink" id="saveQuestions" type="button">Save them all</button>
+      <button class="btn btn-ink" id="saveQuestions" type="button">Save changes to this day</button>
       <button class="btn" id="clearDay" type="button">Clear this day's answers</button>
     </div>
 
 
     <div class="groupmark"><span>Add a day</span></div>
-    <p class="ed-note">Every day gets its own blank questions and keeps its own answers. One question per line. Fewer is fine, the rest stay empty.</p>
+    <p class="ed-note">Every day gets its own blank boards and keeps its own answers. Fill in as many questions as you need, the rest stay empty.</p>
     <label class="bl" for="newLabel">Day name</label>
-    <input type="text" id="newLabel" placeholder="Day 4"/>
-    <label class="bl" for="newPrompts">One question per line</label>
-    <textarea id="newPrompts" rows="6" placeholder="What kind of labor goes unseen in your own household?&#10;Name a machine you were taught to be afraid of.&#10;Who taught you the skill you use most at work?&#10;Where does the care in this system actually happen?&#10;What does the interface hide from you?&#10;Whose name got left off the patent?"></textarea>
+    <input type="text" id="newLabel" placeholder="Day 2"/>
+    <div id="newQuestions"></div>
     <div class="ed-actions">
       <button class="btn" id="addDay" type="button">Add to the list</button>
       <button class="btn btn-ink" id="startDay" type="button">Add and open now</button>
@@ -463,12 +470,12 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
       <button class="btn btn-quiet" id="downloadAnswers" type="button">Download as text</button>
     </div>
     <div class="answers" id="answerList"></div>
-
-    <div class="ed-flag" id="edFlag"></div>
   </section>
 
   <p class="divider">◆ ◆ ◆</p>
 </main>
+
+<div class="ed-flag" id="edFlag" role="status" aria-live="polite"></div>
 
 <div id="press">
   <span class="pressmsg"><b>Answering</b></span>
@@ -574,23 +581,23 @@ const CURRENT = ROOT + "/current";
 const INDEX   = ROOT + "/index";
 const POSTS   = ROOT + "/posts";
 
-let sessionId  = null;
-let postsRef   = null;
-let metaRef    = null;
-let meta       = {};
-let posts      = {};          // { g0: {id: post}, g1: {...} }
-let unlocked   = false;
-let dayIndex   = {};
-let editingDay = null;
-let liveId     = null;
-let previewId  = null;
-let allDaysOn  = false;
-let allPosts   = {};
-let allMode    = false;
-let artistNo   = localStorage.getItem("boardArtistNo") || "";
-let pending    = null;
-let editingPost = null;   // "board:key" of the post open for editing
-let editDraft   = null;   // its text while it is being changed   // an answer waiting on an artist number
+let sessionId   = null;
+let postsRef    = null;
+let metaRef     = null;
+let meta        = {};
+let posts       = {};          // { q0: {id: post}, q1: {...} }
+let unlocked    = false;
+let dayIndex    = {};
+let editingDay  = null;
+let liveId      = null;
+let previewId   = null;
+let allDaysOn   = false;
+let allPosts    = {};
+let allMode     = false;
+let artistNo    = localStorage.getItem("boardArtistNo") || "";
+let pending     = null;        // an answer waiting on an artist number
+let editingPost = null;        // "board:key" of the post open for editing
+let editDraft   = null;        // its text while it is being changed
 
 const $ = (id) => document.getElementById(id);
 const range = (n) => Array.from({ length: n }, (_, i) => i);
@@ -654,7 +661,7 @@ function boardsHTML(m, bag, live) {
                   const tag = g + ":" + r.id;
                   const head = r.who
                     ? `<span class="who">${esc(whoLabel(r.who))}${own ? " (you)" : ""}${
-                        r.editedAt ? ' <span class="edited">· edited</span>' : ""
+                        r.editedAt ? ' <span class="edited">(edited)</span>' : ""
                       }</span>`
                     : "";
                   if (canDrop && editingPost === tag) {
@@ -687,8 +694,24 @@ function boardsHTML(m, bag, live) {
     .join("");
 }
 
+// Every live update redraws the boards. If an answer is open for editing
+// at that moment, this puts the cursor back where it was so typing is
+// never interrupted when someone else posts.
 function renderBoards() {
+  const active = document.activeElement;
+  const wasEditing = !!(active && active.matches && active.matches("[data-etext]"));
+  const caret = wasEditing ? active.selectionStart : 0;
+
   $("boardGrid").innerHTML = boardsHTML(meta, posts, !previewId);
+
+  if (wasEditing && editingPost) {
+    const box = document.querySelector('[data-etext="' + editingPost + '"]');
+    if (box) {
+      box.focus();
+      box.setSelectionRange(caret, caret);
+    }
+  }
+
   const n = countPosts(posts);
   $("meterCount").textContent = n === 1 ? "1 answer" : n + " answers";
   $("meterFill").style.width = Math.min(100, n * 4) + "%";
@@ -722,7 +745,10 @@ $("boardGrid").addEventListener("click", (e) => {
     editDraft = null;
     db.ref(`${POSTS}/${sessionId}/q${bi}/${bk}`)
       .update({ text: next.slice(0, 600), editedAt: Date.now() })
-      .then(() => { $("barState").textContent = "Answer updated"; })
+      .then(() => {
+        $("barState").textContent = "Answer updated";
+        if (unlocked) flag("Answer updated");
+      })
       .catch(dbTrouble);
     return;
   }
@@ -913,8 +939,6 @@ function syncDay() {
   renderDays();
 }
 
-function closeEditor() { editingPost = null; editDraft = null; }
-
 function endPreview() {
   previewId = null;
   syncDay();
@@ -928,6 +952,7 @@ function dbTrouble(err) {
     ? "Firebase blocked that. The database rules need updating."
     : "Firebase error: " + ((err && err.message) || "unknown");
   $("barState").textContent = msg;
+  if (unlocked) flag(msg);
   console.error("[class discussion]", err);
 }
 
@@ -940,6 +965,8 @@ function attachDay(id) {
   sessionId = id;
   posts = {};
   meta = {};
+  editingPost = null;
+  editDraft = null;
   renderBoards();
 
   metaRef = db.ref(`${INDEX}/${id}`);
@@ -977,14 +1004,20 @@ function roundelText(label) {
 
 
 /* ── the instructor desk question fields ────────────────────────── */
-$("edQuestions").innerHTML = range(QUESTIONS)
-  .map(
-    (i) => `<div class="qrow">
-      <div class="qnum">Q${i + 1}</div>
-      <textarea id="edQ${i}" placeholder="Question ${i + 1}"></textarea>
-    </div>`
-  )
-  .join("");
+function questionFields(prefix) {
+  return range(QUESTIONS)
+    .map(
+      (i) => `<div class="qrow">
+        <div class="qnum">Q${i + 1}</div>
+        <textarea id="${prefix}${i}" placeholder="Question ${i + 1}"></textarea>
+      </div>`
+    )
+    .join("");
+}
+
+// Top section edits the day on screen. Bottom section builds a new day.
+$("edQuestions").innerHTML = questionFields("edQ");
+$("newQuestions").innerHTML = questionFields("newQ");
 
 function fillDesk() {
   $("edLabel").value = meta.label || "";
@@ -999,7 +1032,7 @@ $("saveQuestions").addEventListener("click", () => {
   db.ref(`${INDEX}/${sessionId}`)
     .update({ questions: qs, label: $("edLabel").value.trim() || "This day" })
     .then(() => flag("Saved. Every browser has the questions now."))
-    .catch(() => flag("Firebase refused the write. Check the database rules."));
+    .catch(dbTrouble);
 });
 
 $("clearDay").addEventListener("click", () => {
@@ -1210,11 +1243,13 @@ function tryCode() {
 
 $("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
 
+let flagTimer = null;
 function flag(msg) {
   const f = $("edFlag");
   f.textContent = msg;
   f.classList.add("on");
-  setTimeout(() => f.classList.remove("on"), 3200);
+  clearTimeout(flagTimer);
+  flagTimer = setTimeout(() => f.classList.remove("on"), 4000);
 }
 
 /* ── the day list ───────────────────────────────────────────────── */
@@ -1318,6 +1353,7 @@ $("dayList").addEventListener("click", (e) => {
     db.ref(CURRENT).set(id)
       .then(() => {
         previewId = null;
+        syncDay();
         flag("Everyone is on " + (dayIndex[id].label || "that day") + " now");
       })
       .catch(dbTrouble);
@@ -1375,18 +1411,35 @@ function makeDay(label, questions, openIt) {
     .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
 }
 
+// Reads the seven Add a day boxes. Each question keeps its slot, so a
+// blank Q3 leaves Question 3 empty instead of shifting the rest up.
 function addFromForm(openIt) {
   if (!db) return flag("Not connected to Firebase yet");
-  const lines = $("newPrompts").value.split("\n").map((l) => l.trim()).filter(Boolean);
-  if (!lines.length) return flag("Write the questions first, one per line");
-  if (lines.length > QUESTIONS) return flag("That is more than " + QUESTIONS + " lines. Trim it down.");
-  makeDay($("newLabel").value.trim(), lines, openIt)
+  const qs = range(QUESTIONS).map((i) => $("newQ" + i).value.trim());
+  if (!qs.some(Boolean)) return flag("Write at least one question in the Add a day boxes");
+
+  const btns = [$("addDay"), $("startDay")];
+  btns.forEach((b) => (b.disabled = true));
+
+  makeDay($("newLabel").value.trim(), qs, openIt)
     .then(() => {
-      $("newPrompts").value = "";
+      range(QUESTIONS).forEach((i) => ($("newQ" + i).value = ""));
       $("newLabel").value = "";
+      if (openIt) {
+        previewId = null;
+        syncDay();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
       flag(openIt ? "New day is open with blank boards on screen." : "Added to the list. Open it when you are ready.");
     })
-    .catch(dbTrouble);
+    .catch((err) => {
+      const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+      flag(denied
+        ? "Firebase blocked that. The rules need to allow writes to openboards/index and openboards/current."
+        : "Firebase error: " + ((err && err.message) || "unknown"));
+      console.error("[class discussion]", err);
+    })
+    .finally(() => btns.forEach((b) => (b.disabled = false)));
 }
 
 $("addDay").addEventListener("click", () => addFromForm(false));
