@@ -240,16 +240,19 @@ const COLD = [
 ];
 
 const STEPS = [
-  { id: "cold", tag: "1", title: "Individual evaluation", mins: 15, kind: "cold",
-    blurb: ["Each group reads the next number's group. 1 reads 2, 2 reads 3, 3 reads 4, 4 reads 1. Pick your own group at the top and the right one is chosen for you.",
-            "Answer alone, in writing, before anybody says anything out loud. It saves privately as you type, and nobody sees it until you post."] },
-  { id: "saw", tag: "2", title: "What the class saw", mins: 10, kind: "saw",
-    blurb: ["Everyone's individual readings."] },
-  { id: "prep", tag: "3", title: "Prepare, in your group", mins: 15, kind: "prep",
-    blurb: ["Back with your own group. Fifteen minutes to decide what you are saying and who is saying it.",
-            "Get some ideas from the individual evaluations for what you might change."] },
-  { id: "present", tag: "4", title: "Now share with the class", mins: 25, kind: "present",
+  { id: "prep", tag: "1", title: "Prepare, in your group", mins: 15, kind: "prep",
+    blurb: ["Start with your own group. Fifteen minutes to decide what you are saying and who is saying it."] },
+
+  { id: "present", tag: "2", title: "Now share with the class", mins: 25, kind: "present",
     blurb: ["Present your zine to the class."] },
+
+  { id: "cold", tag: "3", title: "Individual evaluation", mins: 15, kind: "cold",
+    blurb: ["Now you have heard them all, read one properly. Each group reads the next number's group. 1 reads 2, 2 reads 3, 3 reads 4, 4 reads 1. Pick your own group at the top and the right one is chosen for you.",
+            "Answer alone, in writing. It saves privately as you type, and nobody sees it until you post."] },
+
+  { id: "saw", tag: "4", title: "What the class saw", mins: 10, kind: "saw",
+    blurb: ["Everyone's individual readings."] },
+
   { id: "role", tag: "5", title: "Role reading", mins: 30, kind: "role",
     blurb: ["In your breakout group, take one role at a time. Whoever holds that role does the typing.",
             "Everyone else contributes out loud or in the chat. Talk it through before anything is written, and type what the group agreed."] },
@@ -756,10 +759,8 @@ function buildPrep(host) {
     "Not all ten. The two or three that carry it. Read them out as written.", 3],
    ["pPages", "6.  The plan for the pages",
     "What is on each page, and what is still missing.", 4],
-   ["presSaw", "7.  One suggestion that we would like to implement from the class ideas",
-    "From the readings in step 2.", 2],
-   ["pChange", "8.  What we are changing, from the individual evaluations",
-    "Be specific: a page, an image, a line.", 4]
+   ["pChange", "7.  What we already know we want to change",
+    "Be specific: a page, an image, a line.", 3]
   ].forEach((q) => {
     const w = el("div", "q");
     w.appendChild(el("h4", null, q[1]));
@@ -776,7 +777,7 @@ function buildPrep(host) {
   });
 
   const KEYS = ["presDiv", "presWorld", "presOrg", "pOverall", "pManifesto",
-                "pPages", "presSaw", "pChange"];
+                "pPages", "pChange"];
   const named = KEYS.map((k) => String(gdoc[k + "Who"] || "").trim().toLowerCase()).filter(Boolean);
   const uniq = named.filter((n, i) => named.indexOf(n) === i);
   const tally = el("p", "note");
@@ -805,15 +806,14 @@ function buildPrep(host) {
 
 function buildPresent(host) {
   host.appendChild(el("p", "note",
-    "Read from what you wrote in step 3. The running order and the speakers are below."));
+    "Read from what you wrote in step 1. The running order and the speakers are below."));
   if (!me.group) { host.appendChild(el("p", "empty", "Pick your group at the top.")); return; }
 
   const KEYS = [
     ["presDiv", "The divergence"], ["presWorld", "The world"], ["presOrg", "The organization"],
     ["pOverall", "The overall idea"], ["pManifesto", "The manifesto"],
     ["pPages", "The plan for the pages"],
-    ["presSaw", "A suggestion we want to implement"],
-    ["pChange", "What we are changing"]
+    ["pChange", "What we want to change"]
   ];
 
   host.appendChild(el("h3", null, "Your running order"));
