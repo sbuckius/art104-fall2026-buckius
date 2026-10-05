@@ -229,22 +229,22 @@ const STEPS = [
   { id: "cold", tag: "1", title: "Individual evaluation", mins: 15, kind: "cold",
     blurb: ["Each group reads the next number's group. 1 reads 2, 2 reads 3, 3 reads 4, 4 reads 1. Pick your own group at the top and the right one is chosen for you.",
             "Answer alone, in writing, before anybody says anything out loud. It saves privately as you type, and nobody sees it until you post."] },
-  { id: "saw", tag: "2", title: "What the class saw", mins: 20, kind: "saw",
+  { id: "saw", tag: "2", title: "What the class saw", mins: 10, kind: "saw",
     blurb: ["Everyone's individual readings."] },
   { id: "prep", tag: "3", title: "Prepare, in your group", mins: 15, kind: "prep",
     blurb: ["Back with your own group. Fifteen minutes to decide what you are saying and who is saying it.",
-            "Then read through the individual evaluations of your zine and agree on what you are going to act on."] },
-  { id: "present", tag: "4", title: "Now present", mins: 25, kind: "present",
+            "Get some ideas from the individual evaluations for what you might change."] },
+  { id: "present", tag: "4", title: "Now share with the class", mins: 25, kind: "present",
     blurb: ["Present your zine to the class."] },
   { id: "role", tag: "5", title: "Role reading", mins: 30, kind: "role",
     blurb: ["In your breakout group, take one role at a time. Whoever holds that role does the typing.",
             "Everyone else contributes out loud or in the chat. Talk it through before anything is written, and type what the group agreed."] },
   { id: "back", tag: "6", title: "Back together", mins: 15, kind: "back",
     blurb: ["Everyone back in the main class. Each group says one thing they are going to change, taken from the role reading in step 5.",
-            "Write it first, name who is saying it, then go round."] },
+            "Write it first, specify who is saying it, then share."] },
   { id: "ask", tag: "7", title: "Push it further", mins: 20, kind: "ask",
     blurb: ["A board for the whole class. Everyone writes at once, about any zine including your own.",
-            "How do we make these stranger, sharper, more provocative, more worth reading? Post ideas, read everyone else's, vote for the ones you want to see happen."] },
+            "How do we make these more engaging, sharper, more provocative, more worth reading? Post ideas, read everyone else's, vote for the ones you want to see happen."] },
   { id: "commit", tag: "8", title: "Work on your parts", mins: 35, kind: "commit",
     blurb: ["Back in your breakout group. Work on the zine.",
             "At the end, upload a picture of something you made during this time."] }
@@ -401,6 +401,13 @@ function removeFrom(col, id, after) {
     .then(() => { status("removed", true); if (after) after(); })
     .catch(() => status("could not remove"));
 }
+function removePosted() {
+  if (!uid || !me.reading) return;
+  removeFrom(talkGroup(me.reading), uid, () => {
+    lsSet("talk-posted-" + me.reading, "");
+    renderStep();
+  });
+}
 function removeMine(key) {
   if (!me.group || !uid) return;
   removeFrom(talkNotes(me.group), key + "__" + uid, renderStep);
@@ -534,9 +541,10 @@ function resubscribe() {
       snap.docs.forEach((d) => {
         const v = d.data() || {};
         if (v.key === "shot" && v.img) allNotes[g].push(Object.assign({ id: d.id }, v));
-        else if ((v.key === "bChange" || v.key === "working") && String(v.text || "").trim()) allNotes[g].push(v);
+        else if (["bChange", "working", "heardMine"].indexOf(v.key) > -1
+                 && String(v.text || "").trim()) allNotes[g].push(v);
       });
-      if (["back", "commit"].indexOf(STEPS[cur].kind) > -1) renderStep();
+      if (["back", "commit", "saw"].indexOf(STEPS[cur].kind) > -1) renderStep();
     }, () => {}));
     unsubs.push(onSnapshot(talkDoc(g), (snap) => {
       allGroups[g] = snap.exists() ? snap.data() : {};
@@ -627,6 +635,12 @@ function buildCold(host) {
     posted ? "Update my reading" : "Post my reading");
   b.addEventListener("click", postCold);
   host.appendChild(b);
+  if (posted) {
+    const rb = el("button", "ghost", "Remove my reading");
+    rb.style.marginLeft = ".4rem";
+    rb.addEventListener("click", removePosted);
+    host.appendChild(rb);
+  }
   host.appendChild(el("p", "note",
     posted ? "Group " + me.reading + " can see this." : "Nobody sees this until you post."));
 }
@@ -658,8 +672,43 @@ function buildSaw(host) {
 
   if (me.group) {
     host.appendChild(el("h3", null, "What we heard"));
-    host.appendChild(groupField("heard", "What the class said about us",
-      "What do you take away from the comments for your group's zine? What are the most important suggestions?", 3));
+    host.appendChild(el("p", "note",
+      "Each of you answers in your own box. Nobody can type over anybody."));
+
+    const w = el("div", "q");
+    w.appendChild(el("h4", null,
+      "What do you take away from the comments for your group's zine? What are the most important suggestions?"));
+    const t = el("textarea"); t.rows = 3;
+    t.placeholder = "your answer";
+    const mine = (allNotes[me.group] || []).filter((x) => x.uid === uid && x.key === "heardMine")[0];
+    t.value = mine ? mine.text : "";
+    t.addEventListener("input", () => {
+      debounce("heardMine", () => saveMine("heardMine", t.value), 900);
+    });
+    w.appendChild(t);
+    if (mine && String(mine.text || "").trim()) {
+      const rb = el("button", "ghost", "Remove mine");
+      rb.style.cssText = "margin-top:.4rem;font-size:.72rem;padding:.2rem .5rem";
+      rb.addEventListener("click", () => removeMine("heardMine"));
+      w.appendChild(rb);
+    }
+    host.appendChild(w);
+
+    const ours = (allNotes[me.group] || [])
+      .filter((x) => x.key === "heardMine" && String(x.text || "").trim());
+    if (ours.length) {
+      const cards = el("div", "cards");
+      ours.forEach((x) => {
+        const c = el("div", "card");
+        c.appendChild(el("span", "who", (x.name || "Someone") + (x.uid === uid ? "  \u00b7  you" : "")));
+        c.appendChild(el("div", "tx", x.text));
+        cards.appendChild(c);
+      });
+      host.appendChild(cards);
+    }
+
+    host.appendChild(groupField("heard", "What the group agreed, taken together",
+      "One summary, written once you have all answered.", 3));
   }
 }
 
@@ -669,10 +718,10 @@ function buildPrep(host) {
   if (!me.group) { host.appendChild(el("p", "empty", "Pick your group at the top.")); return; }
 
   host.appendChild(el("h3", null, "What you will present"));
-  host.appendChild(el("p", "note", "In this order. Share the parts out so everybody speaks at least once."));
+  host.appendChild(el("p", "note", "In this order. Sign up for a speaking part so that everyone shares in the class."));
 
   [["presDiv", "1.  The divergence",
-    "One sentence, with a date.", 2],
+    "One sentence.", 2],
    ["presWorld", "2.  The world",
     "One sentence.", 2],
    ["presOrg", "3.  The organization",
@@ -990,9 +1039,9 @@ function buildCommit(host) {
 }
 
 const PUSH = [
-  ["p1", "What is the most interesting idea anyone has had today, and how far could it go?"],
-  ["p2", "Which zine is playing it safe, and what would the brave version look like?"],
-  ["p3", "What would make one of these uncomfortable to read, in a good way?"],
+  ["p1", "What are some of the most interesting ideas from today and how can they be pushed even further?"],
+  ["p2", "What are some things that feel safe and can be pushed further?"],
+  ["p3", "What would make one of these really provocative in a good way?"],
   ["p4", "What has nobody tried yet?"],
   ["p5", "What is the strangest thing you would want to see in one of these zines?"],
   ["p6", "Which world would be more interesting if it were worse? Or better?"],
