@@ -34,7 +34,8 @@ h1{font-size:clamp(1.5rem,4.5vw,2.2rem);font-weight:800;letter-spacing:-.02em;ma
 h1 .yr{color:var(--olivelt)}
 h2{font-size:clamp(1.3rem,3.2vw,1.9rem);font-weight:800;letter-spacing:-.018em;
   margin:0 0 .5rem;padding-bottom:.3rem;border-bottom:3px solid var(--olivelt)}
-h3{font-size:1rem;font-weight:800;color:var(--mauve);margin:1.5rem 0 .4rem}
+h3{font-size:.76rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--soft);margin:1.6rem 0 .3rem}
 h4{font-size:.76rem;font-weight:700;letter-spacing:.05em;color:var(--pink);margin:0 0 .4rem}
 p{margin:0 0 .8rem}
 a{color:var(--teal)}
@@ -74,12 +75,15 @@ button:disabled{opacity:.45;cursor:not-allowed}
   color:var(--tealdk);margin-bottom:.15rem}
 .f .hint{display:block;font-size:.85rem;color:var(--soft);font-style:italic;margin-bottom:.3rem}
 .note{font-size:.9rem;color:var(--soft)}
-.q{margin:1.1rem 0;padding:.8rem 1rem;background:var(--panel);border-left:6px solid var(--olivelt)}
-.q:nth-of-type(6n+2){border-left-color:var(--mauve)}
-.q:nth-of-type(6n+3){border-left-color:var(--teal)}
-.q:nth-of-type(6n+4){border-left-color:var(--purple)}
-.q:nth-of-type(6n+5){border-left-color:var(--pink)}
-.q h4{color:var(--ink);font-size:.95rem;font-weight:800;letter-spacing:0;margin-bottom:.5rem}
+.intro{font-size:1.02rem;color:var(--soft);margin:.5rem 0 1rem}
+.q{margin:1.1rem 0;padding:.9rem 1.1rem;background:rgba(95,163,163,.13);
+  border:2px solid var(--teal)}
+.q:nth-of-type(6n+2){background:rgba(209,148,177,.13);border-color:var(--mauve)}
+.q:nth-of-type(6n+3){background:rgba(146,166,74,.13);border-color:var(--olivelt)}
+.q:nth-of-type(6n+4){background:rgba(199,123,178,.13);border-color:var(--purple)}
+.q:nth-of-type(6n+5){background:rgba(215,104,157,.13);border-color:var(--pink)}
+.q:nth-of-type(6n){background:rgba(111,176,176,.13);border-color:var(--tealdk)}
+.q h4{color:var(--ink);font-size:1rem;font-weight:800;letter-spacing:0;margin:0 0 .6rem}
 .band{margin:1.1rem 0;padding:.8rem 1rem;background:var(--pink);color:#0f1b12;font-size:.95rem}
 .band b{font-weight:800}
 .silence{margin:1.1rem 0;padding:.8rem 1rem;background:rgba(199,123,178,.16);
@@ -89,9 +93,9 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .timer .clock{font-family:"Bricolage Grotesque",sans-serif;font-size:1.5rem;font-weight:800;
   min-width:4.5rem;color:var(--tealdk)}
 .timer .clock.low{color:var(--pink)}
-.cards{display:grid;gap:.5rem;margin:.6rem 0}
+.cards{display:grid;gap:.5rem;margin:.7rem 0 0}
 @media(min-width:44rem){.cards{grid-template-columns:1fr 1fr}}
-.card{padding:.5rem .7rem;background:var(--panel);border-left:4px solid var(--olivelt)}
+.card{padding:.5rem .7rem;background:rgba(15,27,18,.55);border-left:4px solid var(--olivelt)}
 .card:nth-child(5n+2){border-left-color:var(--mauve)}
 .card:nth-child(5n+3){border-left-color:var(--teal)}
 .card:nth-child(5n+4){border-left-color:var(--purple)}
@@ -243,31 +247,25 @@ const COLD = [
 
 const STEPS = [
   { id: "prep", tag: "1", title: "Prepare, in your group", mins: 15, kind: "prep",
-    blurb: ["Start with your own group. Fifteen minutes to decide what you are saying and who is saying it."] },
+    intro: "Decide what you will say and who will say it." },
 
   { id: "present", tag: "2", title: "Now share with the class", mins: 25, kind: "present",
-    blurb: ["Present your zine to the class."] },
+    intro: "Present your zine to the class." },
 
   { id: "cold", tag: "3", title: "Individual evaluation", mins: 15, kind: "cold",
-    blurb: ["You have heard them present, so you know what they are trying to do. Now look at the zine itself and give them suggestions.",
-            "Each group reads the next number's group. 1 reads 2, 2 reads 3, 3 reads 4, 4 reads 1. Pick your own group at the top and the right one is chosen for you.",
-            "Answer alone, in writing. It saves privately as you type, and nobody sees it until you post."] },
+    intro: "Look at the next group's zine and write them suggestions." },
 
   { id: "saw", tag: "4", title: "What the class saw", mins: 10, kind: "saw",
-    blurb: ["Everyone's individual readings."] },
+    intro: "Listen to what the class said, and write what you will implement." },
 
   { id: "role", tag: "5", title: "Role reading", mins: 30, kind: "role",
-    blurb: ["In your breakout group, take one role at a time. Whoever holds that role does the typing.",
-            "Everyone else contributes out loud or in the chat. Talk it through before anything is written, and type what the group agreed."] },
+    intro: "Everyone answers together. The person in each role types." },
   { id: "back", tag: "6", title: "Back together", mins: 15, kind: "back",
-    blurb: ["Everyone back in the main class. Each group says one thing they are going to change, taken from the role reading in step 5.",
-            "Write it first, specify who is saying it, then share."] },
+    intro: "Agree on one change and say it to the class." },
   { id: "ask", tag: "7", title: "Push it further", mins: 20, kind: "ask",
-    blurb: ["A board for the whole class. Everyone writes at once, about any zine including your own.",
-            "How do we make these more engaging, sharper, more provocative, more worth reading? Post ideas, read everyone else's, vote for the ones you want to see happen."] },
+    intro: "Write ideas for making any of these zines stronger." },
   { id: "commit", tag: "8", title: "Work on your parts", mins: 35, kind: "commit",
-    blurb: ["Back in your breakout group. Work on the zine.",
-            "At the end, upload a picture of something you made during this time."] }
+    intro: "Work on your pages, then upload what you made." }
 ];
 
 /* ---------------------------------------------------------- helpers */
@@ -603,7 +601,6 @@ function bindGroup(node, key) {
 function field(label, hint, rows) {
   const w = el("div", "f");
   w.appendChild(el("span", "lbl", label));
-  if (hint) w.appendChild(el("span", "hint", hint));
   const t = el("textarea"); t.rows = rows || 2;
   w.appendChild(t);
   return { box: w, input: t };
@@ -640,8 +637,6 @@ function pageShots(host) {
 /* ---------------------------------------------------------- steps */
 function buildCold(host) {
   if (me.group && me.reading) {
-    host.appendChild(el("div", "band",
-      "You are group " + me.group + ", so you are reading group " + me.reading + "."));
   }
   host.appendChild(el("h3", null, "Group " + (me.reading || "—") + ", as it stands"));
   pageShots(host);
@@ -671,8 +666,6 @@ function buildCold(host) {
     rb.addEventListener("click", removePosted);
     host.appendChild(rb);
   }
-  host.appendChild(el("p", "note",
-    posted ? "Group " + me.reading + " can see this." : "Nobody sees this until you post."));
 }
 
 function buildSaw(host) {
@@ -702,8 +695,6 @@ function buildSaw(host) {
 
   if (me.group) {
     host.appendChild(el("h3", null, "What we heard"));
-    host.appendChild(el("p", "note",
-      "Each of you answers in your own box. Nobody can type over anybody."));
 
     const w = el("div", "q");
     w.appendChild(el("h4", null,
@@ -742,12 +733,9 @@ function buildSaw(host) {
 }
 
 function buildPrep(host) {
-  host.appendChild(el("div", "band",
-    "Fifteen minutes. Fill these in together. What you type here is what you present."));
   if (!me.group) { host.appendChild(el("p", "empty", "Pick your group at the top.")); return; }
 
   host.appendChild(el("h3", null, "What you will present"));
-  host.appendChild(el("p", "note", "In this order. Sign up for a speaking part so that everyone shares in the class."));
 
   [["presDiv", "1.  The divergence",
     "One sentence.", 2],
@@ -764,7 +752,6 @@ function buildPrep(host) {
   ].forEach((q) => {
     const w = el("div", "q");
     w.appendChild(el("h4", null, q[1]));
-    if (q[2]) w.appendChild(el("p", "note", q[2]));
     const t = el("textarea"); t.rows = q[3];
     bindGroup(t, q[0]);
     w.appendChild(t);
@@ -804,8 +791,6 @@ function buildPrep(host) {
 }
 
 function buildPresent(host) {
-  host.appendChild(el("p", "note",
-    "Read from what you wrote in step 1. The running order and the speakers are below."));
   if (!me.group) { host.appendChild(el("p", "empty", "Pick your group at the top.")); return; }
 
   const KEYS = [
@@ -845,15 +830,12 @@ function buildPresent(host) {
 
 
 function buildRole(host) {
-  host.appendChild(el("div", "band",
-    "Reading group " + (me.reading || "—") + ". One role at a time. Whoever holds the role types; everyone else talks."));
   pageShots(host);
 
   const classQ = topAsks(5).filter((x) => x.n > 0);
   if (classQ.length) {
     const cw = el("div", "q");
     cw.appendChild(el("h4", null, "The class's own questions"));
-    cw.appendChild(el("p", "note", "Voted for in step 9. Answer these as well as your role's."));
     const ul = el("ul");
     classQ.forEach((x) => ul.appendChild(el("li", null, x.a.text)));
     ul.style.cssText = "margin:.2rem 0 .6rem 1.1rem;padding:0;font-size:.92rem";
@@ -915,13 +897,10 @@ function buildRole(host) {
 }
 
 function buildBack(host) {
-  host.appendChild(el("div", "band",
-    "Everyone writes one change. Your group picks one to say out loud."));
   if (!me.group) { host.appendChild(el("p", "empty", "Pick your group at the top.")); return; }
 
   const w = el("div", "q");
   w.appendChild(el("h4", null, "One thing your group should change"));
-  w.appendChild(el("p", "note", "From the role reading you just did."));
   const t = el("textarea"); t.rows = 2;
   t.placeholder = "one sentence";
   const mine = (allNotes[me.group] || []).filter((x) => x.uid === uid && x.key === "bChange")[0];
@@ -1040,10 +1019,6 @@ const PUSH = [
 ];
 
 function buildAsk(host) {
-  host.appendChild(el("div", "band",
-    "How can we make these the most engaging that they can be?"));
-  host.appendChild(el("p", "note",
-    "Everyone answers at the same time, about any zine including your own. Name the group if it is about one in particular. Your answers appear to the class as you type."));
 
   PUSH.forEach((q) => {
     const w = el("div", "q");
@@ -1081,8 +1056,6 @@ function buildAsk(host) {
 
   host.appendChild(el("h3", null, "Anything else"));
   const w2 = el("div", "q");
-  w2.appendChild(el("p", "note",
-    "An idea that does not fit any of the questions above. These get voted on."));
   const t2 = el("textarea"); t2.rows = 2;
   t2.placeholder = "e.g. Group 3: let the organization lose the argument on the last page.";
   const b = el("button", "primary", "Post it");
@@ -1162,7 +1135,7 @@ function renderStep() {
   host.appendChild(el("p", "lensnote",
     "Showing only what you wrote. Switch the view at the top to see the rest of the class."));
   host.appendChild(el("h2", null, s.title));
-  (s.blurb || []).forEach((t) => host.appendChild(el("p", null, t)));
+  if (s.intro) host.appendChild(el("p", "intro", s.intro));
   buildTimer(host, s.mins);
 
   if (!uid) { host.appendChild(el("div", "warn", "Connecting…")); }
