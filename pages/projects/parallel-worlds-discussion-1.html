@@ -53,8 +53,10 @@ header.top{padding:1.3rem 0 .6rem;border-bottom:6px solid transparent;border-ima
 .stepnav{display:flex;gap:.3rem;flex-wrap:wrap;padding:.3rem 0 .6rem}
 .stepnav button{min-width:2.3rem;font-size:.78rem;font-weight:700;padding:.3rem .5rem;
   background:none;border:2px solid var(--rule);color:var(--ink);cursor:pointer}
+
+.stepnav button.done{border-color:var(--olivelt);color:var(--olivelt);background:rgba(146,166,74,.26)}
 .stepnav button[aria-current="true"]{background:var(--teal);border-color:var(--teal);color:var(--paper)}
-.stepnav button.done{border-color:var(--mauve);color:var(--mauve);background:rgba(209,148,177,.16)}
+.stepnav button[aria-current="true"].done{background:var(--olivelt);border-color:var(--olivelt);color:var(--paper)}
 input,select,textarea{width:100%;background:rgba(255,255,255,.07);color:var(--ink);
   border:2px solid var(--rule);padding:.45rem .55rem;font-size:.95rem;
   font-family:"Newsreader",Georgia,serif;border-radius:0}
@@ -735,8 +737,7 @@ function buildSaw(host) {
       host.appendChild(cards);
     }
 
-    host.appendChild(groupField("heard", "What the group agreed, taken together",
-      "One summary, written once you have all answered.", 3));
+
   }
 }
 
@@ -759,9 +760,7 @@ function buildPrep(host) {
    ["pManifesto", "5.  The main parts of the manifesto",
     "Not all ten. The two or three that carry it. Read them out as written.", 3],
    ["pPages", "6.  The plan for the pages",
-    "What is on each page, and what is still missing.", 4],
-   ["pChange", "7.  What we already know we want to change",
-    "Be specific: a page, an image, a line.", 3]
+    "What is on each page, and what is still missing.", 4]
   ].forEach((q) => {
     const w = el("div", "q");
     w.appendChild(el("h4", null, q[1]));
@@ -777,8 +776,7 @@ function buildPrep(host) {
     host.appendChild(w);
   });
 
-  const KEYS = ["presDiv", "presWorld", "presOrg", "pOverall", "pManifesto",
-                "pPages", "pChange"];
+  const KEYS = ["presDiv", "presWorld", "presOrg", "pOverall", "pManifesto", "pPages"];
   const named = KEYS.map((k) => String(gdoc[k + "Who"] || "").trim().toLowerCase()).filter(Boolean);
   const uniq = named.filter((n, i) => named.indexOf(n) === i);
   const tally = el("p", "note");
@@ -793,7 +791,7 @@ function buildPrep(host) {
   let any = 0;
   groupList.forEach((g) => {
     const d = allGroups[g] || {};
-    const bits = [d.pOverall, d.pChange].map((x) => String(x || "").trim()).filter(Boolean);
+    const bits = [d.presOrg, d.pOverall].map((x) => String(x || "").trim()).filter(Boolean);
     if (!bits.length) return;
     any++;
     const c = el("div", "card");
@@ -813,8 +811,7 @@ function buildPresent(host) {
   const KEYS = [
     ["presDiv", "The divergence"], ["presWorld", "The world"], ["presOrg", "The organization"],
     ["pOverall", "The overall idea"], ["pManifesto", "The manifesto"],
-    ["pPages", "The plan for the pages"],
-    ["pChange", "What we want to change"]
+    ["pPages", "The plan for the pages"]
   ];
 
   host.appendChild(el("h3", null, "Your running order"));
@@ -919,13 +916,12 @@ function buildRole(host) {
 
 function buildBack(host) {
   host.appendChild(el("div", "band",
-    "From the role reading you just did. Everyone writes one change, then your group picks one to say out loud."));
+    "Everyone writes one change. Your group picks one to say out loud."));
   if (!me.group) { host.appendChild(el("p", "empty", "Pick your group at the top.")); return; }
 
   const w = el("div", "q");
-  w.appendChild(el("h4", null, "Your answer"));
-  w.appendChild(el("p", "note",
-    "One thing you think your group should change, from the role reading you just did."));
+  w.appendChild(el("h4", null, "One thing your group should change"));
+  w.appendChild(el("p", "note", "From the role reading you just did."));
   const t = el("textarea"); t.rows = 2;
   t.placeholder = "one sentence";
   const mine = (allNotes[me.group] || []).filter((x) => x.uid === uid && x.key === "bChange")[0];
@@ -942,57 +938,26 @@ function buildBack(host) {
   }
   host.appendChild(w);
 
-  host.appendChild(el("h3", null, "Your group"));
-  const ours = (allNotes[me.group] || []).filter((x) => x.key === "bChange" && String(x.text || "").trim());
-  if (!ours.length) host.appendChild(el("p", "empty", "Nobody has written one yet."));
-  const cards = el("div", "cards");
-  ours.forEach((x) => {
-    const c = el("div", "card");
-    c.appendChild(el("span", "who", (x.name || "Someone") + (x.uid === uid ? "  \u00b7  you" : "")));
-    c.appendChild(el("div", "tx", x.text));
-    cards.appendChild(c);
-  });
-  host.appendChild(cards);
+  const ours = (allNotes[me.group] || [])
+    .filter((x) => x.key === "bChange" && String(x.text || "").trim());
+  if (ours.length) {
+    const cards = el("div", "cards");
+    ours.forEach((x) => {
+      const c = el("div", "card" + (x.uid === uid ? "" : " other"));
+      c.appendChild(el("span", "who", (x.name || "Someone") + (x.uid === uid ? "  \u00b7  you" : "")));
+      c.appendChild(el("div", "tx", x.text));
+      cards.appendChild(c);
+    });
+    host.appendChild(cards);
+  }
 
-  host.appendChild(el("h3", null, "What your group is saying out loud"));
-  host.appendChild(groupField("bChange", "The one we picked",
+  host.appendChild(groupField("bChange", "The one we are saying out loud",
     "Take one from above, or combine two.", 2));
   const sp = field("Who is saying it", null, 1);
   sp.input.rows = 1;
   sp.input.placeholder = "one name";
   bindGroup(sp.input, "bWho");
   host.appendChild(sp.box);
-  host.appendChild(el("p", "note",
-    "Somebody who has not spoken yet today, if there is one."));
-
-  host.appendChild(el("h3", null, "Every group"));
-  const t2 = el("table", "grid");
-  t2.style.cssText = "width:100%;border-collapse:collapse;font-size:.92rem";
-  const hr = el("tr");
-  ["Group", "What they are changing", "Said by"].forEach((h) => {
-    const th = el("th", null, h);
-    th.style.cssText = "text-align:left;padding:.3rem .5rem;border-bottom:2px solid var(--mauve);" +
-      "font-family:'Bricolage Grotesque',sans-serif;font-size:.7rem;letter-spacing:.05em;color:var(--mauve)";
-    hr.appendChild(th);
-  });
-  t2.appendChild(hr);
-  let ready = 0;
-  groupList.forEach((g) => {
-    const d = allGroups[g] || {};
-    const v = String(d.bChange || "").trim(), who = String(d.bWho || "").trim();
-    if (v) ready++;
-    const tr = el("tr" + (g === me.group ? "" : " other"));
-    [g, v || "\u2014", who || "\u2014"].forEach((cell, k) => {
-      const td = el("td", null, cell);
-      td.style.cssText = "padding:.4rem .5rem;border-bottom:1px solid var(--rule);vertical-align:top" +
-        (k === 0 ? ";font-weight:700;white-space:nowrap" : "") +
-        (k === 2 ? ";white-space:nowrap;color:var(--olivelt)" : "");
-      tr.appendChild(td);
-    });
-    t2.appendChild(tr);
-  });
-  host.appendChild(t2);
-  host.appendChild(el("p", "note", ready + " of " + groupList.length + " groups ready."));
 }
 
 function buildCommit(host) {
