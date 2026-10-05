@@ -227,16 +227,16 @@ const ROLES = [
 ];
 
 const COLD = [
-  ["c1", "What is this organization, as far as you can tell?"],
-  ["c2", "What is different about this version of Earth?"],
-  ["c3", "What is engaging, provocative, enlightening or thought-provoking about this zine?"],
+  ["c1", "Now you have heard them present, what is the most interesting thing about this zine?"],
+  ["c2", "What is working well that they should keep doing?"],
+  ["c3", "What is engaging, provocative, enlightening or thought-provoking about it?"],
   ["c4", "Which page is working the best in terms of the formal and aesthetic elements?"],
   ["c5", "Which page needs the most work in terms of formal and aesthetic elements?"],
   ["c6", "Which page is working the best in terms of the concepts conveyed?"],
   ["c7", "Which page needs the most work in terms of expressing the concept?"],
-  ["c8", "What is missing that you can already tell is missing?"],
-  ["c9", "What is working well?"],
-  ["c10", "What is one suggestion for the group?"]
+  ["c8", "What did they say they were trying to do that is not showing up on the page yet?"],
+  ["c9", "What is one idea they have not thought of that would make this stronger?"],
+  ["c10", "What is one suggestion for the group to act on before the next draft?"]
 ];
 
 const STEPS = [
@@ -247,7 +247,8 @@ const STEPS = [
     blurb: ["Present your zine to the class."] },
 
   { id: "cold", tag: "3", title: "Individual evaluation", mins: 15, kind: "cold",
-    blurb: ["Now you have heard them all, read one properly. Each group reads the next number's group. 1 reads 2, 2 reads 3, 3 reads 4, 4 reads 1. Pick your own group at the top and the right one is chosen for you.",
+    blurb: ["You have heard them present, so you know what they are trying to do. Now look at the zine itself and give them suggestions.",
+            "Each group reads the next number's group. 1 reads 2, 2 reads 3, 3 reads 4, 4 reads 1. Pick your own group at the top and the right one is chosen for you.",
             "Answer alone, in writing. It saves privately as you type, and nobody sees it until you post."] },
 
   { id: "saw", tag: "4", title: "What the class saw", mins: 10, kind: "saw",
@@ -643,7 +644,7 @@ function buildCold(host) {
   host.appendChild(el("h3", null, "Group " + (me.reading || "—") + ", as it stands"));
   pageShots(host);
 
-  host.appendChild(el("h3", null, "Answer alone"));
+  host.appendChild(el("h3", null, "Your suggestions"));
   COLD.forEach(([k, q], i) => {
     const w = el("div", "q");
     w.appendChild(el("h4", null, (i + 1) + ".  " + q));
@@ -659,11 +660,11 @@ function buildCold(host) {
 
   const posted = (readers || []).some((r) => r.id === uid);
   const b = el("button", posted ? "ghost" : "primary",
-    posted ? "Update my reading" : "Post my reading");
+    posted ? "Update my suggestions" : "Post my suggestions");
   b.addEventListener("click", postCold);
   host.appendChild(b);
   if (posted) {
-    const rb = el("button", "ghost", "Remove my reading");
+    const rb = el("button", "ghost", "Remove my suggestions");
     rb.style.marginLeft = ".4rem";
     rb.addEventListener("click", removePosted);
     host.appendChild(rb);
