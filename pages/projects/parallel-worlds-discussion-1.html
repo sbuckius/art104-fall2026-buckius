@@ -98,6 +98,13 @@ button:disabled{opacity:.45;cursor:not-allowed}
   font-weight:700;letter-spacing:.04em;color:var(--soft)}
 .card .tx{white-space:pre-wrap}
 .empty{color:var(--soft);font-style:italic;font-size:.9rem}
+body.lens-mine .card.other,
+body.lens-mine .shot.other,
+body.lens-mine .q.othergroup,
+body.lens-mine table.grid tr.other{display:none}
+body.lens-mine .lensnote{display:block}
+.lensnote{display:none;margin:.6rem 0;padding:.5rem .8rem;background:var(--panel);
+  border-left:6px solid var(--mauve);font-size:.88rem;color:var(--soft)}
 .shots{display:grid;gap:.5rem;grid-template-columns:repeat(2,1fr);margin:.6rem 0}
 @media(min-width:44rem){.shots{grid-template-columns:repeat(4,1fr)}}
 .shot{background:rgba(255,255,255,.05);border:2px solid var(--rule);padding:.3rem}
@@ -114,6 +121,8 @@ button:disabled{opacity:.45;cursor:not-allowed}
 @media print{
   .stepnav,.foot,.idbar,.here,.timer,button{display:none!important}
   body{background:#fff;color:#000}
+  .stepbreak{break-before:page;page-break-before:always}
+  textarea,input{border:1px solid #999!important;background:#fff!important;color:#000!important}
 }
 </style>
 </head>
@@ -129,6 +138,10 @@ button:disabled{opacity:.45;cursor:not-allowed}
     <input type="text" id="name" placeholder="your name" autocomplete="name" style="max-width:11rem">
     <select id="group"></select>
     <select id="reading"></select>
+    <select id="lens">
+      <option value="group">everything the class posted</option>
+      <option value="mine">only what I wrote</option>
+    </select>
     <span class="status" id="status">connecting…</span>
     <span class="here" id="here"></span>
   </div>
@@ -141,6 +154,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
   <button id="prev">← Back</button>
   <button id="mark" class="ghost">Mark this step done</button>
   <button id="pdf" class="ghost">Export this page as PDF</button>
+  <button id="pdfall" class="ghost">Export every page</button>
   <span class="spacer"></span>
   <span class="status" id="prog"></span>
   <button id="next" class="primary">Next →</button>
@@ -177,7 +191,7 @@ const firebaseConfig = {
 const TALK_ROOM = "art104-fall-talk";
 const LIVE_ROOM = "art104-fall-live";
 const STAGE     = "d3";
-const GROUPS    = 4;
+const GROUPS    = ["1", "2", "3", "4", "Test"];
 
 const PAGES = ["Cover", "Manifesto", "Company history", "Product / service 1",
                "Product / service 2", "Product / service 3", "Back cover"];
@@ -272,6 +286,7 @@ const groupList = Array.isArray(GROUPS)
 
 let db = null, uid = null, app = null, auth = null;
 let me = { name: "", group: "", reading: "" };
+let lens = lsGet("talk-lens", "group");
 let cur = 0;
 let draft = {}, gdoc = {}, readers = [], notes = {}, shots = {}, allGroups = {};
 let asks = [], votes = {}, pushes = {}, allNotes = {};
@@ -317,6 +332,14 @@ function fillSelect(sel, blank, chosen) {
 fillSelect($("group"), "your group…", me.group);
 fillSelect($("reading"), "group you are reading…", me.reading);
 
+$("lens").value = lens;
+document.body.className = "lens-" + lens;
+$("lens").addEventListener("change", () => {
+  lens = $("lens").value;
+  lsSet("talk-lens", lens);
+  document.body.className = "lens-" + lens;
+  renderStep();
+});
 $("name").addEventListener("input", () => {
   me.name = $("name").value.trim(); lsSet("talk-name", me.name);
   debounce("beat", beat, 600);
@@ -324,8 +347,9 @@ $("name").addEventListener("input", () => {
 $("group").addEventListener("change", () => {
   me.group = $("group").value; lsSet("talk-group", me.group);
   if (me.group) {
-    const i = groupList.indexOf(me.group);
-    me.reading = groupList[(i + 1) % groupList.length];
+    const ring = groupList.filter((g) => g !== "Test");
+    const i = ring.indexOf(me.group);
+    me.reading = i === -1 ? ring[0] : ring[(i + 1) % ring.length];
     $("reading").value = me.reading; lsSet("talk-reading", me.reading);
   }
   resubscribe(); renderStep();
@@ -660,7 +684,7 @@ function buildSaw(host) {
     w.appendChild(el("h4", null, (i + 1) + ".  " + q));
     const cards = el("div", "cards");
     got.forEach((r) => {
-      const c = el("div", "card");
+      const c = el("div", "card" + (r.id === uid ? "" : " other"));
       c.appendChild(el("span", "who", (r.name || "Someone") +
         (r.fromGroup ? "  ·  group " + r.fromGroup : "")));
       c.appendChild(el("div", "tx", r.answers[k]));
@@ -699,7 +723,7 @@ function buildSaw(host) {
     if (ours.length) {
       const cards = el("div", "cards");
       ours.forEach((x) => {
-        const c = el("div", "card");
+        const c = el("div", "card" + (x.uid === uid ? "" : " other"));
         c.appendChild(el("span", "who", (x.name || "Someone") + (x.uid === uid ? "  \u00b7  you" : "")));
         c.appendChild(el("div", "tx", x.text));
         cards.appendChild(c);
@@ -880,7 +904,7 @@ function buildRole(host) {
     if (others.length) {
       const cards = el("div", "cards");
       others.forEach((x) => {
-        const c = el("div", "card");
+        const c = el("div", "card other");
         c.appendChild(el("span", "who", (x.name || "Someone") +
           (x.fromGroup ? "  ·  group " + x.fromGroup : "")));
         c.appendChild(el("div", "tx", x.text));
@@ -956,7 +980,7 @@ function buildBack(host) {
     const d = allGroups[g] || {};
     const v = String(d.bChange || "").trim(), who = String(d.bWho || "").trim();
     if (v) ready++;
-    const tr = el("tr");
+    const tr = el("tr" + (g === me.group ? "" : " other"));
     [g, v || "\u2014", who || "\u2014"].forEach((cell, k) => {
       const td = el("td", null, cell);
       td.style.cssText = "padding:.4rem .5rem;border-bottom:1px solid var(--rule);vertical-align:top" +
@@ -1011,11 +1035,11 @@ function buildCommit(host) {
     const shots = (allNotes[g] || []).filter((x) => x.key === "shot" && x.img)
       .sort((a, b) => (b.updated || 0) - (a.updated || 0));
     if (!shots.length) return;
-    const gw = el("div", "q");
+    const gw = el("div", "q" + (g === me.group ? "" : " othergroup"));
     gw.appendChild(el("h4", null, "Group " + g + (g === me.group ? "   \u2014   yours" : "")));
     const grid = el("div", "shots");
     shots.forEach((x) => {
-      const c = el("div", "shot");
+      const c = el("div", "shot" + (x.uid === uid ? "" : " other"));
       const im = el("img"); im.src = x.img; im.alt = x.text || "update";
       im.style.cursor = "zoom-in";
       im.addEventListener("click", () => c.classList.toggle("big"));
@@ -1078,7 +1102,7 @@ function buildAsk(host) {
     if (others.length) {
       const cards = el("div", "cards");
       others.forEach((x) => {
-        const c = el("div", "card");
+        const c = el("div", "card other");
         c.appendChild(el("span", "who", (x.name || "Someone") +
           (x.fromGroup ? "  \u00b7  group " + x.fromGroup : "")));
         c.appendChild(el("div", "tx", x.text));
@@ -1111,7 +1135,7 @@ function buildAsk(host) {
     .sort((x, y) => y.n - x.n || (y.a.updated - x.a.updated));
   list.forEach((row) => {
     const on = mineV.indexOf(row.a.id) > -1;
-    const c = el("div", "card");
+    const c = el("div", "card" + (row.a.id.endsWith("__" + uid) ? "" : " other"));
     c.style.display = "flex"; c.style.gap = ".6rem"; c.style.alignItems = "flex-start";
     const vb = el("button", on ? "primary" : "ghost", on ? "Voted \u2713" : "Vote");
     vb.style.cssText = "flex:0 0 auto;font-size:.7rem;padding:.2rem .5rem;min-width:4.6rem";
@@ -1169,6 +1193,8 @@ function renderStep() {
   const host = $("step");
   host.innerHTML = "";
   host.appendChild(el("p", "status", "STEP " + s.tag));
+  host.appendChild(el("p", "lensnote",
+    "Showing only what you wrote. Switch the view at the top to see the rest of the class."));
   host.appendChild(el("h2", null, s.title));
   (s.blurb || []).forEach((t) => host.appendChild(el("p", null, t)));
   buildTimer(host, s.mins);
@@ -1214,6 +1240,23 @@ $("mark").addEventListener("click", () => {
   renderNav();
 });
 $("pdf").addEventListener("click", () => window.print());
+$("pdfall").addEventListener("click", () => {
+  const host = $("step");
+  const keep = cur;
+  const all = document.createElement("div");
+  for (let i = 0; i < STEPS.length; i++) {
+    cur = i;
+    renderStep();
+    const sec = document.createElement("section");
+    if (i > 0) sec.className = "stepbreak";
+    while (host.firstChild) sec.appendChild(host.firstChild);
+    all.appendChild(sec);
+  }
+  host.appendChild(all);
+  window.print();
+  cur = keep;
+  renderStep();
+});
 
 renderStep();
 </script>
