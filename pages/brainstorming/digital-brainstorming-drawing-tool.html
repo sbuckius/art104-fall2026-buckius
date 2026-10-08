@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Digital Brainstorming Drawing Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cobalt:#d63d84;
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;
+  --chrome-deep:#8ba838;
+  --pulpred:#2f7d7d;
+  --mars:#a01e5c;
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-deep:#dbe8dd;
+  --rule:#7db8c4;
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--jet);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;background:linear-gradient(160deg,rgba(139,168,56,.16) 0%,rgba(125,184,196,.12) 50%,rgba(232,95,160,.14) 100%),var(--cream)}
+
+/* ══ cover ══ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1100px;margin:0 auto;padding:14px 18px 12px}
+.cover-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#fff;padding-bottom:9px}
+.stripes{height:22px;border:3px solid var(--jet);background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px)}
+h1.logo{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,9vw,88px);line-height:.86;letter-spacing:-.02em;text-transform:uppercase;color:#fff;text-align:center;margin:10px 0 4px;
+  text-shadow:-3px -3px 0 var(--jet),3px -3px 0 var(--jet),-3px 3px 0 var(--jet),3px 3px 0 var(--jet),0 -3px 0 var(--jet),0 3px 0 var(--jet),-3px 0 0 var(--jet),3px 0 0 var(--jet),7px 8px 0 var(--jet),10px 11px 0 rgba(0,0,0,.4)}
+h1.logo .the{display:block;font-weight:700;font-size:clamp(11px,2vw,20px);letter-spacing:8px;color:var(--chrome);margin-bottom:2px;text-shadow:none}
+.cover-band{display:flex;align-items:center;gap:14px;border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);padding:9px 0;margin-top:12px}
+.roundel{width:56px;height:56px;flex:none;border-radius:50%;background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;text-transform:uppercase;padding:4px}
+.cover-tag{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;color:#fff;line-height:1.2;flex:1;min-width:0}
+.cover-kicker{font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block}
+
+/* ══ pages ══ */
+main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
+.pages{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 12px;cursor:pointer;border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip.mine{border-style:double;border-width:5px;padding:6px 10px}
+.chip .dot{color:var(--chrome-deep)}
+.chip[aria-current="true"] .dot{color:var(--chrome)}
+.chip.ghost{background:none;border-style:dashed;box-shadow:none;margin-left:auto}
+
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;margin:0 auto;max-width:max(320px,calc((100vh - 190px) * 4 / 3))}
+.sheet-frame.visiting{box-shadow:7px 7px 0 var(--rule)}
+.sheet-bar{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sheet-bar .arm{color:var(--chrome)}
+.visitbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.visitbar.on{display:flex}
+.visitbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+
+#sheet{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;container-type:inline-size;touch-action:none;background:#fff;user-select:none;-webkit-user-select:none}
+#imgLayer,#txtLayer{position:absolute;inset:0;pointer-events:none}
+#imgLayer{z-index:1}
+#txtLayer{z-index:3}
+#noteLayer{position:absolute;inset:0;z-index:3;pointer-events:none}
+#noteSvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.note{position:absolute;pointer-events:none;font-family:'Space Grotesk',sans-serif;font-weight:600;line-height:1.15;white-space:pre;font-size:calc(var(--s) * 100cqw);background:rgba(255,255,255,.92);border:2px solid currentColor;padding:.18em .5em;transform:translate(.35em,-50%)}
+.note.left{transform:translate(calc(-100% - .35em),-50%)}
+.note.bare{background:none;border:none;padding:0;width:14px;height:14px;transform:translate(-50%,-50%)}
+.tip{position:absolute;display:none;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:3px solid var(--jet);background:var(--chrome);pointer-events:none;cursor:move}
+#sheet[data-tool="move"]:not(.locked) .note,#sheet[data-tool="move"]:not(.locked) .tip{pointer-events:auto;cursor:move}
+#sheet[data-tool="move"]:not(.locked) .tip{display:block}
+#sheet[data-tool="move"]:not(.locked) .note.bare{outline:3px solid var(--jet);background:var(--chrome)}
+#sheet[data-tool="move"]:not(.locked) .note:hover{outline:3px dashed var(--pulpred);outline-offset:2px}
+#sheet[data-tool="note"] #ink{cursor:crosshair}
+#sheet[data-tool="rub"] #ink{cursor:none}
+#rubRing{position:absolute;z-index:6;border:2px solid var(--jet);box-shadow:0 0 0 2px #fff;border-radius:50%;pointer-events:none;display:none;transform:translate(-50%,-50%)}
+#sheet[data-tool="rub"]:not(.locked):hover #rubRing{display:block}
+.pic canvas.rubbing{display:block;width:100%;height:auto}
+.note .x{display:none;top:-14px;right:-14px;width:22px;height:22px;font-size:12px}
+#sheet[data-tool="move"]:not(.locked) .note .x{display:block}
+#ink{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2}
+#sheet[data-tool="draw"] #ink{cursor:crosshair}
+#sheet[data-tool="erase"] #ink{cursor:cell}
+#sheet[data-tool="text"] #ink{cursor:text}
+#sheet[data-tool="move"] #ink{pointer-events:none}
+#sheet.locked #ink{pointer-events:none}
+
+.pic{position:absolute;pointer-events:none;transform:rotate(var(--r,0deg));transform-origin:50% 50%}
+.pic.busy img{opacity:.35}
+.pic img{display:block;width:100%;height:auto;pointer-events:none}
+.txt{position:absolute;pointer-events:none;font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1.1;white-space:pre;font-size:calc(var(--s) * 100cqw)}
+#sheet[data-tool="move"]:not(.locked) .pic,#sheet[data-tool="move"]:not(.locked) .txt{pointer-events:auto;cursor:move}
+#sheet[data-tool="move"]:not(.locked) .pic:hover,#sheet[data-tool="move"]:not(.locked) .txt:hover{outline:3px dashed var(--pulpred);outline-offset:2px}
+.x,.grip,.spin,.lines{display:none;position:absolute;border:3px solid var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1}
+#sheet[data-tool="move"]:not(.locked) .x,#sheet[data-tool="move"]:not(.locked) .grip,#sheet[data-tool="move"]:not(.locked) .spin,#sheet[data-tool="move"]:not(.locked) .lines{display:block}
+.pic .x{transform:rotate(calc(-1 * var(--r,0deg)))}
+.x{top:-12px;right:-12px;width:26px;height:26px;border-radius:50%;background:var(--cobalt);color:#fff;font-size:14px;cursor:pointer;z-index:2}
+.grip{right:-9px;bottom:-9px;width:18px;height:18px;background:var(--chrome);cursor:nwse-resize}
+.spin{top:-34px;left:50%;margin-left:-11px;width:22px;height:22px;border-radius:50%;background:var(--chrome);cursor:grab}
+.spin::after{content:"";position:absolute;left:50%;top:100%;margin-left:-1.5px;width:3px;height:12px;background:var(--jet)}
+.lines{left:-6px;bottom:-14px;padding:4px 7px;background:#fff;color:var(--jet);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;z-index:2}
+.lines[aria-pressed="true"]{background:var(--jet);color:#fff}
+.tbox{position:absolute;z-index:5;font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1.1;border:3px dashed var(--pulpred);background:rgba(255,255,255,.85);padding:2px 4px;outline:none;min-width:120px;font-size:calc(var(--s) * 100cqw)}
+.emptynote{position:absolute;inset:0;z-index:4;display:grid;place-items:center;pointer-events:none;padding:24px;text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--rule)}
+.emptynote.off{display:none}
+#sheet.dropping{outline:5px dashed var(--cobalt);outline-offset:-10px}
+
+/* ══ press bar ══ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:10px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+.grp{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 14px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+.tool[aria-pressed="true"]{background:var(--jet);color:var(--chrome);box-shadow:4px 4px 0 var(--chrome-deep)}
+.sw{width:28px;height:28px;border:3px solid var(--jet);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 7px var(--jet)}
+.sz{width:34px;height:34px;border:3px solid var(--jet);background:#fff;cursor:pointer;display:grid;place-items:center;padding:0}
+.sz i{display:block;border-radius:50%;background:var(--jet)}
+.sz[aria-pressed="true"]{background:var(--chrome)}
+#press.locked .grp.edit{opacity:.35;pointer-events:none}
+
+#saveStamp{position:fixed;right:18px;bottom:110px;z-index:300;width:74px;height:74px;border-radius:50%;background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);display:grid;place-items:center;text-align:center;padding:6px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1.15;opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ overlays and desk ══ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:420px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--cobalt);margin-bottom:14px}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.pickgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+.pickgrid .btn{padding:14px 6px;font-size:13px}
+.err{font-size:11px;color:var(--pulpred);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1}
+
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:16px 0 6px}
+.editor input[type=text],.editor select{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;color:var(--jet);padding:10px 12px;outline:none}
+.editor input:focus,.editor select:focus{border-color:var(--pulpred)}
+.ed-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.ed-row select{width:auto;min-width:130px}
+.ed-flag{border:3px solid var(--pulpred);color:var(--pulpred);background:#fff;padding:11px 14px;margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;margin:34px 0 0}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 10px}
+  main{padding:16px 14px 260px}
+  #press{gap:9px;padding:9px 10px}
+  .btn{padding:8px 10px;font-size:10px;letter-spacing:1px}
+  #saveStamp{bottom:250px;right:10px;width:62px;height:62px;font-size:9px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo"><span class="the">Digital Brainstorming</span>Drawing Tool</h1>
+    <div class="cover-band">
+      <div class="roundel" id="roundel">GR<br>?</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">Prompt</span>
+        <span id="promptText">Add images, draw over them, add words.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <nav class="pages" id="pages" aria-label="Group pages"></nav>
+
+  <div class="sheet-frame" id="frame">
+    <div class="visitbar" id="visitBar">
+      <span id="visitMsg">Visiting</span>
+      <button class="btn btn-quiet" id="backHome" type="button">Back to my page</button>
+    </div>
+    <div class="sheet-bar"><span id="barPage">Group</span><span class="arm" id="barState">Connecting</span></div>
+    <div id="sheet" data-tool="draw">
+      <div id="imgLayer"></div>
+      <canvas id="ink"></canvas>
+      <div id="noteLayer"><svg id="noteSvg" viewBox="0 0 1000 750" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+      <div id="txtLayer"></div>
+      <div id="rubRing"></div>
+      <div class="emptynote" id="emptyNote">Add an image, then draw on top</div>
+    </div>
+  </div>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd"><h3>Instructor desk</h3><button class="btn btn-quiet" id="deskClose" type="button">Close</button></div>
+    <label class="bl" for="edGroups">Number of groups</label>
+    <select id="edGroups"></select>
+    <label class="bl" for="edPrompt">Prompt</label>
+    <input type="text" id="edPrompt" placeholder="Draw your two processes and how they connect"/>
+    <div class="ed-row"><button class="btn btn-ink" id="saveSettings" type="button">Save</button></div>
+    <label class="bl" for="clearWhich">Clear a page</label>
+    <div class="ed-row">
+      <select id="clearWhich"></select>
+      <button class="btn" id="clearOne" type="button">Clear page</button>
+      <button class="btn btn-quiet" id="clearAll" type="button">Clear every page</button>
+    </div>
+    <div class="ed-flag" id="edFlag"></div>
+  </section>
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div id="press">
+  <div class="grp edit" role="group" aria-label="Tools">
+    <button class="btn tool" data-tool="move" type="button" aria-pressed="false">Move</button>
+    <button class="btn tool" data-tool="draw" type="button" aria-pressed="true">Draw</button>
+    <button class="btn tool" data-tool="erase" type="button" aria-pressed="false">Erase</button>
+    <button class="btn tool" data-tool="text" type="button" aria-pressed="false">Text</button>
+    <button class="btn tool" data-tool="note" type="button" aria-pressed="false">Note</button>
+    <button class="btn tool" data-tool="rub" type="button" aria-pressed="false">Rub out</button>
+    <button class="btn btn-ink" id="addImg" type="button">+ Image</button>
+    <input type="file" id="file" accept="image/*" multiple hidden/>
+  </div>
+  <div class="grp edit" id="swatches" role="group" aria-label="Color"></div>
+  <div class="grp edit" id="sizes" role="group" aria-label="Size"></div>
+  <div class="grp">
+    <button class="btn btn-quiet edit-only" id="undoBtn" type="button">Undo</button>
+    <button class="btn" id="saveBtn" type="button">Save image</button>
+  </div>
+</div>
+
+<div id="saveStamp">Image<br>saved</div>
+
+<div class="overlay" id="picker">
+  <div class="box">
+    <h3>Which group are you?</h3>
+    <div class="pickgrid" id="pickGrid"></div>
+  </div>
+</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══ THINGS YOU MAY WANT TO CHANGE ═══ */
+const TEACHER_CODE = "collage";
+const DEFAULT_GROUPS = 6;      // the desk can change this, up to MAX_GROUPS
+const MAX_GROUPS = 12;
+const COLORS = ["#14202a","#d63d84","#2f7d7d","#8ba838","#7db8c4","#a01e5c","#ffffff"];
+const PEN = [0.003, 0.007, 0.016];     // stroke widths, as a share of the sheet's width
+const TYPE = [0.024, 0.036, 0.06];     // text sizes, same units
+const IMG_MAX = 1400;                  // longest side of an uploaded image, in pixels
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+/* ═══ MACHINERY ═══ */
+const ROOT = "groupsheets";
+const $ = (id) => document.getElementById(id);
+const sheet = $("sheet"), canvas = $("ink"), ctx = canvas.getContext("2d");
+
+let db = null, uid = null;
+let settings = { groups: DEFAULT_GROUPS, prompt: "" };
+let myGroup = null, page = null, refs = [];
+let strokes = {}, images = {}, texts = {}, notes = {};
+let tool = "draw", color = COLORS[0], size = 1;
+let undoStack = [];
+let unlocked = false;
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+const esc = (t) => String(t == null ? "" : t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const editable = () => !!db && page !== null && page === myGroup;
+const pagePath = (n) => `${ROOT}/pages/g${n}`;
+
+function setState(msg) { $("barState").textContent = msg; }
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  setState(denied ? "The database rules are blocking this" : "Firebase error");
+  console.error("[group sheets]", err);
+}
+
+/* ── controls ── */
+COLORS.forEach((c, i) => {
+  const b = document.createElement("button");
+  b.className = "sw"; b.type = "button"; b.style.background = c;
+  b.setAttribute("aria-label", "Color " + c); b.setAttribute("aria-pressed", i === 0);
+  b.onclick = () => { color = c; [...$("swatches").children].forEach((x) => x.setAttribute("aria-pressed", x === b)); };
+  $("swatches").appendChild(b);
+});
+PEN.forEach((w, i) => {
+  const b = document.createElement("button");
+  b.className = "sz"; b.type = "button"; b.setAttribute("aria-label", ["Small", "Medium", "Large"][i]);
+  b.setAttribute("aria-pressed", i === size);
+  b.innerHTML = `<i style="width:${6 + i * 6}px;height:${6 + i * 6}px"></i>`;
+  b.onclick = () => { size = i; [...$("sizes").children].forEach((x) => x.setAttribute("aria-pressed", x === b)); };
+  $("sizes").appendChild(b);
+});
+document.querySelectorAll(".tool").forEach((b) => b.addEventListener("click", () => setTool(b.dataset.tool)));
+function setTool(t) {
+  closeTextBox(true);
+  if (typeof closeNoteBox === "function") closeNoteBox(true);
+  tool = t; sheet.dataset.tool = t;
+  document.querySelectorAll(".tool").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tool === t));
+  if (editable()) setState({ move: "Drag to move. Top dot rotates. Corner resizes", draw: "Draw", erase: "Touch a line to erase it", text: "Tap where the words go", note: "Press on a part, drag out, then type", rub: "Rub out parts of an image in Lines" }[t]);
+}
+
+/* ── canvas size ── */
+let W = 0, H = 0, dpr = 1;
+function fit() {
+  const r = sheet.getBoundingClientRect();
+  dpr = window.devicePixelRatio || 1;
+  W = r.width; H = r.height;
+  canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+  if (typeof notes !== "undefined") Object.entries(notes).forEach(([k, n]) => drawNote(k, n));
+  redraw();
+}
+new ResizeObserver(fit).observe(sheet);
+
+let raf = 0;
+function redraw() {
+  if (raf) return;
+  raf = requestAnimationFrame(() => {
+    raf = 0;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    Object.values(strokes).forEach((s) => drawStroke(ctx, s, W, H));
+    if (live) drawStroke(ctx, live, W, H);
+    updateEmpty();
+  });
+}
+function drawStroke(c, s, w, h) {
+  const p = s.p || [];
+  if (p.length < 2) return;
+  c.strokeStyle = s.c; c.fillStyle = s.c;
+  c.lineWidth = Math.max(1, s.w * w);
+  c.lineCap = "round"; c.lineJoin = "round";
+  c.beginPath();
+  c.moveTo(p[0] / 1e4 * w, p[1] / 1e4 * h);
+  if (p.length === 2) { c.lineTo(p[0] / 1e4 * w + 0.01, p[1] / 1e4 * h); }
+  for (let i = 2; i < p.length; i += 2) c.lineTo(p[i] / 1e4 * w, p[i + 1] / 1e4 * h);
+  c.stroke();
+}
+function updateEmpty() {
+  const empty = !Object.keys(strokes).length && !Object.keys(images).length && !Object.keys(texts).length && !Object.keys(notes).length;
+  $("emptyNote").classList.toggle("off", !empty);
+}
+
+/* ── pointer position as a share of the sheet ── */
+function rel(e) {
+  const r = sheet.getBoundingClientRect();
+  return [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))];
+}
+
+/* ── drawing and erasing ── */
+let live = null;
+canvas.addEventListener("pointerdown", (e) => {
+  if (!editable()) return;
+  const [x, y] = rel(e);
+  if (tool === "text") { e.preventDefault(); openTextBox(x, y); return; }
+  canvas.setPointerCapture(e.pointerId);
+  if (tool === "rub") { e.preventDefault(); rubStart(x, y); return; }
+  if (tool === "note") { e.preventDefault(); closeNoteBox(true); draft = { ax: x, ay: y, bx: x, by: y, t: "", c: color, s: TYPE[size] * 0.7, sw: [2, 3, 4.5][size] }; drawNote("draft", draft); return; }
+  if (tool === "draw") {
+    live = { c: color, w: PEN[size], p: [Math.round(x * 1e4), Math.round(y * 1e4)] };
+    redraw();
+  } else if (tool === "erase") eraseAt(x, y);
+});
+canvas.addEventListener("pointermove", (e) => {
+  if (!canvas.hasPointerCapture(e.pointerId)) return;
+  const [x, y] = rel(e);
+  if (tool === "draw" && live) {
+    const p = live.p, lx = p[p.length - 2] / 1e4, ly = p[p.length - 1] / 1e4;
+    if (Math.hypot((x - lx) * W, (y - ly) * H) < 2) return;
+    p.push(Math.round(x * 1e4), Math.round(y * 1e4));
+    redraw();
+  } else if (tool === "rub") rubMove(x, y);
+  else if (tool === "note" && draft) { draft.bx = x; draft.by = y; drawNote("draft", draft); }
+  else if (tool === "erase") eraseAt(x, y);
+});
+function endStroke(e) {
+  if (tool === "rub") { if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId); rubEnd(); return; }
+  if (tool === "note" && draft) { endNoteDrag(e); return; }
+  if (!live) return;
+  const s = live; live = null;
+  if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+  if (!editable()) { redraw(); return; }
+  const ref = db.ref(pagePath(page) + "/strokes").push();
+  strokes[ref.key] = s;
+  undoStack.push(["strokes", ref.key]);
+  ref.set({ ...s, by: uid, at: Date.now() }).catch(dbTrouble);
+  redraw();
+}
+canvas.addEventListener("pointerup", endStroke);
+canvas.addEventListener("pointercancel", endStroke);
+
+const erasing = new Set();
+function eraseAt(x, y) {
+  const px = x * W, py = y * H;
+  for (const [k, n] of Object.entries(notes)) {
+    if (erasing.has(k)) continue;
+    if (segDist(px, py, n.ax * W, n.ay * H, n.bx * W, n.by * H) <= 10) {
+      erasing.add(k);
+      db.ref(pagePath(page) + "/notes/" + k).remove().catch(dbTrouble).finally(() => erasing.delete(k));
+    }
+  }
+  for (const [k, s] of Object.entries(strokes)) {
+    if (erasing.has(k)) continue;
+    const reach = Math.max(10, s.w * W / 2 + 4), p = s.p || [];
+    for (let i = 0; i < p.length; i += 2) {
+      const ax = p[i] / 1e4 * W, ay = p[i + 1] / 1e4 * H;
+      const bx = (i + 2 < p.length ? p[i + 2] : p[i]) / 1e4 * W, by = (i + 3 < p.length ? p[i + 3] : p[i + 1]) / 1e4 * H;
+      if (segDist(px, py, ax, ay, bx, by) <= reach) {
+        erasing.add(k);
+        db.ref(pagePath(page) + "/strokes/" + k).remove().catch(dbTrouble).finally(() => erasing.delete(k));
+        break;
+      }
+    }
+  }
+}
+function segDist(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay, L = dx * dx + dy * dy;
+  const t = L ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / L)) : 0;
+  return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+}
+
+/* ── text ── */
+let tbox = null;
+function openTextBox(x, y, key) {
+  closeTextBox(true);
+  const v = key ? texts[key] : null;
+  tbox = document.createElement("input");
+  tbox.type = "text"; tbox.className = "tbox"; tbox.maxLength = 200;
+  tbox.style.left = (v ? v.x : x) * 100 + "%";
+  tbox.style.top = (v ? v.y : y) * 100 + "%";
+  tbox.style.setProperty("--s", v ? v.s : TYPE[size]);
+  tbox.style.color = v ? v.c : color;
+  tbox.value = v ? v.t : "";
+  tbox.dataset.key = key || "";
+  tbox.dataset.x = x; tbox.dataset.y = y;
+  tbox.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); closeTextBox(true); }
+    if (e.key === "Escape") closeTextBox(false);
+  });
+  tbox.addEventListener("blur", () => setTimeout(() => closeTextBox(true), 0));
+  sheet.appendChild(tbox);
+  tbox.focus();
+  setTimeout(() => tbox && tbox.focus(), 0);
+}
+function closeTextBox(commit) {
+  if (!tbox) return;
+  const b = tbox; tbox = null;
+  const t = b.value.trim(), key = b.dataset.key;
+  b.remove();
+  if (!commit || !editable()) return;
+  const base = pagePath(page) + "/texts";
+  if (key) {
+    if (t) db.ref(base + "/" + key).update({ t }).catch(dbTrouble);
+    else db.ref(base + "/" + key).remove().catch(dbTrouble);
+  } else if (t) {
+    const ref = db.ref(base).push();
+    undoStack.push(["texts", ref.key]);
+    ref.set({ t, x: +b.dataset.x, y: +b.dataset.y, s: TYPE[size], c: color, by: uid, at: Date.now() }).catch(dbTrouble);
+  }
+}
+function putText(k, v) {
+  let el = $("txtLayer").querySelector(`[data-k="${k}"]`);
+  if (!el) {
+    el = document.createElement("div");
+    el.className = "txt"; el.dataset.k = k;
+    el.innerHTML = '<span></span><button class="x" type="button" aria-label="Remove">×</button>';
+    $("txtLayer").appendChild(el);
+    hookItem(el, "texts", k);
+    el.addEventListener("dblclick", () => { if (editable() && tool === "move") openTextBox(0, 0, k); });
+  }
+  el.querySelector("span").textContent = v.t;
+  el.style.left = v.x * 100 + "%"; el.style.top = v.y * 100 + "%";
+  el.style.color = v.c; el.style.setProperty("--s", v.s);
+  if (v.c === "#ffffff") el.style.textShadow = "0 0 3px rgba(20,32,42,.7)"; else el.style.textShadow = "";
+}
+
+/* ── images ── */
+$("addImg").onclick = () => editable() && $("file").click();
+$("file").onchange = (e) => { [...e.target.files].forEach(addImage); e.target.value = ""; };
+sheet.addEventListener("dragover", (e) => { if (editable()) { e.preventDefault(); sheet.classList.add("dropping"); } });
+sheet.addEventListener("dragleave", () => sheet.classList.remove("dropping"));
+sheet.addEventListener("drop", (e) => {
+  sheet.classList.remove("dropping");
+  if (!editable()) return;
+  e.preventDefault();
+  [...(e.dataTransfer.files || [])].filter((f) => f.type.startsWith("image/")).forEach(addImage);
+});
+document.addEventListener("paste", (e) => {
+  if (!editable() || tbox) return;
+  [...(e.clipboardData && e.clipboardData.files || [])].filter((f) => f.type.startsWith("image/")).forEach(addImage);
+});
+
+function shrink(file) {
+  return new Promise((ok, no) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let max = IMG_MAX, q = 0.8, out = "", ar = img.naturalWidth / img.naturalHeight;
+      for (let tries = 0; tries < 5; tries++) {
+        const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement("canvas");
+        c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+        const g = c.getContext("2d");
+        g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+        g.drawImage(img, 0, 0, c.width, c.height);
+        out = c.toDataURL("image/jpeg", q);
+        if (out.length < 700000) break;
+        max *= 0.8; q = Math.max(0.5, q - 0.08);
+      }
+      ok({ src: out, ar });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); no(new Error("That file could not be read as an image")); };
+    img.src = url;
+  });
+}
+function addImage(file) {
+  if (!editable()) return;
+  setState("Adding image");
+  shrink(file).then(({ src, ar }) => {
+    let w = 0.45;
+    if (w / ar * (W / H) > 0.8) w = 0.8 * ar * (H / W);
+    const hFrac = w / ar * (W / H);
+    const n = Object.keys(images).length;
+    const x = Math.min(1 - w, Math.max(0, (1 - w) / 2 + ((n % 5) - 2) * 0.05));
+    const y = Math.min(1 - hFrac, Math.max(0, (1 - hFrac) / 2 + ((n % 5) - 2) * 0.05));
+    const ref = db.ref(pagePath(page) + "/images").push();
+    undoStack.push(["images", ref.key]);
+    return ref.set({ src, x, y, w, by: uid, at: Date.now() });
+  }).then(() => { setTool("draw"); setState("Image added. Draw on top"); })
+    .catch((err) => { setState(err.message || "Image failed"); dbTrouble(err); });
+}
+function putImage(k, v) {
+  let el = $("imgLayer").querySelector(`[data-k="${k}"]`);
+  if (!el) {
+    el = document.createElement("div");
+    el.className = "pic"; el.dataset.k = k;
+    el.innerHTML = '<img alt="" draggable="false"/><button class="x" type="button" aria-label="Remove">×</button><span class="spin" title="Rotate"></span><span class="grip" title="Resize"></span><button class="lines" type="button" aria-pressed="false">Lines</button>';
+    $("imgLayer").appendChild(el);
+    hookItem(el, "images", k);
+    el.querySelector(".lines").addEventListener("click", (e) => { e.stopPropagation(); toggleLines(k, el); });
+  }
+  const im = el.querySelector("img"), shown = v.mode === "line" && v.line ? v.line : v.src;
+  if (im.getAttribute("src") !== shown) im.src = shown;
+  el.querySelector(".lines").setAttribute("aria-pressed", v.mode === "line");
+  el.style.left = v.x * 100 + "%"; el.style.top = v.y * 100 + "%"; el.style.width = v.w * 100 + "%";
+  el.style.setProperty("--r", (v.r || 0) + "deg");
+  restack();
+}
+const stackOrder = () => Object.keys(images).sort((a, b) => (images[a].z || images[a].at || 0) - (images[b].z || images[b].at || 0));
+function restack() {
+  stackOrder().forEach((k, i) => {
+    const el = $("imgLayer").querySelector(`[data-k="${k}"]`);
+    if (el) el.style.zIndex = i + 1;
+  });
+}
+
+/* ── turn a photo into black and white lines ── */
+function toLines(src) {
+  return new Promise((ok, no) => {
+    const img = new Image();
+    img.onload = () => {
+      let max = 1200, out = "";
+      for (let tries = 0; tries < 4; tries++) {
+        const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+        const w = Math.max(3, Math.round(img.naturalWidth * k)), h = Math.max(3, Math.round(img.naturalHeight * k));
+        const c = document.createElement("canvas"); c.width = w; c.height = h;
+        const g = c.getContext("2d");
+        g.drawImage(img, 0, 0, w, h);
+        const d = g.getImageData(0, 0, w, h), px = d.data, N = w * h;
+        // gray, then a soft blur so the lines follow shapes instead of grain
+        const gray = new Float32Array(N), blur = new Float32Array(N), mag = new Float32Array(N);
+        for (let i = 0; i < N; i++) gray[i] = 0.299 * px[i * 4] + 0.587 * px[i * 4 + 1] + 0.114 * px[i * 4 + 2];
+        const K = [1, 4, 6, 4, 1], tmp = new Float32Array(N);
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          let s = 0; for (let j = -2; j <= 2; j++) s += K[j + 2] * gray[y * w + Math.min(w - 1, Math.max(0, x + j))];
+          tmp[y * w + x] = s / 16;
+        }
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          let s = 0; for (let j = -2; j <= 2; j++) s += K[j + 2] * tmp[Math.min(h - 1, Math.max(0, y + j)) * w + x];
+          blur[y * w + x] = s / 16;
+        }
+        // edge strength
+        const hist = new Uint32Array(256);
+        let top = 1;
+        for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+          const i = y * w + x, b = blur;
+          const gx = -b[i - w - 1] - 2 * b[i - 1] - b[i + w - 1] + b[i - w + 1] + 2 * b[i + 1] + b[i + w + 1];
+          const gy = -b[i - w - 1] - 2 * b[i - w] - b[i - w + 1] + b[i + w - 1] + 2 * b[i + w] + b[i + w + 1];
+          const m = Math.hypot(gx, gy); mag[i] = m; if (m > top) top = m;
+        }
+        for (let i = 0; i < N; i++) hist[Math.min(255, Math.floor(mag[i] / top * 255))]++;
+        // keep roughly the strongest 13 percent as lines
+        let cut = 255, count = 0;
+        while (cut > 1 && count < N * 0.13) count += hist[cut--];
+        const thr = Math.max(cut / 255 * top, top * 0.06);
+        for (let i = 0; i < N; i++) {
+          const on = mag[i] > thr;
+          px[i * 4] = px[i * 4 + 1] = px[i * 4 + 2] = 20;
+          px[i * 4 + 3] = on ? 255 : 0;
+        }
+        g.putImageData(d, 0, 0);
+        out = c.toDataURL("image/png");
+        if (out.length < 800000) break;
+        max *= 0.8;
+      }
+      ok(out);
+    };
+    img.onerror = () => no(new Error("Could not read that image"));
+    img.src = src;
+  });
+}
+function toggleLines(k, el) {
+  if (!editable()) return;
+  const v = images[k];
+  if (!v) return;
+  const ref = db.ref(`${pagePath(page)}/images/${k}`);
+  if (v.mode === "line") { ref.update({ mode: "photo" }).catch(dbTrouble); return; }
+  if (v.line) { ref.update({ mode: "line" }).catch(dbTrouble); return; }
+  el.classList.add("busy"); setState("Drawing the lines");
+  setTimeout(() => {
+    toLines(v.src).then((line) => ref.update({ line, mode: "line" }))
+      .then(() => setState("Lines. Tap Lines again for the photo"))
+      .catch((err) => { setState(err.message || "Could not make lines"); dbTrouble(err); })
+      .finally(() => el.classList.remove("busy"));
+  }, 30);
+}
+
+/* ── move, resize, rotate, remove ── */
+function hookItem(el, kind, k) {
+  el.querySelector(".x").addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (editable()) db.ref(`${pagePath(page)}/${kind}/${k}`).remove().catch(dbTrouble);
+  });
+  el.addEventListener("pointerdown", (e) => {
+    if (!editable() || tool !== "move" || e.target.closest(".x") || e.target.closest(".lines")) return;
+    e.preventDefault();
+    const grip = e.target.classList.contains("grip"), spin = e.target.classList.contains("spin");
+    const r = sheet.getBoundingClientRect();
+    const v = (kind === "images" ? images : texts)[k];
+    const start = { cx: e.clientX, cy: e.clientY, x: v.x, y: v.y, w: v.w };
+    const box = el.getBoundingClientRect();
+    const mid = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+    const im = el.querySelector("img");
+    const ar = im && im.naturalWidth ? im.naturalWidth / im.naturalHeight : 1;
+    el.setPointerCapture(e.pointerId);
+    if (kind === "images") { v.z = Date.now(); restack(); }
+    const move = (ev) => {
+      const dx = (ev.clientX - start.cx) / r.width, dy = (ev.clientY - start.cy) / r.height;
+      if (spin) {
+        let a = Math.atan2(ev.clientY - mid.y, ev.clientX - mid.x) * 180 / Math.PI + 90;
+        if (ev.shiftKey) a = Math.round(a / 15) * 15;
+        a = ((a % 360) + 360) % 360;
+        if (Math.min(a % 90, 90 - (a % 90)) < 4) a = Math.round(a / 90) * 90 % 360;
+        v.r = Math.round(a);
+        el.style.setProperty("--r", v.r + "deg");
+      } else if (grip) {
+        const d0 = Math.max(8, Math.hypot(start.cx - mid.x, start.cy - mid.y));
+        const w = Math.min(1.5, Math.max(0.05, start.w * Math.hypot(ev.clientX - mid.x, ev.clientY - mid.y) / d0));
+        const hFrac = w * r.width / ar / r.height;
+        const cxF = (mid.x - r.left) / r.width, cyF = (mid.y - r.top) / r.height;
+        v.w = w; v.x = cxF - w / 2; v.y = cyF - hFrac / 2;
+        el.style.width = v.w * 100 + "%"; el.style.left = v.x * 100 + "%"; el.style.top = v.y * 100 + "%";
+      } else {
+        v.x = Math.min(0.98, Math.max(-0.5, start.x + dx)); v.y = Math.min(0.98, Math.max(-0.5, start.y + dy));
+        el.style.left = v.x * 100 + "%"; el.style.top = v.y * 100 + "%";
+      }
+    };
+    const up = () => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      const patch = spin ? { r: v.r || 0 } : grip ? { w: v.w, x: v.x, y: v.y } : { x: v.x, y: v.y };
+      if (kind === "images") patch.z = v.z;
+      db.ref(`${pagePath(page)}/${kind}/${k}`).update(patch).catch(dbTrouble);
+    };
+    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  });
+}
+
+/* ── notes: a leader line with an arrowhead, like a labeled diagram ── */
+let draft = null, nbox = null;
+const SV = 1000, SVH = 750;
+function arrowPts(n) {
+  const ax = n.ax * SV, ay = n.ay * SVH, bx = n.bx * SV, by = n.by * SVH;
+  const L = Math.hypot(bx - ax, by - ay) || 1, ux = (bx - ax) / L, uy = (by - ay) / L;
+  const len = 9 + n.sw * 3.2, half = 3 + n.sw * 1.3;
+  const baseX = ax + ux * len, baseY = ay + uy * len;
+  return { ax, ay, bx, by, baseX, baseY, head: `${ax},${ay} ${baseX - uy * half},${baseY + ux * half} ${baseX + uy * half},${baseY - ux * half}` };
+}
+function drawNote(k, n) {
+  const svg = $("noteSvg"), NS = "http://www.w3.org/2000/svg";
+  let g = svg.querySelector(`[data-k="${k}"]`);
+  if (!g) {
+    g = document.createElementNS(NS, "g"); g.dataset.k = k;
+    g.appendChild(document.createElementNS(NS, "line"));
+    g.appendChild(document.createElementNS(NS, "polygon"));
+    svg.appendChild(g);
+  }
+  const a = arrowPts(n), [ln, hd] = g.children;
+  ln.setAttribute("x1", a.baseX); ln.setAttribute("y1", a.baseY); ln.setAttribute("x2", a.bx); ln.setAttribute("y2", a.by);
+  ln.setAttribute("stroke", n.c); ln.setAttribute("stroke-width", n.sw); ln.setAttribute("stroke-linecap", "round");
+  hd.setAttribute("points", a.head); hd.setAttribute("fill", n.c);
+  if (k === "draft") return;
+  let lab = $("noteLayer").querySelector(`.note[data-k="${k}"]`), tip = $("noteLayer").querySelector(`.tip[data-k="${k}"]`);
+  if (!lab) {
+    lab = document.createElement("div"); lab.className = "note"; lab.dataset.k = k;
+    lab.innerHTML = '<span></span><button class="x" type="button" aria-label="Remove">×</button>';
+    tip = document.createElement("span"); tip.className = "tip"; tip.dataset.k = k;
+    $("noteLayer").append(lab, tip);
+    hookNote(lab, k, "b"); hookNote(tip, k, "a");
+    lab.querySelector(".x").addEventListener("click", (e) => { e.stopPropagation(); if (editable()) db.ref(`${pagePath(page)}/notes/${k}`).remove().catch(dbTrouble); });
+    lab.addEventListener("dblclick", () => { if (editable() && tool === "move") openNoteBox(notes[k], k); });
+  }
+  lab.querySelector("span").textContent = n.t || "";
+  lab.classList.toggle("bare", !n.t);
+  lab.style.left = n.bx * 100 + "%"; lab.style.top = n.by * 100 + "%";
+  lab.style.color = n.c; lab.style.setProperty("--s", n.s);
+  lab.classList.toggle("left", noteLeft(n, lab.offsetWidth, W));
+  tip.style.left = n.ax * 100 + "%"; tip.style.top = n.ay * 100 + "%";
+}
+// labels sit on the far side of the line, unless that would run off the sheet
+function noteLeft(n, labelW, sheetW) {
+  const gap = n.s * sheetW * 0.35;
+  let left = n.bx < n.ax;
+  if (left && n.bx * sheetW - labelW - gap < 0) left = false;
+  else if (!left && n.bx * sheetW + labelW + gap > sheetW) left = true;
+  return left;
+}
+function dropNote(k) {
+  $("noteLayer").querySelectorAll(`[data-k="${k}"]`).forEach((el) => el.remove());
+}
+function endNoteDrag(e) {
+  if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+  const n = draft;
+  if (Math.hypot((n.bx - n.ax) * W, (n.by - n.ay) * H) < 14) {
+    n.bx = n.ax < 0.75 ? n.ax + 0.1 : n.ax - 0.1;
+    n.by = Math.max(0.04, n.ay - 0.07);
+    drawNote("draft", n);
+  }
+  openNoteBox(n, null);
+}
+function openNoteBox(n, key) {
+  closeTextBox(true);
+  if (nbox) nbox.remove();
+  nbox = document.createElement("input");
+  nbox.type = "text"; nbox.className = "tbox"; nbox.maxLength = 120;
+  nbox.placeholder = "Note, or Enter for a plain arrow";
+  nbox.style.left = n.bx * 100 + "%"; nbox.style.top = n.by * 100 + "%";
+  nbox.style.transform = n.bx < n.ax ? "translate(-100%,-50%)" : "translate(0,-50%)";
+  nbox.style.setProperty("--s", n.s); nbox.style.color = n.c;
+  nbox.value = n.t || "";
+  nbox._note = n; nbox._key = key;
+  nbox.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); closeNoteBox(true); }
+    if (e.key === "Escape") closeNoteBox(false);
+  });
+  nbox.addEventListener("blur", () => setTimeout(() => closeNoteBox(true), 0));
+  sheet.appendChild(nbox);
+  nbox.focus();
+  setTimeout(() => nbox && nbox.focus(), 0);
+}
+function closeNoteBox(commit) {
+  if (!nbox) return;
+  const b = nbox; nbox = null;
+  const n = b._note, key = b._key, t = b.value.trim();
+  b.remove();
+  dropNote("draft");
+  if (key === null) draft = null;
+  if (!commit || !editable()) return;
+  const base = pagePath(page) + "/notes";
+  if (key) { db.ref(base + "/" + key).update({ t }).catch(dbTrouble); return; }
+  const ref = db.ref(base).push();
+  undoStack.push(["notes", ref.key]);
+  ref.set({ ax: n.ax, ay: n.ay, bx: n.bx, by: n.by, t, c: n.c, s: n.s, sw: n.sw, by_: uid, at: Date.now() }).catch(dbTrouble);
+}
+function hookNote(el, k, end) {
+  el.addEventListener("pointerdown", (e) => {
+    if (!editable() || tool !== "move" || e.target.closest(".x")) return;
+    e.preventDefault(); e.stopPropagation();
+    const n = notes[k]; if (!n) return;
+    el.setPointerCapture(e.pointerId);
+    const move = (ev) => {
+      const [x, y] = rel(ev);
+      if (end === "a") { n.ax = x; n.ay = y; } else { n.bx = x; n.by = y; }
+      drawNote(k, n);
+    };
+    const up = () => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      db.ref(`${pagePath(page)}/notes/${k}`).update(end === "a" ? { ax: n.ax, ay: n.ay } : { bx: n.bx, by: n.by }).catch(dbTrouble);
+    };
+    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  });
+}
+
+/* ── rub out: erase pixels from images that are in Lines ── */
+const RUB = [0.008, 0.018, 0.04];      // eraser width, as a share of the sheet's width
+let rub = null;
+canvas.addEventListener("pointermove", (e) => {
+  if (tool !== "rub") return;
+  const r = sheet.getBoundingClientRect(), ring = $("rubRing"), d = RUB[size] * r.width;
+  ring.style.width = ring.style.height = d + "px";
+  ring.style.left = e.clientX - r.left + "px"; ring.style.top = e.clientY - r.top + "px";
+});
+function lineImagesAt(x, y) {
+  return stackOrder().reverse().filter((k) => {
+    const v = images[k];
+    if (!v || v.mode !== "line" || !v.line) return false;
+    const L = toLocal(k, x, y);
+    return L && L.u >= 0 && L.u <= 1 && L.v >= 0 && L.v <= 1;
+  });
+}
+function toLocal(k, x, y) {
+  const v = images[k], el = $("imgLayer").querySelector(`[data-k="${k}"]`);
+  const im = el && el.querySelector("img");
+  if (!im || !im.naturalWidth) return null;
+  const wpx = v.w * W, hpx = wpx * im.naturalHeight / im.naturalWidth;
+  const cx = v.x * W + wpx / 2, cy = v.y * H + hpx / 2;
+  const t = -(v.r || 0) * Math.PI / 180, dx = x * W - cx, dy = y * H - cy;
+  const lx = dx * Math.cos(t) - dy * Math.sin(t), ly = dx * Math.sin(t) + dy * Math.cos(t);
+  return { u: (lx + wpx / 2) / wpx, v: (ly + hpx / 2) / hpx, scale: im.naturalWidth / wpx };
+}
+function rubStart(x, y) {
+  const hits = lineImagesAt(x, y);
+  if (!hits.length) {
+    const any = Object.values(images).some((v) => v.mode !== "line");
+    setState(any ? "Switch the image to Lines first (Move, then Lines)" : "Rub out works on line drawings");
+    return;
+  }
+  rub = { work: {}, last: [x, y] };
+  hits.forEach((k) => rubOpen(k));
+  rubAt(x, y, x, y);
+}
+function rubOpen(k) {
+  if (rub.work[k]) return;
+  const el = $("imgLayer").querySelector(`[data-k="${k}"]`), im = el.querySelector("img");
+  const c = document.createElement("canvas");
+  c.width = im.naturalWidth; c.height = im.naturalHeight; c.className = "rubbing";
+  c.getContext("2d").drawImage(im, 0, 0);
+  im.style.display = "none";
+  el.insertBefore(c, im);
+  rub.work[k] = { c, before: images[k].line, el, im };
+}
+function rubMove(x, y) {
+  if (!rub) return;
+  lineImagesAt(x, y).forEach((k) => rubOpen(k));
+  rubAt(rub.last[0], rub.last[1], x, y);
+  rub.last = [x, y];
+}
+function rubAt(x0, y0, x1, y1) {
+  Object.entries(rub.work).forEach(([k, w]) => {
+    const a = toLocal(k, x0, y0), b = toLocal(k, x1, y1);
+    if (!a || !b) return;
+    const g = w.c.getContext("2d"), cw = w.c.width, ch = w.c.height;
+    g.save();
+    g.globalCompositeOperation = "destination-out";
+    g.lineCap = "round"; g.lineJoin = "round";
+    g.lineWidth = RUB[size] * W * a.scale;
+    g.beginPath(); g.moveTo(a.u * cw, a.v * ch); g.lineTo(b.u * cw + 0.01, b.v * ch); g.stroke();
+    g.restore();
+  });
+}
+function rubEnd() {
+  if (!rub) return;
+  const work = rub.work; rub = null;
+  Object.entries(work).forEach(([k, w]) => {
+    const line = w.c.toDataURL("image/png");
+    w.im.src = line; w.im.style.display = "";
+    w.c.remove();
+    if (!images[k]) return;
+    images[k].line = line;
+    undoStack.push(["rub", k, w.before]);
+    db.ref(`${pagePath(page)}/images/${k}`).update({ line }).catch(dbTrouble);
+  });
+}
+
+/* ── undo ── */
+$("undoBtn").onclick = () => {
+  if (!editable()) return;
+  while (undoStack.length) {
+    const [kind, k, before] = undoStack.pop();
+    if (kind === "rub") {
+      if (images[k] && before) { db.ref(`${pagePath(page)}/images/${k}`).update({ line: before }).catch(dbTrouble); return; }
+      continue;
+    }
+    const have = { strokes, images, texts, notes }[kind];
+    if (have[k]) { db.ref(`${pagePath(page)}/${kind}/${k}`).remove().catch(dbTrouble); return; }
+  }
+  setState("Nothing of yours to undo");
+};
+
+/* ── save as png ── */
+$("saveBtn").onclick = () => {
+  const OW = 1600, OH = 1200, c = document.createElement("canvas");
+  c.width = OW; c.height = OH;
+  const g = c.getContext("2d");
+  g.fillStyle = "#fff"; g.fillRect(0, 0, OW, OH);
+  stackOrder().map((k) => $("imgLayer").querySelector(`[data-k="${k}"]`)).filter(Boolean).forEach((el) => {
+    const v = images[el.dataset.k], im = el.querySelector("img");
+    if (!v || !im.complete || !im.naturalWidth) return;
+    const w = v.w * OW, h = w * im.naturalHeight / im.naturalWidth;
+    g.save();
+    g.translate(v.x * OW + w / 2, v.y * OH + h / 2);
+    g.rotate((v.r || 0) * Math.PI / 180);
+    g.drawImage(im, -w / 2, -h / 2, w, h);
+    g.restore();
+  });
+  Object.values(strokes).forEach((s) => drawStroke(g, s, OW, OH));
+  Object.values(notes).forEach((n) => {
+    const a = arrowPts(n), kx = OW / SV, ky = OH / SVH;
+    g.strokeStyle = n.c; g.fillStyle = n.c; g.lineWidth = n.sw * kx; g.lineCap = "round";
+    g.beginPath(); g.moveTo(a.baseX * kx, a.baseY * ky); g.lineTo(a.bx * kx, a.by * ky); g.stroke();
+    const pts = a.head.split(" ").map((q) => q.split(",").map(Number));
+    g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x * kx, y * ky) : g.moveTo(x * kx, y * ky))); g.closePath(); g.fill();
+    if (!n.t) return;
+    const fs = n.s * OW, pad = fs * 0.5, gap = fs * 0.35;
+    g.font = `600 ${fs}px 'Space Grotesk', sans-serif`;
+    const tw = g.measureText(n.t).width, bw = tw + pad * 2, bh = fs * 1.5;
+    const left = noteLeft(n, bw, OW) ? n.bx * OW - gap - bw : n.bx * OW + gap, top = n.by * OH - bh / 2;
+    g.fillStyle = "rgba(255,255,255,.92)"; g.fillRect(left, top, bw, bh);
+    g.strokeStyle = n.c; g.lineWidth = 2; g.strokeRect(left, top, bw, bh);
+    g.fillStyle = n.c; g.textBaseline = "middle"; g.fillText(n.t, left + pad, top + bh / 2);
+  });
+  g.textBaseline = "top";
+  Object.values(texts).forEach((v) => {
+    g.font = `700 ${v.s * OW}px 'Space Grotesk', sans-serif`;
+    g.fillStyle = v.c;
+    g.fillText(v.t, v.x * OW + 0.0 , v.y * OH + v.s * OW * 0.05);
+  });
+  const a = document.createElement("a");
+  a.download = `group_${page}_sheet.png`;
+  a.href = c.toDataURL("image/png");
+  a.click();
+  $("saveStamp").classList.add("on");
+  setTimeout(() => $("saveStamp").classList.remove("on"), 1600);
+};
+
+/* ── pages ── */
+function renderPages() {
+  const n = settings.groups;
+  let html = "";
+  for (let i = 1; i <= n; i++) {
+    html += `<button class="chip${i === myGroup ? " mine" : ""}" data-g="${i}" type="button" aria-current="${i === page}">Group ${i}${i === myGroup ? ' <span class="dot">&#9679;</span>' : ""}</button>`;
+  }
+  html += `<button class="chip ghost" id="switchGroup" type="button">Change my group</button>`;
+  $("pages").innerHTML = html;
+  $("pickGrid").innerHTML = Array.from({ length: n }, (_, i) => `<button class="btn${i + 1 === myGroup ? " btn-ink" : ""}" data-pick="${i + 1}" type="button">Group ${i + 1}</button>`).join("");
+  const opts = Array.from({ length: n }, (_, i) => `<option value="${i + 1}">Group ${i + 1}</option>`).join("");
+  $("clearWhich").innerHTML = opts;
+}
+$("pages").addEventListener("click", (e) => {
+  if (e.target.closest("#switchGroup")) { $("picker").classList.add("open"); return; }
+  const c = e.target.closest("[data-g]");
+  if (c) openPage(+c.dataset.g);
+});
+$("pickGrid").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-pick]");
+  if (!b) return;
+  myGroup = +b.dataset.pick;
+  store.set("groupsheets.group", myGroup);
+  $("picker").classList.remove("open");
+  openPage(myGroup);
+});
+$("backHome").onclick = () => openPage(myGroup);
+
+function openPage(n) {
+  closeTextBox(true);
+  page = n;
+  refs.forEach((r) => r.off()); refs = [];
+  strokes = {}; images = {}; texts = {}; notes = {}; undoStack = []; live = null; draft = null;
+  if (nbox) { nbox.remove(); nbox = null; }
+  $("imgLayer").innerHTML = ""; $("txtLayer").innerHTML = "";
+  $("noteLayer").querySelectorAll(".note,.tip").forEach((el) => el.remove()); $("noteSvg").innerHTML = "";
+  redraw();
+  const home = page === myGroup;
+  sheet.classList.toggle("locked", !home);
+  $("press").classList.toggle("locked", !home);
+  $("undoBtn").disabled = !home;
+  $("frame").classList.toggle("visiting", !home);
+  $("visitBar").classList.toggle("on", !home);
+  $("visitMsg").textContent = `Visiting Group ${n}. Look, don't touch.`;
+  $("barPage").textContent = "Group " + n;
+  $("roundel").innerHTML = "GR<br>" + (myGroup || "?");
+  document.title = "Group " + n + " · Digital Brainstorming Drawing Tool";
+  renderPages();
+  if (!db) return;
+  const base = pagePath(n);
+  const kinds = { strokes: [strokes, (k, v) => redraw()], images: [images, putImage], texts: [texts, putText], notes: [notes, drawNote] };
+  Object.entries(kinds).forEach(([kind, [bag, put]]) => {
+    const r = db.ref(`${base}/${kind}`);
+    const add = (s) => { bag[s.key] = s.val(); put(s.key, s.val()); updateEmpty(); };
+    r.on("child_added", add, dbTrouble);
+    r.on("child_changed", add);
+    r.on("child_removed", (s) => {
+      delete bag[s.key];
+      const el = document.querySelector(`#imgLayer [data-k="${s.key}"], #txtLayer [data-k="${s.key}"]`);
+      if (el) el.remove();
+      if (kind === "notes") dropNote(s.key);
+      redraw();
+    });
+    refs.push(r);
+  });
+  setTool(home ? tool : tool);
+  if (!home) setState("Read only");
+}
+
+/* ── instructor desk ── */
+$("edGroups").innerHTML = Array.from({ length: MAX_GROUPS }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("");
+$("deskBtn").onclick = () => {
+  if (unlocked) { $("editor").classList.toggle("open"); $("editor").scrollIntoView({ behavior: "smooth" }); }
+  else { $("gate").classList.add("open"); $("gateCode").focus(); }
+};
+$("gateCancel").onclick = () => $("gate").classList.remove("open");
+$("gateGo").onclick = tryCode;
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) { $("gateErr").classList.add("on"); return; }
+  unlocked = true;
+  $("gate").classList.remove("open"); $("gateErr").classList.remove("on"); $("gateCode").value = "";
+  $("edGroups").value = settings.groups; $("edPrompt").value = settings.prompt || "";
+  $("editor").classList.add("open");
+  $("editor").scrollIntoView({ behavior: "smooth" });
+}
+$("deskClose").onclick = () => $("editor").classList.remove("open");
+function flag(msg) { const f = $("edFlag"); f.textContent = msg; f.classList.add("on"); setTimeout(() => f.classList.remove("on"), 3200); }
+$("saveSettings").onclick = () => {
+  if (!db) return flag("Not connected yet");
+  db.ref(ROOT + "/settings").set({ groups: +$("edGroups").value, prompt: $("edPrompt").value.trim() })
+    .then(() => flag("Saved. Every browser has it now.")).catch(() => flag("Firebase refused the write"));
+};
+$("clearOne").onclick = () => {
+  const n = +$("clearWhich").value;
+  if (!db || !confirm(`Clear everything on Group ${n}'s page?`)) return;
+  db.ref(pagePath(n)).remove().then(() => flag(`Group ${n} cleared`)).catch(dbTrouble);
+};
+$("clearAll").onclick = () => {
+  if (!db || !confirm("Clear every group's page? This cannot be undone.")) return;
+  db.ref(ROOT + "/pages").remove().then(() => flag("Every page cleared")).catch(dbTrouble);
+};
+
+/* ── start ── */
+function start() {
+  db.ref(ROOT + "/settings").on("value", (s) => {
+    const v = s.val() || {};
+    settings.groups = Math.min(MAX_GROUPS, Math.max(1, v.groups || DEFAULT_GROUPS));
+    settings.prompt = v.prompt || "";
+    $("promptText").textContent = settings.prompt || "Add images, draw over them, add words.";
+    if (myGroup && myGroup > settings.groups) { myGroup = null; }
+    renderPages();
+    if (!myGroup) $("picker").classList.add("open");
+    if (page === null || page > settings.groups) openPage(myGroup || 1);
+  }, dbTrouble);
+}
+
+const saved = +store.get("groupsheets.group");
+if (saved >= 1 && saved <= MAX_GROUPS) myGroup = saved;
+renderPages();
+openPage(myGroup || 1);
+
+const MIRRORS = ["https://www.gstatic.com/firebasejs/10.12.0/", "https://cdn.jsdelivr.net/npm/firebase@10.12.0/", "https://unpkg.com/firebase@10.12.0/"];
+function loadScript(src) {
+  return new Promise((ok, no) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = () => no(new Error(src)); document.head.appendChild(s); });
+}
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) { /* next mirror */ }
+  }
+  return false;
+}
+loadFirebase().then((ready) => {
+  if (!ready) { setState("Offline. Check the network or an ad blocker"); return; }
+  firebase.initializeApp(firebaseConfig);
+  firebase.auth().signInAnonymously().then((cred) => {
+    uid = cred.user ? cred.user.uid : null;
+    db = firebase.database();
+    start();
+    openPage(page);
+  }).catch((err) => {
+    const off = /operation-not-allowed|configuration-not-found/.test(err.code || "");
+    setState(off ? "Turn on Anonymous sign-in in Firebase" : "Sign-in failed");
+    console.error("[group sheets]", err);
+  });
+});
+
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }).toUpperCase();
+</script>
+</body>
+</html>
