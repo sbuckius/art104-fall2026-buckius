@@ -66,7 +66,7 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
 #txtLayer{z-index:3}
 #noteLayer{position:absolute;inset:0;z-index:3;pointer-events:none}
 #noteSvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.note{position:absolute;pointer-events:none;font-family:'Space Grotesk',sans-serif;font-weight:600;line-height:1.15;white-space:pre;font-size:calc(var(--s) * 100cqw);background:rgba(255,255,255,.92);border:2px solid currentColor;padding:.18em .5em;transform:translate(.35em,-50%)}
+.note{position:absolute;pointer-events:none;font-family:'Space Grotesk',sans-serif;font-weight:600;line-height:1.15;white-space:pre;font-size:calc(var(--s) * 100cqw);background:#fff;border:2px solid currentColor;padding:.18em .5em;transform:translate(.35em,-50%)}
 .note.left{transform:translate(calc(-100% - .35em),-50%)}
 .note.bare{background:none;border:none;padding:0;width:14px;height:14px;transform:translate(-50%,-50%)}
 .tip{position:absolute;display:none;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:3px solid var(--jet);background:var(--chrome);pointer-events:none;cursor:move}
@@ -74,10 +74,21 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
 #sheet[data-tool="move"]:not(.locked) .tip{display:block}
 #sheet[data-tool="move"]:not(.locked) .note.bare{outline:3px solid var(--jet);background:var(--chrome)}
 #sheet[data-tool="move"]:not(.locked) .note:hover{outline:3px dashed var(--pulpred);outline-offset:2px}
-#sheet[data-tool="note"] #ink{cursor:crosshair}
-#sheet[data-tool="rub"] #ink{cursor:none}
+#sheet[data-tool="part"] #ink,#sheet[data-tool="credit"] #ink{cursor:crosshair}
+.note .nm{display:block;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.note .dd{display:block;font-family:'Bitter',serif;font-style:italic;font-weight:400;font-size:.78em;margin-top:.2em;color:var(--jet);white-space:normal;width:max-content;max-width:15em}
+.note.part{border-left-width:7px}
+.note.credit{background:var(--chrome);border:2px dashed currentColor;border-radius:999px;padding:.12em .75em}
+.note.credit .nm{display:inline;color:var(--jet);text-transform:none;letter-spacing:0}
+.note.credit .by{font-size:.6em;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-right:.45em;color:var(--mars)}
+.nform{position:absolute;z-index:7;background:#fff;border:3px solid var(--jet);box-shadow:4px 4px 0 var(--chrome-deep);padding:9px;display:flex;flex-direction:column;gap:5px;width:min(280px,70%)}
+.nform label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mars)}
+.nform input{border:2px solid var(--rule);font-family:'Bitter',serif;font-size:14px;padding:6px 8px;outline:none;color:var(--jet)}
+.nform input:focus{border-color:var(--pulpred)}
+.nform .hint{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--rule)}
+#sheet[data-tool="rub"] #ink,#sheet[data-tool="cut"] #ink{cursor:none}
 #rubRing{position:absolute;z-index:6;border:2px solid var(--jet);box-shadow:0 0 0 2px #fff;border-radius:50%;pointer-events:none;display:none;transform:translate(-50%,-50%)}
-#sheet[data-tool="rub"]:not(.locked):hover #rubRing{display:block}
+#sheet[data-tool="rub"]:not(.locked):hover #rubRing,#sheet[data-tool="cut"]:not(.locked):hover #rubRing{display:block}
 .pic canvas.rubbing{display:block;width:100%;height:auto}
 .note .x{display:none;top:-14px;right:-14px;width:22px;height:22px;font-size:12px}
 #sheet[data-tool="move"]:not(.locked) .note .x{display:block}
@@ -229,9 +240,11 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
   <div class="grp edit" role="group" aria-label="Tools">
     <button class="btn tool" data-tool="move" type="button" aria-pressed="false">Move</button>
     <button class="btn tool" data-tool="draw" type="button" aria-pressed="true">Draw</button>
-    <button class="btn tool" data-tool="erase" type="button" aria-pressed="false">Erase</button>
+    <button class="btn tool" data-tool="cut" type="button" aria-pressed="false">Erase</button>
+    <button class="btn tool" data-tool="erase" type="button" aria-pressed="false">Delete line</button>
     <button class="btn tool" data-tool="text" type="button" aria-pressed="false">Text</button>
-    <button class="btn tool" data-tool="note" type="button" aria-pressed="false">Note</button>
+    <button class="btn tool" data-tool="part" type="button" aria-pressed="false">Part</button>
+    <button class="btn tool" data-tool="credit" type="button" aria-pressed="false">Credit</button>
     <button class="btn tool" data-tool="rub" type="button" aria-pressed="false">Rub out</button>
     <button class="btn btn-ink" id="addImg" type="button">+ Image</button>
     <input type="file" id="file" accept="image/*" multiple hidden/>
@@ -336,7 +349,7 @@ function setTool(t) {
   if (typeof closeNoteBox === "function") closeNoteBox(true);
   tool = t; sheet.dataset.tool = t;
   document.querySelectorAll(".tool").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tool === t));
-  if (editable()) setState({ move: "Drag to move. Top dot rotates. Corner resizes", draw: "Draw", erase: "Touch a line to erase it", text: "Tap where the words go", note: "Press on a part, drag out, then type", rub: "Rub out parts of an image in Lines" }[t]);
+  if (editable()) setState({ move: "Drag to move. Top dot rotates. Corner resizes", draw: "Draw", erase: "Touch a line or note to delete it", cut: "Drag over a line to erase part of it", text: "Tap where the words go", part: "Press on a part, drag out, then name it and say what it does", credit: "Press on what you added, drag out, then sign it", rub: "Rub out parts of an image in Lines" }[t]);
 }
 
 /* ── canvas size ── */
@@ -358,7 +371,10 @@ function redraw() {
     raf = 0;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-    Object.values(strokes).forEach((s) => drawStroke(ctx, s, W, H));
+    Object.entries(strokes).forEach(([k, s]) => {
+      if (cut && cut.pieces[k]) cut.pieces[k].forEach((pp) => drawStroke(ctx, { ...s, p: pp }, W, H));
+      else drawStroke(ctx, s, W, H);
+    });
     if (live) drawStroke(ctx, live, W, H);
     updateEmpty();
   });
@@ -394,7 +410,8 @@ canvas.addEventListener("pointerdown", (e) => {
   if (tool === "text") { e.preventDefault(); openTextBox(x, y); return; }
   canvas.setPointerCapture(e.pointerId);
   if (tool === "rub") { e.preventDefault(); rubStart(x, y); return; }
-  if (tool === "note") { e.preventDefault(); closeNoteBox(true); draft = { ax: x, ay: y, bx: x, by: y, t: "", c: color, s: TYPE[size] * 0.7, sw: [2, 3, 4.5][size] }; drawNote("draft", draft); return; }
+  if (tool === "cut") { e.preventDefault(); cutStart(x, y); return; }
+  if (tool === "part" || tool === "credit") { e.preventDefault(); closeNoteBox(true); draft = { k: tool, ax: x, ay: y, bx: x, by: y, t: "", d: "", c: color, s: TYPE[size] * 0.7, sw: [2, 3, 4.5][size] }; drawNote("draft", draft); return; }
   if (tool === "draw") {
     live = { c: color, w: PEN[size], p: [Math.round(x * 1e4), Math.round(y * 1e4)] };
     redraw();
@@ -409,12 +426,14 @@ canvas.addEventListener("pointermove", (e) => {
     p.push(Math.round(x * 1e4), Math.round(y * 1e4));
     redraw();
   } else if (tool === "rub") rubMove(x, y);
-  else if (tool === "note" && draft) { draft.bx = x; draft.by = y; drawNote("draft", draft); }
+  else if ((tool === "part" || tool === "credit") && draft) { draft.bx = x; draft.by = y; drawNote("draft", draft); }
   else if (tool === "erase") eraseAt(x, y);
+  else if (tool === "cut") cutMove(x, y);
 });
 function endStroke(e) {
+  if (tool === "cut") { if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId); cutEnd(); return; }
   if (tool === "rub") { if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId); rubEnd(); return; }
-  if (tool === "note" && draft) { endNoteDrag(e); return; }
+  if ((tool === "part" || tool === "credit") && draft) { endNoteDrag(e); return; }
   if (!live) return;
   const s = live; live = null;
   if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
@@ -435,6 +454,7 @@ function eraseAt(x, y) {
     if (erasing.has(k)) continue;
     if (segDist(px, py, n.ax * W, n.ay * H, n.bx * W, n.by * H) <= 10) {
       erasing.add(k);
+      undoStack.push(["del", k, { kind: "notes", data: { ...n } }]);
       db.ref(pagePath(page) + "/notes/" + k).remove().catch(dbTrouble).finally(() => erasing.delete(k));
     }
   }
@@ -446,6 +466,7 @@ function eraseAt(x, y) {
       const bx = (i + 2 < p.length ? p[i + 2] : p[i]) / 1e4 * W, by = (i + 3 < p.length ? p[i + 3] : p[i + 1]) / 1e4 * H;
       if (segDist(px, py, ax, ay, bx, by) <= reach) {
         erasing.add(k);
+        undoStack.push(["del", k, { kind: "strokes", data: { ...s } }]);
         db.ref(pagePath(page) + "/strokes/" + k).remove().catch(dbTrouble).finally(() => erasing.delete(k));
         break;
       }
@@ -730,27 +751,33 @@ function drawNote(k, n) {
   let g = svg.querySelector(`[data-k="${k}"]`);
   if (!g) {
     g = document.createElementNS(NS, "g"); g.dataset.k = k;
-    g.appendChild(document.createElementNS(NS, "line"));
-    g.appendChild(document.createElementNS(NS, "polygon"));
+    ["line", "polygon", "circle"].forEach((t) => g.appendChild(document.createElementNS(NS, t)));
     svg.appendChild(g);
   }
-  const a = arrowPts(n), [ln, hd] = g.children;
-  ln.setAttribute("x1", a.baseX); ln.setAttribute("y1", a.baseY); ln.setAttribute("x2", a.bx); ln.setAttribute("y2", a.by);
+  const a = arrowPts(n), [ln, hd, dot] = g.children, credit = n.k === "credit";
+  ln.setAttribute("x1", credit ? a.ax : a.baseX); ln.setAttribute("y1", credit ? a.ay : a.baseY);
+  ln.setAttribute("x2", a.bx); ln.setAttribute("y2", a.by);
   ln.setAttribute("stroke", n.c); ln.setAttribute("stroke-width", n.sw); ln.setAttribute("stroke-linecap", "round");
-  hd.setAttribute("points", a.head); hd.setAttribute("fill", n.c);
+  if (credit) ln.setAttribute("stroke-dasharray", `${n.sw * 2.5} ${n.sw * 2.2}`); else ln.removeAttribute("stroke-dasharray");
+  hd.setAttribute("points", a.head); hd.setAttribute("fill", n.c); hd.style.display = credit ? "none" : "";
+  dot.setAttribute("cx", a.ax); dot.setAttribute("cy", a.ay); dot.setAttribute("r", 3 + n.sw * 1.2);
+  dot.setAttribute("fill", n.c); dot.style.display = credit ? "" : "none";
   if (k === "draft") return;
   let lab = $("noteLayer").querySelector(`.note[data-k="${k}"]`), tip = $("noteLayer").querySelector(`.tip[data-k="${k}"]`);
   if (!lab) {
-    lab = document.createElement("div"); lab.className = "note"; lab.dataset.k = k;
-    lab.innerHTML = '<span></span><button class="x" type="button" aria-label="Remove">×</button>';
+    lab = document.createElement("div"); lab.className = "note" + (n.k ? " " + n.k : ""); lab.dataset.k = k;
+    lab.innerHTML = (credit ? '<span class="by">by</span><span class="nm"></span>' : n.k === "part" ? '<span class="nm"></span><span class="dd"></span>' : '<span class="nm" style="text-transform:none;letter-spacing:0;font-weight:600"></span>')
+      + '<button class="x" type="button" aria-label="Remove">×</button>';
     tip = document.createElement("span"); tip.className = "tip"; tip.dataset.k = k;
     $("noteLayer").append(lab, tip);
     hookNote(lab, k, "b"); hookNote(tip, k, "a");
     lab.querySelector(".x").addEventListener("click", (e) => { e.stopPropagation(); if (editable()) db.ref(`${pagePath(page)}/notes/${k}`).remove().catch(dbTrouble); });
     lab.addEventListener("dblclick", () => { if (editable() && tool === "move") openNoteBox(notes[k], k); });
   }
-  lab.querySelector("span").textContent = n.t || "";
-  lab.classList.toggle("bare", !n.t);
+  lab.querySelector(".nm").textContent = n.t || "";
+  const dd = lab.querySelector(".dd");
+  if (dd) { dd.textContent = n.d || ""; dd.style.display = n.d ? "" : "none"; }
+  lab.classList.toggle("bare", !n.t && !n.d);
   lab.style.left = n.bx * 100 + "%"; lab.style.top = n.by * 100 + "%";
   lab.style.color = n.c; lab.style.setProperty("--s", n.s);
   lab.classList.toggle("left", noteLeft(n, lab.offsetWidth, W));
@@ -780,36 +807,57 @@ function endNoteDrag(e) {
 function openNoteBox(n, key) {
   closeTextBox(true);
   if (nbox) nbox.remove();
-  nbox = document.createElement("input");
-  nbox.type = "text"; nbox.className = "tbox"; nbox.maxLength = 120;
-  nbox.placeholder = "Note, or Enter for a plain arrow";
+  const credit = n.k === "credit", part = n.k === "part";
+  nbox = document.createElement("div");
+  nbox.className = "nform";
+  nbox.innerHTML = credit
+    ? '<label>Made by</label><input type="text" data-f="t" maxlength="40" placeholder="Your name"/><span class="hint">Enter to place</span>'
+    : part
+      ? '<label>Name of the part</label><input type="text" data-f="t" maxlength="50" placeholder="Fog net"/><label>What it does</label><input type="text" data-f="d" maxlength="140" placeholder="Catches droplets and drips them into the basin"/><span class="hint">Enter to place. Leave both empty for a plain arrow</span>'
+      : '<label>Note</label><input type="text" data-f="t" maxlength="120"/><span class="hint">Enter to place</span>';
+  const left = n.bx < n.ax;
   nbox.style.left = n.bx * 100 + "%"; nbox.style.top = n.by * 100 + "%";
-  nbox.style.transform = n.bx < n.ax ? "translate(-100%,-50%)" : "translate(0,-50%)";
-  nbox.style.setProperty("--s", n.s); nbox.style.color = n.c;
-  nbox.value = n.t || "";
+  nbox.style.transform = left ? "translate(-100%,-50%)" : "translate(0,-50%)";
+  const fields = [...nbox.querySelectorAll("input")];
+  fields[0].value = key ? n.t || "" : credit ? store.get("groupsheets.name") || "" : "";
+  if (fields[1]) fields[1].value = n.d || "";
   nbox._note = n; nbox._key = key;
-  nbox.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") { e.preventDefault(); closeNoteBox(true); }
-    if (e.key === "Escape") closeNoteBox(false);
-  });
-  nbox.addEventListener("blur", () => setTimeout(() => closeNoteBox(true), 0));
+  fields.forEach((f, i) => f.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closeNoteBox(false); return; }
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    if (i < fields.length - 1 && !(part && i === 0 && !f.value.trim())) fields[i + 1].focus();
+    else closeNoteBox(true);
+  }));
+  nbox.addEventListener("focusout", () => setTimeout(() => { if (nbox && !nbox.contains(document.activeElement)) closeNoteBox(true); }, 0));
+  nbox.addEventListener("pointerdown", (e) => e.stopPropagation());
   sheet.appendChild(nbox);
-  nbox.focus();
-  setTimeout(() => nbox && nbox.focus(), 0);
+  // keep the form on the sheet
+  const r = sheet.getBoundingClientRect(), fb = nbox.getBoundingClientRect();
+  if (fb.right > r.right) nbox.style.left = Math.max(0, (r.width - fb.width) / r.width * 100) + "%", nbox.style.transform = "translate(0,-50%)";
+  if (fb.left < r.left) { nbox.style.left = "0%"; nbox.style.transform = "translate(0,-50%)"; }
+  fields[0].focus();
+  if (credit) fields[0].select();
+  setTimeout(() => nbox && !nbox.contains(document.activeElement) && fields[0].focus(), 0);
 }
 function closeNoteBox(commit) {
   if (!nbox) return;
   const b = nbox; nbox = null;
-  const n = b._note, key = b._key, t = b.value.trim();
+  const n = b._note, key = b._key;
+  const val = (f) => { const el = b.querySelector(`[data-f="${f}"]`); return el ? el.value.trim() : ""; };
+  const t = val("t"), d = val("d");
   b.remove();
   dropNote("draft");
   if (key === null) draft = null;
   if (!commit || !editable()) return;
+  if (n.k === "credit") { if (!t) return; store.set("groupsheets.name", t); }
   const base = pagePath(page) + "/notes";
-  if (key) { db.ref(base + "/" + key).update({ t }).catch(dbTrouble); return; }
+  if (key) { db.ref(base + "/" + key).update(n.k === "part" ? { t, d } : { t }).catch(dbTrouble); return; }
   const ref = db.ref(base).push();
   undoStack.push(["notes", ref.key]);
-  ref.set({ ax: n.ax, ay: n.ay, bx: n.bx, by: n.by, t, c: n.c, s: n.s, sw: n.sw, by_: uid, at: Date.now() }).catch(dbTrouble);
+  const rec = { k: n.k || "note", ax: n.ax, ay: n.ay, bx: n.bx, by: n.by, t, c: n.c, s: n.s, sw: n.sw, by_: uid, at: Date.now() };
+  if (n.k === "part") rec.d = d;
+  ref.set(rec).catch(dbTrouble);
 }
 function hookNote(el, k, end) {
   el.addEventListener("pointerdown", (e) => {
@@ -830,11 +878,69 @@ function hookNote(el, k, end) {
   });
 }
 
+/* ── erase part of a drawn line: the line is split where the eraser passes ── */
+let cut = null;
+function cutStart(x, y) { cut = { pieces: {}, last: [x, y] }; cutAt(x, y, x, y); }
+function cutMove(x, y) { if (!cut) return; cutAt(cut.last[0], cut.last[1], x, y); cut.last = [x, y]; }
+function densify(p, step) {
+  const out = [p[0], p[1]];
+  for (let i = 2; i < p.length; i += 2) {
+    const ax = p[i - 2], ay = p[i - 1], bx = p[i], by = p[i + 1];
+    const dx = (bx - ax) / 1e4 * W, dy = (by - ay) / 1e4 * H, n = Math.ceil(Math.hypot(dx, dy) / step);
+    for (let j = 1; j <= n; j++) out.push(Math.round(ax + (bx - ax) * j / n), Math.round(ay + (by - ay) * j / n));
+  }
+  return out;
+}
+function cutAt(x0, y0, x1, y1) {
+  const ax = x0 * W, ay = y0 * H, bx = x1 * W, by = y1 * H, er = RUB[size] * W / 2;
+  let changed = false;
+  for (const [k, st] of Object.entries(strokes)) {
+    const reach = er + st.w * W / 2;
+    const runs = cut.pieces[k] || [st.p];
+    // quick test: does any point come near the eraser path?
+    if (!runs.some((p) => { for (let i = 0; i < p.length; i += 2) if (segDist(p[i] / 1e4 * W, p[i + 1] / 1e4 * H, ax, ay, bx, by) <= reach + 12) return true; return false; })) continue;
+    const next = [];
+    runs.forEach((p) => {
+      const d = densify(p, Math.max(1.5, reach / 3));
+      let cur = [];
+      for (let i = 0; i < d.length; i += 2) {
+        if (segDist(d[i] / 1e4 * W, d[i + 1] / 1e4 * H, ax, ay, bx, by) <= reach) { if (cur.length >= 4) next.push(cur); cur = []; }
+        else cur.push(d[i], d[i + 1]);
+      }
+      if (cur.length >= 4) next.push(cur);
+    });
+    const was = cut.pieces[k] ? cut.pieces[k].reduce((a, p) => a + p.length, 0) : -1;
+    const now = next.reduce((a, p) => a + p.length, 0);
+    if (!cut.pieces[k] && next.length === 1 && next[0].length >= densify(st.p, Math.max(1.5, reach / 3)).length) continue;
+    if (was !== now || !cut.pieces[k]) { cut.pieces[k] = next; changed = true; }
+  }
+  if (changed) redraw();
+}
+function cutEnd() {
+  if (!cut) return;
+  const done = cut; cut = null;
+  const list = [];
+  Object.entries(done.pieces).forEach(([k, pieces]) => {
+    const orig = strokes[k];
+    if (!orig) return;
+    const base = pagePath(page) + "/strokes";
+    const newKeys = pieces.map((pp) => {
+      const ref = db.ref(base).push();
+      ref.set({ c: orig.c, w: orig.w, p: pp, by: uid, at: orig.at || Date.now() }).catch(dbTrouble);
+      return ref.key;
+    });
+    db.ref(base + "/" + k).remove().catch(dbTrouble);
+    list.push({ k, orig: { ...orig }, newKeys });
+  });
+  if (list.length) undoStack.push(["cut", null, list]);
+  redraw();
+}
+
 /* ── rub out: erase pixels from images that are in Lines ── */
 const RUB = [0.008, 0.018, 0.04];      // eraser width, as a share of the sheet's width
 let rub = null;
 canvas.addEventListener("pointermove", (e) => {
-  if (tool !== "rub") return;
+  if (tool !== "rub" && tool !== "cut") return;
   const r = sheet.getBoundingClientRect(), ring = $("rubRing"), d = RUB[size] * r.width;
   ring.style.width = ring.style.height = d + "px";
   ring.style.left = e.clientX - r.left + "px"; ring.style.top = e.clientY - r.top + "px";
@@ -916,6 +1022,20 @@ $("undoBtn").onclick = () => {
   if (!editable()) return;
   while (undoStack.length) {
     const [kind, k, before] = undoStack.pop();
+    if (kind === "del") {
+      const have = { strokes, notes }[before.kind];
+      if (have[k]) continue;
+      db.ref(`${pagePath(page)}/${before.kind}/${k}`).set(before.data).catch(dbTrouble);
+      return;
+    }
+    if (kind === "cut") {
+      const base = pagePath(page) + "/strokes";
+      before.forEach(({ k, orig, newKeys }) => {
+        newKeys.forEach((nk) => db.ref(base + "/" + nk).remove().catch(dbTrouble));
+        db.ref(base + "/" + k).set(orig).catch(dbTrouble);
+      });
+      return;
+    }
     if (kind === "rub") {
       if (images[k] && before) { db.ref(`${pagePath(page)}/images/${k}`).update({ line: before }).catch(dbTrouble); return; }
       continue;
@@ -944,19 +1064,52 @@ $("saveBtn").onclick = () => {
   });
   Object.values(strokes).forEach((s) => drawStroke(g, s, OW, OH));
   Object.values(notes).forEach((n) => {
-    const a = arrowPts(n), kx = OW / SV, ky = OH / SVH;
+    const a = arrowPts(n), kx = OW / SV, ky = OH / SVH, credit = n.k === "credit";
     g.strokeStyle = n.c; g.fillStyle = n.c; g.lineWidth = n.sw * kx; g.lineCap = "round";
-    g.beginPath(); g.moveTo(a.baseX * kx, a.baseY * ky); g.lineTo(a.bx * kx, a.by * ky); g.stroke();
-    const pts = a.head.split(" ").map((q) => q.split(",").map(Number));
-    g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x * kx, y * ky) : g.moveTo(x * kx, y * ky))); g.closePath(); g.fill();
-    if (!n.t) return;
-    const fs = n.s * OW, pad = fs * 0.5, gap = fs * 0.35;
-    g.font = `600 ${fs}px 'Space Grotesk', sans-serif`;
-    const tw = g.measureText(n.t).width, bw = tw + pad * 2, bh = fs * 1.5;
+    g.setLineDash(credit ? [n.sw * 2.5 * kx, n.sw * 2.2 * kx] : []);
+    g.beginPath(); g.moveTo((credit ? a.ax : a.baseX) * kx, (credit ? a.ay : a.baseY) * ky); g.lineTo(a.bx * kx, a.by * ky); g.stroke();
+    g.setLineDash([]);
+    if (credit) { g.beginPath(); g.arc(a.ax * kx, a.ay * ky, (3 + n.sw * 1.2) * kx, 0, Math.PI * 2); g.fill(); }
+    else {
+      const pts = a.head.split(" ").map((q) => q.split(",").map(Number));
+      g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x * kx, y * ky) : g.moveTo(x * kx, y * ky))); g.closePath(); g.fill();
+    }
+    if (!n.t && !n.d) return;
+    const fs = n.s * OW, pad = fs * 0.55, gap = fs * 0.35;
+    g.textBaseline = "middle";
+    if (credit) {
+      const small = fs * 0.6;
+      g.font = `700 ${small}px 'Space Grotesk', sans-serif`; const bw1 = g.measureText("BY").width;
+      g.font = `700 ${fs}px 'Space Grotesk', sans-serif`; const bw2 = g.measureText(n.t).width;
+      const bw = bw1 + fs * 0.45 + bw2 + pad * 2.6, bh = fs * 1.45;
+      const left = noteLeft(n, bw, OW) ? n.bx * OW - gap - bw : n.bx * OW + gap, top = n.by * OH - bh / 2;
+      g.fillStyle = "#a8e6c0"; g.beginPath(); g.roundRect(left, top, bw, bh, bh / 2); g.fill();
+      g.strokeStyle = n.c; g.lineWidth = 2; g.setLineDash([6, 4]); g.stroke(); g.setLineDash([]);
+      g.fillStyle = "#a01e5c"; g.font = `700 ${small}px 'Space Grotesk', sans-serif`; g.fillText("BY", left + pad * 1.3, top + bh / 2);
+      g.fillStyle = "#14202a"; g.font = `700 ${fs}px 'Space Grotesk', sans-serif`; g.fillText(n.t, left + pad * 1.3 + bw1 + fs * 0.45, top + bh / 2);
+      return;
+    }
+    const name = n.k === "part" ? (n.t || "").toUpperCase() : n.t || "";
+    g.font = `700 ${fs}px 'Space Grotesk', sans-serif`;
+    let tw = g.measureText(name).width;
+    const dfs = fs * 0.78, lines = [];
+    if (n.d) {
+      g.font = `italic 400 ${dfs}px Bitter, Georgia, serif`;
+      const maxW = dfs * 15; let cur = "";
+      n.d.split(/\s+/).forEach((wd) => { const tryL = cur ? cur + " " + wd : wd; if (g.measureText(tryL).width > maxW && cur) { lines.push(cur); cur = wd; } else cur = tryL; });
+      if (cur) lines.push(cur);
+      lines.forEach((l) => (tw = Math.max(tw, g.measureText(l).width)));
+    }
+    const bw = tw + pad * 2 + (n.k === "part" ? 5 : 0), bh = (n.t ? fs * 1.3 : 0) + lines.length * dfs * 1.3 + fs * 0.35;
     const left = noteLeft(n, bw, OW) ? n.bx * OW - gap - bw : n.bx * OW + gap, top = n.by * OH - bh / 2;
-    g.fillStyle = "rgba(255,255,255,.92)"; g.fillRect(left, top, bw, bh);
+    g.fillStyle = "#fff"; g.fillRect(left, top, bw, bh);
     g.strokeStyle = n.c; g.lineWidth = 2; g.strokeRect(left, top, bw, bh);
-    g.fillStyle = n.c; g.textBaseline = "middle"; g.fillText(n.t, left + pad, top + bh / 2);
+    if (n.k === "part") { g.fillStyle = n.c; g.fillRect(left, top, 7, bh); }
+    let y = top + fs * 0.18;
+    g.textBaseline = "top";
+    if (n.t) { g.fillStyle = n.c; g.font = `700 ${fs}px 'Space Grotesk', sans-serif`; g.fillText(name, left + pad + (n.k === "part" ? 5 : 0), y); y += fs * 1.3; }
+    g.fillStyle = "#14202a"; g.font = `italic 400 ${dfs}px Bitter, Georgia, serif`;
+    lines.forEach((l) => { g.fillText(l, left + pad + 5, y); y += dfs * 1.3; });
   });
   g.textBaseline = "top";
   Object.values(texts).forEach((v) => {
@@ -1004,7 +1157,7 @@ function openPage(n) {
   closeTextBox(true);
   page = n;
   refs.forEach((r) => r.off()); refs = [];
-  strokes = {}; images = {}; texts = {}; notes = {}; undoStack = []; live = null; draft = null;
+  strokes = {}; images = {}; texts = {}; notes = {}; undoStack = []; live = null; draft = null; cut = null;
   if (nbox) { nbox.remove(); nbox = null; }
   $("imgLayer").innerHTML = ""; $("txtLayer").innerHTML = "";
   $("noteLayer").querySelectorAll(".note,.tip").forEach((el) => el.remove()); $("noteSvg").innerHTML = "";
