@@ -705,7 +705,7 @@ db.ref(INDEX).on("value", (s) => {
 db.ref(".info/connected").on("value", (s) => {
   const live = s.val() === true;
   $("barState").textContent = live
-    ? "Live. Tap anywhere to set down what you remember."
+    ? ""
     : "Reconnecting to the database";
 });
 }
