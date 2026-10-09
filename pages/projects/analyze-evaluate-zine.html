@@ -168,7 +168,7 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
 #saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
 
 /* ══ under the boards ═══════════════════════════════════════════════ */
-.mine{margin-top:22px;display:flex;justify-content:flex-end}
+.mine{margin-top:22px;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
 .mine .btn{padding:8px 14px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
 
 /* ══ instructor desk ════════════════════════════════════════════════ */
@@ -286,7 +286,10 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
     </div>
   </div>
 
-  <div class="mine"><button class="btn btn-quiet" id="myNotesBtn" type="button">Download my notes</button></div>
+  <div class="mine">
+    <button class="btn" id="myPdfBtn" type="button">PDF of my answers</button>
+    <button class="btn btn-quiet" id="allPdfBtn" type="button">PDF of everyone's answers</button>
+  </div>
 
   <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
 
@@ -985,11 +988,154 @@ $("downloadAnswers").addEventListener("click", () => {
   flag("Text file downloaded");
 });
 
-$("myNotesBtn").addEventListener("click", () => {
+/* ── PDF export ─────────────────────────────────────────────────────
+   jsPDF loads only when someone asks for a PDF, so the page itself
+   stays light. It tries cdnjs first, then jsdelivr.
+   ─────────────────────────────────────────────────────────────────── */
+let pdfLib = null;
+async function getPdf() {
+  if (pdfLib) return pdfLib;
+  if (window.jspdf && window.jspdf.jsPDF) { pdfLib = window.jspdf.jsPDF; return pdfLib; }
+  const srcs = [
+    "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+    "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"
+  ];
+  for (const src of srcs) {
+    try {
+      await loadScript(src);
+      if (window.jspdf && window.jspdf.jsPDF) { pdfLib = window.jspdf.jsPDF; return pdfLib; }
+    } catch (e) { /* try the next one */ }
+  }
+  throw new Error("The PDF library did not load. Check the network or an ad blocker.");
+}
+
+// Standard PDF fonts only know basic Latin characters, so smart quotes
+// and the like are swapped for plain ones and anything else is dropped.
+function plain(t) {
+  return String(t == null ? "" : t)
+    .replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2013\u2014]/g, "-").replace(/\u2026/g, "...").replace(/\u00B7/g, "-")
+    .replace(/[^\x09\x0A\x0D\x20-\x7E\u00A0-\u00FF]/g, "");
+}
+
+async function makePdf(onlyWho) {
+  const JsPDF = await getPdf();
+  const doc = new JsPDF({ unit: "pt", format: "letter" });
+  const W = 612, H = 792, M = 54, CW = W - M * 2;
+  let y = M;
+
+  const TEAL = [47, 125, 125], MAGENTA = [160, 30, 92], GREEN = [95, 125, 31], INK = [20, 32, 42], GREY = [90, 102, 112];
+
+  function room(h) { if (y + h > H - M) { doc.addPage(); y = M; } }
+
+  function text(t, o) {
+    o = o || {};
+    const size = o.size || 10.5, lead = size * 1.38, indent = o.indent || 0;
+    doc.setFont("helvetica", o.style || "normal");
+    doc.setFontSize(size);
+    doc.setTextColor.apply(doc, o.color || INK);
+    const lines = doc.splitTextToSize(plain(t), CW - indent);
+    lines.forEach((l) => {
+      room(lead);
+      doc.text(l, M + indent, y + size);
+      y += lead;
+    });
+    y += o.gap || 0;
+  }
+
+  function band(t, fill) {
+    room(30);
+    doc.setFillColor.apply(doc, fill);
+    doc.rect(M, y, CW, 24, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text(plain(t).toUpperCase(), M + 9, y + 16);
+    y += 34;
+  }
+
+  // the cover
+  doc.setFillColor.apply(doc, TEAL);
+  doc.rect(0, 0, W, 96, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(24);
+  doc.setTextColor(255, 255, 255);
+  doc.text("ANALYZE AND EVALUATE ZINE", M, 50);
+  doc.setFontSize(11);
+  doc.setTextColor(168, 230, 192);
+  const stamp = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  doc.text((onlyWho ? "Answers from Artist " + onlyWho : "Everyone's answers") + "   |   ART 104   |   " + stamp, M, 74);
+  y = 126;
+
+  let wrote = 0;
+  views().forEach((v) => {
+    const bs = boardsFor(v).filter((b) => b.visible);
+    const keep = bs.map((b) => ({ b, rows: onlyWho ? b.rows.filter((r) => r.who === onlyWho) : b.rows }));
+    if (onlyWho && !keep.some((k) => k.rows.length)) return;
+
+    band(longName(v), v === "all" ? MAGENTA : TEAL);
+
+    keep.forEach(({ b, rows }) => {
+      if (onlyWho && !rows.length) return;
+      room(40);
+      text(b.single ? b.title + ". " + (b.qs[0] || "") : b.title, { size: 12, style: "bold", color: MAGENTA, gap: 2 });
+      if (!b.single) b.qs.forEach((q, k) => text("Q" + (k + 1) + "   " + q, { size: 9, style: "italic", color: GREY, indent: 8 }));
+      y += 4;
+      if (!rows.length) {
+        text("No answers yet", { size: 9.5, style: "italic", color: GREY, indent: 8, gap: 10 });
+        return;
+      }
+      rows.forEach((r) => {
+        const head = [onlyWho ? "" : (r.who ? "Artist " + r.who : "No number"), questionLine(b, r).replace(/\.\s*$/, "")]
+          .filter(Boolean).join("   ");
+        if (head) text(head, { size: 8.5, style: "bold", color: GREEN, indent: 8 });
+        text(r.text, { size: 10.5, indent: 8, gap: 6 });
+        wrote++;
+      });
+      y += 8;
+    });
+    y += 6;
+  });
+
+  if (!wrote && onlyWho) return false;
+
+  const pages = doc.getNumberOfPages();
+  for (let i = 1; i <= pages; i++) {
+    doc.setPage(i);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor.apply(doc, GREY);
+    doc.text("Page " + i + " of " + pages, W - M, H - 26, { align: "right" });
+  }
+  doc.save(onlyWho ? "zine_answers_artist_" + onlyWho + ".pdf" : "zine_answers_everyone.pdf");
+  return true;
+}
+
+function pdfButton(id, label, run) {
+  $(id).addEventListener("click", async () => {
+    const btn = $(id);
+    btn.disabled = true;
+    btn.textContent = "Making the PDF";
+    try {
+      await run();
+    } catch (e) {
+      $("barState").textContent = e.message || "The PDF could not be made";
+      console.error("[analyze zine]", e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = label;
+    }
+  });
+}
+
+pdfButton("myPdfBtn", "PDF of my answers", async () => {
   if (!artistNo) { openNumGate(); return; }
-  const text = asText(views(), artistNo);
-  if (!text.trim()) { $("barState").textContent = "You have not posted any notes yet"; return; }
-  download("zine_notes_artist_" + artistNo + ".txt", "NOTES FROM ARTIST " + artistNo + "\n\n" + text);
+  const ok = await makePdf(artistNo);
+  $("barState").textContent = ok ? "Your PDF is downloading" : "You have not posted any answers yet";
+});
+pdfButton("allPdfBtn", "PDF of everyone's answers", async () => {
+  await makePdf(null);
+  $("barState").textContent = "The PDF of everyone's answers is downloading";
 });
 
 /* ── the instructor desk ────────────────────────────────────────── */
