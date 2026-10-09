@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Analyze and Evaluate Zine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  /* Same palette and the same jobs as Class Discussion. Teal on the big
+     surfaces, pink on every hard drop shadow, mars magenta on the accents
+     and buttons, deep grass green on the small caps labels. */
+  --cobalt:#2f7d7d;
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;
+  --chrome-deep:#d63d84;
+  --pulpred:#a01e5c;
+  --mars:#5f7d1f;
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#7db8c4;
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+  --pink:#e85fa0;
+  --sea:#7db8c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--jet);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    linear-gradient(160deg,rgba(47,125,125,.14) 0%,rgba(139,168,56,.13) 50%,rgba(214,61,132,.13) 100%),
+    var(--cream);
+}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1240px;margin:0 auto;padding:14px 18px 16px}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px;
+}
+.stripes{height:22px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px)}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(28px,6.6vw,74px);
+  line-height:.92;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:12px 0 6px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{display:flex;align-items:center;gap:14px;border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);padding:9px 0;margin-top:12px}
+.roundel{
+  width:62px;height:62px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px;
+}
+.cover-tag{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(14px,2.2vw,22px);letter-spacing:1px;color:#fff;line-height:1.25;flex:1;min-width:0}
+.cover-kicker{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block}
+
+/* ══ the sheet ══════════════════════════════════════════════════════ */
+main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
+
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+/* the strip of zines along the top */
+.zstrip{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:9px 14px;cursor:pointer;border:3px solid var(--jet);background:#fff;color:var(--jet);box-shadow:3px 3px 0 var(--jet);display:inline-flex;align-items:center;gap:7px}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+.chip.whole{background:var(--pulp-deep)}
+.chip.whole[aria-current="true"]{background:var(--pulpred);color:#fff}
+.chip .done{display:inline-grid;place-items:center;width:18px;height:18px;border:2px solid var(--jet);background:var(--chrome);color:var(--jet);font-size:11px;line-height:1}
+.chip .spot{color:var(--chrome-deep);font-size:13px}
+.chip[aria-current="true"] .spot{color:var(--chrome)}
+.chip .n{font-weight:500;opacity:.7;font-size:10px}
+
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-frame.wholeview{box-shadow:7px 7px 0 var(--mars)}
+.sheet-bar{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sheet-frame.wholeview .sheet-bar{background:var(--pulpred)}
+.sheet-bar .arm{color:var(--chrome)}
+
+/* ══ the boards ═════════════════════════════════════════════════════ */
+.boardgrid{display:grid;gap:14px;padding:14px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.board{--bg:#fff;--ink:var(--jet);--sh:var(--jet);background:var(--bg);border:4px solid var(--jet);box-shadow:6px 6px 0 var(--sh);display:flex;flex-direction:column;min-width:0}
+.board.q1{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
+.board.q2{--bg:#faead0;--ink:#8a5a16;--sh:#c9922f}
+.board.q3{--bg:#ffe1ef;--ink:#a01e5c;--sh:#d63d84}
+.board.q4{--bg:#eaf3cd;--ink:#4d661a;--sh:#8ba838}
+.board.q5{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
+.board.q6{--bg:#e2e6e8;--ink:#14202a;--sh:#5c6b74}
+.board.q7{--bg:#e8dff0;--ink:#5b4173;--sh:#8a6fb0}
+
+.board-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:3px solid var(--jet);padding:8px 11px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--ink)}
+.board-hd .count{color:var(--chrome);font-weight:600;font-size:10px;letter-spacing:1.5px}
+.board-q{font-family:'Bitter',serif;font-size:14px;line-height:1.55;color:var(--jet);padding:11px 12px;border-bottom:3px dashed var(--jet);min-height:64px}
+.board-q.unset{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83}
+.qlist{list-style:none;display:flex;flex-direction:column;gap:6px}
+.qlist li{display:flex;gap:8px;align-items:flex-start;font-family:'Bitter',serif;font-size:13.5px;line-height:1.45}
+.qn{flex:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9.5px;letter-spacing:1px;border:2px solid var(--jet);background:#fff;padding:1px 5px;margin-top:2px}
+.board-posts{flex:1;display:flex;flex-direction:column;gap:7px;padding:11px;max-height:300px;overflow-y:auto}
+.post{position:relative;background:#fff;border:2px solid var(--jet);border-left:6px solid var(--ink);box-shadow:3px 3px 0 rgba(20,32,42,.16);font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);padding:7px 10px}
+.post.self{border-left-color:var(--pulpred);background:#f8fbfa}
+.post.hasdel{padding-right:56px}
+.post .del,.post .fix{position:absolute;top:5px;width:21px;height:21px;line-height:1;padding:0;cursor:pointer;border:2px solid var(--jet);background:#fff;color:var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700}
+.post .del{right:5px;font-size:13px}
+.post .fix{right:29px;font-size:11px}
+.post .del:hover{background:var(--pulpred);color:#fff}
+.post .fix:hover{background:var(--chrome)}
+.post .edited{font-weight:400;letter-spacing:1px;opacity:.75}
+.post .who{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+.post.self .who{color:var(--pulpred)}
+.qtag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:1px;background:var(--ink);color:#fff;padding:1px 5px}
+.post-edit textarea{width:100%;border:2px solid var(--jet);background:#fff;resize:vertical;min-height:56px;font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);padding:6px 8px;outline:none}
+.post-edit textarea:focus{border-color:var(--pulpred)}
+.post-edit .row{display:flex;gap:6px;margin-top:6px}
+.post-edit .row .btn{padding:5px 11px;font-size:10px;box-shadow:2px 2px 0 var(--jet);flex:1}
+.board.hasdraft{outline:4px dashed var(--mars);outline-offset:3px}
+.post-empty{font-family:'Space Grotesk',sans-serif;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;text-align:center;padding:16px 8px;border:3px dashed rgba(20,32,42,.3)}
+.board-foot{padding:0 11px 11px}
+.board-foot .btn{width:100%;padding:8px;font-size:10px}
+
+.navrow{display:flex;justify-content:space-between;gap:10px;padding:0 14px 14px;flex-wrap:wrap}
+.navrow .btn{padding:8px 14px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+
+.spotbar{display:none;background:var(--chrome);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--jet)}
+.spotbar.on{display:flex}
+.spotbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:11px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#press .pressmsg{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--chrome);flex:none}
+#press select{border:3px solid var(--jet);background:var(--chrome);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--jet);padding:10px 8px;outline:none;cursor:pointer;max-width:230px}
+#press select:focus{box-shadow:0 0 0 3px var(--pulpred)}
+#wordInput{flex:2;min-width:200px;border:3px solid var(--jet);background:#fff;font-family:'Bitter',serif;font-size:15px;color:var(--jet);padding:10px 12px;outline:none}
+#wordInput:focus{border-color:var(--pulpred);box-shadow:0 0 0 3px var(--chrome)}
+.press-btns{display:flex;gap:9px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .btn{padding:10px 16px;font-size:11px}
+#draftNote{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--chrome);flex:none;opacity:0;transition:opacity .3s}
+#draftNote.on{opacity:1}
+#whoTag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--jet);background:var(--chrome);border:3px solid var(--jet);padding:9px 11px;cursor:pointer}
+#whoTag:hover{background:#fff}
+
+#saveStamp{position:fixed;right:18px;bottom:100px;z-index:300;width:74px;height:74px;border-radius:50%;background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);display:grid;place-items:center;text-align:center;padding:6px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1.15;opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ under the boards ═══════════════════════════════════════════════ */
+.mine{margin-top:22px;display:flex;justify-content:flex-end}
+.mine .btn{padding:8px 14px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+
+/* ══ instructor desk ════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--cobalt);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.editor label.bl{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin:14px 0 6px}
+.editor input[type=text],.editor textarea,.editor select{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:14px;line-height:1.6;color:var(--jet);padding:10px 12px;outline:none}
+.editor select{width:auto;min-width:200px;font-family:'Space Grotesk',sans-serif;font-weight:600}
+.editor textarea{resize:vertical;min-height:72px}
+.editor input:focus,.editor textarea:focus,.editor select:focus{border-color:var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.qrow{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px}
+.qrow .qnum{flex:none;min-width:34px;height:34px;padding:0 6px;display:grid;place-items:center;border:3px solid var(--jet);background:var(--chrome);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;color:var(--jet)}
+.qrow textarea{min-height:52px}
+.namegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:9px}
+.namegrid .qrow{margin-bottom:0}
+.secblock{border:3px solid var(--rule);background:#fff;padding:10px;margin-bottom:10px}
+.secblock textarea{min-height:110px}
+
+.answers{display:flex;flex-direction:column;gap:6px;max-height:460px;overflow-y:auto;border:3px solid var(--rule);background:#fff;padding:10px;margin-top:12px}
+.ansview{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--cobalt);padding:6px 10px;margin:6px 0 4px}
+.ansgroup{border-bottom:3px solid var(--pulp-deep);padding-bottom:10px;margin-bottom:10px}
+.ansgroup:last-child{border-bottom:none;margin-bottom:0}
+.ansgroup-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ansgroup-hd span{color:#6c7a83;font-weight:600}
+.ansgroup-q{font-family:'Bitter',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:#334051;margin:3px 0 8px}
+.ans{font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:var(--jet);border-left:5px solid var(--pulpred);padding:5px 10px}
+.ans:nth-child(even){border-left-color:var(--cobalt)}
+.ans-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;text-align:center;padding:12px}
+
+.netbar{display:none;background:var(--cobalt);border-bottom:3px solid var(--jet);padding:9px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1.6}
+.netbar.on{display:flex}
+.netbar .why{font-family:'Bitter',serif;font-size:12px;letter-spacing:0;text-transform:none;color:#e4f1f1;display:block;margin-top:5px;max-width:70ch}
+.netbar .btn{padding:7px 13px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+
+.ed-flag{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:1200;max-width:min(560px,92vw);border:3px solid var(--jet);color:#fff;background:var(--cobalt);box-shadow:5px 5px 0 var(--chrome-deep);padding:11px 14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+.ed-flag.on{display:block}
+
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 14px}
+  main{padding:18px 14px 250px}
+  .cover-band{flex-wrap:wrap}
+  .boardgrid{grid-template-columns:1fr;padding:11px;gap:12px}
+  #saveStamp{bottom:230px;right:10px;width:62px;height:62px;font-size:9px}
+  #press select{max-width:none;flex:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo">Analyze and Evaluate Zine</h1>
+    <div class="cover-band">
+      <div class="roundel" id="roundel">GROUP<br>1</div>
+      <div class="cover-tag">
+        <span class="cover-kicker" id="kicker">Group 1</span>
+        <span id="promptText">Loading the boards</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">Zines you have notes on</span><span class="pct" id="meterCount">0</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <nav class="zstrip" id="zineChips" aria-label="Pick a zine"></nav>
+
+  <div class="sheet-frame" id="sheetFrame">
+    <div class="netbar" id="netBar">
+      <span id="netMsg">&nbsp;</span>
+      <button class="btn btn-quiet" id="netRetry" type="button">Try again</button>
+    </div>
+    <div class="spotbar" id="spotBar">
+      <span id="spotMsg">&nbsp;</span>
+      <button class="btn" id="spotGo" type="button">Go there</button>
+    </div>
+    <div class="sheet-bar">
+      <span id="barView">Group 1</span>
+      <span class="arm" id="barState">Connecting</span>
+    </div>
+    <div class="boardgrid" id="boardGrid"></div>
+    <div class="navrow">
+      <button class="btn btn-quiet" id="prevBtn" type="button">Back</button>
+      <button class="btn" id="nextBtn" type="button">Next</button>
+    </div>
+  </div>
+
+  <div class="mine"><button class="btn btn-quiet" id="myNotesBtn" type="button">Download my notes</button></div>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
+
+    <div class="groupmark"><span>Spotlight</span></div>
+    <p class="ed-note">Point the class at one zine. Students see a bar telling them where the room is, with a button to jump there. Nobody gets moved without choosing to.</p>
+    <select id="edSpot" aria-label="Spotlight"></select>
+
+    <div class="groupmark"><span>The groups</span></div>
+    <label class="bl" for="edGroups">How many groups</label>
+    <select id="edGroups">
+      <option value="4">4 groups</option><option value="5">5 groups</option>
+      <option value="6">6 groups</option><option value="7">7 groups</option>
+      <option value="8">8 groups</option>
+    </select>
+    <label class="bl">Zine or organization names (optional)</label>
+    <div class="namegrid" id="edNames"></div>
+    <label class="bl" for="edHead">Headline at the top of the page (optional)</label>
+    <input type="text" id="edHead" placeholder="Leave empty for the built in instructions"/>
+
+    <div class="groupmark"><span>Questions for each zine</span></div>
+    <p class="ed-note">Every student answers these for every group's zine. One section per box, one question per line. Reword a question in place rather than deleting the line, since deleting a line renumbers the questions after it.</p>
+    <div id="edSections"></div>
+    <div class="ed-actions"><button class="btn" id="edAddSec" type="button">Add another section</button></div>
+
+    <div class="groupmark"><span>Questions for the whole set</span></div>
+    <p class="ed-note">The whole class answers these about all the zines together. Writing {n} puts in the number of groups, so "the set of {n}" reads "the set of six" when there are six groups. Clearing a box hides that board, and the others keep their numbers.</p>
+    <div id="edWhole"></div>
+    <div class="ed-actions"><button class="btn" id="edAddWhole" type="button">Add another question</button></div>
+
+    <div class="ed-actions" style="margin-top:20px">
+      <button class="btn btn-ink" id="saveSettings" type="button">Save changes</button>
+      <button class="btn btn-quiet" id="resetQs" type="button">Put back the original questions</button>
+    </div>
+
+    <div class="groupmark"><span>Read the notes</span></div>
+    <p class="ed-note">Every note under its question, in the order it arrived. Easier to read aloud than the boards.</p>
+    <div class="ed-actions" style="margin-top:0">
+      <select id="readPick" aria-label="Which notes to read"></select>
+      <button class="btn btn-quiet" id="downloadAnswers" type="button">Download as text</button>
+    </div>
+    <div class="answers" id="answerList"></div>
+
+    <div class="groupmark"><span>Clear</span></div>
+    <div class="ed-actions" style="margin-top:0">
+      <button class="btn" id="clearView" type="button">Clear the notes on screen</button>
+      <button class="btn btn-quiet" id="clearAll" type="button">Clear every note</button>
+    </div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div class="ed-flag" id="edFlag" role="status" aria-live="polite"></div>
+
+<div id="press">
+  <span class="pressmsg" id="pressWhere">Group 1</span>
+  <select id="secPick" aria-label="Which section"></select>
+  <select id="qPick" aria-label="Which question"></select>
+  <input type="text" id="wordInput" placeholder="Type your note, then press Post" autocomplete="off"/>
+  <span id="draftNote">Draft kept</span>
+  <div class="press-btns">
+    <button id="whoTag" type="button">Artist ?</button>
+    <button class="btn btn-ink" id="dropBtn" type="button">Post</button>
+  </div>
+</div>
+
+<div id="saveStamp">Note<br>posted</div>
+
+<div class="overlay" id="numGate">
+  <div class="box">
+    <h3>Your artist number</h3>
+    <p>This sits above every note you post. Your browser remembers it, so you only type it once.</p>
+    <input type="text" id="numCode" inputmode="numeric" placeholder="ARTIST NUMBER"/>
+    <div class="err" id="numErr">Enter your artist number</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="numCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="numGo" type="button">That's me</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to change the groups and questions.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Passcode for the instructor desk.
+const TEACHER_CODE = "questions";
+
+// How many groups the page starts with, before anything is saved from
+// the instructor desk. The desk lets you pick anywhere from 4 to 8.
+const DEFAULT_GROUPS = 6;
+
+// Ask each student for their artist number before their first note.
+const ASK_FOR_NUMBER = true;
+
+// Can students remove and edit their own notes?
+const LET_STUDENTS_DELETE = true;
+
+// Only digits in the artist number.
+const NUMBERS_ONLY = true;
+
+// The questions every student answers for every zine.
+const DEFAULT_SECTIONS = [
+  { title: "The world", qs: [
+    "Can you tell, from the zine alone, what is different about this version of Earth?",
+    "Does the world hold together, or do parts contradict each other?",
+    "Has the world given something up, or does it only gain things?",
+    "Does it feel lived in, or designed?"
+  ]},
+  { title: "The organization and the manifesto", qs: [
+    "Is it clear what the organization makes or provides, and who it serves?",
+    "Does the zine read as a document that organization published?",
+    "Is there a cost in the manifesto anywhere, or is it all promises?",
+    "Does it sound like one voice, or like several people taking turns?"
+  ]},
+  { title: "The images", qs: [
+    "Does each image have a job, or are some of them decoration?",
+    "Do they look as though they came from the same world?",
+    "Is the technique consistent, or did it drift page to page?",
+    "Which image would you keep if you could only keep one?"
+  ]},
+  { title: "The design", qs: [
+    "Does one grid hold across all the pages?",
+    "Does the palette look chosen rather than accumulated?",
+    "Would you know these pages belonged together if they were shuffled with another group's?"
+  ]},
+  { title: "Novelty and risk", qs: [
+    "Is there an idea here you have not seen in this class before?",
+    "Did they try something that might not have worked?",
+    "Does the zine take a risk a safer group would not have taken?",
+    "Is there humour, strangeness or discomfort in it?"
+  ]},
+  { title: "The whole thing", qs: [
+    "Do the pages say one thing, or several?",
+    "Does it argue something, or only describe?",
+    "Is it finished, or is it stopped?"
+  ]}
+];
+
+// The questions the whole class answers about every zine together.
+// {n} becomes the number of groups, written as a word.
+const DEFAULT_WHOLE = [
+  "What did almost every group do, without anyone agreeing to?",
+  "What did nobody do? The gap is usually more interesting than the pattern.",
+  "Which world would you actually want to live in, and why that one?",
+  "Which world frightened you most?",
+  "Where did two groups arrive at the same idea from different directions?",
+  "What does the set of {n} say about this class that no single zine says?"
+];
+
+// Same Firebase project as the other boards. This tool keeps everything
+// under its own "zineanalysis" key, so it never touches their data.
+// Add a matching "zineanalysis" branch to the database rules before class.
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+const ROOT     = "zineanalysis";
+const SETTINGS = ROOT + "/settings";
+const NOTES    = ROOT + "/notes";
+
+let db          = null;
+let settings    = {};
+let C           = null;        // settings with the defaults filled in
+let notes       = {};          // { z1: { s0: {key: note} }, all: {...} }
+let view        = localStorage.getItem("zineView") || "z1";
+let unlocked    = false;
+let artistNo    = localStorage.getItem("boardArtistNo") || "";
+let pending     = null;
+let editingPost = null;
+let editDraft   = null;
+
+const $ = (id) => document.getElementById(id);
+const range = (n) => Array.from({ length: n }, (_, i) => i);
+
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+
+// Firebase hands arrays back as arrays or as numbered objects.
+function arr(v) {
+  if (!v) return [];
+  if (Array.isArray(v)) return v.slice();
+  const ks = Object.keys(v).map(Number).filter((n) => !isNaN(n));
+  const len = ks.length ? Math.max(...ks) + 1 : 0;
+  return range(len).map((i) => (v[i] == null ? null : v[i]));
+}
+
+function config() {
+  const s = settings || {};
+  const groups = Math.min(8, Math.max(4, +s.groups || DEFAULT_GROUPS));
+  const names = arr(s.names).map((x) => String(x || ""));
+  const sections = s.sections
+    ? arr(s.sections).map((x) => ({
+        title: String((x && x.title) || ""),
+        qs: arr(x && x.qs).map((q) => String(q || "")).filter((q) => q.trim())
+      }))
+    : DEFAULT_SECTIONS.map((x) => ({ title: x.title, qs: x.qs.slice() }));
+  const whole = s.whole ? arr(s.whole).map((q) => String(q || "")) : DEFAULT_WHOLE.slice();
+  return { groups, names, sections, whole, headline: String(s.headline || ""), spotlight: s.spotlight || "" };
+}
+C = config();
+
+const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight"];
+function fillN(q) { return q.replace(/\{n\}/g, WORDS[C.groups] || String(C.groups)); }
+
+function views() { return range(C.groups).map((i) => "z" + (i + 1)).concat("all"); }
+function groupNo(v) { return +String(v).slice(1); }
+function shortName(v) { return v === "all" ? "The whole set" : "Group " + groupNo(v); }
+function longName(v) {
+  if (v === "all") return "The whole set";
+  const nm = C.names[groupNo(v) - 1];
+  return "Group " + groupNo(v) + (nm && nm.trim() ? " · " + nm.trim() : "");
+}
+
+function rowsFor(bag, b) {
+  const box = (bag && bag["s" + b]) || {};
+  return Object.keys(box)
+    .map((k) => Object.assign({ id: k }, box[k]))
+    .sort((a, b2) => (a.at || 0) - (b2.at || 0));
+}
+
+// The boards for a zine or for the whole set. A board that has lost its
+// question but still holds notes stays on screen so nothing disappears.
+function boardsFor(v) {
+  const bag = notes[v] || {};
+  const single = v === "all";
+  const list = single
+    ? C.whole.map((q) => ({ title: "", qs: q.trim() ? [fillN(q)] : [] }))
+    : C.sections.map((s) => ({ title: s.title, qs: s.qs }));
+  Object.keys(bag).forEach((k) => {
+    const i = +k.slice(1);
+    if (k[0] === "s" && !isNaN(i)) while (list.length <= i) list.push({ title: "", qs: [] });
+  });
+  return list.map((b, i) => {
+    const rows = rowsFor(bag, i);
+    const title = single ? "Question " + (i + 1) : b.title.trim() || (b.qs.length ? "Section " + (i + 1) : "Removed section");
+    return { idx: i, title, qs: b.qs, single, rows, visible: b.qs.length > 0 || rows.length > 0 || (!single && !!b.title.trim()) };
+  });
+}
+
+function countIn(bag) {
+  return Object.keys(bag || {}).reduce((n, k) => n + Object.keys(bag[k] || {}).length, 0);
+}
+
+function hasMine(v) {
+  if (!artistNo) return false;
+  const bag = notes[v] || {};
+  return Object.keys(bag).some((k) => Object.values(bag[k] || {}).some((r) => r && r.who === artistNo));
+}
+
+/* ── drawing ────────────────────────────────────────────────────── */
+function postHTML(r, b, single) {
+  const own = !!r.who && r.who === artistNo;
+  const canDrop = (own && LET_STUDENTS_DELETE) || unlocked;
+  const tag = b + ":" + r.id;
+  const qtag = !single && r.q != null && r.q >= 0 ? `<span class="qtag">Q${r.q + 1}</span>` : "";
+  const head = (r.who || qtag)
+    ? `<span class="who">${r.who ? esc("Artist " + r.who) + (own ? " (you)" : "") : ""}${qtag}${
+        r.editedAt ? '<span class="edited">(edited)</span>' : ""
+      }</span>`
+    : "";
+  if (canDrop && editingPost === tag) {
+    return `<div class="post${own ? " self" : ""}">${head}
+      <div class="post-edit">
+        <textarea data-etext="${tag}">${esc(editDraft == null ? r.text : editDraft)}</textarea>
+        <div class="row">
+          <button class="btn btn-ink" data-esave="${tag}" type="button">Save</button>
+          <button class="btn btn-quiet" data-ecancel="1" type="button">Cancel</button>
+        </div>
+      </div></div>`;
+  }
+  return `<div class="post${own ? " self" : ""}${canDrop ? " hasdel" : ""}">${
+    canDrop
+      ? `<button class="fix" data-fix="${tag}" type="button" title="Edit this note" aria-label="Edit this note">&#9998;</button>
+         <button class="del" data-del="${tag}" type="button" title="Delete this note" aria-label="Delete this note">&times;</button>`
+      : ""
+  }${head}${esc(r.text)}</div>`;
+}
+
+function boardsHTML(v) {
+  const bs = boardsFor(v).filter((b) => b.visible);
+  if (!bs.length) return '<div class="post-empty" style="grid-column:1/-1">No questions written yet</div>';
+  return bs.map((b) => {
+    const qBlock = !b.qs.length
+      ? '<div class="board-q unset">No questions here any more</div>'
+      : b.single
+        ? `<div class="board-q">${esc(b.qs[0])}</div>`
+        : `<div class="board-q"><ol class="qlist">${b.qs
+            .map((q, k) => `<li><span class="qn">Q${k + 1}</span><span>${esc(q)}</span></li>`)
+            .join("")}</ol></div>`;
+    return `<article class="board q${(b.idx % 7) + 1}${hasDraft(b.idx) ? " hasdraft" : ""}">
+      <div class="board-hd"><span>${esc(b.title)}</span>
+        <span class="count">${b.rows.length} ${b.rows.length === 1 ? "note" : "notes"}</span></div>
+      ${qBlock}
+      <div class="board-posts">${
+        b.rows.length ? b.rows.map((r) => postHTML(r, b.idx, b.single)).join("") : '<div class="post-empty">Nothing here yet</div>'
+      }</div>
+      ${b.qs.length ? `<div class="board-foot"><button class="btn" data-b="${b.idx}" type="button">${
+        hasDraft(b.idx) ? "Finish your draft" : b.single ? "Answer this" : "Add a note"
+      }</button></div>` : ""}
+    </article>`;
+  }).join("");
+}
+
+// Notes arriving from other people redraw the boards. If an edit box is
+// open, the cursor goes back where it was so typing is never interrupted.
+function renderBoards() {
+  const active = document.activeElement;
+  const wasEditing = !!(active && active.matches && active.matches("[data-etext]"));
+  const caret = wasEditing ? active.selectionStart : 0;
+
+  $("boardGrid").innerHTML = boardsHTML(view);
+
+  if (wasEditing && editingPost) {
+    const box = document.querySelector('[data-etext="' + editingPost + '"]');
+    if (box) { box.focus(); box.setSelectionRange(caret, caret); }
+  }
+  renderChips();
+  renderMeter();
+  if (unlocked) renderAnswers();
+}
+
+function renderChips() {
+  $("zineChips").innerHTML = views().map((v) => {
+    const n = countIn(notes[v]);
+    const mine = v !== "all" && hasMine(v);
+    const spot = C.spotlight === v;
+    return `<button class="chip${v === "all" ? " whole" : ""}" data-view="${v}" type="button" aria-current="${v === view}">${
+      mine ? '<span class="done" title="You have notes here">&#10003;</span>' : ""
+    }${esc(shortName(v))}${spot ? ' <span class="spot" title="The class is here">&#9679;</span>' : ""}<span class="n">${n}</span></button>`;
+  }).join("");
+}
+
+function renderMeter() {
+  const zs = views().filter((v) => v !== "all");
+  const done = zs.filter(hasMine).length;
+  $("meterLabel").textContent = artistNo ? "Zines you have notes on" : "Set your artist number to track your zines";
+  $("meterCount").textContent = done + " of " + zs.length;
+  $("meterFill").style.width = Math.round((done / zs.length) * 100) + "%";
+}
+
+function renderHeader() {
+  const whole = view === "all";
+  $("roundel").innerHTML = whole ? "ALL<br>ZINES" : "GROUP<br>" + groupNo(view);
+  $("kicker").textContent = longName(view);
+  $("promptText").textContent = C.headline || (whole
+    ? "Step back and look at every zine together. Answer any question below."
+    : "Read this group's zine closely. Pick a section and leave a note on any of its questions.");
+  $("barView").textContent = longName(view);
+  $("pressWhere").textContent = whole ? "Whole set" : "Group " + groupNo(view);
+  $("sheetFrame").classList.toggle("wholeview", whole);
+  document.title = shortName(view) + " · Analyze and Evaluate Zine";
+
+  const vs = views();
+  const i = vs.indexOf(view);
+  $("prevBtn").textContent = i > 0 ? "\u2190 " + shortName(vs[i - 1]) : "\u2190 Back";
+  $("nextBtn").textContent = i < vs.length - 1 ? shortName(vs[i + 1]) + " \u2192" : "Next \u2192";
+  $("prevBtn").disabled = i <= 0;
+  $("nextBtn").disabled = i >= vs.length - 1;
+
+  const sp = C.spotlight;
+  const showSpot = sp && sp !== view && vs.includes(sp);
+  $("spotBar").classList.toggle("on", !!showSpot);
+  if (showSpot) $("spotMsg").textContent = "The class is looking at " + shortName(sp) + " now";
+}
+
+/* ── the two pickers in the bottom bar ──────────────────────────── */
+function buildPickers() {
+  const sec = $("secPick");
+  const keep = sec.value;
+  const bs = boardsFor(view).filter((b) => b.qs.length);
+  sec.innerHTML = bs.map((b) => `<option value="${b.idx}">${esc(b.title)}</option>`).join("");
+  if (bs.some((b) => String(b.idx) === keep)) sec.value = keep;
+  buildQPick();
+}
+
+function buildQPick() {
+  const qp = $("qPick");
+  const keep = qp.value;
+  const b = boardsFor(view)[+$("secPick").value || 0];
+  if (!b || b.single || !b.qs.length) {
+    qp.style.display = "none";
+    qp.innerHTML = "";
+    return;
+  }
+  qp.style.display = "";
+  qp.innerHTML = '<option value="-1">Any question</option>' +
+    b.qs.map((q, k) => `<option value="${k}">Q${k + 1} ${esc(q.length > 38 ? q.slice(0, 36) + "..." : q)}</option>`).join("");
+  if ([...qp.options].some((o) => o.value === keep)) qp.value = keep;
+}
+
+$("secPick").addEventListener("change", () => {
+  buildQPick();
+  loadDraft(+$("secPick").value || 0, true);
+});
+
+/* ── switching zines ────────────────────────────────────────────── */
+function setView(v, scroll) {
+  if (!views().includes(v)) v = "z1";
+  saveDraft();
+  view = v;
+  try { localStorage.setItem("zineView", v); } catch (e) {}
+  editingPost = null;
+  editDraft = null;
+  $("secPick").value = "";
+  buildPickers();
+  $("wordInput").value = "";
+  loadDraft(+$("secPick").value || 0, true);
+  renderHeader();
+  renderBoards();
+  if (scroll) $("zineChips").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("zineChips").addEventListener("click", (e) => {
+  const c = e.target.closest("[data-view]");
+  if (c) setView(c.dataset.view, false);
+});
+$("prevBtn").addEventListener("click", () => {
+  const vs = views(); const i = vs.indexOf(view);
+  if (i > 0) setView(vs[i - 1], true);
+});
+$("nextBtn").addEventListener("click", () => {
+  const vs = views(); const i = vs.indexOf(view);
+  if (i < vs.length - 1) setView(vs[i + 1], true);
+});
+$("spotGo").addEventListener("click", () => setView(C.spotlight, true));
+
+/* ── clicks on the boards ───────────────────────────────────────── */
+$("boardGrid").addEventListener("click", (e) => {
+  const fix = e.target.closest("[data-fix]");
+  if (fix) {
+    editingPost = fix.dataset.fix;
+    editDraft = null;
+    renderBoards();
+    const box = document.querySelector('[data-etext="' + editingPost + '"]');
+    if (box) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); }
+    return;
+  }
+  if (e.target.closest("[data-ecancel]")) {
+    editingPost = null; editDraft = null; renderBoards();
+    return;
+  }
+  const keep = e.target.closest("[data-esave]");
+  if (keep) {
+    const [bi, bk] = keep.dataset.esave.split(":");
+    const box = document.querySelector('[data-etext="' + keep.dataset.esave + '"]');
+    const next = (box ? box.value : "").trim();
+    if (!next) return;
+    editingPost = null; editDraft = null;
+    db.ref(`${NOTES}/${view}/s${bi}/${bk}`)
+      .update({ text: next.slice(0, 800), editedAt: Date.now() })
+      .then(() => { $("barState").textContent = "Note updated"; })
+      .catch(dbTrouble);
+    return;
+  }
+  const kill = e.target.closest("[data-del]");
+  if (kill) {
+    const [i, key] = kill.dataset.del.split(":");
+    if (!confirm("Delete this note? It cannot be brought back.")) return;
+    db.ref(`${NOTES}/${view}/s${i}/${key}`).remove()
+      .then(() => { $("barState").textContent = "Note deleted"; })
+      .catch(dbTrouble);
+    return;
+  }
+  const b = e.target.closest("[data-b]");
+  if (!b) return;
+  saveDraft();
+  $("secPick").value = b.dataset.b;
+  buildQPick();
+  loadDraft(+b.dataset.b, true);
+  $("wordInput").focus();
+  const bd = boardsFor(view)[+b.dataset.b];
+  $("barState").textContent = (bd ? bd.title : "Board") + " picked. Choose a question if you like, then type.";
+});
+
+$("boardGrid").addEventListener("input", (e) => {
+  if (e.target.matches("[data-etext]")) editDraft = e.target.value;
+});
+
+/* ── drafts ─────────────────────────────────────────────────────────
+   The box saves to this browser a moment after typing stops, filed
+   under the zine and the board. Nothing reaches the database until Post.
+   ─────────────────────────────────────────────────────────────────── */
+let draftTimer = null;
+function draftKey(b) { return ROOT + "-draft:" + view + ":" + b; }
+
+function saveDraft() {
+  if ($("secPick").value === "") return;
+  const b = +$("secPick").value;
+  const t = $("wordInput").value;
+  try {
+    if (t.trim()) localStorage.setItem(draftKey(b), t);
+    else localStorage.removeItem(draftKey(b));
+  } catch (e) { return; }
+  const note = $("draftNote");
+  note.classList.add("on");
+  setTimeout(() => note.classList.remove("on"), 1200);
+  markDrafts();
+}
+function hasDraft(b) {
+  try { return !!localStorage.getItem(draftKey(b)); } catch (e) { return false; }
+}
+function loadDraft(b, force) {
+  if (!force && $("wordInput").value.trim()) return;
+  let t = "";
+  try { t = localStorage.getItem(draftKey(b)) || ""; } catch (e) {}
+  $("wordInput").value = t;
+}
+function clearDraft(b) {
+  try { localStorage.removeItem(draftKey(b)); } catch (e) {}
+  markDrafts();
+}
+function markDrafts() {
+  document.querySelectorAll("#boardGrid [data-b]").forEach((btn) => {
+    const b = +btn.dataset.b;
+    const art = btn.closest(".board");
+    const on = hasDraft(b);
+    if (art) art.classList.toggle("hasdraft", on);
+    const single = view === "all";
+    btn.textContent = on ? "Finish your draft" : single ? "Answer this" : "Add a note";
+  });
+}
+
+$("wordInput").addEventListener("input", () => {
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(saveDraft, 250);
+});
+window.addEventListener("beforeunload", saveDraft);
+
+/* ── posting ────────────────────────────────────────────────────── */
+function post() {
+  const field = $("wordInput");
+  const text = field.value.trim();
+  if (!text) { $("barState").textContent = "Type a note first"; field.focus(); return; }
+  if (!db) { $("barState").textContent = "Not connected yet. Give it a second and try again."; return; }
+  if ($("secPick").value === "") { $("barState").textContent = "There is no question to answer here yet"; return; }
+
+  const b = +$("secPick").value;
+  const q = view === "all" || $("qPick").style.display === "none" ? -1 : +$("qPick").value;
+
+  if (ASK_FOR_NUMBER && !artistNo) {
+    pending = { text, b, q, v: view };
+    openNumGate();
+    return;
+  }
+  send(text, b, q, view);
+}
+
+function send(text, b, q, v) {
+  db.ref(`${NOTES}/${v}/s${b}`)
+    .push({ text: text.slice(0, 800), who: artistNo || null, q: q, at: Date.now() })
+    .catch(dbTrouble);
+  if (v === view) $("wordInput").value = "";
+  try { localStorage.removeItem(ROOT + "-draft:" + v + ":" + b); } catch (e) {}
+  markDrafts();
+  const bd = boardsFor(v)[b];
+  $("barState").textContent = "Posted to " + (bd ? bd.title : "the board") + ". Add another whenever you like.";
+  const stamp = $("saveStamp");
+  stamp.classList.add("on");
+  setTimeout(() => stamp.classList.remove("on"), 1400);
+}
+
+$("dropBtn").addEventListener("click", post);
+$("wordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") post(); });
+
+/* ── the artist number ──────────────────────────────────────────── */
+function showWho() {
+  $("whoTag").textContent = artistNo ? "Artist " + artistNo : "Artist ?";
+  $("whoTag").title = artistNo ? "Tap to change your artist number" : "Tap to set your artist number";
+}
+showWho();
+
+function openNumGate() {
+  $("numCode").value = artistNo;
+  $("numErr").classList.remove("on");
+  $("numGate").classList.add("open");
+  $("numCode").focus();
+}
+function takeNumber() {
+  let v = $("numCode").value.trim();
+  if (NUMBERS_ONLY) v = v.replace(/\D/g, "");
+  v = v.slice(0, 8);
+  if (!v) { $("numErr").classList.add("on"); return; }
+  artistNo = v;
+  localStorage.setItem("boardArtistNo", artistNo);
+  $("numGate").classList.remove("open");
+  showWho();
+  renderBoards();
+  if (pending) { send(pending.text, pending.b, pending.q, pending.v); pending = null; }
+}
+$("whoTag").addEventListener("click", openNumGate);
+$("numGo").addEventListener("click", takeNumber);
+$("numCode").addEventListener("keydown", (e) => { if (e.key === "Enter") takeNumber(); });
+$("numCancel").addEventListener("click", () => { pending = null; $("numGate").classList.remove("open"); });
+
+/* ── reading and downloading ────────────────────────────────────── */
+function questionLine(b, r) {
+  if (b.single || r.q == null || r.q < 0 || !b.qs[r.q]) return "";
+  return "Q" + (r.q + 1) + ". ";
+}
+
+function answerBlock(v, onlyWho) {
+  return boardsFor(v).filter((b) => b.visible).map((b) => {
+    const rows = onlyWho ? b.rows.filter((r) => r.who === onlyWho) : b.rows;
+    return `<div class="ansgroup">
+      <div class="ansgroup-hd">${esc(b.title)}<span>${rows.length} ${rows.length === 1 ? "note" : "notes"}</span></div>
+      ${b.single && b.qs[0] ? `<div class="ansgroup-q">${esc(b.qs[0])}</div>` : ""}
+      ${rows.length
+        ? rows.map((r) => `<div class="ans">${r.who ? esc("Artist " + r.who) + ": " : ""}${esc(questionLine(b, r))}${esc(r.text)}</div>`).join("")
+        : '<div class="ans-empty">No notes</div>'}
+    </div>`;
+  }).join("");
+}
+
+function buildReadPick() {
+  const rp = $("readPick");
+  const keep = rp.value;
+  rp.innerHTML = views().map((v) => `<option value="${v}">${esc(shortName(v))}</option>`).join("") +
+    '<option value="everything">Everything</option>';
+  rp.value = [...rp.options].some((o) => o.value === keep) ? keep : "everything";
+}
+
+function renderAnswers() {
+  const pick = $("readPick").value || "everything";
+  const vs = pick === "everything" ? views() : [pick];
+  $("answerList").innerHTML = vs.map((v) => `<div class="ansview">${esc(longName(v))}</div>` + answerBlock(v)).join("");
+}
+$("readPick").addEventListener("change", renderAnswers);
+
+function asText(vs, onlyWho) {
+  const lines = [];
+  vs.forEach((v) => {
+    const bs = boardsFor(v).filter((b) => b.visible);
+    const any = bs.some((b) => b.rows.some((r) => !onlyWho || r.who === onlyWho));
+    if (onlyWho && !any) return;
+    lines.push(longName(v).toUpperCase());
+    lines.push("");
+    bs.forEach((b) => {
+      const rows = onlyWho ? b.rows.filter((r) => r.who === onlyWho) : b.rows;
+      if (onlyWho && !rows.length) return;
+      lines.push(b.single ? b.title + ": " + (b.qs[0] || "") : b.title.toUpperCase());
+      if (!b.single) b.qs.forEach((q, k) => lines.push("  Q" + (k + 1) + ". " + q));
+      rows.forEach((r) => lines.push("- " + (r.who && !onlyWho ? "Artist " + r.who + ": " : "") + questionLine(b, r) + r.text));
+      lines.push("");
+    });
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+function download(name, text) {
+  const blob = new Blob([text], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+$("downloadAnswers").addEventListener("click", () => {
+  const pick = $("readPick").value || "everything";
+  const vs = pick === "everything" ? views() : [pick];
+  download(pick === "everything" ? "zine_analysis_all.txt" : "zine_analysis_" + pick + ".txt", asText(vs));
+  flag("Text file downloaded");
+});
+
+$("myNotesBtn").addEventListener("click", () => {
+  if (!artistNo) { openNumGate(); return; }
+  const text = asText(views(), artistNo);
+  if (!text.trim()) { $("barState").textContent = "You have not posted any notes yet"; return; }
+  download("zine_notes_artist_" + artistNo + ".txt", "NOTES FROM ARTIST " + artistNo + "\n\n" + text);
+});
+
+/* ── the instructor desk ────────────────────────────────────────── */
+function nameFields(n, values) {
+  $("edNames").innerHTML = range(n).map((i) => `<div class="qrow">
+    <div class="qnum">G${i + 1}</div>
+    <input type="text" class="name-in" value="${esc(values[i] || "")}" placeholder="Group ${i + 1}"/>
+  </div>`).join("");
+}
+function readNames() { return [...document.querySelectorAll("#edNames .name-in")].map((x) => x.value.trim()); }
+
+$("edGroups").addEventListener("change", () => {
+  const cur = readNames();
+  nameFields(+$("edGroups").value, cur.length ? cur : C.names);
+});
+
+function secBlock(i, title, qs) {
+  return `<div class="secblock">
+    <div class="qrow"><div class="qnum">${i + 1}</div>
+      <input type="text" class="sec-title" value="${esc(title)}" placeholder="Section name"/></div>
+    <textarea class="sec-qs" placeholder="One question per line">${esc(qs.join("\n"))}</textarea>
+  </div>`;
+}
+function setSections(list) { $("edSections").innerHTML = list.map((s, i) => secBlock(i, s.title, s.qs)).join(""); }
+function readSections() {
+  const out = [...document.querySelectorAll("#edSections .secblock")].map((el) => ({
+    title: el.querySelector(".sec-title").value.trim(),
+    qs: el.querySelector(".sec-qs").value.split("\n").map((l) => l.trim()).filter(Boolean)
+  }));
+  while (out.length && !out[out.length - 1].title && !out[out.length - 1].qs.length) out.pop();
+  return out;
+}
+$("edAddSec").addEventListener("click", () => {
+  const n = document.querySelectorAll("#edSections .secblock").length;
+  $("edSections").insertAdjacentHTML("beforeend", secBlock(n, "", []));
+  $("edSections").lastElementChild.querySelector(".sec-title").focus();
+});
+
+function wholeRow(i, text) {
+  return `<div class="qrow"><div class="qnum">Q${i + 1}</div>
+    <textarea placeholder="Question ${i + 1}">${esc(text || "")}</textarea></div>`;
+}
+function setWhole(list) { $("edWhole").innerHTML = list.map((t, i) => wholeRow(i, t)).join(""); }
+function readWhole() {
+  const out = [...document.querySelectorAll("#edWhole textarea")].map((t) => t.value.trim());
+  while (out.length && !out[out.length - 1]) out.pop();
+  return out;
+}
+$("edAddWhole").addEventListener("click", () => {
+  const n = document.querySelectorAll("#edWhole textarea").length;
+  $("edWhole").insertAdjacentHTML("beforeend", wholeRow(n, ""));
+  $("edWhole").lastElementChild.querySelector("textarea").focus();
+});
+
+function buildSpot() {
+  const sp = $("edSpot");
+  if (document.activeElement === sp) return;
+  sp.innerHTML = '<option value="">Off</option>' +
+    views().map((v) => `<option value="${v}">${esc(shortName(v))}</option>`).join("");
+  sp.value = views().includes(C.spotlight) ? C.spotlight : "";
+}
+$("edSpot").addEventListener("change", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const v = $("edSpot").value;
+  db.ref(SETTINGS + "/spotlight").set(v || null)
+    .then(() => flag(v ? "Spotlight on " + shortName(v) : "Spotlight off"))
+    .catch(dbTrouble);
+});
+
+function fillDesk() {
+  $("edGroups").value = String(C.groups);
+  nameFields(C.groups, C.names);
+  $("edHead").value = C.headline;
+  setSections(C.sections);
+  setWhole(C.whole);
+  buildSpot();
+  buildReadPick();
+  renderAnswers();
+}
+
+$("saveSettings").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const sections = readSections();
+  const whole = readWhole();
+  if (!sections.some((s) => s.qs.length)) return flag("Write at least one question for each zine");
+  db.ref(SETTINGS).update({
+    groups: +$("edGroups").value,
+    names: readNames(),
+    headline: $("edHead").value.trim(),
+    sections: sections,
+    whole: whole.length ? whole : [""]
+  })
+    .then(() => flag("Saved. Every browser has the changes now."))
+    .catch(dbTrouble);
+});
+
+$("resetQs").addEventListener("click", () => {
+  setSections(DEFAULT_SECTIONS);
+  setWhole(DEFAULT_WHOLE);
+  flag("The original questions are back in the boxes. Save to keep them.");
+});
+
+$("clearView").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (!confirm("Clear every note on " + shortName(view) + "? The questions stay.")) return;
+  db.ref(`${NOTES}/${view}`).remove().then(() => flag(shortName(view) + " wiped clean")).catch(dbTrouble);
+});
+$("clearAll").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (!confirm("Clear every note on every zine and the whole set? This cannot be undone.")) return;
+  db.ref(NOTES).remove().then(() => flag("Every board wiped clean")).catch(dbTrouble);
+});
+
+/* ── the instructor gate ────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) {
+    $("editor").classList.toggle("open");
+    $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    $("gate").classList.add("open");
+    $("gateCode").focus();
+  }
+});
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("gateGo").addEventListener("click", tryCode);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryCode(); });
+
+function tryCode() {
+  if ($("gateCode").value.trim().toLowerCase() !== TEACHER_CODE.toLowerCase()) {
+    $("gateErr").classList.add("on");
+    return;
+  }
+  unlocked = true;
+  $("gate").classList.remove("open");
+  $("gateErr").classList.remove("on");
+  $("gateCode").value = "";
+  $("editor").classList.add("open");
+  fillDesk();
+  renderBoards();
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+$("deskClose").addEventListener("click", () => $("editor").classList.remove("open"));
+
+let flagTimer = null;
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  clearTimeout(flagTimer);
+  flagTimer = setTimeout(() => f.classList.remove("on"), 4000);
+}
+
+/* ── when the database says no ──────────────────────────────────── */
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  const msg = denied
+    ? "Firebase blocked that. The database rules need a zineanalysis branch."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  $("barState").textContent = msg;
+  if (unlocked) flag(msg);
+  console.error("[analyze zine]", err);
+}
+
+/* ── watching the database ──────────────────────────────────────── */
+function watch() {
+  db.ref(SETTINGS).on("value", (s) => {
+    settings = s.val() || {};
+    C = config();
+    if (!views().includes(view)) view = "z1";
+    buildPickers();
+    renderHeader();
+    renderBoards();
+    if (unlocked) { buildSpot(); buildReadPick(); renderAnswers(); }
+  }, dbTrouble);
+
+  db.ref(NOTES).on("value", (s) => {
+    notes = s.val() || {};
+    renderBoards();
+  }, dbTrouble);
+
+  db.ref(".info/connected").on("value", (s) => {
+    $("barState").textContent = s.val() === true
+      ? "Live. Pick a board, then post."
+      : "Reconnecting to the database";
+  });
+}
+
+/* ── loading Firebase ───────────────────────────────────────────── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) { /* try the next mirror */ }
+  }
+  return false;
+}
+
+// Draw the boards straight away from the built in questions so the page
+// never sits blank while Firebase loads.
+if (!views().includes(view)) view = "z1";
+buildPickers();
+loadDraft(+$("secPick").value || 0, true);
+renderHeader();
+renderBoards();
+
+/* ── signing in ─────────────────────────────────────────────────── */
+function netTrouble(err) {
+  const code = (err && err.code) || "";
+  const off = /operation-not-allowed|configuration-not-found/.test(code);
+  const net = /network-request-failed|timeout/.test(code);
+  const onDisk = location.protocol === "file:";
+  let head = "Sign-in failed: " + ((err && err.message) || code);
+  let why = "";
+  if (off) {
+    head = "Anonymous sign-in is switched off";
+    why = "In the Firebase console open Authentication, then Sign-in method, and enable Anonymous.";
+  } else if (net && onDisk) {
+    head = "This page is running off the hard drive";
+    why = "Firebase sign-in will not run from a file:// address. Open the page from its web address instead, or serve the folder locally with python3 -m http.server 8000 and visit localhost:8000.";
+  } else if (net) {
+    head = "Cannot reach the sign-in server";
+    why = "Check for a privacy extension or campus network blocking identitytoolkit.googleapis.com, whether this address is on the Authorized domains list in the Firebase console, or the wifi itself.";
+  }
+  $("netMsg").innerHTML = esc(head) + (why ? '<span class="why">' + esc(why) + "</span>" : "");
+  $("netBar").classList.add("on");
+  $("barState").textContent = head;
+  $("wordInput").disabled = true;
+  $("dropBtn").disabled = true;
+  console.error("[analyze zine]", err);
+}
+
+function signIn(tries) {
+  return firebase.auth().signInAnonymously().catch((err) => {
+    const net = /network-request-failed|timeout/.test((err && err.code) || "");
+    if (net && tries > 0) {
+      $("barState").textContent = "Connection dropped. Trying again.";
+      return new Promise((go) => setTimeout(go, 1500)).then(() => signIn(tries - 1));
+    }
+    throw err;
+  });
+}
+
+function startUp() {
+  $("netBar").classList.remove("on");
+  $("barState").textContent = "Connecting";
+  signIn(3)
+    .then(() => {
+      db = firebase.database();
+      $("wordInput").disabled = false;
+      $("dropBtn").disabled = false;
+      watch();
+    })
+    .catch(netTrouble);
+}
+$("netRetry").addEventListener("click", startUp);
+
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("netMsg").innerHTML = "The Firebase library did not load" +
+      '<span class="why">All three mirrors were blocked. Usually an ad blocker, or a network that filters gstatic.com, jsdelivr and unpkg.</span>';
+    $("netBar").classList.add("on");
+    $("barState").textContent = "Offline. Check the network or an ad blocker.";
+    $("wordInput").disabled = true;
+    $("dropBtn").disabled = true;
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  startUp();
+});
+
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
