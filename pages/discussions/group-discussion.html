@@ -728,7 +728,7 @@ function renderBoards() {
   const n = countPosts(posts);
   $("meterCount").textContent = n === 1 ? "1 answer" : n + " answers";
   $("meterFill").style.width = Math.min(100, n * 4) + "%";
-  $("meterLabel").textContent = n === 0 ? "The floor is open" : "The floor is filling up";
+  $("meterLabel").textContent = n === 0 ? "Add ideas." : "Ideas being added.";
   renderDeal();
   renderAnswers();
 }
