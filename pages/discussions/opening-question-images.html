@@ -763,7 +763,7 @@ function updateMeter() {
   const n = photos.length;
   $("meterCount").textContent = n === 1 ? "1 photo" : n + " photos";
   $("meterFill").style.width = Math.min(100, n * 4) + "%";
-  $("meterLabel").textContent = n === 0 ? "The field is open" : "The field is filling up";
+  $("meterLabel").textContent = n === 0 ? "Add images" : "Photos are being added";
   renderPhotoLists();
 }
 
