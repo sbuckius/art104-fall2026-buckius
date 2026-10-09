@@ -248,20 +248,20 @@ main{max-width:1100px;margin:0 auto;padding:22px 18px 150px}
     <div class="cover-band">
       <div class="roundel" id="weekRoundel">WK<br>2</div>
       <div class="cover-tag">
-        <span class="cover-kicker">Theme of the week</span>
+        <span class="cover-kicker"></span>
         <span id="promptText">Loading the week's theme</span>
       </div>
     </div>
     <div class="cover-foot">
-      <span><b>How it works</b> Type a word or phrase, then tap the sheet to set it down. Add as many as you like.</span>
-      <span><b>Live</b> Everyone in the room sees the theme fill in as it lands.</span>
+      <span><b></b> </span>
+      <span><b></b> </span>
     </div>
   </div>
 </header>
 
 <main>
   <div class="runmeter">
-    <div class="runmeter-top"><span id="meterLabel">The sheet is blank</span><span class="pct" id="meterCount">0 words and phrases</span></div>
+    <div class="runmeter-top"><span id="meterLabel">Add words or phrases.</span><span class="pct" id="meterCount">0 words and phrases</span></div>
     <div class="track"><div class="fill" id="meterFill"></div></div>
   </div>
 
@@ -708,7 +708,7 @@ db.ref(INDEX).on("value", (s) => {
 db.ref(".info/connected").on("value", (s) => {
   const live = s.val() === true;
   $("barState").textContent = live
-    ? "Live. Tap anywhere to set down a word or phrase."
+    ? ""
     : "Reconnecting to the database";
 });
 }
