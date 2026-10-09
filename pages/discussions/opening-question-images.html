@@ -860,7 +860,7 @@ function watchCurrentWeek() {
 
   db.ref(".info/connected").on("value", (s) => {
     $("barState").textContent = s.val() === true
-      ? "Live. Tap the collage or Add a photo."
+      ? ""
       : "Reconnecting to the database";
   });
 }
