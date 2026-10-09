@@ -985,7 +985,7 @@ function attachDay(id) {
     const label = meta.label || "This day";
     if (!previewId) $("barDay").textContent = label;
     $("promptText").textContent = countQuestions(meta)
-      ? countQuestions(meta) + " questions out on six boards"
+      ? countQuestions(meta) + " Group Questions"
       : "No questions written for this day yet";
     $("dayRoundel").innerHTML = roundelText(meta.label);
     document.title = (meta.label ? meta.label + " · " : "") + "Group Discussion";
