@@ -1257,6 +1257,11 @@ const EXTRA_SOURCES = [
   ["Maintenance and Care (Mattern)","Essay on repair and care","t","https://placesjournal.org/article/maintenance-and-care/"],
   ["507 Mechanical Movements","Henry T. Brown's 1868 illustrated catalog of mechanisms, now public domain","t","https://archive.org/search?query=507+mechanical+movements"],
   ["Simple machines","The six classic simple machines: lever, wheel and axle, pulley, inclined plane, wedge and screw","t",WIKI("Simple_machine")],
+  ["Permacomputing principles","Ten principles for computing that cares for life, hardware and resources","t","https://permacomputing.net/principles/"],
+  ["A Feminist Server Manifesto","From the Feminist Server Summit organized by the Brussels arts collective Constant","t","https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"],
+  ["Solarpunk: Notes toward a manifesto","Adam Flynn, Project Hieroglyph, 2014","b","https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"],
+  ["What is degrowth?","Definition and principles from degrowth.info","b","https://degrowth.info/degrowth"],
+  ["The Routledge Handbook of Ecomedia Studies (2024)","Open access handbook on media and environment, edited by Antonio López and others","b","https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"],
   ["SCAMPER","A checklist for idea generation, from Alex Osborn and Bob Eberle","t",WIKI("SCAMPER")],
   ["Oblique Strategies","Brian Eno and Peter Schmidt's cards for getting unstuck (1975)","t",WIKI("Oblique_Strategies")],
   ["Design Heuristics","77 prompts for generating design concepts, from research at the University of Michigan","t","https://www.designheuristics.com/"],
@@ -1533,9 +1538,56 @@ const HEALTH=[
  {c:"Human Footprint",n:"Light pollution",d:"How bright the night sky is, which affects birds, insects and sleep.",ex:"Satellites, sky meters, star counts by volunteers.",v:"Most people in the US and Europe cannot see the Milky Way from home.",u:"https://globeatnight.org/"},
  {c:"Human Footprint",n:"Soundscape",d:"How loud and how varied the sounds of a place are.",ex:"Field recordings and acoustic sensors, as in Bernie Krause's work.",v:"Quieter, more varied soundscapes often mean healthier habitats."}
 ];
+const MANIF=[
+ {c:"Permacomputing",n:"Hope for the best, prepare for the worst",d:"Design systems that keep working through interruptions. Planning for collapse is a creative exercise, not pessimism.",ex:"What does your machine do when the power is out for a month?",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"Care for all hardware, especially the chips",d:"Make devices and parts last. Chips cost huge amounts of energy, water and minerals to make, and become e-waste.",ex:"How long can your machine's parts last, and what happens to them after?",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"Observe first",d:"Study a place over time and ask what is really needed, and whether technology is needed at all, before acting.",ex:"Watch your natural thing for a week before deciding what the machine does.",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"Not doing",d:"Refuse computing that is not needed. Making things more efficient can still increase total use.",ex:"Which feature can you remove because it does not need a computer?",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"Expose the seams",d:"Make hidden processes visible enough to understand, question and control.",ex:"Show one hidden process of your machine on its outside.",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"Weigh simplicity against scale",d:"Check whether a simpler or partial solution works before adding complexity or growing bigger.",ex:"Find the smallest version of your machine that still works.",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"Keep it flexible",d:"Build systems that can adapt to uses and conditions no one planned for.",ex:"List three uses of your machine its designers never imagined.",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"Build on solid ground",d:"For anything meant to last, use mature, well-documented technologies and open standards.",ex:"Which parts of your machine will people still understand in 3055?",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"(Almost) everything has a place",d:"Treat old and unusual systems as adaptable rather than obsolete.",ex:"Give an old or obsolete device a new job inside your machine.",u:"https://permacomputing.net/principles/"},
+ {c:"Permacomputing",n:"Integrate biological and renewable resources",d:"Use local, renewable and living materials where possible, and question the ethics of supply chains.",ex:"Replace one part of your machine with something local, grown or renewable.",u:"https://permacomputing.net/principles/"},
+ {c:"Feminist Server Manifesto",n:"It is situated",d:"A feminist server knows its context and sees itself as part of wider practices.",ex:"Where exactly does your machine live, and who is around it?",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It is kept alive by care",d:"It runs because a community cares enough to keep it going.",ex:"Who keeps your machine running, and why do they care?",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It is grounded",d:"It stays connected to the physical reality of its software, hardware and people.",ex:"List every physical thing and person your machine depends on.",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It shares its ways",d:"It openly shares its processes, tools, sources and habits.",ex:"Write your machine's recipe so someone else could make one.",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It resists seamlessness",d:"It distrusts smooth surfaces, because claims of transparency can hide things.",ex:"Where should people feel the seams of your machine?",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It refuses the efficiency trap",d:"It does not chase speed, ease, scale and instant results.",ex:"What does your machine gain by being slower or smaller?",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It chooses its dependencies",d:"It decides for itself what it relies on.",ex:"Which companies or systems does your machine refuse to depend on?",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It questions serving",d:"It examines who serves whom, and tries to change those roles where it can.",ex:"Who serves whom in your machine? Flip one relationship.",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It is readable and writable",d:"It wants networks that anyone can read, change and write to.",ex:"How could users change your machine without asking permission?",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"Safe is not the same as secure",d:"Feeling safe and being technically secure are different things.",ex:"What would make people feel safe with your machine, beyond locks and passwords?",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Feminist Server Manifesto",n:"It is allowed to rest",d:"It tries not to apologize for being sometimes unavailable.",ex:"When does your machine rest, and how does it tell people?",u:"https://areyoubeingserved.constantvzw.org/Summit_afterlife.xhtml"},
+ {c:"Solarpunk",n:"Neither denial nor despair",d:"Solarpunk is hope as a practice: make life better now and for future generations.",ex:"What does your machine make better this year, not just in 3055?",u:"https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"},
+ {c:"Solarpunk",n:"Reuse, don't demolish",d:"Rebuild and repurpose what already exists instead of tearing it down to start over.",ex:"Build your machine inside something that already exists.",u:"https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"},
+ {c:"Solarpunk",n:"Infrastructure is self-determination",d:"Controlling your own basic systems, like energy and water, protects a community's freedom.",ex:"Who controls the energy your machine runs on?",u:"https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"},
+ {c:"Solarpunk",n:"Local power, shared grid",d:"Local energy like rooftop solar makes communities more resilient while still sharing a larger network.",ex:"How does your machine connect to its neighbors?",u:"https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"},
+ {c:"Solarpunk",n:"A future with dirt behind its ears",d:"Gardens, art nouveau curves and handmade surfaces replace sleek white modernism.",ex:"Redesign your machine's surface so it looks grown and lived in.",u:"https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"},
+ {c:"Solarpunk",n:"Ingenuity from everywhere",d:"Frugal, improvised invention, like the Indian practice called jugaad, counts as much as high technology.",ex:"Rebuild one part of your machine from scraps.",u:"https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"},
+ {c:"Solarpunk",n:"Smart citizens, not smart cities",d:"Technology should make people more capable, not just make places automated.",ex:"What does your machine teach the people who use it?",u:"https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"},
+ {c:"Solarpunk",n:"Cathedral time",d:"Plan in spans longer than a lifetime, the way cathedral builders did.",ex:"Which part of your machine will only be finished by the next generation?",u:"https://hieroglyph.asu.edu/2014/09/solarpunk-notes-toward-a-manifesto/"},
+ {c:"Degrowth",n:"Beyond growth",d:"Stop treating endless economic growth as the goal. Growth cannot be separated from resource use.",ex:"How would you measure your machine's success without counting more of anything?",u:"https://degrowth.info/degrowth"},
+ {c:"Degrowth",n:"Sufficiency",d:"Enough for everyone to meet their needs, with a cap on total resource use.",ex:"What is enough for your machine, and what is too much?",u:"https://degrowth.info/degrowth"},
+ {c:"Degrowth",n:"Care at the center",d:"Value the care of people and nature, including unpaid work mostly done by women, and share it fairly.",ex:"Whose care does your machine depend on, and how is it valued?",u:"https://degrowth.info/degrowth"},
+ {c:"Degrowth",n:"Fair shares",d:"Distribute wealth and resources fairly across regions and generations.",ex:"Who gets the benefits of your machine, and who gets the costs?",u:"https://degrowth.info/degrowth"},
+ {c:"Degrowth",n:"Decide together",d:"Communities govern themselves democratically, with power spread out instead of concentrated.",ex:"Who votes on how your machine is used?",u:"https://degrowth.info/degrowth"},
+ {c:"Degrowth",n:"Commoning",d:"Organize life outside the market, with resources shared and managed together.",ex:"How would your machine work as a commons instead of a product?",u:"https://degrowth.info/degrowth"},
+ {c:"Degrowth",n:"Convivial technology",d:"Tools should be accessible, shareable, repairable and not controlled by experts alone.",ex:"Could a neighbor fix your machine?",u:"https://degrowth.info/degrowth"},
+ {c:"Degrowth",n:"A world where many worlds fit",d:"Many paths toward justice and sustainability can exist side by side. The phrase comes from the Zapatistas in Mexico.",ex:"Design two versions of your machine for two different communities.",u:"https://degrowth.info/degrowth"},
+ {c:"Ecomedia",n:"Media have a footprint",d:"Devices and networks need minerals and energy and leave e-waste, with costs often carried by workers and ecosystems in the Global South.",ex:"Trace the footprint of the screen or sensor in your machine.",u:"https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"},
+ {c:"Ecomedia",n:"Media are environments",d:"Media are part of ecological systems, not separate from nature.",ex:"Draw your machine's media as part of the ecosystem around it.",u:"https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"},
+ {c:"Ecomedia",n:"Infrastructure is media",d:"Cables, satellites, data centers and power grids carry meaning even when they say nothing.",ex:"What does your machine's infrastructure say without words?",u:"https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"},
+ {c:"Ecomedia",n:"How media picture nature",d:"Nature documentaries, ads and films shape what people think nature is.",ex:"How would your machine appear in a nature documentary, and what would the camera leave out?",u:"https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"},
+ {c:"Ecomedia",n:"Media shape feelings about the planet",d:"Media shape attention, values and emotions about the environment, including climate grief.",ex:"What feeling about the planet does your machine create?",u:"https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"},
+ {c:"Ecomedia",n:"Slow media",d:"Slowing down media use, and turning to print and analog forms, can reconnect people with the physical world.",ex:"Make a slow version of your machine's display, like a printed page or a sign that changes once a day.",u:"https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"},
+ {c:"Ecomedia",n:"Indigenous and decolonial media",d:"Indigenous and Global South communities claim sovereignty over their own media and data.",ex:"Who controls the data and stories your machine collects?",u:"https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"},
+ {c:"Ecomedia",n:"Ecomedia literacy",d:"Media education can connect everyday media use with environmental justice.",ex:"Write a label for your machine that teaches users its environmental costs.",u:"https://library.oapen.org/bitstream/20.500.12657/75314/1/9781000955590.pdf"}
+];
 const CATS0={things:[...new Set(LISTS.A.map(x=>x.c))],techs:[...new Set(LISTS.B.map(x=>x.c))]};
-const CATS=Object.assign(CATS0,{nacts:[...new Set(NACT.map(x=>x.c))],tacts:[...new Set(TACT.map(x=>x.c))],eqs:[...new Set(EQS.map(x=>x.c))],moves:[...new Set(MOVES.map(x=>x.c))],health:[...new Set(HEALTH.map(x=>x.c))]});
-const KITS=new Set(["nacts","tacts","eqs","moves","health"]);
+const CATS=Object.assign(CATS0,{nacts:[...new Set(NACT.map(x=>x.c))],tacts:[...new Set(TACT.map(x=>x.c))],eqs:[...new Set(EQS.map(x=>x.c))],moves:[...new Set(MOVES.map(x=>x.c))],health:[...new Set(HEALTH.map(x=>x.c))],manif:[...new Set(MANIF.map(x=>x.c))]});
+const KITS=new Set(["nacts","tacts","eqs","moves","health","manif"]);
 const catIdx=(k,c)=>CATS[k]?CATS[k].indexOf(c):-1;
 const catVar=(k,c)=>{const i=catIdx(k,c);if(i<0)return"";if(k==="techs"||k==="tacts")return `--clc:var(--c${i<5?"b"+(i+1):"a"+(i-4)})`;if(k==="eqs"){const tech=/^Technological/.test(c);const j=CATS.eqs.filter(x=>/^Technological/.test(x)===tech).indexOf(c);return `--clc:var(--c${tech?"b"+(j%5+1):"a"+([7,1,9,2][j%4])})`}return `--clc:var(--ca${i%9+1})`};
 const catCls=(k,c)=>{const i=catIdx(k,c);return i<0?"":" catc bs-"+(i%4)};
@@ -1551,6 +1603,7 @@ const DECKS = [
   {key:"tacts",label:"Technological actions",kind:"list",data:TACT,noun:"action",blurb:"Things technological systems do, from cutting stone to discarding e-waste, including the basic kinds of mechanical movement and the mechanisms that turn one motion into another."},
   {key:"eqs",label:"Equations",kind:"list",data:EQS,noun:"equation",blurb:"Math that describes natural systems and technological systems. Use one to make your machine's data or its design plausible."},
   {key:"moves",label:"Design moves",kind:"list",data:MOVES,noun:"move",blurb:"Moves for coming up with ideas: apply one to your machine and see what changes. Adapted from SCAMPER, Brian Eno and Peter Schmidt's Oblique Strategies, and the 77 Design Heuristics."},
+  {key:"manif",label:"Manifestos",kind:"list",data:MANIF,noun:"point",blurb:"Points from five movements rethinking technology and ecology: permacomputing, the Feminist Server Manifesto, solarpunk, degrowth and ecomedia studies. Each point is paraphrased, with a prompt for your machine and a link to the source."},
   {key:"sources",label:"Sources",kind:"src",data:null,noun:"source",blurb:"Every reading, artwork, model and resource link in one place."}
 ];
 
@@ -1902,10 +1955,10 @@ function listCard(deck,x){
     <h3>${esc(x.n)}</h3>
     ${x.eq?`<div class="eq" role="math" aria-label="${esc(x.eq.replace(/<[^>]+>/g," "))}">${x.eq}</div>${x.w?`<p class="eqw">${x.w}</p>`:""}`:""}
     ${x.d?`<p>${esc(cap(x.d))}</p>`:""}
-    ${x.ex?`<p class="kex"><span class="kl">${deck.key==="moves"?"For example":deck.key==="health"?"How it is measured":x.eq?"Shows up in":"Examples"}</span> ${esc(x.ex)}</p>`:""}
+    ${x.ex?`<p class="kex"><span class="kl">${deck.key==="moves"?"For example":deck.key==="health"?"How it is measured":deck.key==="manif"?"For your machine":x.eq?"Shows up in":"Examples"}</span> ${esc(x.ex)}</p>`:""}
     ${x.v?`<p class="kex"><span class="kl">Numbers to know</span> ${esc(x.v)}</p>`:""}
     ${x.new?`<p class="hint">No link yet. Finding a source for its history is part of the work.</p>`:""}
-    ${KITS.has(deck.key)?(deck.key==="moves"||(deck.key==="health"&&!x.u)?"":`<div class="links"><a href="${esc(x.u||wsearch(x.n))}" target="_blank" rel="noopener">${deck.key==="health"?"See the data":"Read more"} ↗</a></div>`):`<div class="links"><a href="${wsearch(x.n)}" target="_blank" rel="noopener">Wikipedia ↗</a><a href="${LIB(x.n.replace(/[?:]/g,''))}" target="_blank" rel="noopener">SJSU library ↗</a></div>`}
+    ${KITS.has(deck.key)?(deck.key==="moves"||(deck.key==="health"&&!x.u)?"":`<div class="links"><a href="${esc(x.u||wsearch(x.n))}" target="_blank" rel="noopener">${deck.key==="health"?"See the data":deck.key==="manif"?"Read the source":"Read more"} ↗</a></div>`):`<div class="links"><a href="${wsearch(x.n)}" target="_blank" rel="noopener">Wikipedia ↗</a><a href="${LIB(x.n.replace(/[?:]/g,''))}" target="_blank" rel="noopener">SJSU library ↗</a></div>`}
   </article>`;
 }
 function srcCard(s){
@@ -2000,7 +2053,7 @@ document.addEventListener("click",e=>{
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!scrim.hidden)closeLens()});
 
 /* ---------- dealer ---------- */
-const DEAL=[["things","Natural thing",true],["techs","Technology",true],["nature","Nature lens",true],["tech","Technology lens",true],["users","User",true],["data","Data method",true],["nacts","Natural action",false],["tacts","Technological action",false],["moves","Design move",false],["health","Earth health data",false]];
+const DEAL=[["things","Natural thing",true],["techs","Technology",true],["nature","Nature lens",true],["tech","Technology lens",true],["users","User",true],["data","Data method",true],["nacts","Natural action",false],["tacts","Technological action",false],["moves","Design move",false],["health","Earth health data",false],["manif","Manifesto point",false]];
 const grp=document.getElementById("grp");for(let g=1;g<=6;g++)grp.insertAdjacentHTML("beforeend",`<option value="${g}">Group ${g}</option>`);
 document.getElementById("dealOpts").innerHTML=DEAL.map(([k,l,on])=>`<label class="opt"><input type="checkbox" id="opt-${k}" value="${k}" ${on?"checked":""}> ${esc(l)}</label>`).join("");
 const pick=a=>a[Math.floor(Math.random()*a.length)];
