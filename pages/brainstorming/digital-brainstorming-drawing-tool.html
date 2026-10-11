@@ -56,7 +56,7 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
 .sheet-frame.visiting{box-shadow:7px 7px 0 var(--rule)}
 .sheet-bar{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .sheet-bar .arm{color:var(--chrome)}
-.visitbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.visitbar{display:none;background:var(--chrome-deep);border-bottom:3px solid var(--jet);padding:8px 12px;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase}
 .visitbar.on{display:flex}
 .visitbar .btn{padding:6px 12px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
 
@@ -114,6 +114,24 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
 .spin::after{content:"";position:absolute;left:50%;top:100%;margin-left:-1.5px;width:3px;height:12px;background:var(--jet)}
 .lines{left:-6px;bottom:-14px;padding:4px 7px;background:#fff;color:var(--jet);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;z-index:2}
 .lines[aria-pressed="true"]{background:var(--jet);color:#fff}
+/* edit button on words and notes, shown in Move */
+.edbtn{display:none;position:absolute;left:-6px;bottom:-16px;padding:4px 7px;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;z-index:2;text-shadow:none}
+#sheet[data-tool="move"]:not(.locked) .edbtn{display:block}
+/* Text tool: tap existing words to edit them */
+#sheet[data-tool="text"]:not(.locked) .txt,#sheet[data-tool="text"]:not(.locked) .note{pointer-events:auto;cursor:text}
+#sheet[data-tool="text"]:not(.locked) .txt:hover,#sheet[data-tool="text"]:not(.locked) .note:hover{outline:3px dashed var(--pulpred);outline-offset:2px}
+/* Select tool */
+#sheet[data-tool="select"] #ink{pointer-events:none}
+#sheet[data-tool="select"]:not(.locked){cursor:crosshair}
+#sheet[data-tool="select"]:not(.locked) .pic,#sheet[data-tool="select"]:not(.locked) .txt,#sheet[data-tool="select"]:not(.locked) .note{pointer-events:auto;cursor:pointer}
+#sheet[data-tool="select"]:not(.locked) .pic:hover,#sheet[data-tool="select"]:not(.locked) .txt:hover,#sheet[data-tool="select"]:not(.locked) .note:hover{outline:3px dashed var(--rule);outline-offset:3px}
+#sheet .pic.sel,#sheet .txt.sel,#sheet .note.sel{outline:3px solid var(--cobalt)!important;outline-offset:3px;cursor:move}
+#marquee{position:absolute;z-index:6;display:none;border:2px dashed var(--jet);background:rgba(214,61,132,.10);pointer-events:none}
+.selbar{display:none;background:var(--chrome);border-bottom:3px solid var(--jet);padding:7px 12px;align-items:center;gap:8px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.selbar.on{display:flex}
+.selbar .count{margin-right:auto}
+.selbar .btn{padding:6px 10px;font-size:10px;letter-spacing:1px;box-shadow:3px 3px 0 var(--jet)}
+.selbar .btn[hidden]{display:none}
 .tbox{position:absolute;z-index:5;font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1.1;border:3px dashed var(--pulpred);background:rgba(255,255,255,.85);padding:2px 4px;outline:none;min-width:120px;font-size:calc(var(--s) * 100cqw)}
 .emptynote{position:absolute;inset:0;z-index:4;display:grid;place-items:center;pointer-events:none;padding:24px;text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--rule)}
 .emptynote.off{display:none}
@@ -191,7 +209,6 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
     <div class="cover-band">
       <div class="roundel" id="roundel">GR<br>?</div>
       <div class="cover-tag">
-        <span class="cover-kicker">Prompt</span>
         <span id="promptText">Add images, draw over them, add words.</span>
       </div>
     </div>
@@ -203,7 +220,6 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
 
   <div class="sheet-frame" id="frame">
     <div class="visitbar" id="visitBar">
-      <span id="visitMsg">Visiting</span>
       <button class="btn btn-quiet" id="backHome" type="button">Back to my page</button>
     </div>
     <div class="sheet-bar"><span id="barPage">Group</span><span class="arm" id="barState">Connecting</span></div>
@@ -213,7 +229,16 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
       <div id="noteLayer"><svg id="noteSvg" viewBox="0 0 1000 750" preserveAspectRatio="none" aria-hidden="true"></svg></div>
       <div id="txtLayer"></div>
       <div id="rubRing"></div>
+      <div id="marquee"></div>
       <div class="emptynote" id="emptyNote">Add an image, then draw on top</div>
+    </div>
+    <div class="selbar" id="selBar" role="toolbar" aria-label="Selection">
+      <span class="count" id="selCount">1 selected</span>
+      <button class="btn" id="selEdit" type="button">Edit text</button>
+      <button class="btn btn-quiet" id="selFront" type="button">To front</button>
+      <button class="btn btn-quiet" id="selBack" type="button">To back</button>
+      <button class="btn btn-ink" id="selDel" type="button">Delete</button>
+      <button class="btn btn-quiet" id="selNone" type="button">Done</button>
     </div>
   </div>
 
@@ -238,6 +263,7 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
 
 <div id="press">
   <div class="grp edit" role="group" aria-label="Tools">
+    <button class="btn tool" data-tool="select" type="button" aria-pressed="false">Select</button>
     <button class="btn tool" data-tool="move" type="button" aria-pressed="false">Move</button>
     <button class="btn tool" data-tool="draw" type="button" aria-pressed="true">Draw</button>
     <button class="btn tool" data-tool="cut" type="button" aria-pressed="false">Erase</button>
@@ -253,7 +279,8 @@ main{max-width:1100px;margin:0 auto;padding:20px 18px 190px}
   <div class="grp edit" id="sizes" role="group" aria-label="Size"></div>
   <div class="grp">
     <button class="btn btn-quiet edit-only" id="undoBtn" type="button">Undo</button>
-    <button class="btn" id="saveBtn" type="button">Save image</button>
+    <button class="btn" id="saveDraw" type="button" title="Drawn lines and images in Lines only. No photos, words or notes">Save drawing</button>
+    <button class="btn" id="saveAll" type="button" title="Everything on the page, including all words, notes and credits">Save all</button>
   </div>
 </div>
 
@@ -311,6 +338,7 @@ let strokes = {}, images = {}, texts = {}, notes = {};
 let tool = "draw", color = COLORS[0], size = 1;
 let undoStack = [];
 let unlocked = false;
+let sel = new Set();            // selected items, as "kind:key"
 
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -332,7 +360,7 @@ COLORS.forEach((c, i) => {
   const b = document.createElement("button");
   b.className = "sw"; b.type = "button"; b.style.background = c;
   b.setAttribute("aria-label", "Color " + c); b.setAttribute("aria-pressed", i === 0);
-  b.onclick = () => { color = c; [...$("swatches").children].forEach((x) => x.setAttribute("aria-pressed", x === b)); };
+  b.onclick = () => { color = c; [...$("swatches").children].forEach((x) => x.setAttribute("aria-pressed", x === b)); if (tool === "select" && sel.size) styleSel({ c }); };
   $("swatches").appendChild(b);
 });
 PEN.forEach((w, i) => {
@@ -340,16 +368,17 @@ PEN.forEach((w, i) => {
   b.className = "sz"; b.type = "button"; b.setAttribute("aria-label", ["Small", "Medium", "Large"][i]);
   b.setAttribute("aria-pressed", i === size);
   b.innerHTML = `<i style="width:${6 + i * 6}px;height:${6 + i * 6}px"></i>`;
-  b.onclick = () => { size = i; [...$("sizes").children].forEach((x) => x.setAttribute("aria-pressed", x === b)); };
+  b.onclick = () => { size = i; [...$("sizes").children].forEach((x) => x.setAttribute("aria-pressed", x === b)); if (tool === "select" && sel.size) styleSel({ size: i }); };
   $("sizes").appendChild(b);
 });
 document.querySelectorAll(".tool").forEach((b) => b.addEventListener("click", () => setTool(b.dataset.tool)));
 function setTool(t) {
   closeTextBox(true);
   if (typeof closeNoteBox === "function") closeNoteBox(true);
+  if (t !== "select" && sel.size) clearSel();
   tool = t; sheet.dataset.tool = t;
   document.querySelectorAll(".tool").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tool === t));
-  if (editable()) setState({ move: "Drag to move. Top dot rotates. Corner resizes", draw: "Draw", erase: "Touch a line or note to delete it", cut: "Drag over a line to erase part of it", text: "Tap where the words go", part: "Press on a part, drag out, then name it and say what it does", credit: "Press on what you added, drag out, then sign it", rub: "Rub out parts of an image in Lines" }[t]);
+  if (editable()) setState({ move: "Drag to move. Top dot rotates. Corner resizes", draw: "Draw", erase: "Touch a line or note to delete it", cut: "Drag over a line to erase part of it", select: "Tap to select. Shift adds. Drag empty space to box select", text: "Tap where the words go, or tap words to edit them", part: "Press on a part, drag out, then name it and say what it does", credit: "Press on what you added, drag out, then sign it", rub: "Rub out parts of an image in Lines" }[t]);
 }
 
 /* ── canvas size ── */
@@ -372,6 +401,7 @@ function redraw() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
     Object.entries(strokes).forEach(([k, s]) => {
+      if (sel.has("strokes:" + k)) drawStroke(ctx, { ...s, c: "rgba(214,61,132,.38)", w: s.w + 14 / W }, W, H);
       if (cut && cut.pieces[k]) cut.pieces[k].forEach((pp) => drawStroke(ctx, { ...s, p: pp }, W, H));
       else drawStroke(ctx, s, W, H);
     });
@@ -491,7 +521,11 @@ function openTextBox(x, y, key) {
   tbox.style.setProperty("--s", v ? v.s : TYPE[size]);
   tbox.style.color = v ? v.c : color;
   tbox.value = v ? v.t : "";
+  tbox.size = Math.max(8, tbox.value.length + 3);
+  tbox.addEventListener("input", () => { tbox.size = Math.max(8, tbox.value.length + 3); });
+  if (v && v.c === "#ffffff") tbox.style.background = "rgba(20,32,42,.55)";
   tbox.dataset.key = key || "";
+  if (key) { const old = $("txtLayer").querySelector(`[data-k="${key}"]`); if (old) old.style.visibility = "hidden"; }
   tbox.dataset.x = x; tbox.dataset.y = y;
   tbox.addEventListener("keydown", (e) => {
     if (e.key === "Enter") { e.preventDefault(); closeTextBox(true); }
@@ -507,11 +541,19 @@ function closeTextBox(commit) {
   const b = tbox; tbox = null;
   const t = b.value.trim(), key = b.dataset.key;
   b.remove();
+  if (key) { const old = $("txtLayer").querySelector(`[data-k="${key}"]`); if (old) old.style.visibility = ""; }
   if (!commit || !editable()) return;
   const base = pagePath(page) + "/texts";
   if (key) {
-    if (t) db.ref(base + "/" + key).update({ t }).catch(dbTrouble);
-    else db.ref(base + "/" + key).remove().catch(dbTrouble);
+    const before = texts[key];
+    if (!before || before.t === t) return;
+    if (t) {
+      undoStack.push(["batch", null, [{ kind: "texts", k: key, data: { t: before.t }, patch: true }]]);
+      db.ref(base + "/" + key).update({ t }).catch(dbTrouble);
+    } else {
+      undoStack.push(["batch", null, [{ kind: "texts", k: key, data: { ...before } }]]);
+      db.ref(base + "/" + key).remove().catch(dbTrouble);
+    }
   } else if (t) {
     const ref = db.ref(base).push();
     undoStack.push(["texts", ref.key]);
@@ -523,10 +565,12 @@ function putText(k, v) {
   if (!el) {
     el = document.createElement("div");
     el.className = "txt"; el.dataset.k = k;
-    el.innerHTML = '<span></span><button class="x" type="button" aria-label="Remove">×</button>';
+    el.innerHTML = '<span></span><button class="x" type="button" aria-label="Remove">×</button><button class="edbtn" type="button">Edit</button>';
     $("txtLayer").appendChild(el);
     hookItem(el, "texts", k);
-    el.addEventListener("dblclick", () => { if (editable() && tool === "move") openTextBox(0, 0, k); });
+    el.querySelector(".edbtn").addEventListener("click", (e) => { e.stopPropagation(); if (editable()) openTextBox(0, 0, k); });
+    el.addEventListener("click", () => { if (editable() && tool === "text") openTextBox(0, 0, k); });
+    el.addEventListener("dblclick", () => { if (editable() && (tool === "move" || tool === "select")) openTextBox(0, 0, k); });
   }
   el.querySelector("span").textContent = v.t;
   el.style.left = v.x * 100 + "%"; el.style.top = v.y * 100 + "%";
@@ -693,7 +737,7 @@ function hookItem(el, kind, k) {
     if (editable()) db.ref(`${pagePath(page)}/${kind}/${k}`).remove().catch(dbTrouble);
   });
   el.addEventListener("pointerdown", (e) => {
-    if (!editable() || tool !== "move" || e.target.closest(".x") || e.target.closest(".lines")) return;
+    if (!editable() || tool !== "move" || e.target.closest(".x") || e.target.closest(".lines") || e.target.closest(".edbtn")) return;
     e.preventDefault();
     const grip = e.target.classList.contains("grip"), spin = e.target.classList.contains("spin");
     const r = sheet.getBoundingClientRect();
@@ -767,12 +811,14 @@ function drawNote(k, n) {
   if (!lab) {
     lab = document.createElement("div"); lab.className = "note" + (n.k ? " " + n.k : ""); lab.dataset.k = k;
     lab.innerHTML = (credit ? '<span class="by">by</span><span class="nm"></span>' : n.k === "part" ? '<span class="nm"></span><span class="dd"></span>' : '<span class="nm" style="text-transform:none;letter-spacing:0;font-weight:600"></span>')
-      + '<button class="x" type="button" aria-label="Remove">×</button>';
+      + '<button class="x" type="button" aria-label="Remove">×</button><button class="edbtn" type="button">Edit</button>';
     tip = document.createElement("span"); tip.className = "tip"; tip.dataset.k = k;
     $("noteLayer").append(lab, tip);
     hookNote(lab, k, "b"); hookNote(tip, k, "a");
     lab.querySelector(".x").addEventListener("click", (e) => { e.stopPropagation(); if (editable()) db.ref(`${pagePath(page)}/notes/${k}`).remove().catch(dbTrouble); });
-    lab.addEventListener("dblclick", () => { if (editable() && tool === "move") openNoteBox(notes[k], k); });
+    lab.addEventListener("dblclick", () => { if (editable() && (tool === "move" || tool === "select")) openNoteBox(notes[k], k); });
+    lab.addEventListener("click", () => { if (editable() && tool === "text") openNoteBox(notes[k], k); });
+    lab.querySelector(".edbtn").addEventListener("click", (e) => { e.stopPropagation(); if (editable()) openNoteBox(notes[k], k); });
   }
   lab.querySelector(".nm").textContent = n.t || "";
   const dd = lab.querySelector(".dd");
@@ -852,7 +898,13 @@ function closeNoteBox(commit) {
   if (!commit || !editable()) return;
   if (n.k === "credit") { if (!t) return; store.set("groupsheets.name", t); }
   const base = pagePath(page) + "/notes";
-  if (key) { db.ref(base + "/" + key).update(n.k === "part" ? { t, d } : { t }).catch(dbTrouble); return; }
+  if (key) {
+    const now = notes[key];
+    if (now && (now.t || "") === t && (n.k !== "part" || (now.d || "") === d)) return;
+    if (now) undoStack.push(["batch", null, [{ kind: "notes", k: key, data: n.k === "part" ? { t: now.t || "", d: now.d || "" } : { t: now.t || "" }, patch: true }]]);
+    db.ref(base + "/" + key).update(n.k === "part" ? { t, d } : { t }).catch(dbTrouble);
+    return;
+  }
   const ref = db.ref(base).push();
   undoStack.push(["notes", ref.key]);
   const rec = { k: n.k || "note", ax: n.ax, ay: n.ay, bx: n.bx, by: n.by, t, c: n.c, s: n.s, sw: n.sw, by_: uid, at: Date.now() };
@@ -861,7 +913,7 @@ function closeNoteBox(commit) {
 }
 function hookNote(el, k, end) {
   el.addEventListener("pointerdown", (e) => {
-    if (!editable() || tool !== "move" || e.target.closest(".x")) return;
+    if (!editable() || tool !== "move" || e.target.closest(".x") || e.target.closest(".edbtn")) return;
     e.preventDefault(); e.stopPropagation();
     const n = notes[k]; if (!n) return;
     el.setPointerCapture(e.pointerId);
@@ -1017,11 +1069,234 @@ function rubEnd() {
   });
 }
 
+/* ── select: tap, shift-tap or box-select items, then move, restyle, reorder or delete them ── */
+const KINDS = ["images", "texts", "notes", "strokes"];
+function bagOf(kind) { return { strokes, images, texts, notes }[kind] || {}; }
+function elOf(kind, k) {
+  if (kind === "images") return $("imgLayer").querySelector(`[data-k="${k}"]`);
+  if (kind === "texts") return $("txtLayer").querySelector(`[data-k="${k}"]`);
+  if (kind === "notes") return $("noteLayer").querySelector(`.note[data-k="${k}"]`);
+  return null;
+}
+const selList = () => [...sel].map((id) => { const i = id.indexOf(":"); return [id.slice(0, i), id.slice(i + 1)]; }).filter(([kind, k]) => bagOf(kind)[k]);
+function paintSel() {
+  document.querySelectorAll("#sheet .sel").forEach((el) => el.classList.remove("sel"));
+  const list = selList();
+  list.forEach(([kind, k]) => { const el = elOf(kind, k); if (el) el.classList.add("sel"); });
+  const on = list.length > 0 && editable() && tool === "select";
+  $("selBar").classList.toggle("on", on);
+  if (on) {
+    $("selCount").textContent = list.length + " selected";
+    const one = list.length === 1 ? list[0] : null;
+    $("selEdit").hidden = !(one && (one[0] === "texts" || one[0] === "notes"));
+    $("selFront").hidden = $("selBack").hidden = !list.some(([kind]) => kind === "images");
+  }
+  redraw();
+}
+function clearSel() { sel.clear(); paintSel(); }
+
+function strokeAt(x, y) {
+  const px = x * W, py = y * H, keys = Object.keys(strokes);
+  for (let j = keys.length - 1; j >= 0; j--) {
+    const s = strokes[keys[j]], p = s.p || [], reach = Math.max(8, s.w * W / 2 + 4);
+    for (let i = 0; i < p.length; i += 2) {
+      const bx = i + 2 < p.length ? p[i + 2] : p[i], by = i + 3 < p.length ? p[i + 3] : p[i + 1];
+      if (segDist(px, py, p[i] / 1e4 * W, p[i + 1] / 1e4 * H, bx / 1e4 * W, by / 1e4 * H) <= reach) return keys[j];
+    }
+  }
+  return null;
+}
+function itemAt(e) {
+  const t = e.target;
+  const tx = t.closest(".txt"); if (tx) return ["texts", tx.dataset.k];
+  const nl = t.closest(".note"); if (nl) return ["notes", nl.dataset.k];
+  const [x, y] = rel(e);
+  for (const [k, n] of Object.entries(notes)) if (segDist(x * W, y * H, n.ax * W, n.ay * H, n.bx * W, n.by * H) <= 8) return ["notes", k];
+  const sk = strokeAt(x, y); if (sk) return ["strokes", sk];
+  const pc = t.closest(".pic"); if (pc) return ["images", pc.dataset.k];
+  return null;
+}
+
+// where every selected item sits right now, so a drag can be applied and undone
+function snapshot() {
+  return selList().map(([kind, k]) => {
+    const v = bagOf(kind)[k];
+    const pos = kind === "strokes" ? { p: (v.p || []).slice() } : kind === "notes" ? { ax: v.ax, ay: v.ay, bx: v.bx, by: v.by } : { x: v.x, y: v.y };
+    return { kind, k, pos };
+  });
+}
+const clampPos = (n) => Math.min(0.98, Math.max(-0.5, n));
+function applyOffset(start, dx, dy) {
+  start.forEach(({ kind, k, pos }) => {
+    const v = bagOf(kind)[k];
+    if (!v) return;
+    if (kind === "strokes") v.p = pos.p.map((n, i) => n + Math.round((i % 2 ? dy : dx) * 1e4));
+    else if (kind === "notes") { v.ax = pos.ax + dx; v.ay = pos.ay + dy; v.bx = pos.bx + dx; v.by = pos.by + dy; drawNote(k, v); }
+    else {
+      v.x = clampPos(pos.x + dx); v.y = clampPos(pos.y + dy);
+      const el = elOf(kind, k);
+      if (el) { el.style.left = v.x * 100 + "%"; el.style.top = v.y * 100 + "%"; }
+    }
+  });
+  redraw();
+}
+function commitMove(start) {
+  const undo = [];
+  start.forEach(({ kind, k, pos }) => {
+    const v = bagOf(kind)[k];
+    if (!v) return;
+    const patch = kind === "strokes" ? { p: v.p } : kind === "notes" ? { ax: v.ax, ay: v.ay, bx: v.bx, by: v.by } : { x: v.x, y: v.y };
+    undo.push({ kind, k, data: pos, patch: true });
+    db.ref(`${pagePath(page)}/${kind}/${k}`).update(patch).catch(dbTrouble);
+  });
+  if (undo.length) undoStack.push(["batch", null, undo]);
+}
+function deleteSel() {
+  const undo = [];
+  selList().forEach(([kind, k]) => {
+    undo.push({ kind, k, data: { ...bagOf(kind)[k] } });
+    db.ref(`${pagePath(page)}/${kind}/${k}`).remove().catch(dbTrouble);
+  });
+  if (undo.length) undoStack.push(["batch", null, undo]);
+  clearSel();
+}
+// a swatch or size clicked while things are selected restyles them
+function styleSel(o) {
+  const undo = [];
+  selList().forEach(([kind, k]) => {
+    const v = bagOf(kind)[k];
+    let patch = null;
+    if (kind === "strokes") patch = o.c ? { c: o.c } : { w: PEN[o.size] };
+    else if (kind === "texts") patch = o.c ? { c: o.c } : { s: TYPE[o.size] };
+    else if (kind === "notes") patch = o.c ? { c: o.c } : { s: TYPE[o.size] * 0.7, sw: [2, 3, 4.5][o.size] };
+    if (!patch) return;
+    const before = {};
+    Object.keys(patch).forEach((f) => (before[f] = v[f] == null ? null : v[f]));
+    undo.push({ kind, k, data: before, patch: true });
+    db.ref(`${pagePath(page)}/${kind}/${k}`).update(patch).catch(dbTrouble);
+  });
+  if (undo.length) undoStack.push(["batch", null, undo]);
+  else setState("Color and size change lines, words and notes");
+}
+function reorderSel(front) {
+  const ks = stackOrder().filter((k) => sel.has("images:" + k));
+  if (!ks.length) return;
+  const zs = Object.values(images).map((v) => v.z || v.at || 0);
+  const base = front ? Math.max(Date.now(), ...zs) + 1 : Math.min(...zs) - ks.length - 1;
+  const undo = [];
+  ks.forEach((k, i) => {
+    undo.push({ kind: "images", k, data: { z: images[k].z == null ? null : images[k].z }, patch: true });
+    db.ref(`${pagePath(page)}/images/${k}`).update({ z: base + i }).catch(dbTrouble);
+  });
+  undoStack.push(["batch", null, undo]);
+}
+function editSel() {
+  const list = selList();
+  if (list.length !== 1) return;
+  const [kind, k] = list[0];
+  if (kind === "texts") openTextBox(0, 0, k);
+  else if (kind === "notes") openNoteBox(notes[k], k);
+}
+$("selEdit").onclick = editSel;
+$("selFront").onclick = () => reorderSel(true);
+$("selBack").onclick = () => reorderSel(false);
+$("selDel").onclick = deleteSel;
+$("selNone").onclick = clearSel;
+
+let gesture = null;
+const adding = (e) => e.shiftKey || e.metaKey || e.ctrlKey;
+sheet.addEventListener("pointerdown", (e) => {
+  if (tool !== "select" || !editable() || e.button > 0) return;
+  if (e.target.closest(".tbox,.nform")) return;
+  e.preventDefault();
+  const hit = itemAt(e), [x, y] = rel(e);
+  if (hit) {
+    const id = hit.join(":");
+    if (adding(e)) { if (sel.has(id)) { sel.delete(id); paintSel(); return; } sel.add(id); }
+    else if (!sel.has(id)) { sel.clear(); sel.add(id); }
+    paintSel();
+    gesture = { type: "drag", x0: x, y0: y, moved: false, start: snapshot() };
+  } else {
+    if (!adding(e)) clearSel();
+    const r = sheet.getBoundingClientRect();
+    gesture = { type: "box", sx: e.clientX - r.left, sy: e.clientY - r.top, base: new Set(sel) };
+  }
+  sheet.setPointerCapture(e.pointerId);
+});
+sheet.addEventListener("pointermove", (e) => {
+  if (!gesture) return;
+  if (gesture.type === "drag") {
+    const [x, y] = rel(e), dx = x - gesture.x0, dy = y - gesture.y0;
+    if (!gesture.moved && Math.hypot(dx * W, dy * H) < 3) return;
+    gesture.moved = true;
+    applyOffset(gesture.start, dx, dy);
+    return;
+  }
+  const r = sheet.getBoundingClientRect();
+  const cx = Math.min(r.width, Math.max(0, e.clientX - r.left)), cy = Math.min(r.height, Math.max(0, e.clientY - r.top));
+  const l = Math.min(gesture.sx, cx), t = Math.min(gesture.sy, cy), w = Math.abs(cx - gesture.sx), h = Math.abs(cy - gesture.sy);
+  const m = $("marquee");
+  m.style.display = "block"; m.style.left = l + "px"; m.style.top = t + "px"; m.style.width = w + "px"; m.style.height = h + "px";
+  // anything the box touches is selected
+  const A = { l: r.left + l, t: r.top + t, r: r.left + l + w, b: r.top + t + h };
+  const touches = (rc) => rc.width + rc.height > 0 && rc.right >= A.l && rc.left <= A.r && rc.bottom >= A.t && rc.top <= A.b;
+  const inside = (px, py) => px >= A.l && px <= A.r && py >= A.t && py <= A.b;
+  const next = new Set(gesture.base);
+  Object.keys(images).forEach((k) => { const el = elOf("images", k); if (el && touches(el.getBoundingClientRect())) next.add("images:" + k); });
+  Object.keys(texts).forEach((k) => { const el = elOf("texts", k); if (el && touches(el.getBoundingClientRect())) next.add("texts:" + k); });
+  Object.entries(notes).forEach(([k, n]) => {
+    const el = elOf("notes", k);
+    if ((el && touches(el.getBoundingClientRect())) || inside(r.left + n.ax * W, r.top + n.ay * H)) next.add("notes:" + k);
+  });
+  Object.entries(strokes).forEach(([k, s]) => {
+    const p = s.p || [];
+    for (let i = 0; i < p.length; i += 2) if (inside(r.left + p[i] / 1e4 * W, r.top + p[i + 1] / 1e4 * H)) { next.add("strokes:" + k); break; }
+  });
+  if (next.size !== sel.size || [...next].some((id) => !sel.has(id))) { sel = next; paintSel(); }
+});
+function endGesture(e) {
+  if (!gesture) return;
+  const g = gesture; gesture = null;
+  if (sheet.hasPointerCapture(e.pointerId)) sheet.releasePointerCapture(e.pointerId);
+  if (g.type === "drag" && g.moved) commitMove(g.start);
+  if (g.type === "box") $("marquee").style.display = "none";
+}
+sheet.addEventListener("pointerup", endGesture);
+sheet.addEventListener("pointercancel", endGesture);
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.closest && e.target.closest("input,textarea,select")) return;
+  if (!editable()) return;
+  if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key.toLowerCase() === "z") { e.preventDefault(); $("undoBtn").click(); return; }
+  if (tool !== "select") return;
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "a") {
+    e.preventDefault();
+    KINDS.forEach((kind) => Object.keys(bagOf(kind)).forEach((k) => sel.add(kind + ":" + k)));
+    paintSel(); return;
+  }
+  if (!sel.size) return;
+  const step = e.shiftKey ? 0.02 : 0.004;
+  const arrows = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+  if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); deleteSel(); }
+  else if (e.key === "Escape") clearSel();
+  else if (e.key === "Enter") { e.preventDefault(); editSel(); }
+  else if (arrows[e.key]) { e.preventDefault(); const start = snapshot(); applyOffset(start, ...arrows[e.key]); commitMove(start); }
+});
+
 /* ── undo ── */
 $("undoBtn").onclick = () => {
   if (!editable()) return;
   while (undoStack.length) {
     const [kind, k, before] = undoStack.pop();
+    if (kind === "batch") {
+      const live = before.filter((b) => b.patch ? bagOf(b.kind)[b.k] : true);
+      if (!live.length) continue;
+      live.forEach((b) => {
+        const r = db.ref(`${pagePath(page)}/${b.kind}/${b.k}`);
+        (b.patch ? r.update(b.data) : b.data ? r.set(b.data) : r.remove()).catch(dbTrouble);
+      });
+      return;
+    }
     if (kind === "del") {
       const have = { strokes, notes }[before.kind];
       if (have[k]) continue;
@@ -1046,8 +1321,11 @@ $("undoBtn").onclick = () => {
   setState("Nothing of yours to undo");
 };
 
-/* ── save as png ── */
-$("saveBtn").onclick = () => {
+/* ── save as png: "drawing" keeps drawn lines and Lines images only, "all" keeps everything ── */
+$("saveDraw").onclick = () => savePNG(false);
+$("saveAll").onclick = () => savePNG(true);
+async function savePNG(full) {
+  try { await document.fonts.ready; } catch (e) {}
   const OW = 1600, OH = 1200, c = document.createElement("canvas");
   c.width = OW; c.height = OH;
   const g = c.getContext("2d");
@@ -1055,6 +1333,7 @@ $("saveBtn").onclick = () => {
   stackOrder().map((k) => $("imgLayer").querySelector(`[data-k="${k}"]`)).filter(Boolean).forEach((el) => {
     const v = images[el.dataset.k], im = el.querySelector("img");
     if (!v || !im.complete || !im.naturalWidth) return;
+    if (!full && !(v.mode === "line" && v.line)) return;
     const w = v.w * OW, h = w * im.naturalHeight / im.naturalWidth;
     g.save();
     g.translate(v.x * OW + w / 2, v.y * OH + h / 2);
@@ -1063,7 +1342,7 @@ $("saveBtn").onclick = () => {
     g.restore();
   });
   Object.values(strokes).forEach((s) => drawStroke(g, s, OW, OH));
-  Object.values(notes).forEach((n) => {
+  if (full) Object.values(notes).forEach((n) => {
     const a = arrowPts(n), kx = OW / SV, ky = OH / SVH, credit = n.k === "credit";
     g.strokeStyle = n.c; g.fillStyle = n.c; g.lineWidth = n.sw * kx; g.lineCap = "round";
     g.setLineDash(credit ? [n.sw * 2.5 * kx, n.sw * 2.2 * kx] : []);
@@ -1112,18 +1391,19 @@ $("saveBtn").onclick = () => {
     lines.forEach((l) => { g.fillText(l, left + pad + 5, y); y += dfs * 1.3; });
   });
   g.textBaseline = "top";
-  Object.values(texts).forEach((v) => {
+  if (full) Object.values(texts).forEach((v) => {
     g.font = `700 ${v.s * OW}px 'Space Grotesk', sans-serif`;
     g.fillStyle = v.c;
     g.fillText(v.t, v.x * OW + 0.0 , v.y * OH + v.s * OW * 0.05);
   });
   const a = document.createElement("a");
-  a.download = `group_${page}_sheet.png`;
+  a.download = `group_${page}_${full ? "all" : "drawing"}.png`;
   a.href = c.toDataURL("image/png");
   a.click();
+  $("saveStamp").innerHTML = (full ? "All" : "Drawing") + "<br>saved";
   $("saveStamp").classList.add("on");
   setTimeout(() => $("saveStamp").classList.remove("on"), 1600);
-};
+}
 
 /* ── pages ── */
 function renderPages() {
@@ -1158,6 +1438,7 @@ function openPage(n) {
   page = n;
   refs.forEach((r) => r.off()); refs = [];
   strokes = {}; images = {}; texts = {}; notes = {}; undoStack = []; live = null; draft = null; cut = null;
+  sel.clear(); gesture = null; paintSel();
   if (nbox) { nbox.remove(); nbox = null; }
   $("imgLayer").innerHTML = ""; $("txtLayer").innerHTML = "";
   $("noteLayer").querySelectorAll(".note,.tip").forEach((el) => el.remove()); $("noteSvg").innerHTML = "";
@@ -1168,7 +1449,6 @@ function openPage(n) {
   $("undoBtn").disabled = !home;
   $("frame").classList.toggle("visiting", !home);
   $("visitBar").classList.toggle("on", !home);
-  $("visitMsg").textContent = `Visiting Group ${n}. Look, don't touch.`;
   $("barPage").textContent = "Group " + n;
   $("roundel").innerHTML = "GR<br>" + (myGroup || "?");
   document.title = "Group " + n + " · Digital Brainstorming Drawing Tool";
@@ -1183,6 +1463,7 @@ function openPage(n) {
     r.on("child_changed", add);
     r.on("child_removed", (s) => {
       delete bag[s.key];
+      if (sel.delete(kind + ":" + s.key)) paintSel();
       const el = document.querySelector(`#imgLayer [data-k="${s.key}"], #txtLayer [data-k="${s.key}"]`);
       if (el) el.remove();
       if (kind === "notes") dropNote(s.key);
