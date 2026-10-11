@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nature Machines Decks</title>
+<title>Nature Machines Reference Decks</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=DM+Mono:wght@400;500&display=swap">
 <style>
@@ -15,10 +15,12 @@ body{margin:0}
   --f-body:"Literata", Georgia, "Times New Roman", serif;
   --f-mono:"DM Mono", ui-monospace, Menlo, monospace;
   --hl:38%; --hl2:36%;
+  --c-i:#2d7a57; --c-n:#3a5ea6; --c-d:#9a6a12; --c-m:#874a8c;
+  --ca1:#2f6fb0; --ca2:#8a5a2b; --ca3:#4a4a55; --ca4:#b0532a; --ca5:#a87600; --ca6:#23849b; --ca7:#3b8636; --ca8:#b0405f; --ca9:#6c4fb3; --cb1:#a3482c; --cb2:#6b761a; --cb3:#1f7d77; --cb4:#4256a8; --cb5:#a33d99;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#121815; --paper:#19211d; --ink:#e7ece6; --muted:#9aa69f; --line:#2c3732; --accent:#8cc5b2; --wash:#202a25; --hl:68%; --hl2:70%; color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#121815; --paper:#19211d; --ink:#e7ece6; --muted:#9aa69f; --line:#2c3732; --accent:#8cc5b2; --wash:#202a25; --hl:68%; --hl2:70%; color-scheme:dark}
+  --bg:#121815; --paper:#19211d; --ink:#e7ece6; --muted:#9aa69f; --line:#2c3732; --accent:#8cc5b2; --wash:#202a25; --hl:68%; --hl2:70%; --c-i:#72cfa0; --c-n:#93b2f0; --c-d:#e8b54e; --c-m:#d49ad9; --ca1:#7fb6ec; --ca2:#d4a476; --ca3:#b9b9c6; --ca4:#f0956a; --ca5:#f0c24a; --ca6:#7fd3e6; --ca7:#8fd18a; --ca8:#f08aa6; --ca9:#b6a0f2; --cb1:#ec9374; --cb2:#c6d26c; --cb3:#6fd1c8; --cb4:#9daef2; --cb5:#e98fe0; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121815; --paper:#19211d; --ink:#e7ece6; --muted:#9aa69f; --line:#2c3732; --accent:#8cc5b2; --wash:#202a25; --hl:68%; --hl2:70%; --c-i:#72cfa0; --c-n:#93b2f0; --c-d:#e8b54e; --c-m:#d49ad9; --ca1:#7fb6ec; --ca2:#d4a476; --ca3:#b9b9c6; --ca4:#f0956a; --ca5:#f0c24a; --ca6:#7fd3e6; --ca7:#8fd18a; --ca8:#f08aa6; --ca9:#b6a0f2; --cb1:#ec9374; --cb2:#c6d26c; --cb3:#6fd1c8; --cb4:#9daef2; --cb5:#e98fe0; color-scheme:dark}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -114,6 +116,59 @@ ul.list li{min-width:0}
 .rt{font-weight:500}
 .ex{color:var(--muted);font-size:15px}
 .navrow{display:flex;justify-content:space-between;gap:10px;margin-top:30px;flex-wrap:wrap}
+.cult-note{margin:0 0 16px;max-width:75ch;font-size:14.5px;color:var(--muted)}
+.cult{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;align-items:start}
+.cg{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+.cg h3{font-family:var(--f-display);font-size:20px;line-height:1.15;margin:0;text-wrap:balance}
+.cg-where{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:4px 0 0}
+.cg-n{margin:8px 0 0;font-size:13.5px;font-style:italic;color:var(--muted)}
+.ideas{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.ideas li{display:grid;gap:3px;padding-top:10px;border-top:1px solid var(--line);min-width:0}
+.ideas a{font-weight:500}
+.ideas .il{font-size:14px;color:var(--muted)}
+.lpill{--h:160;justify-self:start;font-family:var(--f-mono);font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid hsl(var(--h) 35% 50%);background:transparent;color:hsl(var(--h) 40% var(--hl2));cursor:pointer;margin-top:2px}
+.lpill:hover{background:var(--wash)}
+/* nature types: color plus border style, so the types differ without color too */
+.cl-i{--clc:var(--c-i)} .cl-n{--clc:var(--c-n)} .cl-d{--clc:var(--c-d)} .cl-m{--clc:var(--c-m)}
+.card.cl-i,.card.cl-n,.card.cl-d,.card.cl-m{border:3px solid var(--clc)}
+.card.cl-n{border-style:dashed}
+.card.cl-d{border-style:double;border-width:5px}
+.card.cl-m{border-style:dotted}
+.card.cl-i:hover,.card.cl-n:hover,.card.cl-d:hover,.card.cl-m:hover{border-color:var(--clc)}
+.cl.cl-i,.cl.cl-n,.cl.cl-d,.cl.cl-m{background:var(--clc);color:var(--paper);font-weight:500}
+.clgroup+.clgroup{margin-top:30px}
+.clhead{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:0 0 14px;padding-bottom:8px;border-bottom:3px solid var(--clc)}
+.clhead.cl-n{border-bottom-style:dashed}.clhead.cl-d{border-bottom-style:double;border-bottom-width:5px}.clhead.cl-m{border-bottom-style:dotted}
+.clhead h3{font-family:var(--f-display);font-size:24px;margin:0;color:var(--clc);letter-spacing:-.01em}
+.clhead p{margin:0;color:var(--muted);font-size:14.5px;flex:1;min-width:min(260px,100%)}
+.clhead .tc{margin-left:auto}
+.chip.cl-i,.chip.cl-n,.chip.cl-d,.chip.cl-m{border:2px solid var(--clc)}
+.chip.cl-n{border-style:dashed}.chip.cl-d{border-style:double;border-width:3px}.chip.cl-m{border-style:dotted}
+.chip.cl-i[aria-pressed="true"],.chip.cl-n[aria-pressed="true"],.chip.cl-d[aria-pressed="true"],.chip.cl-m[aria-pressed="true"]{background:var(--clc);border-color:var(--clc);color:var(--paper)}
+.wg .clhead{margin-bottom:10px}
+/* list categories: each gets a color, and border styles rotate so neighbors also differ by line */
+.item.catc{border:3px solid var(--clc)}
+.item.catc.bs-1{border-style:dashed}.item.catc.bs-2{border-style:double;border-width:5px}.item.catc.bs-3{border-style:dotted}
+.item .cat.catc{background:var(--clc);color:var(--paper);padding:1px 6px;border-radius:4px;font-weight:500}
+.clhead.bs-1{border-bottom-style:dashed}.clhead.bs-2{border-bottom-style:double;border-bottom-width:5px}.clhead.bs-3{border-bottom-style:dotted}
+.chip.catc{border:2px solid var(--clc)}
+.chip.catc.bs-1{border-style:dashed}.chip.catc.bs-2{border-style:double;border-width:3px}.chip.catc.bs-3{border-style:dotted}
+.chip.catc[aria-pressed="true"]{background:var(--clc);border-color:var(--clc);color:var(--paper)}
+.aka{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.sheet .aka{margin:-2px 0 8px}
+.cl{font-family:var(--f-mono);font-size:11px;padding:2px 7px;border-radius:5px;background:var(--wash);color:var(--ink)}
+.words-intro{max-width:75ch;margin:0 0 18px;display:grid;gap:8px;font-size:15px}
+.words-intro p{margin:0}
+.wgrid{display:grid;gap:22px}
+.wg h3{font-family:var(--f-display);font-size:24px;margin:0;letter-spacing:-.01em}
+.wg>p{margin:4px 0 10px;color:var(--muted);max-width:70ch}
+.wrows{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.wrow{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px;min-width:0;align-content:start}
+.wterm{font-family:var(--f-display);font-size:19px;font-weight:600;line-height:1.15}
+.wlang{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.wmean{font-size:14px;color:var(--muted)}
+.roots{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.roots .rc{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 footer{margin-top:40px;font-size:13.5px;color:var(--muted);max-width:75ch}
 
 @media (max-width:820px){header{grid-template-columns:1fr}}
@@ -154,7 +209,6 @@ footer{margin-top:40px;font-size:13.5px;color:var(--muted);max-width:75ch}
   <div class="controls" id="controls"></div>
   <div class="grid" id="grid"></div>
 
-  <footer>Links marked SJSU library go to the catalog search. Natural things and technologies link to a Wikipedia search and the SJSU catalog; items marked NEW have no source yet, and finding one is part of the work. Quotes on lens cards are from public domain sources; “Find the line” boxes point to the key passage in the course readings.</footer>
 </div>
 
 <div class="scrim" id="scrim" hidden>
@@ -284,14 +338,14 @@ const NATURE = [
   tryit:"Write a museum label for your natural thing. Then write the label its own community would write.",
   readings:["animacy","ferdinand"],art:["dion","cpnh","arachno"],
   further:[["Linnaean taxonomy",WIKI("Linnaean_taxonomy")],["Cabinet of curiosities",WIKI("Cabinet_of_curiosities")],["Biodiversity Heritage Library","https://www.biodiversitylibrary.org/"]]},
- {id:"sublime",name:"Nature as Sublime Wilderness",sees:"awe, untouched and apart",h:225,motif:"peaks",
-  short:"Nature is vast, overwhelming and pure, separate from people.",
-  overview:"Romantic writers and painters made mountains, storms and chasms into the sublime, beauty mixed with terror. In the United States this became wilderness: untouched land to protect in national parks. Cronon shows that idea was invented, and that parks like Yosemite were made by removing the people who already lived there.",
-  ex:"Romantic painting; Burke and Kant on the sublime; national parks and the wilderness movement.",
-  q:"Who was removed or erased to make this natural thing look untouched?",
-  tryit:"Describe your natural thing as a breathtaking poster would. Then add the people the poster leaves out.",
-  readings:["cronon","ferdinand"],art:["glacier","orchestra"],
-  further:[["Sublime (philosophy)",WIKI("Sublime_(philosophy)")]]},
+ {id:"sublime",name:"Nature as Sublime",sees:"awe mixed with terror",h:225,motif:"peaks",
+  short:"Nature is so vast and powerful that it overwhelms us, and the fear itself is thrilling.",
+  overview:"Edmund Burke (1757) separated the sublime from the beautiful. The beautiful is small, smooth and pleasing. The sublime is vast, dark and powerful, with a touch of terror, felt from a safe distance. Immanuel Kant's Critique of Judgment (1790) described two kinds: the mathematical sublime of sheer size, like the starry sky or the open ocean, and the dynamical sublime of overwhelming power, like storms and volcanoes. Romantic painters made the feeling visible: Caspar David Friedrich's Wanderer above the Sea of Fog (about 1818), J.M.W. Turner's storms at sea, and the Hudson River School's American valleys. Later the same awe moved onto machines, the technological sublime, and onto photographs of the whole Earth from space.",
+  ex:"Mountain summits, storms at sea, volcanoes, the night sky, Romantic painting, Edward Burtynsky's industrial landscapes, the Blue Marble photograph.",
+  q:"What about this natural thing is too big or too powerful to take in, and where does your machine let people stand to feel it safely?",
+  tryit:"Describe your natural thing at its most overwhelming. Then design the safe viewing spot your machine builds, and say who gets to stand there.",
+  readings:["cronon","stengers"],art:["glacier","orchestra","oil"],
+  further:[["Sublime (philosophy)",WIKI("Sublime_(philosophy)")],["Critique of Judgment (Kant)",WIKI("Critique_of_Judgment")],["Wanderer above the Sea of Fog",WIKI("Wanderer_above_the_Sea_of_Fog")],["J. M. W. Turner",WIKI("J._M._W._Turner")],["Hudson River School",WIKI("Hudson_River_School")]]},
  {id:"picturesque",name:"Nature as Picturesque",sees:"a pleasing view",h:120,motif:"frame",
   short:"Nature is a gentle scene, framed like a painting or a postcard.",
   overview:"The picturesque made landscape into a picture: rolling fields, a ruin, a winding stream. Eighteenth century tourists carried a tinted mirror called a Claude glass to see scenery as a painting. Landscape gardens were built to look natural. The pastoral idea of a peaceful countryside often hides the labor that made it.",
@@ -319,11 +373,11 @@ const NATURE = [
  {id:"change",name:"Nature as Something to Change",sees:"a construct to redesign",h:310,motif:"splice",
   short:"If “natural” has been used to justify injustice, nature can be redesigned.",
   overview:"Xenofeminism argues that if nature is unjust, change nature, since calling things natural has often been used against queer, trans and disabled people. Haraway's cyborg refuses the line between natural and artificial. Biotechnology edits, grows and revives living things. Weheliye and Jackson ask who gets counted as human when we redraw these lines.",
-  ex:"CRISPR, gene drives, de-extinction, solar geoengineering, bioart, prosthetics.",
+  ex:"CRISPR, gene drives, de-extinction, solar geoengineering, bioart, prosthetics, xenobots built from frog cells.",
   q:"Should your machine change this natural thing? Who or what could give consent?",
   tryit:"Describe one version of your machine that changes your natural thing and one that only listens. Which is more honest?",
   readings:["xf","cyborg","biotech","posthuman"],art:["leather","excess","sublime","cohen"],
-  further:[]},
+  further:[["Xenobots",WIKI("Xenobot")]]},
  {id:"cointel",name:"Nature as Co-intelligence",sees:"a collaborator that thinks",h:65,motif:"mycel",
   short:"Plants, fungi, animals and slime moulds think in their own ways.",
   overview:"This lens treats non-humans as minds and partners. Bridle argues intelligence is not only human. Haraway writes about making-with other species, and Margulis showed evolution happening through merger and cooperation. Artists credit spiders, silkworms and slime moulds as co-authors.",
@@ -361,8 +415,7 @@ const QUOTES = {
  specimen:{q:"Deus creavit, Linnaeus disposuit. (God created, Linnaeus organized.)",s:"Motto associated with Carl Linnaeus, 18th century",u:"https://en.wikipedia.org/wiki/Carl_Linnaeus",
   find:"In Ferdinand's Coloniality, find a line about who gets to name and know the world. Then compare a Biodiversity Heritage Library field guide entry."},
  sublime:{q:"Whatever is fitted in any sort to excite the ideas of pain, and danger... is a source of the sublime.",s:"Edmund Burke, A Philosophical Enquiry into the Sublime and Beautiful (1757)",u:"https://en.wikisource.org/wiki/A_Philosophical_Enquiry_into_the_Origin_of_our_Ideas_of_the_Sublime_and_Beautiful",
-  q2:"going to the mountains is going home; that wildness is a necessity",s2:"John Muir, Our National Parks (1901)",u2:"https://www.gutenberg.org/ebooks/60929",
-  find:"In the opening paragraphs of Cronon's The Trouble with Wilderness, find the sentence that states his thesis. Read it against Muir."},
+  find:"In Cronon's The Trouble with Wilderness, find where he names the sublime as one of the two sources of the wilderness idea. In Stengers, find how she describes a Gaia that can be provoked. Is that a sublime force?"},
  picturesque:{q:"that peculiar kind of beauty, which is agreeable in a picture",s:"William Gilpin, An Essay on Prints (1768)",u:"https://en.wikipedia.org/wiki/Picturesque",
   find:"In Cronon, find where he describes wilderness as something people look at from outside. What does a frame leave out?"},
  enemy:{q:"the meeting point between savagery and civilization",s:"Frederick Jackson Turner, “The Significance of the Frontier in American History” (1893)",u:"https://en.wikipedia.org/wiki/Frontier_thesis",
@@ -434,14 +487,14 @@ const MORE_NATURE = [
  {after:"change",id:"construct",name:"Nature as a Construct",sees:"an idea, not a thing",h:290,motif:"frame",
   short:"Maybe “nature” is an idea we invented, and the split between nature and culture is the problem.",
   overview:"Raymond Williams called nature perhaps the most complex word in the English language. Bruno Latour argued in We Have Never Been Modern that the line between nature and society was never real, only policed. Timothy Morton's Ecology without Nature says that imagining nature as something out there keeps us from seeing we are already inside the mess. Haraway uses one word, naturecultures, to refuse the split. This lens asks what changes if your machine stops sorting things into natural and artificial.",
-  ex:"“All-natural” labels, the nature/culture split, Haraway's naturecultures, plastiglomerate, the Anthropocene debate.",
+  ex:"“All-natural” labels, the nature/culture split, Haraway's naturecultures, plastiglomerate, the Anthropocene debate, xenobots that are neither animal nor robot.",
   q:"Is this natural thing really natural? Where does nature stop and culture start?",
   tryit:"Make two columns, natural and artificial, and sort every part of your natural thing and your machine. Circle everything that refuses to fit.",
   readings:["cyborg","xf","posthuman","cronon"],art:["cpnh","excess","leather"],
-  further:[["Ecology without Nature (Morton)",LIB("Ecology without Nature")],["We Have Never Been Modern (Latour)",LIB("We Have Never Been Modern")],["Keywords (Williams)",LIB("Keywords A Vocabulary of Culture and Society")],["Nature–culture divide",WIKI("Nature%E2%80%93culture_divide")]],
+  further:[["Ecology without Nature (Morton)",LIB("Ecology without Nature")],["We Have Never Been Modern (Latour)",LIB("We Have Never Been Modern")],["Keywords (Williams)",LIB("Keywords A Vocabulary of Culture and Society")],["Nature–culture divide",WIKI("Nature%E2%80%93culture_divide")],["Xenobots",WIKI("Xenobot")]],
   quote:{q:"we must recognize at least two principal meanings in the word Nature.",s:"John Stuart Mill, “Nature,” Three Essays on Religion (1874)",u:"https://en.wikisource.org/w/index.php?search=Three+Essays+on+Religion+Mill",
    find:"In the opening section of Haraway's Cyborg Manifesto, find where she says the line between natural and artificial has broken down. In Xenofeminism, find what it says about calling things natural."}},
- {after:"cointel",id:"teacher",name:"Nature as Teacher",sees:"a designer to learn from",h:80,motif:"spiral",
+ {after:"cointel",id:"teacher",name:"Nature as Teacher",sees:"a model to copy",h:80,motif:"spiral",
   short:"Nature has already solved many design problems, so copy its solutions.",
   overview:"Biomimicry borrows from living things: Velcro came from burrs, Japan's bullet train nose from the kingfisher's beak, building ventilation from termite mounds. Janine Benyus popularized the term in 1997. D'Arcy Thompson's On Growth and Form (1917) showed how physics shapes shells, bones and cells. Critics ask whether copying nature's forms is the same as learning from the people who have studied them for generations, or just a new way to extract.",
   ex:"Velcro, the kingfisher-nosed bullet train, termite-mound ventilation, gecko adhesives, Strandbeest.",
@@ -452,6 +505,42 @@ const MORE_NATURE = [
   quote:{q:"Cell and tissue, shell and bone, leaf and flower, are so many portions of matter, and it is in obedience to the laws of physics that their particles have been moved, moulded and conformed.",s:"D'Arcy Wentworth Thompson, On Growth and Form (1917)",u:"https://en.wikipedia.org/wiki/On_Growth_and_Form",
    find:"In Kimmerer's Grammar of Animacy, find what changes when the teacher is a who, not a what. In Bridle, find an example of a non-human solving a problem."}}
 ];
+MORE_NATURE.push(
+ {after:"specimen",id:"separate",name:"Nature as Separate from Us",sees:"everything people didn't make",h:200,motif:"frame",
+  short:"Humans stand on one side and nature on the other.",
+  overview:"Many languages and philosophies split the world in two. In Chinese, daziran can mean everything not made by humans. Descartes divided thinking minds from unthinking matter. Emerson called nature everything that is NOT ME. The anthropologist Philippe Descola calls this split naturalism and shows it is one of four ways peoples have ordered the world, not the obvious default. Val Plumwood argues the split comes with a ranking: reason over body, culture over nature, and the people put closer to nature treated as lesser. Wilderness, pristine places and fortress conservation all grow from this view.",
+  ex:"Natural versus artificial, “untouched” wilderness, nature documentaries with no people in them, fortress conservation, the Chinese daziran and Japanese shizen.",
+  q:"Where does your machine draw the line between people and nature, and who ends up on which side?",
+  tryit:"Draw a line down a page. Put your natural thing on one side and people on the other. Then list everything that keeps crossing the line.",
+  readings:["cronon","ferdinand","cyborg"],art:["glacier","clui","wheat"],
+  further:[["Beyond Nature and Culture (Descola)",LIB("Beyond Nature and Culture")],["Feminism and the Mastery of Nature (Plumwood)",LIB("Feminism and the Mastery of Nature")],["Mind–body dualism",WIKI("Mind%E2%80%93body_dualism")],["Multiple conceptualizations of nature (Coscieme et al. 2020), SJSU library","https://www-sciencedirect-com.libaccess.sjlibrary.org/science/article/pii/S1462901119303491"],["Same paper, free PDF","https://orbi.uliege.be/bitstream/2268/241491/1/Coscieme%20et%20al%202020%20-%20Multiple%20conceptualizations%20of%20nature.pdf"]],
+  quote:{q:"all that is separate from us, all which Philosophy distinguishes as the NOT ME",s:"Ralph Waldo Emerson, Nature (1836)",u:WIKI("Nature_(essay)"),
+   find:"In Cronon, find where he says the wilderness idea places people outside nature. In Ferdinand, find who gets placed on the nature side of the line.",
+   caution:"Emerson's NOT ME includes other people and his own body, not only trees and rivers. Read the whole sentence before using it."}});
+MORE_NATURE.push(
+ {after:"sublime",id:"wilderness",name:"Nature as Wilderness",sees:"land without people",h:240,motif:"rays",
+  short:"The truest nature is untouched land, with no people in it.",
+  overview:"In the United States the Romantic sublime and the myth of the frontier merged into the idea of wilderness: land untouched by people, to be protected in national parks. John Muir fought for Yosemite, and the Wilderness Act of 1964 defined wilderness as a place where people are only visitors. William Cronon shows the idea was invented, and that parks like Yosemite and Yellowstone were made by removing the Native peoples who already lived on and tended that land. The same model, called fortress conservation, has pushed people off their land in Africa and Asia.",
+  ex:"National parks, wilderness areas, nature documentaries with no people in them, fortress conservation, “leave no trace.”",
+  q:"Who was removed or erased to make this natural thing look untouched?",
+  tryit:"Describe your natural thing as a breathtaking poster would. Then add the people the poster leaves out.",
+  readings:["cronon","ferdinand"],art:["clui","treemtn"],
+  further:[["John Muir",WIKI("John_Muir")],["Wilderness Act",WIKI("Wilderness_Act")],["Fortress conservation",WIKI("Fortress_conservation")],["Tending the Wild (Anderson)",LIB("Tending the Wild")]],
+  quote:{q:"an area where the earth and its community of life are untrammeled by man, where man himself is a visitor who does not remain",s:"Wilderness Act, United States (1964)",u:WIKI("Wilderness_Act"),
+   q2:"going to the mountains is going home; that wildness is a necessity",s2:"John Muir, Our National Parks (1901)",u2:"https://www.gutenberg.org/ebooks/60929",
+   find:"In the opening paragraphs of Cronon's The Trouble with Wilderness, find the sentence that states his thesis. Read it against Muir and the Wilderness Act. Then look at the Ohlone entries in the By culture view."}});
+MORE_NATURE.push(
+ {after:"cointel",id:"designer",name:"Nature as Designer",sees:"design with or without a mind",h:55,motif:"seed",
+  short:"Living things look designed. The question is who, or what, designed them.",
+  overview:"In Natural Theology (1802) William Paley argued that if you found a watch on the ground you would know someone made it, so the far more complex eye must have a maker too: God. Darwin's On the Origin of Species (1859) answered that natural selection produces design with no one intending it, which Richard Dawkins later called the blind watchmaker (1986). Ernst Haeckel's Art Forms in Nature (1904) drew radiolarians and jellyfish as if nature were an artist. In 1952 Alan Turing showed how spots and stripes can form on their own from two chemicals reacting and spreading. Designers now borrow these processes: evolutionary algorithms evolve shapes in a computer, Theo Jansen used one to find his Strandbeest legs, and xenobot bodies were evolved in software before being built from frog cells. In the US, intelligent design revived Paley's argument, and in 2005 a federal court ruled it could not be taught as science in public schools.",
+  ex:"The watchmaker argument, natural selection, Haeckel's drawings, Turing patterns on fish and leopards, self-organization, evolutionary algorithms, generative design, xenobots.",
+  q:"Who or what designed your natural thing, and is your machine designed the same way?",
+  tryit:"Design your machine twice: once as a single maker with a plan, once by letting it evolve over many generations with no plan. Sketch both and compare.",
+  readings:["bridle","posthuman","biotech"],art:["strand","silk","physarum","arachno"],
+  further:[["Watchmaker analogy (Paley)",WIKI("Watchmaker_analogy")],["The Blind Watchmaker (Dawkins)",WIKI("The_Blind_Watchmaker")],["Art Forms in Nature (Haeckel)",WIKI("Kunstformen_der_Natur")],["Turing pattern",WIKI("Turing_pattern")],["Evolutionary algorithm",WIKI("Evolutionary_algorithm")],["Xenobots",WIKI("Xenobot")]],
+  quote:{q:"There cannot be design without a designer; contrivance without a contriver",s:"William Paley, Natural Theology (1802)",u:WIKI("Watchmaker_analogy"),
+   q2:"endless forms most beautiful and most wonderful have been, and are being, evolved.",s2:"Charles Darwin, On the Origin of Species (1859)",u2:WIKI("On_the_Origin_of_Species"),
+   find:"In Bridle's introduction to Ways of Being, find how he describes intelligence that no one designed. In Haraway's Staying with the Trouble, find the line about making-with. Compare both with Paley's single designer."}});
 MORE_NATURE.forEach(l=>{const i=NATURE.findIndex(x=>x.id===l.after);delete l.after;NATURE.splice(i+1,0,l)});
 
 
@@ -572,11 +661,11 @@ const TECH = [
  {id:"monster",name:"Technology as Monster",sees:"a creation out of control",h:0,motif:"splice",
   short:"Our creations escape us.",
   overview:"Mary Shelley's Frankenstein (1818) gave us the creature that turns on its maker. In 1863 Samuel Butler warned that machines were evolving and would one day rule. Jacques Ellul argued that technique follows its own logic regardless of what people want. Today's fears about AI repeat the story. It is the twin of the Nature as Enemy lens.",
-  ex:"Frankenstein, the Golem, HAL 9000, runaway AI, gene drives that can't be recalled.",
+  ex:"Frankenstein, the Golem, HAL 9000, runaway AI, gene drives that can't be recalled, xenobots that build copies of themselves.",
   q:"What would it look like if your machine stopped listening to the people who made it?",
   tryit:"Write a news report from 3055 about the day your machine did something no one asked it to do. Was it a disaster or a relief?",
   readings:["biotech","xf"],art:["canthelp","leather","cohen"],
-  further:[["Frankenstein (Shelley, 1818)","https://www.gutenberg.org/ebooks/84"],["The Technological Society (Ellul)",LIB("The Technological Society")]],
+  further:[["Frankenstein (Shelley, 1818)","https://www.gutenberg.org/ebooks/84"],["The Technological Society (Ellul)",LIB("The Technological Society")],["Xenobots",WIKI("Xenobot")]],
   quote:{q:"the time will come when the machines will hold the real supremacy over the world and its inhabitants",s:"Samuel Butler, “Darwin among the Machines” (1863)",u:"https://www.historyofinformation.com/detail.php?id=3394",
    find:"In the gene drives reading, find what makes a gene drive hard to stop once released. Compare it to Butler's fear."}},
  {id:"techkin",name:"Technology as Kin",sees:"a relative",h:150,motif:"rings",
@@ -627,6 +716,92 @@ const TECH = [
   further:[["Maintenance and Care (Mattern, Places Journal)","https://placesjournal.org/article/maintenance-and-care/"]],
   quote:{q:null,find:"Find Ukeles's Manifesto for Maintenance Art 1969! online and choose the line about who does the work after the revolution. In Le Guin, find the line about the container."}}
 ];
+
+
+/* ---------- added technology lenses ---------- */
+TECH.push(
+ {id:"technocracy",name:"Technocracy",sees:"rule by experts and engineers",h:215,motif:"grid",
+  short:"Let engineers, scientists and data decide, instead of politics.",
+  overview:"In the early 1800s Henri de Saint-Simon imagined a society run by scientists and industrialists. The engineer William Henry Smyth coined the word technocracy in 1919, and Thorstein Veblen's The Engineers and the Price System (1921) argued engineers should run the economy. In the 1930s the Technocracy movement in the US proposed replacing money with energy certificates. Today the same idea returns as government by algorithm and dashboards. Critics ask who chooses the experts, whose knowledge counts as expertise, and what happens to everyone else's vote.",
+  ex:"Planning by experts, smart cities, algorithmic welfare decisions, “follow the data,” central banks, engineers' utopias.",
+  q:"Who gets to decide how your machine runs: experts, the people who live with it, or the machine itself?",
+  tryit:"Write your machine's rulebook twice: once by a panel of engineers, once by the community that lives beside it. Circle every rule they disagree on.",
+  readings:["justice","movgen","critical"],art:["asunder","anatomy"],
+  further:[["Technocracy",WIKI("Technocracy")],["Technocracy movement",WIKI("Technocracy_movement")],["The Engineers and the Price System (Veblen)",LIB("The Engineers and the Price System")]],
+  quote:{q:null,find:"In Design Justice, find the principle about who should lead design, and set it against rule by experts. In the Movement Generation zine, find the pillar about governance."}},
+ {id:"solutionism",name:"Technology as the Fix",sees:"every problem as a technical problem",h:45,motif:"burst",
+  short:"Turn social and political problems into engineering problems, then build a fix.",
+  overview:"In 1966 the physicist Alvin Weinberg asked whether technology could replace social engineering, and named the idea the technological fix. In 2013 Evgeny Morozov called its Silicon Valley form solutionism: an app for loneliness, a sensor for poverty, a planet-cooling spray instead of cutting emissions. Fixes can help. The critique is that they redefine the problem so that it fits the tool, and leave the causes where they were.",
+  ex:"Apps for social problems, carbon capture instead of cutting emissions, solar geoengineering, predictive policing, smart everything.",
+  q:"Is your machine fixing the cause of a problem, or a symptom of it?",
+  tryit:"Write the problem your machine solves in one sentence. Then rewrite it so that no machine could solve it. Which version is truer?",
+  readings:["biotech","crawford","critical"],art:["asunder","canthelp","sinter"],
+  further:[["Technological fix",WIKI("Technological_fix")],["Evgeny Morozov",WIKI("Evgeny_Morozov")],["To Save Everything, Click Here (Morozov)",LIB("To Save Everything Click Here")]],
+  quote:{q:null,find:"In the solar geoengineering reading, find what problem the fix leaves untouched. In Crawford, find a place where a technical solution moves the damage somewhere else."}},
+ {id:"transhuman",name:"Technology as Transcendence",sees:"a way past the human",h:290,motif:"spiral",
+  short:"Use technology to move beyond the limits of the human body and mind.",
+  overview:"The biologist Julian Huxley popularized the word transhumanism in 1957 for using science to improve the human species. Transhumanists today hope for longer life, enhanced bodies and minds uploaded into machines. Critics point out that Huxley was also a leading eugenicist, and that dreams of perfecting humans have often decided some people were less worth keeping. Disability scholars ask who defines an improvement. Haraway's cyborg mixes human and machine without promising to perfect anyone.",
+  ex:"Life extension, brain implants, mind uploading, gene editing of embryos, space colonies.",
+  q:"Does your machine make someone more than human, and who decides what counts as better?",
+  tryit:"Write an ad for the upgrade your machine offers in 3055. Then write a reply from someone who refuses the upgrade.",
+  readings:["cyborg","posthuman","xf"],art:["stelarc","harbisson","cohen"],
+  further:[["Transhumanism",WIKI("Transhumanism")],["Julian Huxley",WIKI("Julian_Huxley")],["Disability studies",WIKI("Disability_studies")]],
+  quote:{q:null,find:"In the opening section of Haraway's Cyborg Manifesto, find how her cyborg differs from a perfected human. In Weheliye or Jackson, find who has been left out of the human."}},
+ {id:"actor",name:"Technology as Actor",sees:"things that act",h:160,motif:"web",
+  short:"Things act too: tools, microbes and machines shape what people do.",
+  overview:"Actor-network theory, developed in Paris in the 1980s by Bruno Latour, Michel Callon and John Law, treats people and things as actors in the same network. A speed bump does the work of a police officer. Callon's study of scallop fishing in St Brieuc Bay counted the scallops, the fishers and the scientists as actors. Jane Bennett's Vibrant Matter (2010) extends this to stuff like electrical grids and metal. The view stops treating technology as either a tool or a master, and asks what each thing in the network does.",
+  ex:"Speed bumps, door closers, the electrical grid, a slime mould network, a phone that decides when you wake, xenobots built from frog cells.",
+  q:"What does your machine make people do, and what do people make it do?",
+  tryit:"Map your machine's network: every person, thing, material and creature involved. Draw an arrow for every time one makes another act.",
+  readings:["posthuman","bridle","critical"],art:["physarum","canthelp","autonomy"],
+  further:[["Actor-network theory",WIKI("Actor%E2%80%93network_theory")],["Michel Callon",WIKI("Michel_Callon")],["Vibrant Matter (Bennett)",LIB("Vibrant Matter")],["Xenobots",WIKI("Xenobot")]],
+  quote:{q:null,find:"In Haraway's Staying with the Trouble, find the line about making-with. In Bridle, find a non-human that acts inside a technical system."}}
+);
+TECH.push(
+ {id:"accel",name:"Technology as Acceleration",sees:"speed toward what comes next",h:20,motif:"spiral",
+  short:"Don't slow technology down. Speed it up and push through to the other side.",
+  overview:"The word comes from Roger Zelazny's science fiction novel Lord of Light (1967). In 1990s Britain, Nick Land and the Cybernetic Culture Research Unit at Warwick argued that capitalism and technology should be pushed to their limits. In 2013 Alex Williams and Nick Srnicek's #Accelerate manifesto took the idea left: repurpose automation and technology to free people from work. Xenofeminism grew partly from this left version. Since 2022 some Silicon Valley figures call themselves effective accelerationists and argue against any limits on AI. Critics ask who survives the speeding up, and who pays for it.",
+  ex:"Fully automated futures, universal basic income tied to automation, “move fast and break things,” arguments against AI regulation.",
+  q:"If your machine were pushed as far and as fast as it could go, what would be left on the other side?",
+  tryit:"Write your machine's timeline from now to 3055 at full speed, with no brakes. Mark the year someone should have stopped it, or the year it set people free.",
+  readings:["xf","critical","biotech"],art:["asunder","canthelp"],
+  further:[["Accelerationism",WIKI("Accelerationism")],["Inventing the Future (Srnicek and Williams)",LIB("Inventing the Future Postcapitalism")],["Xenofeminism manifesto","https://laboriacuboniks.net/manifesto/xenofeminism-a-politics-for-alienation/"]],
+  quote:{q:null,find:"In the Xenofeminism manifesto, find where it says technology should be used for liberation rather than abandoned. In the Critical Engineering Manifesto, find a point that would slow acceleration down.",
+   caution:"Far-right groups also use the word accelerationism for plans to speed up social collapse through violence. Check which meaning a source uses before you cite it."}},
+ {id:"techfem",name:"Technology as Gendered",sees:"who builds it, and who it is built for",h:320,motif:"splice",
+  short:"Technology and gender shape each other.",
+  overview:"Feminist scholars ask why machines are coded as masculine, and why women's technical work gets forgotten. Judy Wajcman's Feminism Confronts Technology (1991) and TechnoFeminism (2004) argue that gender is built into tools and that tools in turn shape gender. In 1991 the Australian art group VNS Matrix wrote a Cyberfeminist Manifesto for the 21st Century, and Sadie Plant's Zeros + Ones (1997) traced computing back through weaving and Ada Lovelace. Haraway's cyborg and Xenofeminism belong to the same family. The history includes the women who programmed ENIAC and the women who worked as human computers.",
+  ex:"Women as early programmers, voice assistants with women's names, period-tracking apps, kitchen appliances, crash-test dummies modeled on men.",
+  q:"Who is imagined building your machine, who is imagined using it, and whose work disappears?",
+  tryit:"Write two ads for your machine: one aimed at the gender it would be sold to by default, one aimed at someone else. What did you have to change?",
+  readings:["cyborg","xf","justice"],art:["semiotics","lauren","ukeles","coded"],
+  further:[["Cyberfeminism",WIKI("Cyberfeminism")],["VNS Matrix",WIKI("VNS_Matrix")],["Judy Wajcman",WIKI("Judy_Wajcman")],["TechnoFeminism (Wajcman)",LIB("TechnoFeminism")]],
+  quote:{q:null,find:"In the opening section of Haraway's Cyborg Manifesto, find where she says the cyborg has no origin story. In Xenofeminism, find what it says about gender and technology."}},
+ {id:"neoluddite",name:"Technology Refused",sees:"a choice, not a destiny",h:100,motif:"burst",
+  short:"People have the right to judge a technology and say no.",
+  overview:"The original Luddites, English textile workers from 1811 to 1816, broke machines that destroyed their trades, not machines in general. In 1990 the psychologist Chellis Glendinning wrote Notes Toward a Neo-Luddite Manifesto, and the farmer and writer Wendell Berry explained in 1987 why he would not buy a computer. Amish communities decide technology by technology whether it helps or harms community life. Brian Merchant's Blood in the Machine (2023) connects the Luddites to workers resisting AI today. Neo-Luddism asks who decided this technology was progress, and who gets to refuse.",
+  ex:"Phone-free schools, artists refusing AI, Amish choices about phones and tractors, the right to repair, workers striking over automation.",
+  q:"Who would refuse your machine, and what would their refusal protect?",
+  tryit:"Write a community's vote on whether to let your machine in. List three reasons for yes and three for no, and record the result.",
+  readings:["crawford","critical","movgen"],art:["onuoha","canthelp"],
+  further:[["Neo-Luddism",WIKI("Neo-Luddism")],["Luddite",WIKI("Luddite")],["Blood in the Machine (Merchant)",LIB("Blood in the Machine")]],
+  quote:{q:"nothing but absolute want could have driven a large and once honest and industrious body of the people into the commission of excesses so hazardous to themselves",s:"Lord Byron, speech to the House of Lords against the Frame Work Bill (1812)",u:"https://en.wikipedia.org/w/index.php?search=Lord+Byron+Frame+Work+Bill+1812+speech",
+   find:"In Crawford, find workers who never chose the technology they work for. In the Movement Generation zine, find what a just transition owes workers."}}
+);
+TECH.splice(TECH.findIndex(l=>l.id==="extraction")+1,0,
+ {id:"mastery",name:"Technology as Mastery over Nature",sees:"a way to reshape the world",h:190,motif:"strata",
+  short:"Use technology to tame, drain, dam and rebuild nature to human plans.",
+  overview:"Francis Bacon's New Atlantis (1627) imagined a science aimed at enlarging the bounds of human empire. Engineers carried that dream into dams, canals, drained wetlands and straightened rivers. California has lost most of its original wetlands, and San Francisco dammed the Hetch Hetchy Valley over John Muir's protests. Soviet irrigation drained much of the Aral Sea. The science fiction writer Jack Williamson coined terraforming in 1942 for remaking whole planets, and geoengineering proposes the same for Earth. Horkheimer and Adorno argued in Dialectic of Enlightenment that mastering nature leads to mastering people. Projects like the Dutch Room for the River program try the reverse: giving water space instead of fighting it.",
+  ex:"Dams, levees, drained wetlands, polders, straightened rivers, cloud seeding, terraforming, geoengineering.",
+  q:"What part of nature does your machine reshape, and what does that place do in return?",
+  tryit:"Draw your natural thing before your machine arrives, after 100 years, and after 1,000 years. In the last drawing, show what nature did back.",
+  readings:["biotech","crawford","sand","yusoff"],art:["sinter","wheat","oil","clui"],
+  further:[["New Atlantis (Bacon, 1627)","https://www.gutenberg.org/files/2434/2434-h/2434-h.htm"],["Dialectic of Enlightenment",WIKI("Dialectic_of_Enlightenment")],["Hetch Hetchy",WIKI("Hetch_Hetchy")],["Terraforming",WIKI("Terraforming")]],
+  quote:{q:"the enlarging of the bounds of Human Empire, to the effecting of all things possible",s:"Francis Bacon, New Atlantis (1627)",u:"https://www.gutenberg.org/files/2434/2434-h/2434-h.htm",
+   find:"In the solar geoengineering reading, find what the plan would change about the whole planet. In Yusoff, find who was reshaped along with the land. Pair this card with the nature lens Nature as Something to Change."}});
+/* the name each lens goes by in theory and scholarship */
+const AKA={tool:"Instrumentalism",driver:"Technological determinism, hard and soft",shaped:"Social constructivism, SCOT",politics:"Critical theory of technology",extension:"Organ projection, media theory",enframing:"Technological essentialism, substantivism",extraction:"Political ecology of technology",labor:"Labor process theory",salvation:"Techno-optimism, techno-utopianism",monster:"Techno-pessimism, autonomous technology",techkin:"Indigenous relational ethics",cosmo:"Cosmotechnics",convivial:"Appropriate technology, degrowth",blackbox:"Black-boxing, critical engineering",maintenance:"Repair studies, care ethics",technocracy:"Technocracy, rule by experts",solutionism:"Technological solutionism, the technological fix",transhuman:"Transhumanism",actor:"Actor-network theory, new materialism",mastery:"Domination of nature, Baconian science, geoengineering",accel:"Accelerationism, left and right",techfem:"Technofeminism, cyberfeminism, xenofeminism",neoluddite:"Neo-Luddism, technology refusal"};
+TECH.forEach(l=>{if(AKA[l.id])l.aka=AKA[l.id]});
 
 /* ---------- USERS ---------- */
 const USERS = [
@@ -1002,14 +1177,22 @@ const EXTRA_SOURCES = [
   ["StoryCorps","Recorded oral histories","b","https://storycorps.org/"],
   ["GenBank","DNA sequence database","n","https://www.ncbi.nlm.nih.gov/genbank/"],
   ["List of physical visualizations","Data turned into objects","t","http://dataphys.org/list/"],
-  ["Maintenance and Care (Mattern)","Essay on repair and care","t","https://placesjournal.org/article/maintenance-and-care/"]
+  ["Maintenance and Care (Mattern)","Essay on repair and care","t","https://placesjournal.org/article/maintenance-and-care/"],
+  ["Muwekma Ohlone Tribe","The tribe's land acknowledgment, including the land SJSU is on","n","https://www.muwekma.org/land-acknowledgment.html"],
+  ["SJSU land acknowledgement","Muwekma Ohlone and Thámien Ohlone territory","n","https://www.sjsu.edu/diversity/land-acknowledgement"],
+  ["Amah Mutsun Land Trust","Native stewardship, cultural burning and plant knowledge","n","https://amahmutsun.org/?p=1301"],
+  ["Sogorea Te' Land Trust","Rematriation and caring for the land, Lisjan Ohlone territory","n","https://sogoreate-landtrust.org/caring-for-the-land/"]
 ];
 
-const LISTS = {"A": [{"c": "Water: Ocean, Rivers, Rain, Ice", "n": "The ocean", "d": "covers 71 percent of the planet and has absorbed most of the extra heat from climate change", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Ocean currents", "d": "a planet-wide conveyor that moves heat, nutrients and life", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Tides", "d": "the sea pulled twice a day by the moon", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Rivers", "d": "water carving land and carrying soil to the sea", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Rain", "d": "the falling half of the water cycle", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Snowpack", "d": "the Sierra Nevada's snow, which melts into much of California's water supply", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Sea ice", "d": "frozen ocean that reflects sunlight back to space, and is shrinking", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Groundwater", "d": "water stored underground in aquifers", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Wetlands", "d": "land that is part water: filters, sponges and nurseries", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Glaciers", "d": "rivers of ice that record past climates in their layers", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Atmospheric rivers", "d": "the rivers in the sky behind California's biggest storms", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Redwoods drink fog", "d": "coast redwoods take in fog water through their leaves", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Salmon in downtown San José?", "d": "steelhead and salmon in the Guadalupe River", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "The valley that sank", "d": "groundwater pumping lowered parts of San José by more than 10 feet", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Elkhorn Slough", "d": "a tidal estuary near Moss Landing where sea otters, birds and fish meet", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Kelp forests", "d": "underwater forests off the California coast that store carbon and shelter hundreds of species", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Coral reefs", "d": "structures built by tiny animals, now bleaching as oceans warm", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Mangroves", "d": "trees that live in salt water and protect coastlines from storms", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Seagrass", "d": "underwater meadows that store carbon faster than forests", "new": false}, {"c": "Rocks and Soil", "n": "Soil", "d": "a living mix of rock, water, air, roots and billions of microbes", "new": false}, {"c": "Rocks and Soil", "n": "Clay", "d": "fine earth that becomes pottery, brick and tablets for writing", "new": false}, {"c": "Rocks and Soil", "n": "Sand", "d": "after water, the most used natural resource on Earth, and running short", "new": false}, {"c": "Rocks and Soil", "n": "Limestone", "d": "rock made from the shells of ancient sea creatures", "new": false}, {"c": "Rocks and Soil", "n": "Serpentine soil", "d": "California's state rock breaks down into soil few plants can survive", "new": false}, {"c": "Rocks and Soil", "n": "Volcanoes", "d": "where new rock is made", "new": false}, {"c": "Rocks and Soil", "n": "Obsidian", "d": "volcanic glass, and one of the first materials for sharp tools", "new": false}, {"c": "Rocks and Soil", "n": "Plastiglomerate", "d": "rock made of melted plastic, sand and coral on a Hawaiian beach", "new": false}, {"c": "Rocks and Soil", "n": "The Anthropocene vote", "d": "in 2024 geologists rejected the proposal to name a new epoch. Who gets to declare a geological age?", "new": false}, {"c": "Rocks and Soil", "n": "Biological soil crust", "d": "a living skin of cyanobacteria, lichen and moss that holds desert soil together", "new": false}, {"c": "Rocks and Soil", "n": "Peat bogs", "d": "wetlands that hold more carbon than all the world's forests", "new": false}, {"c": "Rocks and Soil", "n": "Permafrost", "d": "frozen ground that is thawing and releasing ancient carbon", "new": false}, {"c": "Rocks and Soil", "n": "The Hayward Fault creeps", "d": "curbs and buildings bent by a fault that moves a little every year", "new": false}, {"c": "Rocks and Soil", "n": "Sand dunes", "d": "hills of sand that walk with the wind", "new": false}, {"c": "Rocks and Soil", "n": "Bay checkerspot butterfly", "d": "a threatened butterfly living on Coyote Ridge's serpentine soil", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Petroleum", "d": "ancient plankton and algae, cooked underground for millions of years", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Coal", "d": "ancient forests turned to rock, and the fuel of the industrial revolution", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Natural gas", "d": "mostly methane, a powerful greenhouse gas", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Petroleum seeps", "d": "places where oil rises to the surface on its own, as it does off Santa Barbara", "new": false}, {"c": "Oil and Fossil Fuels", "n": "La Brea Tar Pits", "d": "natural asphalt in Los Angeles that trapped mammoths and saber-toothed cats", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Plastic", "d": "oil turned into objects that outlast us", "new": false}, {"c": "Minerals and Metals", "n": "Lithium", "d": "the light metal in every rechargeable battery, mined from salt flats and rock", "new": false}, {"c": "Minerals and Metals", "n": "Copper", "d": "the metal that carries electricity", "new": false}, {"c": "Minerals and Metals", "n": "Cobalt", "d": "a battery metal, much of it mined in the Democratic Republic of the Congo", "new": false}, {"c": "Minerals and Metals", "n": "Rare earth elements", "d": "seventeen metals inside magnets, screens and wind turbines", "new": false}, {"c": "Minerals and Metals", "n": "Silicon and quartz", "d": "sand made into chips, and the name of this valley", "new": false}, {"c": "Minerals and Metals", "n": "Gold", "d": "the metal that drew the Gold Rush into California", "new": false}, {"c": "Minerals and Metals", "n": "Salt", "d": "a mineral we eat, and once a currency", "new": false}, {"c": "Minerals and Metals", "n": "Iron", "d": "the metal of tools and steel, and of the oxygen carrier in our blood", "new": false}, {"c": "Minerals and Metals", "n": "New Almaden mercury mines", "d": "the mine south of San José that supplied the Gold Rush, and the mercury still in local water", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Sunlight", "d": "almost all the energy that life on Earth runs on", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Photosynthesis", "d": "the process that turns sunlight, water and carbon dioxide into sugar and oxygen", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Wildfire", "d": "fire as a natural force that many California landscapes need, and now fear", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Geothermal heat", "d": "heat from inside the Earth; The Geysers, north of San Francisco, is the largest geothermal field in the world", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Lightning", "d": "electricity in the sky that fixes nitrogen for plants", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Bioluminescence", "d": "living light, from fireflies to deep sea fish", "new": false}, {"c": "Air and Atmosphere", "n": "The atmosphere", "d": "a thin layer of gases that keeps the planet warm and breathable", "new": false}, {"c": "Air and Atmosphere", "n": "Carbon dioxide", "d": "the gas at the center of climate change", "new": false}, {"c": "Air and Atmosphere", "n": "Wind", "d": "air moving from high pressure to low", "new": false}, {"c": "Air and Atmosphere", "n": "Clouds", "d": "water hanging in the air, shading and warming the planet at once", "new": false}, {"c": "Air and Atmosphere", "n": "The ozone layer", "d": "a shield against ultraviolet light, damaged and now slowly healing", "new": false}, {"c": "Plants and Fungi", "n": "Plants make sounds when stressed", "d": "tomato and tobacco plants give off ultrasonic clicks when stressed (Tel Aviv University, Cell, 2023)", "new": false}, {"c": "Plants and Fungi", "n": "The Venus flytrap counts", "d": "it only snaps shut after two touches, counted with electrical signals", "new": false}, {"c": "Plants and Fungi", "n": "Do trees talk? The wood wide web debate", "d": "Suzanne Simard's mycorrhizal networks, and the 2023 critique of how much trees really share through them", "new": false}, {"c": "Plants and Fungi", "n": "Lichen's hidden third partner", "d": "thought for 140 years to be two organisms, until a yeast was found in 2016", "new": false}, {"c": "Plants and Fungi", "n": "Mycorrhizal fungi", "d": "fungi that wrap plant roots and trade sugar for water and minerals", "new": false}, {"c": "Plants and Fungi", "n": "Moss", "d": "one of the first plants on land, able to dry out completely and come back to life", "new": false}, {"c": "Plants and Fungi", "n": "Valley oak", "d": "the great oak of California's valleys, and the acorns people have lived on for thousands of years", "new": false}, {"c": "Plants and Fungi", "n": "California poppy", "d": "a flower that closes at night and in cold weather", "new": false}, {"c": "Animals", "n": "Elephants call each other by name", "d": "a 2024 study of name-like calls in wild African elephants", "new": false}, {"c": "Animals", "n": "Crows remember faces", "d": "and teach other crows which people to avoid", "new": false}, {"c": "Animals", "n": "Sperm whale phonetic alphabet", "d": "Project CETI uses machine learning to try to decode whale clicks", "new": false}, {"c": "Animals", "n": "The honeybee waggle dance", "d": "a map communicated through movement", "new": false}, {"c": "Animals", "n": "Monarch butterfly migration", "d": "a journey of thousands of miles that no single butterfly completes", "new": false}, {"c": "Animals", "n": "Beavers", "d": "ecosystem engineers whose dams hold water, slow floods and stop fires", "new": false}, {"c": "Animals", "n": "Sea otters", "d": "a keystone species: by eating urchins they keep kelp forests alive", "new": false}, {"c": "Animals", "n": "Earthworms", "d": "the animals that turn dead matter into soil", "new": false}, {"c": "Animals", "n": "Tardigrades", "d": "tiny animals that survive freezing, boiling, radiation and outer space", "new": false}, {"c": "Animals", "n": "Axolotl", "d": "a salamander that can regrow limbs, parts of its heart and its spinal cord", "new": false}, {"c": "Animals", "n": "Octopus", "d": "an animal with most of its neurons in its arms", "new": false}, {"c": "Animals", "n": "Banana slug", "d": "the bright yellow recycler of the redwood forest floor", "new": false}, {"c": "Animals", "n": "San José's burrowing owls", "d": "owls nesting in ground squirrel burrows at the edge of the city", "new": false}, {"c": "Microbes", "n": "Slime mould redraws the Tokyo rail network", "d": "Physarum, a brainless single cell, builds an efficient network (Science, 2010)", "new": false}, {"c": "Microbes", "n": "Cyanobacteria", "d": "the microbes that first filled the atmosphere with oxygen", "new": false}, {"c": "Microbes", "n": "Diatoms", "d": "single-celled algae in glass shells that make a large share of the oxygen we breathe", "new": false}], "B": [{"c": "The Deep Past", "n": "Stone tools", "d": "over 3 million years old, the first technology", "new": false}, {"c": "The Deep Past", "n": "Fire", "d": "cooking, warmth, light and landscape management", "new": false}, {"c": "The Deep Past", "n": "Cultural burning", "d": "fire used to care for land, practiced by Aboriginal Australians and many other peoples", "new": false}, {"c": "The Deep Past", "n": "Rope", "d": "twisted plant fibre, older than farming", "new": false}, {"c": "The Deep Past", "n": "Sewing needle", "d": "bone needles for fitted clothing", "new": false}, {"c": "The Deep Past", "n": "Bow and arrow", "d": "stored energy released on demand", "new": false}, {"c": "The Deep Past", "n": "Baskets", "d": "carrying, storing and cooking with woven plants", "new": false}, {"c": "The Deep Past", "n": "Pottery and the kiln", "d": "earth transformed by fire into containers", "new": false}, {"c": "The Deep Past", "n": "Spear thrower (atlatl)", "d": "a lever that throws a spear farther and faster, tens of thousands of years old", "new": true}, {"c": "The Deep Past", "n": "Grinding stone", "d": "stone on stone, turning seeds and grains into flour", "new": true}, {"c": "The Deep Past", "n": "Drum", "d": "a skin stretched over a frame, for signals and ceremony", "new": true}, {"c": "The Deep Past", "n": "Dugout canoe", "d": "a boat carved from one tree trunk, among the oldest boats found", "new": true}, {"c": "The Deep Past", "n": "Fishing net", "d": "knotted fiber, some of the oldest more than ten thousand years old", "new": true}, {"c": "The Deep Past", "n": "Mud brick", "d": "earth and straw dried in the sun, used for building for thousands of years", "new": true}, {"c": "Early Societies", "n": "Fish traps at Budj Bim", "d": "Gunditjmara eel traps and channels built thousands of years ago", "new": false}, {"c": "Early Societies", "n": "The loom", "d": "weaving, and later the ancestor of the computer", "new": false}, {"c": "Early Societies", "n": "The plough", "d": "farming that cuts and turns the soil", "new": false}, {"c": "Early Societies", "n": "Chinampas", "d": "floating farm islands built on lakes in Mexico", "new": false}, {"c": "Early Societies", "n": "The wheel", "d": "rotation for carrying, grinding and spinning", "new": false}, {"c": "Early Societies", "n": "The sail", "d": "wind turned into movement", "new": false}, {"c": "Early Societies", "n": "Polynesian wayfinding", "d": "navigating the Pacific by stars, swells and birds", "new": false}, {"c": "Early Societies", "n": "Qanats", "d": "underground channels that carry water across deserts", "new": false}, {"c": "Early Societies", "n": "Windcatchers", "d": "towers that cool buildings without power", "new": false}, {"c": "Early Societies", "n": "Writing", "d": "marks pressed in clay to record grain, debts and stories", "new": false}, {"c": "Early Societies", "n": "Quipu", "d": "knotted cords the Inca used to record numbers and more", "new": false}, {"c": "Early Societies", "n": "The abacus", "d": "counting with beads", "new": false}, {"c": "Early Societies", "n": "Terraces", "d": "steps cut into hillsides to hold soil and water, from the Andes to the Philippines", "new": true}, {"c": "Early Societies", "n": "Aqueduct", "d": "water carried long distances by gravity alone", "new": true}, {"c": "Early Societies", "n": "Kite", "d": "flown in China more than two thousand years ago, later used to measure the weather", "new": true}, {"c": "Early Societies", "n": "Water clock", "d": "time measured by dripping water", "new": true}, {"c": "Early Societies", "n": "Sundial", "d": "time measured by a moving shadow", "new": true}, {"c": "Early Societies", "n": "Bronze", "d": "copper and tin melted together, one of the first alloys", "new": true}, {"c": "Early Societies", "n": "Glassmaking", "d": "sand, ash and fire turned into a clear solid", "new": true}, {"c": "Early Societies", "n": "Natural dyes", "d": "color drawn from plants, insects and minerals, like indigo and cochineal", "new": true}, {"c": "Machines and Instruments", "n": "Antikythera mechanism", "d": "a Greek bronze gear machine that predicted eclipses", "new": false}, {"c": "Machines and Instruments", "n": "Water wheel", "d": "rivers turned into power", "new": false}, {"c": "Machines and Instruments", "n": "Windmill", "d": "wind turned into grinding and pumping", "new": false}, {"c": "Machines and Instruments", "n": "Paper", "d": "plant fibre made into a surface for knowledge", "new": false}, {"c": "Machines and Instruments", "n": "Compass", "d": "a magnet that points north", "new": false}, {"c": "Machines and Instruments", "n": "Mechanical clock", "d": "time divided and enforced", "new": false}, {"c": "Machines and Instruments", "n": "Printing press", "d": "copies at scale", "new": false}, {"c": "Machines and Instruments", "n": "Telescope", "d": "seeing far away", "new": false}, {"c": "Machines and Instruments", "n": "Microscope", "d": "seeing very small", "new": false}, {"c": "Machines and Instruments", "n": "Camera obscura", "d": "a dark room that projects the world", "new": false}, {"c": "Machines and Instruments", "n": "Astrolabe", "d": "a handheld model of the sky for telling time and finding direction", "new": true}, {"c": "Machines and Instruments", "n": "Thermometer and barometer", "d": "the first instruments to measure heat and the weight of the air", "new": true}, {"c": "Machines and Instruments", "n": "Plant press and herbarium", "d": "pressed plants kept for centuries, now used to track climate change", "new": true}, {"c": "Machines and Instruments", "n": "Wardian case", "d": "a sealed glass box from the 1830s for moving living plants across oceans, a tool of colonial plant trade", "new": true}, {"c": "Machines and Instruments", "n": "Lighthouse", "d": "a fixed light that guides ships away from rocks", "new": true}, {"c": "Machines and Instruments", "n": "Automata", "d": "machines built to imitate living things, birds that sing and figures that write", "new": true}, {"c": "Industrial and Electric", "n": "Steam engine", "d": "burning coal for motion, and the start of fossil fuel", "new": false}, {"c": "Industrial and Electric", "n": "Jacquard loom", "d": "punched cards that program patterns", "new": false}, {"c": "Industrial and Electric", "n": "Telegraph", "d": "messages as electrical pulses", "new": false}, {"c": "Industrial and Electric", "n": "Photography", "d": "light fixed on a surface", "new": false}, {"c": "Industrial and Electric", "n": "Phonograph", "d": "sound recorded and played back", "new": false}, {"c": "Industrial and Electric", "n": "Light bulb", "d": "night turned into day", "new": false}, {"c": "Industrial and Electric", "n": "Radio", "d": "invisible waves carrying voices", "new": false}, {"c": "Industrial and Electric", "n": "Refrigerator", "d": "cold made by machine", "new": false}, {"c": "Industrial and Electric", "n": "Battery", "d": "Volta's pile of 1800, electricity stored in chemistry", "new": true}, {"c": "Industrial and Electric", "n": "Electric motor", "d": "electricity turned into motion", "new": true}, {"c": "Industrial and Electric", "n": "Sewing machine", "d": "stitching mechanized, and a machine with a long history of care manuals", "new": true}, {"c": "Industrial and Electric", "n": "Typewriter", "d": "writing mechanized, letter by letter", "new": true}, {"c": "Industrial and Electric", "n": "Bicycle", "d": "human-powered motion on two wheels", "new": true}, {"c": "Industrial and Electric", "n": "Hydroelectric dam", "d": "a river turned into electricity, and a valley turned into a lake", "new": true}, {"c": "Industrial and Electric", "n": "Weather balloon", "d": "instruments carried up into the sky to report back", "new": true}, {"c": "Industrial and Electric", "n": "Movable-frame beehive", "d": "a hive from 1852 that lets beekeepers lift out combs without destroying them", "new": true}, {"c": "Digital and Now", "n": "The computer", "d": "ENIAC, programmed by six women in 1945", "new": false}, {"c": "Digital and Now", "n": "Transistor", "d": "the switch inside every chip", "new": false}, {"c": "Digital and Now", "n": "Satellite", "d": "a machine circling the Earth", "new": false}, {"c": "Digital and Now", "n": "Solar cell", "d": "sunlight turned into electricity", "new": false}, {"c": "Digital and Now", "n": "The internet", "d": "a network of networks", "new": false}, {"c": "Digital and Now", "n": "GPS", "d": "knowing exactly where you are", "new": false}, {"c": "Digital and Now", "n": "Smartphone", "d": "a pocket full of sensors", "new": false}, {"c": "Digital and Now", "n": "Sensors and data loggers", "d": "machines that record the world over time", "new": false}, {"c": "Digital and Now", "n": "Drones", "d": "flying machines without pilots", "new": false}, {"c": "Digital and Now", "n": "3D printing", "d": "objects built layer by layer", "new": false}, {"c": "Digital and Now", "n": "CRISPR", "d": "editing the code of living things", "new": false}, {"c": "Digital and Now", "n": "Machine learning", "d": "software that learns from data", "new": false}, {"c": "Digital and Now", "n": "Microcontroller", "d": "a tiny cheap computer that artists use to read sensors and move things", "new": true}, {"c": "Digital and Now", "n": "Wind turbine", "d": "the windmill turned into electricity", "new": true}, {"c": "Digital and Now", "n": "LiDAR", "d": "laser pulses that map forests, ground and ruins hidden under trees", "new": true}, {"c": "Digital and Now", "n": "Microbial fuel cell", "d": "bacteria that make electricity as they eat", "new": true}, {"c": "Digital and Now", "n": "Mycelium materials", "d": "fungus grown into packaging, bricks and leather", "new": true}, {"c": "Digital and Now", "n": "Bioplastics", "d": "plastics made from plants instead of oil", "new": true}, {"c": "Digital and Now", "n": "Vertical farm", "d": "crops stacked indoors under artificial light", "new": true}, {"c": "Digital and Now", "n": "Seed vault", "d": "seeds stored in frozen rock for the future, as at Svalbard", "new": true}]};
+const LISTS = {"A": [{"c": "Water: Ocean, Rivers, Rain, Ice", "n": "The ocean", "d": "covers 71 percent of the planet and has absorbed most of the extra heat from climate change", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Ocean currents", "d": "a planet-wide conveyor that moves heat, nutrients and life", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Tides", "d": "the sea pulled twice a day by the moon", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Rivers", "d": "water carving land and carrying soil to the sea", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Rain", "d": "the falling half of the water cycle", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Snowpack", "d": "the Sierra Nevada's snow, which melts into much of California's water supply", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Sea ice", "d": "frozen ocean that reflects sunlight back to space, and is shrinking", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Groundwater", "d": "water stored underground in aquifers", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Wetlands", "d": "land that is part water: filters, sponges and nurseries", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Glaciers", "d": "rivers of ice that record past climates in their layers", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Atmospheric rivers", "d": "the rivers in the sky behind California's biggest storms", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Redwoods drink fog", "d": "coast redwoods take in fog water through their leaves", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Salmon in downtown San José?", "d": "steelhead and salmon in the Guadalupe River", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "The valley that sank", "d": "groundwater pumping lowered parts of San José by more than 10 feet", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Elkhorn Slough", "d": "a tidal estuary near Moss Landing where sea otters, birds and fish meet", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Kelp forests", "d": "underwater forests off the California coast that store carbon and shelter hundreds of species", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Coral reefs", "d": "structures built by tiny animals, now bleaching as oceans warm", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Mangroves", "d": "trees that live in salt water and protect coastlines from storms", "new": false}, {"c": "Water: Ocean, Rivers, Rain, Ice", "n": "Seagrass", "d": "underwater meadows that store carbon faster than forests", "new": false}, {"c": "Rocks and Soil", "n": "Soil", "d": "a living mix of rock, water, air, roots and billions of microbes", "new": false}, {"c": "Rocks and Soil", "n": "Clay", "d": "fine earth that becomes pottery, brick and tablets for writing", "new": false}, {"c": "Rocks and Soil", "n": "Sand", "d": "after water, the most used natural resource on Earth, and running short", "new": false}, {"c": "Rocks and Soil", "n": "Limestone", "d": "rock made from the shells of ancient sea creatures", "new": false}, {"c": "Rocks and Soil", "n": "Serpentine soil", "d": "California's state rock breaks down into soil few plants can survive", "new": false}, {"c": "Rocks and Soil", "n": "Volcanoes", "d": "where new rock is made", "new": false}, {"c": "Rocks and Soil", "n": "Obsidian", "d": "volcanic glass, and one of the first materials for sharp tools", "new": false}, {"c": "Rocks and Soil", "n": "Plastiglomerate", "d": "rock made of melted plastic, sand and coral on a Hawaiian beach", "new": false}, {"c": "Rocks and Soil", "n": "The Anthropocene vote", "d": "in 2024 geologists rejected the proposal to name a new epoch. Who gets to declare a geological age?", "new": false}, {"c": "Rocks and Soil", "n": "Biological soil crust", "d": "a living skin of cyanobacteria, lichen and moss that holds desert soil together", "new": false}, {"c": "Rocks and Soil", "n": "Peat bogs", "d": "wetlands that hold more carbon than all the world's forests", "new": false}, {"c": "Rocks and Soil", "n": "Permafrost", "d": "frozen ground that is thawing and releasing ancient carbon", "new": false}, {"c": "Rocks and Soil", "n": "The Hayward Fault creeps", "d": "curbs and buildings bent by a fault that moves a little every year", "new": false}, {"c": "Rocks and Soil", "n": "Sand dunes", "d": "hills of sand that walk with the wind", "new": false}, {"c": "Rocks and Soil", "n": "Bay checkerspot butterfly", "d": "a threatened butterfly living on Coyote Ridge's serpentine soil", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Petroleum", "d": "ancient plankton and algae, cooked underground for millions of years", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Coal", "d": "ancient forests turned to rock, and the fuel of the industrial revolution", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Natural gas", "d": "mostly methane, a powerful greenhouse gas", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Petroleum seeps", "d": "places where oil rises to the surface on its own, as it does off Santa Barbara", "new": false}, {"c": "Oil and Fossil Fuels", "n": "La Brea Tar Pits", "d": "natural asphalt in Los Angeles that trapped mammoths and saber-toothed cats", "new": false}, {"c": "Oil and Fossil Fuels", "n": "Plastic", "d": "oil turned into objects that outlast us", "new": false}, {"c": "Minerals and Metals", "n": "Lithium", "d": "the light metal in every rechargeable battery, mined from salt flats and rock", "new": false}, {"c": "Minerals and Metals", "n": "Copper", "d": "the metal that carries electricity", "new": false}, {"c": "Minerals and Metals", "n": "Cobalt", "d": "a battery metal, much of it mined in the Democratic Republic of the Congo", "new": false}, {"c": "Minerals and Metals", "n": "Rare earth elements", "d": "seventeen metals inside magnets, screens and wind turbines", "new": false}, {"c": "Minerals and Metals", "n": "Silicon and quartz", "d": "sand made into chips, and the name of this valley", "new": false}, {"c": "Minerals and Metals", "n": "Gold", "d": "the metal that drew the Gold Rush into California", "new": false}, {"c": "Minerals and Metals", "n": "Salt", "d": "a mineral we eat, and once a currency", "new": false}, {"c": "Minerals and Metals", "n": "Iron", "d": "the metal of tools and steel, and of the oxygen carrier in our blood", "new": false}, {"c": "Minerals and Metals", "n": "New Almaden mercury mines", "d": "the mine south of San José that supplied the Gold Rush, and the mercury still in local water", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Sunlight", "d": "almost all the energy that life on Earth runs on", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Photosynthesis", "d": "the process that turns sunlight, water and carbon dioxide into sugar and oxygen", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Wildfire", "d": "fire as a natural force that many California landscapes need, and now fear", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Geothermal heat", "d": "heat from inside the Earth; The Geysers, north of San Francisco, is the largest geothermal field in the world", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Lightning", "d": "electricity in the sky that fixes nitrogen for plants", "new": false}, {"c": "Sunlight, Fire and Energy", "n": "Bioluminescence", "d": "living light, from fireflies to deep sea fish", "new": false}, {"c": "Air and Atmosphere", "n": "The atmosphere", "d": "a thin layer of gases that keeps the planet warm and breathable", "new": false}, {"c": "Air and Atmosphere", "n": "Carbon dioxide", "d": "the gas at the center of climate change", "new": false}, {"c": "Air and Atmosphere", "n": "Wind", "d": "air moving from high pressure to low", "new": false}, {"c": "Air and Atmosphere", "n": "Clouds", "d": "water hanging in the air, shading and warming the planet at once", "new": false}, {"c": "Air and Atmosphere", "n": "The ozone layer", "d": "a shield against ultraviolet light, damaged and now slowly healing", "new": false}, {"c": "Plants and Fungi", "n": "Plants make sounds when stressed", "d": "tomato and tobacco plants give off ultrasonic clicks when stressed (Tel Aviv University, Cell, 2023)", "new": false}, {"c": "Plants and Fungi", "n": "The Venus flytrap counts", "d": "it only snaps shut after two touches, counted with electrical signals", "new": false}, {"c": "Plants and Fungi", "n": "Do trees talk? The wood wide web debate", "d": "Suzanne Simard's mycorrhizal networks, and the 2023 critique of how much trees really share through them", "new": false}, {"c": "Plants and Fungi", "n": "Lichen's hidden third partner", "d": "thought for 140 years to be two organisms, until a yeast was found in 2016", "new": false}, {"c": "Plants and Fungi", "n": "Mycorrhizal fungi", "d": "fungi that wrap plant roots and trade sugar for water and minerals", "new": false}, {"c": "Plants and Fungi", "n": "Moss", "d": "one of the first plants on land, able to dry out completely and come back to life", "new": false}, {"c": "Plants and Fungi", "n": "Valley oak", "d": "the great oak of California's valleys, and the acorns people have lived on for thousands of years", "new": false}, {"c": "Plants and Fungi", "n": "California poppy", "d": "a flower that closes at night and in cold weather", "new": false}, {"c": "Animals", "n": "Elephants call each other by name", "d": "a 2024 study of name-like calls in wild African elephants", "new": false}, {"c": "Animals", "n": "Crows remember faces", "d": "and teach other crows which people to avoid", "new": false}, {"c": "Animals", "n": "Sperm whale phonetic alphabet", "d": "Project CETI uses machine learning to try to decode whale clicks", "new": false}, {"c": "Animals", "n": "The honeybee waggle dance", "d": "a map communicated through movement", "new": false}, {"c": "Animals", "n": "Monarch butterfly migration", "d": "a journey of thousands of miles that no single butterfly completes", "new": false}, {"c": "Animals", "n": "Beavers", "d": "ecosystem engineers whose dams hold water, slow floods and stop fires", "new": false}, {"c": "Animals", "n": "Sea otters", "d": "a keystone species: by eating urchins they keep kelp forests alive", "new": false}, {"c": "Animals", "n": "Earthworms", "d": "the animals that turn dead matter into soil", "new": false}, {"c": "Animals", "n": "Tardigrades", "d": "tiny animals that survive freezing, boiling, radiation and outer space", "new": false}, {"c": "Animals", "n": "Axolotl", "d": "a salamander that can regrow limbs, parts of its heart and its spinal cord", "new": false}, {"c": "Animals", "n": "Octopus", "d": "an animal with most of its neurons in its arms", "new": false}, {"c": "Animals", "n": "Banana slug", "d": "the bright yellow recycler of the redwood forest floor", "new": false}, {"c": "Animals", "n": "San José's burrowing owls", "d": "owls nesting in ground squirrel burrows at the edge of the city", "new": false}, {"c": "Microbes", "n": "Slime mould redraws the Tokyo rail network", "d": "Physarum, a brainless single cell, builds an efficient network (Science, 2010)", "new": false}, {"c": "Microbes", "n": "Cyanobacteria", "d": "the microbes that first filled the atmosphere with oxygen", "new": false}, {"c": "Microbes", "n": "Diatoms", "d": "single-celled algae in glass shells that make a large share of the oxygen we breathe", "new": false}], "B": [{"c": "The Deep Past", "n": "Stone tools", "d": "over 3 million years old, the first technology", "new": false}, {"c": "The Deep Past", "n": "Fire", "d": "cooking, warmth, light and landscape management", "new": false}, {"c": "The Deep Past", "n": "Cultural burning", "d": "fire used to care for land, practiced by Aboriginal Australians and many other peoples", "new": false}, {"c": "The Deep Past", "n": "Rope", "d": "twisted plant fibre, older than farming", "new": false}, {"c": "The Deep Past", "n": "Sewing needle", "d": "bone needles for fitted clothing", "new": false}, {"c": "The Deep Past", "n": "Bow and arrow", "d": "stored energy released on demand", "new": false}, {"c": "The Deep Past", "n": "Baskets", "d": "carrying, storing and cooking with woven plants", "new": false}, {"c": "The Deep Past", "n": "Pottery and the kiln", "d": "earth transformed by fire into containers", "new": false}, {"c": "The Deep Past", "n": "Spear thrower (atlatl)", "d": "a lever that throws a spear farther and faster, tens of thousands of years old", "new": true}, {"c": "The Deep Past", "n": "Grinding stone", "d": "stone on stone, turning seeds and grains into flour", "new": true}, {"c": "The Deep Past", "n": "Drum", "d": "a skin stretched over a frame, for signals and ceremony", "new": true}, {"c": "The Deep Past", "n": "Dugout canoe", "d": "a boat carved from one tree trunk, among the oldest boats found", "new": true}, {"c": "The Deep Past", "n": "Fishing net", "d": "knotted fiber, some of the oldest more than ten thousand years old", "new": true}, {"c": "The Deep Past", "n": "Mud brick", "d": "earth and straw dried in the sun, used for building for thousands of years", "new": true}, {"c": "Early Societies", "n": "Fish traps at Budj Bim", "d": "Gunditjmara eel traps and channels built thousands of years ago", "new": false}, {"c": "Early Societies", "n": "The loom", "d": "weaving, and later the ancestor of the computer", "new": false}, {"c": "Early Societies", "n": "The plough", "d": "farming that cuts and turns the soil", "new": false}, {"c": "Early Societies", "n": "Chinampas", "d": "floating farm islands built on lakes in Mexico", "new": false}, {"c": "Early Societies", "n": "The wheel", "d": "rotation for carrying, grinding and spinning", "new": false}, {"c": "Early Societies", "n": "The sail", "d": "wind turned into movement", "new": false}, {"c": "Early Societies", "n": "Polynesian wayfinding", "d": "navigating the Pacific by stars, swells and birds", "new": false}, {"c": "Early Societies", "n": "Qanats", "d": "underground channels that carry water across deserts", "new": false}, {"c": "Early Societies", "n": "Windcatchers", "d": "towers that cool buildings without power", "new": false}, {"c": "Early Societies", "n": "Writing", "d": "marks pressed in clay to record grain, debts and stories", "new": false}, {"c": "Early Societies", "n": "Quipu", "d": "knotted cords the Inca used to record numbers and more", "new": false}, {"c": "Early Societies", "n": "The abacus", "d": "counting with beads", "new": false}, {"c": "Early Societies", "n": "Terraces", "d": "steps cut into hillsides to hold soil and water, from the Andes to the Philippines", "new": true}, {"c": "Early Societies", "n": "Aqueduct", "d": "water carried long distances by gravity alone", "new": true}, {"c": "Early Societies", "n": "Kite", "d": "flown in China more than two thousand years ago, later used to measure the weather", "new": true}, {"c": "Early Societies", "n": "Water clock", "d": "time measured by dripping water", "new": true}, {"c": "Early Societies", "n": "Sundial", "d": "time measured by a moving shadow", "new": true}, {"c": "Early Societies", "n": "Bronze", "d": "copper and tin melted together, one of the first alloys", "new": true}, {"c": "Early Societies", "n": "Glassmaking", "d": "sand, ash and fire turned into a clear solid", "new": true}, {"c": "Early Societies", "n": "Natural dyes", "d": "color drawn from plants, insects and minerals, like indigo and cochineal", "new": true}, {"c": "Machines and Instruments", "n": "Antikythera mechanism", "d": "a Greek bronze gear machine that predicted eclipses", "new": false}, {"c": "Machines and Instruments", "n": "Water wheel", "d": "rivers turned into power", "new": false}, {"c": "Machines and Instruments", "n": "Windmill", "d": "wind turned into grinding and pumping", "new": false}, {"c": "Machines and Instruments", "n": "Paper", "d": "plant fibre made into a surface for knowledge", "new": false}, {"c": "Machines and Instruments", "n": "Compass", "d": "a magnet that points north", "new": false}, {"c": "Machines and Instruments", "n": "Mechanical clock", "d": "time divided and enforced", "new": false}, {"c": "Machines and Instruments", "n": "Printing press", "d": "copies at scale", "new": false}, {"c": "Machines and Instruments", "n": "Telescope", "d": "seeing far away", "new": false}, {"c": "Machines and Instruments", "n": "Microscope", "d": "seeing very small", "new": false}, {"c": "Machines and Instruments", "n": "Camera obscura", "d": "a dark room that projects the world", "new": false}, {"c": "Machines and Instruments", "n": "Astrolabe", "d": "a handheld model of the sky for telling time and finding direction", "new": true}, {"c": "Machines and Instruments", "n": "Thermometer and barometer", "d": "the first instruments to measure heat and the weight of the air", "new": true}, {"c": "Machines and Instruments", "n": "Plant press and herbarium", "d": "pressed plants kept for centuries, now used to track climate change", "new": true}, {"c": "Machines and Instruments", "n": "Wardian case", "d": "a sealed glass box from the 1830s for moving living plants across oceans, a tool of colonial plant trade", "new": true}, {"c": "Machines and Instruments", "n": "Lighthouse", "d": "a fixed light that guides ships away from rocks", "new": true}, {"c": "Machines and Instruments", "n": "Automata", "d": "machines built to imitate living things, birds that sing and figures that write", "new": true}, {"c": "Industrial and Electric", "n": "Steam engine", "d": "burning coal for motion, and the start of fossil fuel", "new": false}, {"c": "Industrial and Electric", "n": "Jacquard loom", "d": "punched cards that program patterns", "new": false}, {"c": "Industrial and Electric", "n": "Telegraph", "d": "messages as electrical pulses", "new": false}, {"c": "Industrial and Electric", "n": "Photography", "d": "light fixed on a surface", "new": false}, {"c": "Industrial and Electric", "n": "Phonograph", "d": "sound recorded and played back", "new": false}, {"c": "Industrial and Electric", "n": "Light bulb", "d": "night turned into day", "new": false}, {"c": "Industrial and Electric", "n": "Radio", "d": "invisible waves carrying voices", "new": false}, {"c": "Industrial and Electric", "n": "Refrigerator", "d": "cold made by machine", "new": false}, {"c": "Industrial and Electric", "n": "Battery", "d": "Volta's pile of 1800, electricity stored in chemistry", "new": true}, {"c": "Industrial and Electric", "n": "Electric motor", "d": "electricity turned into motion", "new": true}, {"c": "Industrial and Electric", "n": "Sewing machine", "d": "stitching mechanized, and a machine with a long history of care manuals", "new": true}, {"c": "Industrial and Electric", "n": "Typewriter", "d": "writing mechanized, letter by letter", "new": true}, {"c": "Industrial and Electric", "n": "Bicycle", "d": "human-powered motion on two wheels", "new": true}, {"c": "Industrial and Electric", "n": "Hydroelectric dam", "d": "a river turned into electricity, and a valley turned into a lake", "new": true}, {"c": "Industrial and Electric", "n": "Weather balloon", "d": "instruments carried up into the sky to report back", "new": true}, {"c": "Industrial and Electric", "n": "Movable-frame beehive", "d": "a hive from 1852 that lets beekeepers lift out combs without destroying them", "new": true}, {"c": "Digital and Now", "n": "The computer", "d": "ENIAC, programmed by six women in 1945", "new": false}, {"c": "Digital and Now", "n": "Transistor", "d": "the switch inside every chip", "new": false}, {"c": "Digital and Now", "n": "Satellite", "d": "a machine circling the Earth", "new": false}, {"c": "Digital and Now", "n": "Solar cell", "d": "sunlight turned into electricity", "new": false}, {"c": "Digital and Now", "n": "The internet", "d": "a network of networks", "new": false}, {"c": "Digital and Now", "n": "GPS", "d": "knowing exactly where you are", "new": false}, {"c": "Digital and Now", "n": "Smartphone", "d": "a pocket full of sensors", "new": false}, {"c": "Digital and Now", "n": "Sensors and data loggers", "d": "machines that record the world over time", "new": false}, {"c": "Digital and Now", "n": "Drones", "d": "flying machines without pilots", "new": false}, {"c": "Digital and Now", "n": "3D printing", "d": "objects built layer by layer", "new": false}, {"c": "Digital and Now", "n": "CRISPR", "d": "editing the code of living things", "new": false}, {"c": "Digital and Now", "n": "Machine learning", "d": "software that learns from data", "new": false}, {"c": "Digital and Now", "n": "Microcontroller", "d": "a tiny cheap computer that artists use to read sensors and move things", "new": true}, {"c": "Digital and Now", "n": "Wind turbine", "d": "the windmill turned into electricity", "new": true}, {"c": "Digital and Now", "n": "LiDAR", "d": "laser pulses that map forests, ground and ruins hidden under trees", "new": true}, {"c": "Digital and Now", "n": "Microbial fuel cell", "d": "bacteria that make electricity as they eat", "new": true}, {"c": "Digital and Now", "n": "Mycelium materials", "d": "fungus grown into packaging, bricks and leather", "new": true}, {"c": "Digital and Now", "n": "Bioplastics", "d": "plastics made from plants instead of oil", "new": true}, {"c": "Digital and Now", "n": "Vertical farm", "d": "crops stacked indoors under artificial light", "new": true}, {"c": "Digital and Now", "n": "Xenobots", "d": "tiny living machines assembled from frog cells to designs evolved by a computer, first reported in 2020", "new": false}, {"c": "Digital and Now", "n": "Seed vault", "d": "seeds stored in frozen rock for the future, as at Svalbard", "new": true}]};
 
+const CATS={things:[...new Set(LISTS.A.map(x=>x.c))],techs:[...new Set(LISTS.B.map(x=>x.c))]};
+const catIdx=(k,c)=>CATS[k]?CATS[k].indexOf(c):-1;
+const catVar=(k,c)=>{const i=catIdx(k,c);return i<0?"":`--clc:var(--c${k==="things"?"a":"b"}${i+1})`};
+const catCls=(k,c)=>{const i=catIdx(k,c);return i<0?"":" catc bs-"+(i%4)};
 const DECKS = [
-  {key:"nature",label:"Nature lenses",kind:"lens",data:NATURE,noun:"lens",blurb:"Twenty-one ways cultures and thinkers have seen the natural world."},
-  {key:"tech",label:"Technology lenses",kind:"lens",data:TECH,noun:"lens",blurb:"Fifteen ways of thinking about what technology is and does."},
+  {key:"nature",label:"Nature lenses",kind:"lens",data:NATURE,noun:"lens",blurb:"Twenty-four ways cultures and thinkers have seen the natural world."},
+  {key:"tech",label:"Technology lenses",kind:"lens",data:TECH,noun:"lens",blurb:"Twenty-three ways of thinking about what technology is and does. Each card names the theory it comes from."},
   {key:"users",label:"Users",kind:"lens",data:USERS,noun:"user",blurb:"Fifteen kinds of users, from the most affected to rivers, ancestors and other machines."},
   {key:"data",label:"Data gathering",kind:"lens",data:DATA,noun:"method",blurb:"Fifteen types of data and ways of gathering it, each with tools and model artworks."},
   {key:"things",label:"Natural things",kind:"list",data:LISTS.A,noun:"natural thing",blurb:"List A: natural things to build a machine around."},
@@ -1022,6 +1205,8 @@ const SOURCES = [];
 Object.entries(R).forEach(([k,r])=>{const inf=READ_INFO[k]||["b",""];SOURCES.push({type:"Reading",t:r.t,a:r.a,wk:r.wk,topic:inf[0],d:inf[1],links:r.links,gathers:0})});
 Object.entries(A).forEach(([k,a])=>{const inf=ART_INFO[k]||["b","","",0];const model=/Model for/.test(inf[2]);SOURCES.push({type:model?"Model":"Artwork",t:a[0],a:a[1],wk:inf[1],topic:inf[0],d:inf[2],links:[["Open",a[2]]],gathers:inf[3],course:inf[1]!==""})});
 EXTRA_SOURCES.forEach(([t,d,topic,u])=>SOURCES.push({type:"Resource",t,a:"",wk:"",topic,d,links:[["Open",u]],gathers:0}));
+SOURCES.push({type:"Reading",t:"Multiple conceptualizations of nature are key to inclusivity and legitimacy in global environmental governance (2020)",a:"Luca Coscieme and 39 co-authors, Environmental Science & Policy 104",wk:"",topic:"n",d:"Native speakers of 63 languages translate the word nature. Their answers fall into three clusters: inclusive, non-inclusive and deifying.",links:[["SJSU library","https://www-sciencedirect-com.libaccess.sjlibrary.org/science/article/pii/S1462901119303491"],["Free PDF","https://orbi.uliege.be/bitstream/2268/241491/1/Coscieme%20et%20al%202020%20-%20Multiple%20conceptualizations%20of%20nature.pdf"],["DOI","https://doi.org/10.1016/j.envsci.2019.10.018"]],gathers:0});
+SOURCES.push({type:"Reading",t:"Exploring the diversity of conceptualizations of nature in East and South-East Asia (2022)",a:"Laÿna Droz and co-authors, Humanities and Social Sciences Communications 9",wk:"",topic:"n",d:"Words for nature in 11 Asian languages, from Japanese jinen to Mongolian baigali and Nepali prakriti. Many include people, unlike the narrow English word.",links:[["Read it, open access","https://www.nature.com/articles/s41599-022-01186-5"],["DOI","https://doi.org/10.1057/s41599-022-01186-5"]],gathers:0});
 DECKS.find(d=>d.key==="sources").data=SOURCES;
 
 const esc=s=>String(s??"").replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
@@ -1029,6 +1214,263 @@ const num=i=>String(i+1).padStart(2,"0");
 const weeksOf=l=>[...new Set((l.readings||[]).map(k=>R[k].wk))].sort();
 const TOPIC={n:"Nature",t:"Technology",b:"Nature + technology"};
 const wsearch=q=>"https://en.wikipedia.org/w/index.php?search="+encodeURIComponent(q.replace(/[?()]/g,"").trim());
+
+/* ---------- BY CULTURE: where each way of seeing comes from ----------
+   Each group: [culture or tradition, where and when, note, [[idea, link, lens id, one line], ...]] */
+const CULT = {
+ nature:[
+  ["Ohlone peoples: Muwekma, Amah Mutsun, Lisjan and others","the Bay Area to Monterey, including the land SJSU is on","Ohlone is an outside name for many peoples who spoke several related languages and belong to separate tribes today. These entries use what the tribes publish about themselves.",[
+   ["Thámien Ohlone territory and Muwekma ancestral land","https://www.muwekma.org/land-acknowledgment.html","survived","SJSU sits on land never ceded under unratified 1851 to 1852 treaties. The Muwekma Ohlone Tribe has over 550 enrolled members."],
+   ["Native stewardship returns (Amah Mutsun Land Trust)","https://amahmutsun.org/?p=1301","garden","Bringing Indigenous stewardship back to Amah Mutsun lands, from Pinnacles to the coast."],
+   ["Cultural burning and coastal prairies","https://amahmutsun.org/?p=1301","garden","The first cultural burn in their territory since the mission period, and research on how burning kept prairies open."],
+   ["Basket plants, tanoak acorns and relearning plant knowledge","https://amahmutsun.org/?p=1301","kin","Native Stewards restore basketry plants, gather traditional foods and relearn plant knowledge."],
+   ["Protecting cultural sites, including Mt. Umunhum","https://amahmutsun.org/?p=1301","sacred","Working with land agencies to protect places that matter to the tribe."],
+   ["Rematriation (Sogorea Te' Land Trust)","https://sogoreate-landtrust.org/rematriate-the-land-fund/","kin","An urban Indigenous women-led land trust returning land to Indigenous people."],
+   ["Lisjan, the first rematriated site","https://sogoreate-landtrust.org/lisjan/","sacred","An East Oakland village site with the first ceremonial arbor in the territory in over 250 years."]]],
+  ["Potawatomi, Lakota, Anishinaabe and Haudenosaunee","Turtle Island (North America), long practice to now","Hundreds of distinct nations; these are the ones named in the course readings.",[
+   ["Grammar of animacy (Potawatomi)",WIKI("Robin_Wall_Kimmerer"),"kin","Most living beings are a who, not an it."],
+   ["Mitákuye Oyás'iŋ (Lakota)",WIKI("Mitakuye_Oyasin"),"kin","All my relatives: the world as family."],
+   ["The gift economy of the serviceberry",R.serviceberry.links[0][1],"mother","A gift from the land creates obligation, not ownership."],
+   ["Tending the Wild (California Native peoples)",wsearch("Cultural burning"),"garden","Burning, pruning and harvesting kept oak woodlands and meadows alive."],
+   ["Seven generations (Haudenosaunee)",WIKI("Seven_generation_sustainability"),"survived","Weigh decisions by their effect seven generations ahead."],
+   ["Biskaabiiyang, returning to ourselves (Anishinaabe)",WIKI("Indigenous_futurism"),"survived","Grace Dillon's term for futures built after the apocalypse already happened."]]],
+  ["Māori and Kānaka Maoli (Hawaiian)","Aotearoa New Zealand and Hawaiʻi","",[
+   ["Te Awa Tupua, the Whanganui River as a legal person",WIKI("Whanganui_River"),"kin","A 2017 law made the river a legal person; the Whanganui iwi know it as an ancestor."],
+   ["Aloha ʻāina, love of the land",wsearch("Aloha ʻāina"),"kin","Land as an elder relative to care for. Noelani Arista, a Kanaka Maoli historian, co-wrote Making Kin with the Machines."]]],
+  ["Andean, Amazonian and Mesoamerican peoples","South America and Mexico","",[
+   ["Pachamama",WIKI("Pachamama"),"mother","The Andean Earth mother, named in Ecuador's 2008 constitution."],
+   ["Rights of nature in Ecuador and Bolivia",WIKI("Rights_of_nature"),"kin","Nature written into law as a holder of rights."],
+   ["Kichwa of Sarayaku and the living forest",A.forest[2],"sacred","The forest as a living being, defended in court (see Forest Law)."],
+   ["Terra preta, Amazonian dark earth",WIKI("Terra_preta"),"garden","Dark, fertile soil built up by people over many centuries."],
+   ["Chinampas (Mexica)",WIKI("Chinampa"),"garden","Farm islands built in lakes, still farmed in Xochimilco."]]],
+  ["Aboriginal Australians","Australia, tens of thousands of years","",[
+   ["Fire-stick farming",WIKI("Fire-stick_farming"),"garden","Planned fire as care for country."],
+   ["Budj Bim (Gunditjmara)",WIKI("Budj_Bim_Cultural_Landscape"),"garden","Eel traps and channels thousands of years old."]]],
+  ["China and Japan","East Asia","",[
+   ["The Dao",WIKI("Tao"),"order","The way things flow, which people should follow, not force."],
+   ["Wu wei",WIKI("Wu_wei"),"order","Acting without forcing."],
+   ["Kami (Shinto)",WIKI("Kami"),"sacred","Spirits that live in trees, rocks, rivers and mountains."],
+   ["Ziran and daziran (Chinese)",WIKI("Ziran"),"separate","Daziran, everything not made by humans; ziran also means self-so, things as they are."],
+   ["Shizen (Japanese)",wsearch("Shizen nature Japanese"),"separate","Nature as beyond human control, like earthquakes and typhoons."],
+   ["Satoyama and satoumi (Japanese)",WIKI("Satoyama"),"garden","Village landscapes and seascapes shaped by people and nature together."],
+   ["Shinrin-yoku, forest bathing",WIKI("Forest_bathing"),"healer","Promoted by Japan's Forestry Agency in 1982."]]],
+  ["South Asia and West Africa","India, Ghana, Nigeria","",[
+   ["Sacred groves of India",wsearch("Sacred groves of India"),"sacred","Forest patches protected for deities, some for centuries."],
+   ["Ganga, the river as goddess",WIKI("Ganges"),"sacred","A holy river that is also one of the most used and polluted."],
+   ["Osun-Osogbo Sacred Grove (Yoruba)",WIKI("Osun-Osogbo_Sacred_Grove"),"sacred","A forest shrine to the river goddess Osun."],
+   ["Sacred groves of Ghana",WIKI("Sacred_grove"),"sacred","Forests kept by taboo and ritual, now also refuges for species."]]],
+  ["Ancient Greece","about 700 BCE to 300 BCE","",[
+   ["Gaia in Hesiod's Theogony",WIKI("Gaia"),"mother","The Earth as the first mother, after Chaos."],
+   ["Physis and kosmos",WIKI("Physis"),"order","Nature as growth, and the world as an ordered whole."]]],
+  ["Jewish and Christian traditions","the Bible to the 1960s","",[
+   ["Dominion in Genesis",WIKI("Genesis_creation_narrative"),"dominion","Humans told to subdue the earth."],
+   ["The watchmaker argument (William Paley, Britain, 1802)",WIKI("Watchmaker_analogy"),"designer","A watch needs a watchmaker, so living things need God."],
+   ["Stewardship",WIKI("Stewardship_(theology)"),"dominion","The answer: care for creation on God's behalf."],
+   ["The great chain of being (medieval Europe)",WIKI("Great_chain_of_being"),"order","Everything ranked from God down to stones."],
+   ["Lynn White Jr.'s critique (1967)",WIKI("Lynn_Townsend_White_Jr."),"dominion","Blamed dominion for the ecological crisis."]]],
+  ["The European Scientific Revolution","1600s and 1700s","",[
+   ["Mechanical philosophy (Descartes, Boyle, Hobbes)",WIKI("Mechanical_philosophy"),"machine","Nature as matter obeying laws, animals as automata."],
+   ["Mind and body as two substances (Descartes)",WIKI("Mind%E2%80%93body_dualism"),"separate","Thinking humans on one side, unthinking matter on the other."],
+   ["The clockwork universe (Kepler, Boyle)",WIKI("Clockwork_universe"),"machine","The cosmos as a clock set going by God."],
+   ["The Death of Nature (Merchant)",LIB("The Death of Nature Merchant"),"machine","How the machine image replaced the living mother."],
+   ["Linnaean taxonomy",WIKI("Linnaean_taxonomy"),"specimen","Two-part Latin names for every species."],
+   ["Cabinets of curiosities",WIKI("Cabinet_of_curiosities"),"specimen","Collections built from trade and colonial expeditions."],
+   ["Bacon's New Atlantis",WIKI("New_Atlantis"),"change","An early fantasy of redesigning plants and animals."]]],
+  ["European Romanticism and the picturesque","Britain and Germany, 1700s and 1800s","",[
+   ["The sublime (Burke, Kant)",WIKI("Sublime_(philosophy)"),"sublime","Beauty mixed with terror."],
+   ["Wanderer above the Sea of Fog (Friedrich, about 1818)",WIKI("Wanderer_above_the_Sea_of_Fog"),"sublime","A lone figure facing a vast, unknowable landscape."],
+   ["Turner's storms (J.M.W. Turner)",WIKI("J._M._W._Turner"),"sublime","Sea, steam and snow painted as overwhelming force."],
+   ["Romanticism",WIKI("Romanticism"),"sacred","Wordsworth and others found the divine in landscape."],
+   ["The picturesque and the Claude glass",WIKI("Claude_glass"),"picturesque","Seeing scenery as a painting."],
+   ["The English landscape garden",WIKI("English_landscape_garden"),"picturesque","Gardens built to look natural."]]],
+  ["Evolution debates in Europe","Britain, Germany and Russia, 1850 to 1920","",[
+   ["Natural selection (Charles Darwin, 1859)",WIKI("On_the_Origin_of_Species"),"designer","Design with no one intending it."],
+   ["Art Forms in Nature (Ernst Haeckel, Germany, 1904)",WIKI("Kunstformen_der_Natur"),"designer","Radiolarians and jellyfish drawn as if nature were an artist."],
+   ["Survival of the fittest and social Darwinism",WIKI("Social_Darwinism"),"struggle","Nature as competition, used to justify empire."],
+   ["Kropotkin's Mutual Aid (1902)",WIKI("Mutual_Aid:_A_Factor_of_Evolution"),"struggle","A Russian naturalist's answer: cooperation."],
+   ["Nightingale's Notes on Nursing",WIKI("Notes_on_Nursing"),"healer","Light, air and beautiful things as part of healing."],
+   ["D'Arcy Thompson's On Growth and Form",WIKI("On_Growth_and_Form"),"teacher","Physics shaping shells, bones and cells."]]],
+  ["The United States as a settler nation","1800s and 1900s","",[
+   ["Nature, the NOT ME (Emerson, 1836)",WIKI("Nature_(essay)"),"separate","Nature as everything outside the self."],
+   ["Wilderness and national parks (John Muir)",WIKI("John_Muir"),"wilderness","Untouched land set aside, after Native peoples were removed."],
+   ["The Wilderness Act (1964)",WIKI("Wilderness_Act"),"wilderness","Wilderness defined in law as land where people are only visitors."],
+   ["The Hudson River School",WIKI("Hudson_River_School"),"sublime","American painters who made valleys and waterfalls sublime."],
+   ["Intelligent design and Kitzmiller v. Dover (2005)",WIKI("Kitzmiller_v._Dover_Area_School_District"),"designer","A federal court ruled intelligent design could not be taught as science."],
+   ["The frontier thesis",WIKI("Frontier_thesis"),"enemy","Taming the wild as the national story."],
+   ["Conservation as development (Pinchot)",WIKI("Gifford_Pinchot"),"resource","Protect nature in order to use it well."],
+   ["Silent Spring (Carson, 1962)",WIKI("Silent_Spring"),"enemy","What the war on insects did to birds, water and people."],
+   ["Olmsted's parks",WIKI("Frederick_Law_Olmsted"),"healer","City parks designed as public health."],
+   ["The land ethic (Leopold) and Whitman",WIKI("Land_ethic"),"self","The community grows to include soil, water and animals."]]],
+  ["Colonialism and its critics","the Caribbean, Africa and the plantation world","Writers from colonized places on how land and people were made into resources.",[
+   ["Decolonial ecology (Malcom Ferdinand, Martinique)",R.ferdinand.links[0][1],"resource","Colonialism treated land and people as one resource."],
+   ["A Billion Black Anthropocenes (Yusoff)",R.yusoff.links[0][1],"resource","Geology's language and the language of slavery."],
+   ["Plantation economies",WIKI("Plantation_economy"),"resource","Land, plants and people organized for export."],
+   ["Fortress conservation",WIKI("Fortress_conservation"),"wilderness","Parks made by evicting the people who lived there."],
+   ["Biopiracy",WIKI("Biopiracy"),"healer","Medicinal knowledge taken without credit or payment."]]],
+  ["Modern ecology and Earth system science","Europe and the US, 1900s to now","",[
+   ["The Gaia hypothesis (Lovelock and Margulis)",WIKI("Gaia_hypothesis"),"system","Life keeps Earth livable."],
+   ["Gaia as an intrusive force (Stengers, Belgium)",R.stengers.links[0][1],"system","Gaia does not care about us."],
+   ["Symbiogenesis (Margulis)",WIKI("Symbiogenesis"),"struggle","Complex cells began as merged bacteria."],
+   ["Deep ecology (Arne Naess, Norway)",WIKI("Deep_ecology"),"self","An ecological self that includes the world around it."],
+   ["Plant perception",WIKI("Plant_perception_(physiology)"),"cointel","Plants sense and respond without brains."],
+   ["Mycorrhizal networks",WIKI("Mycorrhizal_network"),"cointel","Fungi linking roots, and the debate over how much they share."],
+   ["Physarum, the slime mould",WIKI("Physarum_polycephalum"),"cointel","A single cell that solves mazes."],
+   ["Biomimicry",WIKI("Biomimetics"),"teacher","Copying nature's designs."],
+   ["Turing patterns (Alan Turing, Britain, 1952)",WIKI("Turing_pattern"),"designer","Spots and stripes that form on their own."],
+   ["The Blind Watchmaker (Richard Dawkins, 1986)",WIKI("The_Blind_Watchmaker"),"designer","Evolution as a designer without a mind."],
+   ["Evolutionary algorithms",WIKI("Evolutionary_algorithm"),"designer","Software that evolves designs instead of drawing them."]]],
+  ["Feminist, queer and Black critical theory","Europe and the US, 1970s to now","",[
+   ["Ecofeminism",WIKI("Ecofeminism"),"mother","Links the treatment of nature and of women."],
+   ["A Cyborg Manifesto and naturecultures (Haraway)",WIKI("A_Cyborg_Manifesto"),"construct","Refuses the line between natural and artificial."],
+   ["Four ontologies (Philippe Descola, France)",WIKI("Philippe_Descola"),"separate","Splitting nature from culture is one way of seeing among four, not the default."],
+   ["Feminism and the Mastery of Nature (Plumwood, Australia)",WIKI("Val_Plumwood"),"separate","The human and nature split ranks reason over body, men over women, colonizer over colonized."],
+   ["We Have Never Been Modern (Latour, France)",WIKI("Bruno_Latour"),"construct","The nature and society split was never real."],
+   ["Xenofeminism",R.xf.links[0][1],"change","If nature is unjust, change nature."],
+   ["Who counts as human (Weheliye, Jackson)",R.posthuman.links[1][1],"change","Black studies on the lines drawn between human and not."]]],
+  ["Biotechnology labs","the US and worldwide, 2010s to now","",[
+   ["CRISPR and de-extinction",WIKI("De-extinction"),"change","Biotechnology that edits and revives life."],
+   ["Xenobots (Kriegman, Bongard and Levin, 2020)",WIKI("Xenobot"),"change","Frog cells rebuilt into tiny living machines designed by a computer."],
+   ["Xenobot bodies evolved in software",WIKI("Xenobot"),"designer","Shapes found by an evolutionary algorithm, then built from cells."],
+   ["Xenobots that make copies of themselves (2021)",WIKI("Xenobot"),"construct","Neither animal nor robot, and able to gather cells into new xenobots."]]],
+  ["Afrofuturism and solarpunk","the African diaspora and global, 1990s to now","",[
+   ["Afrofuturism",WIKI("Afrofuturism"),"survived","Black futures carried by culture and technology."],
+   ["Solarpunk",WIKI("Solarpunk"),"survived","Hopeful futures built with plants and sunlight."],
+   ["The Carrier Bag Theory (Le Guin)",R.carrier.links[0][1],"survived","A story that gathers instead of conquering."]]]
+ ],
+ tech:[
+  ["Indigenous peoples of North America and the Pacific","long practice to now","",[
+   ["Making Kin with the Machines (Hawaiian, Cree, Lakota)",R.makingKin.links[0][1],"techkin","AI as a relation, not a tool or a slave."],
+   ["Polynesian wayfinding",WIKI("Polynesian_navigation"),"cosmo","Navigating by stars, swells and birds."],
+   ["Future Ancestral Technologies (Cannupa Hanska Luger)",A.fat[2],"cosmo","Tools carried forward, not replaced."],
+   ["Indigenous data sovereignty and the CARE Principles",WIKI("Indigenous_data_sovereignty"),"politics","Who controls data about land and people."]]],
+  ["Aboriginal Australians, Inca and Mexica","Australia, the Andes and Mexico","",[
+   ["Budj Bim eel traps (Gunditjmara)",WIKI("Budj_Bim_Cultural_Landscape"),"cosmo","Engineering built around a relationship with eels."],
+   ["Quipu (Inca)",WIKI("Quipu"),"cosmo","Knotted cords that stored numbers and records."],
+   ["Chinampas (Mexica)",WIKI("Chinampa"),"cosmo","Farmland as an engineered wetland."]]],
+  ["China","from the Zhuangzi to now","",[
+   ["The gardener and the well sweep (Zhuangzi)",WIKI("Zhuangzi_(book)"),"tool","An early story about a man who refuses a labor-saving machine because it changes the heart of whoever uses it."],
+   ["Cosmotechnics (Yuk Hui)",WIKI("Yuk_Hui"),"cosmo","Every culture's tools carry its idea of the cosmos."]]],
+  ["Ancient Greece","about 700 BCE to 300 BCE","",[
+   ["Techne",WIKI("Techne"),"tool","Skill in making."],
+   ["Aristotle on self-moving tools",WIKI("Politics_(Aristotle)"),"labor","Machines imagined as replacements for enslaved people."],
+   ["Prometheus",WIKI("Prometheus"),"salvation","The fire thief whose gift to humans came with punishment."]]],
+  ["Jewish folklore","medieval and early modern Europe","",[
+   ["The Golem",WIKI("Golem"),"monster","A clay servant that can turn on its maker."]]],
+  ["Renaissance Germany","1500s","",[
+   ["De Re Metallica (Agricola, 1556)",WIKI("De_re_metallica"),"extraction","Mining described, and its critics recorded."]]],
+  ["Industrial Britain","1800 to 1900","",[
+   ["The Luddites",WIKI("Luddite"),"labor","Skilled workers protesting what machines did to their jobs."],
+   ["Frankenstein (Shelley, 1818)",WIKI("Frankenstein"),"monster","The creation that turns on its maker."],
+   ["Darwin among the Machines (Butler, 1863)",WIKI("Darwin_among_the_Machines"),"monster","Machines evolving to rule."],
+   ["Ada Lovelace's Note G (1843)",WIKI("Ada_Lovelace"),"blackbox","The machine only does what it is ordered to."],
+   ["Locksley Hall (Tennyson)",WIKI("Locksley_Hall"),"salvation","Progress as a train running forever."],
+   ["The Arts and Crafts movement (Morris)",WIKI("Arts_and_Crafts_movement"),"convivial","Handmade, useful, beautiful things."]]],
+  ["German and French philosophy","1840s to 1960s","",[
+   ["Historical materialism (Marx)",WIKI("Historical_materialism"),"driver","The hand-mill and the steam-mill make different societies."],
+   ["Organ projection (Ernst Kapp, 1877)",WIKI("Ernst_Kapp"),"extension","Tools as projections of the body."],
+   ["The Question Concerning Technology (Heidegger)",WIKI("The_Question_Concerning_Technology"),"enframing","The world seen as standing reserve."],
+   ["The Technological Society (Ellul)",WIKI("Jacques_Ellul"),"monster","Technique follows its own logic."]]],
+  ["The United States and Canada","1850s to now","",[
+   ["Walden (Thoreau)",WIKI("Walden"),"tool","Men become the tools of their tools."],
+   ["Emerson's Works and Days",wsearch("Society and Solitude Emerson"),"extension","Tools as extensions of limbs and senses."],
+   ["The stirrup thesis (Lynn White Jr., 1962)",WIKI("Great_Stirrup_Controversy"),"driver","A US historian's claim that the stirrup created feudalism. Most historians now reject it."],
+   ["The medium is the message (McLuhan, Canada)",WIKI("The_medium_is_the_message"),"driver","A medium changes us more than its content."],
+   ["The American technological sublime (Nye)",wsearch("Technological sublime"),"salvation","Awe before bridges, dams and rockets."],
+   ["Do Artifacts Have Politics? (Winner)",WIKI("Do_Artifacts_Have_Politics%3F"),"politics","Power built into things."],
+   ["More Work for Mother (Cowan)",WIKI("Ruth_Schwartz_Cowan"),"labor","Appliances that made more housework, not less."],
+   ["The ENIAC programmers",WIKI("ENIAC"),"labor","Six women whose work was left out of the story."],
+   ["The Whole Earth Catalog",WIKI("Whole_Earth_Catalog"),"convivial","Access to tools for ordinary people."],
+   ["Maintenance Art (Ukeles)",WIKI("Mierle_Laderman_Ukeles"),"maintenance","Care and upkeep as the real work."],
+   ["Why I Am Not Going to Buy a Computer (Wendell Berry, 1987)",WIKI("Wendell_Berry"),"neoluddite","A farmer and writer's case for saying no."],
+   ["Notes Toward a Neo-Luddite Manifesto (Chellis Glendinning, 1990)",WIKI("Neo-Luddism"),"neoluddite","Technology judged by its effect on communities and ecosystems."],
+   ["Amish selective adoption",WIKI("Amish"),"neoluddite","Communities decide technology by technology what to let in."],
+   ["Blood in the Machine (Brian Merchant, 2023)",LIB("Blood in the Machine"),"neoluddite","The Luddites retold as a labor story for the age of AI."]]],
+  ["Engineers, planners and futurists","France, the US and Britain, 1800s to now","",[
+   ["Society run by scientists (Saint-Simon)",WIKI("Henri_de_Saint-Simon"),"technocracy","An early 1800s plan for rule by scientists and industrialists."],
+   ["The Technocracy movement",WIKI("Technocracy_movement"),"technocracy","1930s engineers who wanted energy certificates instead of money."],
+   ["The Engineers and the Price System (Veblen, 1921)",WIKI("Thorstein_Veblen"),"technocracy","Engineers, not business owners, should run the economy."],
+   ["The technological fix (Alvin Weinberg, 1966)",WIKI("Technological_fix"),"solutionism","Can technology replace social change?"],
+   ["Solutionism (Evgeny Morozov, 2013)",WIKI("Evgeny_Morozov"),"solutionism","A critique of Silicon Valley's app for every problem."],
+   ["Transhumanism (Julian Huxley, 1957)",WIKI("Transhumanism"),"transhuman","Using science to move beyond the human."],
+   ["Xenobots (University of Vermont and Tufts, 2020)",WIKI("Xenobot"),"actor","Living machines made of frog cells that move and act on their own."],
+   ["Self-replicating xenobots (2021)",WIKI("Xenobot"),"monster","A creation that builds copies of itself from loose cells."]]],
+  ["Engineering nature","Europe, the US and the USSR, 1600s to now","",[
+   ["New Atlantis (Francis Bacon, 1627)",WIKI("New_Atlantis"),"mastery","Science aimed at enlarging human empire over nature."],
+   ["Polders (the Netherlands)",WIKI("Polder"),"mastery","Land pumped dry from the sea and kept dry by machines."],
+   ["Hetch Hetchy (California, 1913 onward)",WIKI("Hetch_Hetchy"),"mastery","A valley dammed for San Francisco's water, over John Muir's protests."],
+   ["The Aral Sea",WIKI("Aral_Sea"),"mastery","Soviet irrigation drained much of a once vast lake."],
+   ["Terraforming (Jack Williamson, 1942)",WIKI("Terraforming"),"mastery","Remaking a whole planet for human life."],
+   ["Dialectic of Enlightenment (Horkheimer and Adorno, Germany)",WIKI("Dialectic_of_Enlightenment"),"mastery","Mastery over nature turns into mastery over people."],
+   ["Room for the River (the Netherlands)","https://en.wikipedia.org/w/index.php?search=Room+for+the+River+Netherlands","mastery","A counterexample: giving rivers space instead of walling them in."]]],
+  ["Accelerationists","Britain, the US and online, 1990s to now","",[
+   ["Lord of Light (Roger Zelazny, 1967)",WIKI("Lord_of_Light"),"accel","The science fiction novel where the word comes from."],
+   ["The Cybernetic Culture Research Unit (Nick Land, Warwick)",WIKI("Cybernetic_Culture_Research_Unit"),"accel","1990s theory that pushed capitalism and technology to their limits."],
+   ["#Accelerate manifesto (Williams and Srnicek, 2013)",WIKI("Accelerationism"),"accel","A left version: use automation to free people from work."],
+   ["Effective accelerationism",WIKI("Effective_accelerationism"),"accel","A 2020s Silicon Valley stance against limits on AI."]]],
+  ["Science and technology studies","Europe and the US, 1980s to now","",[
+   ["Actor-network theory (Latour, Callon, Law)",WIKI("Actor%E2%80%93network_theory"),"actor","People and things as actors in one network."],
+   ["Vibrant Matter (Jane Bennett, 2010)",LIB("Vibrant Matter"),"actor","Grids, metals and food as forces that act."],
+   ["Critical theory of technology (Andrew Feenberg)",WIKI("Andrew_Feenberg"),"politics","Design choices are political, so they can be made democratically."],
+   ["Social construction of technology (Pinch and Bijker)",WIKI("Social_construction_of_technology"),"shaped","No design is inevitable."],
+   ["Black boxes (Latour)",WIKI("Black_box"),"blackbox","Once it works, nobody asks how."],
+   ["Tools for Conviviality (Illich, written in Mexico)",WIKI("Tools_for_Conviviality"),"convivial","Tools people can understand and control."],
+   ["Small Is Beautiful (Schumacher)",WIKI("Small_Is_Beautiful"),"convivial","A founding text of the appropriate technology movement."]]],
+  ["Black studies, design justice and Afrofuturism","the US, 2000s to now","",[
+   ["Race After Technology (Ruha Benjamin)",WIKI("Ruha_Benjamin"),"politics","Discrimination built into code."],
+   ["The coded gaze (Joy Buolamwini)",WIKI("Joy_Buolamwini"),"politics","Face recognition that fails on darker skin."],
+   ["Design Justice",R.justice.links[1][1],"politics","Design led by those most affected."],
+   ["Afrofuturism and Conversations with Bina48 (Dinkins)",A.bina[2],"techkin","Asking a robot who taught it about race."]]],
+  ["Feminist technoscience and disability studies","1980s to now","",[
+   ["A Cyborg Manifesto (Haraway)",WIKI("A_Cyborg_Manifesto"),"extension","The line between body and machine breaks down."],
+   ["Disability studies",WIKI("Disability_studies"),"extension","Prosthetics as lived experience, not a metaphor."],
+   ["The ethics of care",WIKI("Ethics_of_care"),"maintenance","Starting from relationships and upkeep."],
+   ["Maintenance and Care (Mattern)","https://placesjournal.org/article/maintenance-and-care/","maintenance","Repair as the real work of a broken world."],
+   ["TechnoFeminism (Judy Wajcman)",WIKI("Judy_Wajcman"),"techfem","Gender is built into tools, and tools shape gender."],
+   ["Cyberfeminist Manifesto (VNS Matrix, Australia, 1991)",WIKI("VNS_Matrix"),"techfem","Artists claiming the computer for feminism."],
+   ["Zeros + Ones (Sadie Plant, Britain, 1997)",wsearch("Sadie Plant Zeros and Ones"),"techfem","Computing traced back through weaving and Ada Lovelace."],
+   ["Xenofeminism (Laboria Cuboniks)",R.xf.links[0][1],"techfem","Feminism that seizes technology instead of rejecting it."]]],
+  ["Hackers, repairers and supply chain critics","global, 2000s to now","",[
+   ["The Critical Engineering Manifesto (Berlin)",R.critical.links[0][1],"blackbox","The more we depend on it, the more we must open it."],
+   ["Low-tech Magazine (Barcelona)",R.critical.links[2][1],"convivial","A solar-powered website."],
+   ["Right to repair",WIKI("Right_to_repair"),"maintenance","The fight to fix what you own."],
+   ["Anatomy of an AI System (Crawford and Joler)",A.anatomy[2],"extraction","One device traced from mine to landfill."],
+   ["Lithium and the green transition (Riofrancos)",R.riofrancos.links[0][1],"extraction","Clean energy still runs on mining."]]]
+ ]
+};
+/* Coscieme et al. 2020: three overlapping clusters of how languages conceptualize nature */
+const COS_URL="https://orbi.uliege.be/bitstream/2268/241491/1/Coscieme%20et%20al%202020%20-%20Multiple%20conceptualizations%20of%20nature.pdf";
+const COS_DOI="https://doi.org/10.1016/j.envsci.2019.10.018";
+const COS_SJSU="https://www-sciencedirect-com.libaccess.sjlibrary.org/science/article/pii/S1462901119303491";
+const CLUSTERS={i:["Inclusive","Humans are an integral part of nature, including cities and farms."],n:["Non-inclusive","Humans are not part of nature. Nature is often pristine or untouched."],d:["Deifying","Nature belongs to a spiritual realm: a deity, or a creation made by one."],m:["Mixed","Questions the categories, or sits between them."]};
+/* closest cluster for each nature lens: our reading, not the paper's */
+const LENS_CL={kin:"i",sacred:"d",mother:"d",order:"i",dominion:"d",machine:"n",resource:"n",specimen:"n",separate:"n",sublime:"n",wilderness:"n",garden:"i",picturesque:"n",healer:"m",enemy:"n",system:"i",struggle:"i",self:"i",change:"m",construct:"m",cointel:"i",designer:"m",teacher:"n",survived:"i"};
+/* terms the paper discusses: [cluster, language, term, meaning as the paper glosses it, closest lens] */
+const WORDS=[
+ ["i","Dagaare (Ghana)","Tengezu waalu","All living and non-living things","system"],
+ ["i","Hungarian","Természet","Everything","system"],
+ ["i","Kyrgyz","Элжер (Eljer)","People and the land","kin"],
+ ["i","Rarámuri (Mexico)","Iwigara","All life connected; nature as relatives sharing space","kin"],
+ ["i","Indigenous Latin American ontologies","Earth beings","Mountains, rivers and lands as animate beings","kin"],
+ ["i","Japanese","里山 Satoyama, 里海 Satoumi","Landscapes and seascapes where people and nature benefit each other","garden"],
+ ["n","Chinese","自然 Ziran","A pristine or untouched environment","wilderness"],
+ ["n","Chinese","大自然 Daziran","Everything not made by humans","separate"],
+ ["n","Chinese","自然界 Ziranjie","The natural world; everything non-human","separate"],
+ ["n","Japanese","自然 Shizen","Nature as greater than people and beyond their control","separate"],
+ ["d","Bengali and Hindi","Vasudha","Mother Earth","mother"],
+ ["d","Quechua and Aymara (Andes)","Pachamama","Mother Earth, a personified deity","mother"],
+ ["d","Mapuche (Chile, Argentina)","Ñuke Mapu","Mother Earth","mother"],
+ ["d","Chokosi (Ghana)","Nyeme Agyerim","Nature as God's gift, with humans as receivers","dominion"],
+ ["d","Chewa (Malawi)","Chilengedwe","The Creation","sacred"],
+ ["d","Shona (Zimbabwe)","Zvisikwa zva Mwari","God's Creation","sacred"],
+ ["d","Xhosa (South Africa)","Indalo","The Creation, not including humans","sacred"],
+ ["d","Xhosa (South Africa)","Denga nepasi","Heaven and Earth","sacred"],
+ ["d","Kyrgyz","Жаратылыш (Jaratylysh)","Everything that was created","sacred"],
+ ["d","Luo (Kenya)","Chwech","The Creation","sacred"],
+ ["m","Swahili","Asili, mazingira","Original or unaltered; environment. The paper notes there is no single word for nature.","separate"],
+ ["m","Amazigh (North Africa)","Tazeguezoute","Greenness, nature by its color","picturesque"]
+];
+const CULT_NOTE="A culture is not one point of view. Each group names where an idea was practiced or written down, and most traditions hold several of these views at once. Click a lens tag to open that lens.";
+const cultFor=(deck,id)=>(CULT[deck]||[]).flatMap(([c,,,ideas])=>ideas.filter(x=>x[2]===id).map(x=>[c,...x]));
 
 /* lens motifs */
 let svgId=0;
@@ -1060,19 +1502,20 @@ function lensSVG(m){
 function lensCard(deck,l,i,compact){
   const lead=deck.key==="nature"||deck.key==="tech"?"Sees "+(deck.key==="nature"?"nature":"technology")+" as ":deck.key==="users"?"":"";
   const cq=!compact&&l.quote&&l.quote.q&&l.quote.q.length<110?`<p class="cq">“${esc(l.quote.q)}”</p>`:"";
-  return `<button class="card" type="button" data-deck="${deck.key}" data-id="${l.id}" style="--h:${l.h}">
+  const clk=deck.key==="nature"&&LENS_CL[l.id]?" cl-"+LENS_CL[l.id]:"";
+  return `<button class="card${clk}" type="button" data-deck="${deck.key}" data-id="${l.id}" style="--h:${l.h}">
     <div class="card-top"><span class="num">${esc(cap(deck.noun))} ${num(i)}</span>${lensSVG(l.motif)}</div>
     <div class="sees">${esc(lead+l.sees)}</div>
-    <h3>${esc(l.name)}</h3>
+    <h3>${esc(l.name)}</h3>${l.aka?`<div class="aka">${esc(l.aka)}</div>`:""}
     <p>${esc(compact?l.q:l.short)}</p>${cq}
-    <div class="weeks">${weeksOf(l).map(w=>`<span class="wk">Week ${w}</span>`).join("")}</div>
+    <div class="weeks">${deck.key==="nature"&&LENS_CL[l.id]?`<span class="cl cl-${LENS_CL[l.id]}">${esc(CLUSTERS[LENS_CL[l.id]][0])}</span>`:""}${weeksOf(l).map(w=>`<span class="wk">Week ${w}</span>`).join("")}</div>
   </button>`;
 }
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 function listCard(deck,x){
   const h=deck.key==="things"?150:28;
-  return `<article class="item" style="--h:${h}">
-    <div class="item-top"><span class="cat">${esc(x.c)}</span>${x.new?`<span class="new" title="No source yet">NEW</span>`:""}</div>
+  return `<article class="item${catCls(deck.key,x.c)}" style="--h:${h};${catVar(deck.key,x.c)}">
+    <div class="item-top"><span class="cat${catCls(deck.key,x.c)}">${esc(x.c)}</span>${x.new?`<span class="new" title="No source yet">NEW</span>`:""}</div>
     <h3>${esc(x.n)}</h3>
     ${x.d?`<p>${esc(cap(x.d))}</p>`:""}
     ${x.new?`<p class="hint">No link yet. Finding a source for its history is part of the work.</p>`:""}
@@ -1092,17 +1535,20 @@ function srcCard(s){
 }
 
 /* ---------- state + controls ---------- */
-const state={deck:"nature",week:"all",cat:"all",type:"all",topic:"all",q:""};
+const state={view:"cards",cl:"all",deck:"nature",week:"all",cat:"all",type:"all",topic:"all",q:""};
 const tabs=document.getElementById("tabs"),controls=document.getElementById("controls"),grid=document.getElementById("grid"),deckBlurb=document.getElementById("deckBlurb");
 tabs.innerHTML=DECKS.map(d=>`<button type="button" role="tab" class="tab" data-tab="${d.key}" aria-selected="${d.key===state.deck}">${esc(d.label)}<span class="tc">${d.data.length}</span></button>`).join("");
 tabs.addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;setDeck(b.dataset.tab)});
-function setDeck(k){state.deck=k;state.week=state.cat=state.type=state.topic="all";state.q="";tabs.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===k));try{history.replaceState(null,"","#"+k)}catch(e){}renderControls();render()}
+function setDeck(k){state.deck=k;state.week=state.cat=state.type=state.topic=state.cl="all";if(state.view==="words"&&k!=="nature")state.view="cards";state.q="";tabs.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===k));try{history.replaceState(null,"","#"+k+(state.view!=="cards"&&CULT[k]?"-"+state.view:""))}catch(e){}renderControls();render()}
 const chip=(group,val,label,cur)=>`<button class="chip" type="button" data-g="${group}" data-v="${val}" aria-pressed="${cur===val}">${esc(label)}</button>`;
 function renderControls(){
   const d=DECKS.find(x=>x.key===state.deck);deckBlurb.textContent=d.blurb;
   let h="";
-  if(d.kind==="lens"){h+=`<div class="chips" role="group" aria-label="Filter by week">${chip("week","all","All weeks",state.week)}${[5,6,7,8].map(w=>chip("week",String(w),"Week "+w,state.week)).join("")}</div>`}
-  if(d.kind==="list"){const cats=[...new Set(d.data.map(x=>x.c))];h+=`<div class="chips" role="group" aria-label="Filter by category">${chip("cat","all","All",state.cat)}${cats.map(c=>chip("cat",c,c,state.cat)).join("")}${chip("cat","__new","NEW only",state.cat)}</div>`}
+  const hasCult=!!CULT[d.key];
+  if(hasCult)h+=`<div class="chips" role="group" aria-label="View">${chip("view","cards","Cards",state.view)}${chip("view","culture","By culture",state.view)}${d.key==="nature"?chip("view","words","Words for nature",state.view):""}</div>`;
+  if(d.key==="nature"&&state.view==="cards")h+=`<div class="chips" role="group" aria-label="Filter by cluster">${chip("cl","all","Any cluster",state.cl)}${Object.entries(CLUSTERS).map(([k,[n]])=>chip("cl",k,n,state.cl).replace('class="chip"','class="chip cl-'+k+'"')).join("")}</div>`;
+  if(d.kind==="lens"&&!(hasCult&&state.view!=="cards")){h+=`<div class="chips" role="group" aria-label="Filter by week">${chip("week","all","All weeks",state.week)}${[5,6,7,8].map(w=>chip("week",String(w),"Week "+w,state.week)).join("")}</div>`}
+  if(d.kind==="list"){const cats=[...new Set(d.data.map(x=>x.c))];h+=`<div class="chips" role="group" aria-label="Filter by category">${chip("cat","all","All",state.cat)}${cats.map(c=>chip("cat",c,c,state.cat).replace('class="chip"',`class="chip${catCls(d.key,c)}" style="${catVar(d.key,c)}"`)).join("")}${chip("cat","__new","NEW only",state.cat)}</div>`}
   if(d.kind==="src"){h+=`<div class="chips" role="group" aria-label="Filter by type">${chip("type","all","All types",state.type)}${["Reading","Artwork","Model","Resource"].map(t=>chip("type",t,t+"s",state.type)).join("")}${chip("type","gathers","Gathers data",state.type)}</div>
      <div class="chips" role="group" aria-label="Filter by topic">${chip("topic","all","Any topic",state.topic)}${chip("topic","n","Nature",state.topic)}${chip("topic","t","Technology",state.topic)}${chip("topic","b","Both",state.topic)}</div>`}
   if(d.kind!=="lens")h+=`<label class="search"><span class="sr">Search</span><input id="q" type="search" placeholder="Search ${esc(d.label.toLowerCase())}" value="${esc(state.q)}"></label>`;
@@ -1110,11 +1556,24 @@ function renderControls(){
   controls.innerHTML=h;
   const q=document.getElementById("q");if(q)q.addEventListener("input",()=>{state.q=q.value.toLowerCase();render()});
 }
-controls.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;state[b.dataset.g]=b.dataset.v;controls.querySelectorAll(`.chip[data-g="${b.dataset.g}"]`).forEach(c=>c.setAttribute("aria-pressed",c===b));render()});
+controls.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;state[b.dataset.g]=b.dataset.v;if(b.dataset.g==="view"){try{history.replaceState(null,"","#"+state.deck+(state.view!=="cards"?"-"+state.view:""))}catch(e){}renderControls();render();return}controls.querySelectorAll(`.chip[data-g="${b.dataset.g}"]`).forEach(c=>c.setAttribute("aria-pressed",c===b));render()});
 function render(){
   const d=DECKS.find(x=>x.key===state.deck);let items,html;
-  if(d.kind==="lens"){items=d.data.map((l,i)=>[l,i]).filter(([l])=>state.week==="all"||weeksOf(l).includes(+state.week));html=items.map(([l,i])=>lensCard(d,l,i)).join("");grid.className="grid"}
-  else if(d.kind==="list"){items=d.data.filter(x=>(state.cat==="all"||(state.cat==="__new"?x.new:x.c===state.cat))&&(!state.q||(x.n+" "+x.d).toLowerCase().includes(state.q)));html=items.map(x=>listCard(d,x)).join("");grid.className="grid tight"}
+  if(d.key==="nature"&&state.view==="words"){
+    const hue=id=>(d.data.find(l=>l.id===id)||{}).h;const nm=id=>(d.data.find(l=>l.id===id)||{}).name||id;
+    grid.className="";
+    grid.innerHTML=`<div class="words-intro"><p>How would you translate the word “nature” into your language? Coscieme and 39 co-authors asked native speakers of 63 languages, spoken by more than 60 percent of the world's population. The answers fell into three overlapping clusters.</p><p class="cg-n">These are the terms the paper discusses in its text. The glosses are the paper's, and each reflects how individual speakers use the word. The paper treats the clusters as a continuum, not strict boxes. The lens tags are our own pairings. <a href="${COS_SJSU}" target="_blank" rel="noopener">SJSU library ↗</a> · <a href="${COS_URL}" target="_blank" rel="noopener">Free PDF ↗</a> · <a href="${COS_DOI}" target="_blank" rel="noopener">DOI ↗</a></p></div><div class="wgrid">`+["i","n","d","m"].map(k=>{const rows=WORDS.filter(w=>w[0]===k);const lenses=d.data.filter(l=>LENS_CL[l.id]===k);return `<section class="wg"><div class="clhead cl-${k}"><h3>${esc(CLUSTERS[k][0])}</h3></div><p>${esc(k==="m"?"Terms the paper does not place in one cluster.":CLUSTERS[k][1])} Lenses closest to it: ${lenses.map(l=>`<button class="lpill" type="button" data-go="${l.id}" data-deckgo="nature" style="--h:${l.h}">${esc(l.name)}</button>`).join(" ")}</p><div class="wrows">${rows.map(([,lang,term,mean,id])=>`<div class="wrow"><span class="wlang">${esc(lang)}</span><span class="wterm">${esc(term)}</span><span class="wmean">${esc(mean)}</span><button class="lpill" type="button" data-go="${id}" data-deckgo="nature" style="--h:${hue(id)}">${esc(nm(id))}</button></div>`).join("")}</div></section>`}).join("")+`</div>`;
+    document.getElementById("count").textContent=WORDS.length+" words · 3 clusters";return}
+  if(d.kind==="lens"&&CULT[d.key]&&state.view==="culture"){
+    const hue=id=>(d.data.find(l=>l.id===id)||{}).h;const nm=id=>(d.data.find(l=>l.id===id)||{}).name||id;
+    const groups=CULT[d.key];const n=groups.reduce((a,g)=>a+g[3].length,0);
+    grid.className="";
+    grid.innerHTML=`<p class="cult-note">${esc(CULT_NOTE)}</p><div class="cult">`+groups.map(([c,w,note,ideas])=>`<section class="cg"><h3>${esc(c)}</h3><p class="cg-where">${esc(w)}</p>${note?`<p class="cg-n">${esc(note)}</p>`:""}<ul class="ideas">${ideas.map(([t,u,id,line])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a><span class="il">${esc(line)}</span><button class="lpill" type="button" data-go="${id}" data-deckgo="${d.key}" style="--h:${hue(id)}">${esc(nm(id))}</button></li>`).join("")}</ul></section>`).join("")+`</div>`;
+    document.getElementById("count").textContent=groups.length+" traditions · "+n+" ideas";return}
+  if(d.kind==="lens"){items=d.data.map((l,i)=>[l,i]).filter(([l])=>(state.week==="all"||weeksOf(l).includes(+state.week))&&(state.cl==="all"||d.key!=="nature"||LENS_CL[l.id]===state.cl));html=items.map(([l,i])=>lensCard(d,l,i)).join("");grid.className="grid";
+    if(d.key==="nature"&&state.view==="cards"&&items.length){grid.className="";html=["i","n","d","m"].map(k=>{const g=items.filter(([l])=>LENS_CL[l.id]===k);return g.length?`<section class="clgroup"><div class="clhead cl-${k}"><h3>${esc(CLUSTERS[k][0])}</h3><p>${esc(CLUSTERS[k][1])}</p><span class="tc">${g.length} ${g.length===1?"lens":"lenses"}</span></div><div class="grid">${g.map(([l,i])=>lensCard(d,l,i)).join("")}</div></section>`:""}).join("")}}
+  else if(d.kind==="list"){items=d.data.filter(x=>(state.cat==="all"||(state.cat==="__new"?x.new:x.c===state.cat))&&(!state.q||(x.n+" "+x.d).toLowerCase().includes(state.q)));html=items.map(x=>listCard(d,x)).join("");grid.className="grid tight";
+    if(items.length&&CATS[d.key]){grid.className="";html=CATS[d.key].map(c=>{const g=items.filter(x=>x.c===c);return g.length?`<section class="clgroup" style="${catVar(d.key,c)}"><div class="clhead${catCls(d.key,c)}"><h3>${esc(c)}</h3><span class="tc">${g.length} ${esc(g.length===1?d.noun:d.noun.replace(/y$/,"ie")+"s")}</span></div><div class="grid tight">${g.map(x=>listCard(d,x)).join("")}</div></section>`:""}).join("")}}
   else{items=SOURCES.filter(s=>(state.type==="all"||(state.type==="gathers"?s.gathers:s.type===state.type))&&(state.topic==="all"||s.topic===state.topic)&&(!state.q||(s.t+" "+s.a+" "+s.d).toLowerCase().includes(state.q)));html=items.map(srcCard).join("");grid.className="grid tight"}
   grid.innerHTML=html||`<p class="empty">Nothing matches. Clear a filter or the search.</p>`;
   document.getElementById("count").textContent=items.length+" of "+d.data.length;
@@ -1130,13 +1589,14 @@ function openLens(deckKey,id){
   const Q=l.quote||{};const prev=d.data[(i-1+d.data.length)%d.data.length],next=d.data[(i+1)%d.data.length];
   const isData=deckKey==="data";
   sheet.innerHTML=`
-    <div class="sheet-head">${lensSVG(l.motif)}<div style="min-width:0"><div class="num">${esc(d.label)} · ${num(i)} of ${d.data.length}</div><h2 id="sheetTitle">${esc(l.name)}</h2><div class="sees">${esc(isData?"Type of data: ":"")}${esc(l.sees)}</div></div>
+    <div class="sheet-head">${lensSVG(l.motif)}<div style="min-width:0"><div class="num">${esc(d.label)} · ${num(i)} of ${d.data.length}</div><h2 id="sheetTitle">${esc(l.name)}</h2>${l.aka?`<div class="aka">Also called: ${esc(l.aka)}</div>`:""}<div class="sees">${esc(isData?"Type of data: ":"")}${esc(l.sees)}</div></div>
     <button class="btn ghost close" type="button" id="closeBtn">Close</button></div>
     ${Q.q?oneQuote(Q.q,Q.s,Q.u)+(Q.q2?oneQuote(Q.q2,Q.s2,Q.u2):""):""}
     <h4>Overview</h4><p class="overview">${esc(l.overview)}</p>
     <h4>${isData?"Tools and examples":"Where it shows up"}</h4><p class="ex">${esc(l.ex.replace(/^Tools: /,""))}</p>
+    ${deckKey==="nature"&&LENS_CL[l.id]?`<h4>Inclusive, non-inclusive or deifying?</h4><p class="ex">Closest cluster: <span class="cl cl-${LENS_CL[l.id]}">${esc(CLUSTERS[LENS_CL[l.id]][0])}</span> ${esc(CLUSTERS[LENS_CL[l.id]][1])} ${WORDS.some(w=>w[4]===l.id)?"Words for nature that fit this lens: "+WORDS.filter(w=>w[4]===l.id).map(w=>w[2]+" ("+w[1]+")").join(", ")+".":""} Coscieme et al. 2020: <a href="${COS_SJSU}" target="_blank" rel="noopener">SJSU library ↗</a> <a href="${COS_URL}" target="_blank" rel="noopener">Free PDF ↗</a></p>`:""}
+    ${cultFor(deckKey,l.id).length?`<h4>Where the idea comes from</h4><ul class="roots">${cultFor(deckKey,l.id).map(([c,t,u,,line])=>`<li><div class="rc">${esc(c)}</div><a class="rt" href="${esc(u)}" target="_blank" rel="noopener">${esc(t)} ↗</a><div class="ra">${esc(line)}</div></li>`).join("")}</ul>`:""}
     <h4>The question it asks</h4><p class="q">${esc(l.q)}</p>
-    <h4>Try it on your natural thing</h4><p class="try">${esc(l.tryit)}</p>
     ${Q.find?`<h4>Find the line</h4><p class="find">${esc(Q.find)}</p>`:""}
     ${Q.caution?`<p class="caution"><span class="eyebrow">Check your source</span><br>${esc(Q.caution)}</p>`:""}
     ${l.readings&&l.readings.length?`<h4>Course readings</h4><ul class="list">${l.readings.map(readingHTML).join("")}</ul>`:""}
@@ -1174,9 +1634,11 @@ document.getElementById("dealBtn").addEventListener("click",deal);
 document.getElementById("clearBtn").addEventListener("click",()=>{document.getElementById("dealt").hidden=true;document.getElementById("clearBtn").hidden=true});
 
 /* init */
-const h0=(location.hash||"").slice(1);
+let h0=(location.hash||"").slice(1);{const m=h0.match(/-(culture|words)$/);if(m){state.view=m[1];h0=h0.slice(0,-m[0].length)}}
 setDeck(DECKS.some(d=>d.key===h0)?h0:"nature");
 
 </script>
+
+
 </body>
 </html>
