@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Palette Vote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cobalt:#2f7d7d;
+  --cobalt-deep:#14202a;
+  --chrome:#a8e6c0;
+  --chrome-deep:#d63d84;
+  --pulpred:#a01e5c;
+  --mars:#5f7d1f;
+  --jet:#14202a;
+  --pulp:#eef4ee;
+  --pulp-pale:#f7fbf5;
+  --pulp-deep:#dbe8dd;
+  --rule:#7db8c4;
+  --glass:rgba(244,248,242,.90);
+  --cream:#f4f8f2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--jet);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;
+  background:
+    linear-gradient(160deg,rgba(47,125,125,.14) 0%,rgba(139,168,56,.13) 50%,rgba(214,61,132,.13) 100%),
+    var(--cream);
+}
+
+/* ══ THE COVER ══════════════════════════════════════════════════════ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{max-width:1240px;margin:0 auto;padding:14px 18px 16px}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px;
+}
+.stripes{height:22px;border:3px solid var(--jet);background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px)}
+h1.logo{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,8.6vw,88px);
+  line-height:.86;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:10px 0 4px;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{display:flex;align-items:center;gap:14px;border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);padding:9px 0;margin-top:12px}
+.roundel{
+  width:56px;height:56px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px;
+}
+.cover-tag{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;color:#fff;line-height:1.2;flex:1;min-width:0}
+
+/* ══ the sheet ══════════════════════════════════════════════════════ */
+main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
+
+.runmeter{margin-bottom:14px}
+.runmeter-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin-bottom:6px}
+.runmeter-top .pct{color:var(--pulpred)}
+.track{height:16px;border:3px solid var(--jet);background:var(--glass);overflow:hidden}
+.fill{height:100%;width:0%;transition:width .45s ease;background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+
+.views{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 13px;cursor:pointer;border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet)}
+.chip:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
+.chip:focus-visible{outline:3px solid var(--pulpred);outline-offset:2px}
+.chip[aria-current="true"]{background:var(--cobalt);color:#fff;box-shadow:3px 3px 0 var(--chrome-deep)}
+
+.sheet-frame{border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);background:#fff;position:relative}
+.sheet-bar{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.sheet-bar .arm{color:var(--chrome)}
+
+/* ══ the palette boards ═════════════════════════════════════════════ */
+.boardgrid{display:grid;gap:14px;padding:14px;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+.board{
+  --bg:#fff; --ink:var(--jet); --sh:var(--jet);
+  background:var(--bg);border:4px solid var(--jet);box-shadow:6px 6px 0 var(--sh);
+  display:flex;flex-direction:column;min-width:0;cursor:pointer;position:relative;
+  transition:transform .08s,box-shadow .08s;
+}
+.board:hover{transform:translate(2px,2px);box-shadow:4px 4px 0 var(--sh)}
+.board.q1{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
+.board.q2{--bg:#faead0;--ink:#8a5a16;--sh:#c9922f}
+.board.q3{--bg:#ffe1ef;--ink:#a01e5c;--sh:#d63d84}
+.board.q4{--bg:#eaf3cd;--ink:#4d661a;--sh:#8ba838}
+.board.q5{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
+.board.q6{--bg:#e2e6e8;--ink:#14202a;--sh:#5c6b74}
+.board.q7{--bg:#e8dff0;--ink:#5b4173;--sh:#8a6fb0}
+.board.picked{outline:5px solid var(--pulpred);outline-offset:4px}
+.board.mine .board-hd{background:var(--pulpred)}
+
+.board-hd{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  border-bottom:3px solid var(--jet);padding:8px 11px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--ink);
+}
+.board-hd .count{color:var(--chrome);font-weight:600;font-size:10px;letter-spacing:1.5px}
+/* The image keeps its own shape. Full width, natural height, never cropped. */
+.board-img{padding:12px;border-bottom:3px dashed var(--jet)}
+.board-img img{display:block;width:100%;height:auto;border:3px solid var(--jet);background:#fff}
+.board-foot{padding:11px;display:flex;gap:8px}
+.board-foot .btn{flex:1;padding:8px;font-size:10px}
+.board-foot .zoom{flex:none}
+
+.stamp{
+  position:absolute;top:44px;right:-10px;width:62px;height:62px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:none;place-items:center;text-align:center;padding:4px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.1;transform:rotate(-8deg);pointer-events:none;
+}
+.board.picked .stamp,.board.mine .stamp{display:grid}
+
+.post-empty{font-family:'Space Grotesk',sans-serif;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;text-align:center;padding:30px 8px;border:3px dashed rgba(20,32,42,.3);margin:14px;grid-column:1/-1;line-height:1.8}
+
+/* ══ results ════════════════════════════════════════════════════════ */
+.results{padding:14px;display:flex;flex-direction:column;gap:14px}
+.winner{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  background:var(--cobalt);border:4px solid var(--jet);box-shadow:6px 6px 0 var(--chrome-deep);padding:12px 14px;color:#fff;
+}
+.winner .roundel{width:64px;height:64px}
+.winner-txt{flex:1;min-width:200px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(16px,2.6vw,26px);text-transform:uppercase;letter-spacing:1px;line-height:1.15}
+.winner-txt small{display:block;font-family:'Bitter',serif;font-weight:400;text-transform:none;letter-spacing:0;font-size:13px;color:#e4f1f1;margin-top:4px}
+.res{
+  --ink:var(--jet);--sh:var(--jet);--bg:#fff;
+  display:grid;grid-template-columns:minmax(140px,280px) 1fr;gap:14px;align-items:center;
+  background:var(--bg);border:4px solid var(--jet);box-shadow:5px 5px 0 var(--sh);padding:11px;
+}
+.res.q1{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
+.res.q2{--bg:#faead0;--ink:#8a5a16;--sh:#c9922f}
+.res.q3{--bg:#ffe1ef;--ink:#a01e5c;--sh:#d63d84}
+.res.q4{--bg:#eaf3cd;--ink:#4d661a;--sh:#8ba838}
+.res.q5{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
+.res.q6{--bg:#e2e6e8;--ink:#14202a;--sh:#5c6b74}
+.res.q7{--bg:#e8dff0;--ink:#5b4173;--sh:#8a6fb0}
+.res.top{outline:5px solid var(--pulpred);outline-offset:4px}
+.res img{display:block;width:100%;height:auto;border:3px solid var(--jet);background:#fff;cursor:zoom-in}
+.res-hd{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-bottom:7px}
+.res-hd .n{color:var(--pulpred)}
+.res .track{height:22px}
+.res .fill{background:repeating-linear-gradient(107deg,var(--ink) 0 12px,var(--jet) 12px 21px)}
+.res.top .fill{background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 12px,var(--jet) 12px 21px)}
+.res-who{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#334051;margin-top:7px;line-height:1.7}
+.hidden-note{font-family:'Bitter',serif;font-size:15px;line-height:1.6;text-align:center;padding:34px 18px}
+.hidden-note b{display:block;font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:1px;color:var(--cobalt);margin-bottom:6px}
+
+/* ══ press bar ══════════════════════════════════════════════════════ */
+#press{position:fixed;left:0;right:0;bottom:0;z-index:250;background:var(--cobalt);border-top:5px solid var(--jet);padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#press .pressmsg{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#fff;flex:1;min-width:140px}
+#press .pressmsg b{color:var(--chrome)}
+.press-btns{display:flex;gap:9px;flex-wrap:wrap}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;cursor:pointer;border:3px solid var(--jet);background:var(--chrome);color:var(--jet);box-shadow:4px 4px 0 var(--jet);transition:transform .08s,box-shadow .08s,opacity .2s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--jet)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--pulpred);outline-offset:3px}
+.btn-ink{background:var(--pulpred);color:#fff}
+.btn-quiet{background:var(--pulp-deep)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:4px 4px 0 var(--jet)!important}
+#press .btn{padding:10px 16px;font-size:11px}
+#whoTag{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--jet);background:var(--chrome);border:3px solid var(--jet);
+  padding:9px 11px;cursor:pointer;
+}
+#whoTag:hover{background:#fff}
+
+#saveStamp{
+  position:fixed;right:18px;bottom:100px;z-index:300;width:74px;height:74px;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;text-align:center;padding:6px;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.15;
+  opacity:0;transform:scale(.6) rotate(-14deg);transition:opacity .22s,transform .22s;pointer-events:none;
+}
+#saveStamp.on{opacity:1;transform:scale(1) rotate(-8deg)}
+
+/* ══ overlays ═══════════════════════════════════════════════════════ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,32,42,.82);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.box{background:var(--glass);backdrop-filter:blur(8px);border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);padding:26px;width:360px;max-width:100%;text-align:center}
+.box h3{font-family:'Space Grotesk',sans-serif;font-size:22px;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.box p{font-size:13px;color:#334051;margin-bottom:16px;line-height:1.55}
+.box input{width:100%;border:3px solid var(--rule);background:#fff;font-family:'Bitter',serif;font-size:15px;padding:11px;text-align:center;letter-spacing:3px;outline:none;margin-bottom:8px}
+.box input:focus{border-color:var(--pulpred)}
+.err{font-size:11px;color:var(--pulpred);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:none}
+.err.on{display:block}
+.box-actions{display:flex;gap:9px;margin-top:12px}
+.box-actions .btn{flex:1;padding:10px}
+
+#lb{cursor:zoom-out}
+#lb img{max-width:100%;max-height:88vh;width:auto;height:auto;border:4px solid var(--jet);box-shadow:9px 9px 0 var(--chrome-deep);background:#fff}
+
+/* ══ instructor desk ════════════════════════════════════════════════ */
+.ed-toggle{text-align:center;margin-top:30px}
+.ed-toggle button{background:none;border:3px dashed var(--rule);color:var(--cobalt-deep);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;cursor:pointer}
+.ed-toggle button:hover{border-color:var(--pulpred);color:var(--pulpred)}
+.editor{display:none;margin-top:18px;border:3px dashed var(--jet);background:var(--glass);padding:22px}
+.editor.open{display:block}
+.ed-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.ed-hd h3{font-family:'Space Grotesk',sans-serif;font-size:20px;text-transform:uppercase;color:var(--cobalt)}
+.ed-note{font-size:12.5px;color:#334051;margin-bottom:16px;line-height:1.6}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--pulpred)}
+.groupmark::before,.groupmark::after{content:"";flex:1;height:0;border-top:3px solid var(--pulpred)}
+.ed-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.state-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars)}
+.state-row .tag{border:2px solid var(--jet);padding:3px 8px;background:#fff;color:var(--jet)}
+.state-row .tag.on{background:var(--pulpred);color:#fff}
+.ballots{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto;border:3px solid var(--rule);background:#fff;padding:10px}
+.ballot{display:flex;justify-content:space-between;gap:10px;align-items:center;font-family:'Bitter',serif;font-size:13px;border-left:5px solid var(--pulpred);padding:4px 10px}
+.ballot:nth-child(even){border-left-color:var(--cobalt)}
+.ballot .del{width:24px;height:24px;line-height:1;padding:0;cursor:pointer;border:2px solid var(--jet);background:#fff;color:var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px}
+.ballot .del:hover{background:var(--pulpred);color:#fff}
+.ans-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;text-align:center;padding:12px}
+
+.netbar{
+  display:none;background:var(--pulpred);border-bottom:3px solid var(--jet);
+  padding:9px 12px;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#fff;line-height:1.6;
+}
+.netbar.on{display:flex}
+.netbar .why{font-family:'Bitter',serif;font-size:12px;letter-spacing:0;text-transform:none;color:#ffe1ef;display:block;margin-top:5px;max-width:70ch}
+.netbar .btn{padding:7px 13px;font-size:10px;box-shadow:3px 3px 0 var(--jet)}
+
+.ed-flag{
+  position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:1200;
+  max-width:min(560px,92vw);border:3px solid var(--jet);color:#fff;background:var(--cobalt);
+  box-shadow:5px 5px 0 var(--chrome-deep);padding:11px 14px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;
+  line-height:1.6;text-transform:uppercase;display:none;
+}
+.ed-flag.on{display:block}
+.divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
+
+/* ══ rounds ═════════════════════════════════════════════════════════ */
+.roundstrip{display:flex;gap:0;margin-bottom:14px;border:3px solid var(--jet);background:#fff;box-shadow:4px 4px 0 var(--jet);overflow-x:auto}
+.roundstep{flex:1;min-width:130px;padding:8px 12px;border-right:3px solid var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;background:var(--pulp-deep)}
+.roundstep:last-child{border-right:none}
+.roundstep small{display:block;font-weight:600;font-size:9.5px;letter-spacing:1.5px;margin-top:2px}
+.roundstep.done{background:#fff;color:var(--mars)}
+.roundstep.now{background:var(--pulpred);color:#fff}
+.roundstep.now small{color:var(--chrome)}
+.round-hd{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+  padding:8px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.round-hd .arm{color:var(--chrome);font-weight:600}
+.round-hd.earlier{background:var(--jet)}
+.results.earlier{opacity:.92}
+.res .moved{display:inline-block;margin-left:8px;border:2px solid var(--jet);background:var(--chrome);color:var(--jet);font-size:9px;letter-spacing:2px;padding:1px 6px}
+.res.out{filter:saturate(.35);opacity:.7}
+
+@media (max-width:720px){
+  .cover{padding:12px 14px 14px}
+  main{padding:18px 14px 210px}
+  .cover-band{flex-wrap:wrap}
+  .boardgrid{grid-template-columns:1fr;padding:11px;gap:12px}
+  .res{grid-template-columns:1fr}
+  #saveStamp{bottom:190px;right:10px;width:62px;height:62px;font-size:9px}
+  #press .pressmsg{min-width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="cover">
+    <div class="cover-top"><span>ART 104</span><span id="dateStamp">&nbsp;</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo">Palette Vote</h1>
+    <div class="cover-band">
+      <div class="roundel" id="voteRoundel">0<br>/30</div>
+      <div class="cover-tag" id="promptText">Connecting</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="roundstrip" id="roundStrip"></div>
+
+  <div class="runmeter">
+    <div class="runmeter-top"><span id="meterLabel">Artists voted</span><span class="pct" id="meterCount">0 of 30</span></div>
+    <div class="track"><div class="fill" id="meterFill"></div></div>
+  </div>
+
+  <div class="views">
+    <button class="chip" id="viewVote" type="button" aria-current="true">Vote</button>
+    <button class="chip" id="viewResults" type="button" aria-current="false">Results</button>
+  </div>
+
+  <div class="sheet-frame">
+    <div class="netbar" id="netBar">
+      <span id="netMsg">&nbsp;</span>
+      <button class="btn btn-quiet" id="netRetry" type="button">Try again</button>
+    </div>
+    <div class="sheet-bar">
+      <span id="barLeft">The palettes</span>
+      <span class="arm" id="barState">Connecting</span>
+    </div>
+    <div id="voteView"><div class="boardgrid" id="boardGrid"></div></div>
+    <div id="resultsView" hidden></div>
+  </div>
+
+  <div class="ed-toggle"><button id="deskBtn" type="button">Instructor desk</button></div>
+
+  <section class="editor" id="editor" aria-label="Instructor desk">
+    <div class="ed-hd">
+      <h3>Instructor desk</h3>
+      <button class="btn btn-quiet" id="deskClose" type="button">Close</button>
+    </div>
+    <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload. While the desk is open you can see the results even when they are hidden from the room.</p>
+
+    <div class="groupmark"><span id="deskRound">This round</span></div>
+    <div class="state-row">
+      <span>Results</span><span class="tag" id="tagReveal">Hidden</span>
+      <span>Voting</span><span class="tag" id="tagClosed">Open</span>
+    </div>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="revealBtn" type="button">Show results to everyone</button>
+      <button class="btn" id="closeBtn" type="button">Close voting</button>
+      <button class="btn btn-quiet" id="clearBtn" type="button">Clear this round's votes</button>
+    </div>
+
+    <div class="groupmark"><span>Move the room along</span></div>
+    <p class="ed-note" id="nextNote">When everyone has voted, narrow the field. The top palettes carry over, the votes start fresh, and every screen switches to the next round.</p>
+    <div class="ed-actions">
+      <button class="btn btn-ink" id="nextBtn" type="button">Narrow and start the next round</button>
+      <button class="btn" id="backBtn" type="button">Back to the previous round</button>
+      <button class="btn btn-quiet" id="restartBtn" type="button">Start over from Round 1</button>
+    </div>
+
+    <div class="groupmark"><span>Every ballot this round</span></div>
+    <p class="ed-note">One line per artist number, in the order they arrived. The × removes a single ballot so that artist can vote again.</p>
+    <div class="ballots" id="ballotList"></div>
+    <div class="ed-actions">
+      <button class="btn btn-quiet" id="downloadBtn" type="button">Download every round as text</button>
+    </div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<div class="ed-flag" id="edFlag" role="status" aria-live="polite"></div>
+
+<div id="press">
+  <span class="pressmsg" id="pressMsg"><b>Connecting</b></span>
+  <div class="press-btns">
+    <button id="whoTag" type="button">Artist ?</button>
+    <button class="btn btn-ink" id="voteBtn" type="button" disabled>Cast my vote</button>
+  </div>
+</div>
+
+<div id="saveStamp">Vote<br>counted</div>
+
+<div class="overlay" id="lb"><img id="lbImg" alt=""/></div>
+
+<div class="overlay" id="numGate">
+  <div class="box">
+    <h3>Your artist number</h3>
+    <p>Each artist number gets one ballot per round. Your browser remembers it, so you only type it once.</p>
+    <input type="text" id="numCode" inputmode="numeric" placeholder="ARTIST NUMBER"/>
+    <div class="err" id="numErr">Enter your artist number</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="numCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="numGo" type="button">That's me</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="gate">
+  <div class="box">
+    <h3>Instructor desk</h3>
+    <p>Enter the passcode to reveal results, close voting or move to the next round.</p>
+    <input type="password" id="gateCode" placeholder="PASSCODE"/>
+    <div class="err" id="gateErr">That passcode does not match</div>
+    <div class="box-actions">
+      <button class="btn btn-quiet" id="gateCancel" type="button">Cancel</button>
+      <button class="btn btn-ink" id="gateGo" type="button">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THINGS YOU MAY WANT TO CHANGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Passcode for the instructor desk.
+const TEACHER_CODE = "palette";
+
+// The rounds, in order. "votes" is how many votes each artist gets that
+// round, each on a different palette. "keep" is how many palettes move on
+// to the next round. The last round's keep is 1, the winner.
+// To narrow more slowly, add a line in the middle, for example
+//   { votes: 2, keep: 5 },
+const ROUNDS = [
+  { votes: 2, keep: 3 },   // Round 1: every palette, two votes each, top 3 move on
+  { votes: 1, keep: 1 }    // Final round: the 3 finalists, one vote each
+];
+
+// Each round closes on its own once this many artists have voted in it.
+const MAX_VOTERS = 30;
+
+// Where the images live and how they are named: palette01.png, palette02.png...
+// The page keeps looking until it hits the first missing number.
+const IMAGE_FOLDER = "images/";
+const IMAGE_PREFIX = "palette";
+const IMAGE_EXT    = ".png";
+const MAX_PALETTES = 99;
+
+// Can students change their ballot before a round closes?
+const LET_STUDENTS_CHANGE = true;
+
+// Only digits in the artist number, or anything they type?
+const NUMBERS_ONLY = true;
+
+// Same Firebase project as the class discussion and group boards. This tool
+// has its own "palettevote" key, so it never touches the other tools' data.
+// Add a matching "palettevote" branch to the database rules before class.
+const firebaseConfig = {
+  apiKey: "AIzaSyBQi2D6KVg1Uq6TQNFl8nnGLlJ4BO-eT1I",
+  authDomain: "art104-fall2026-openquestions.firebaseapp.com",
+  databaseURL: "https://art104-fall2026-openquestions-default-rtdb.firebaseio.com",
+  projectId: "art104-fall2026-openquestions",
+  storageBucket: "art104-fall2026-openquestions.firebasestorage.app",
+  messagingSenderId: "66176185514",
+  appId: "1:66176185514:web:5befd6558f731d6cda8cd3",
+  measurementId: "G-R6KQJ6WZ23"
+};
+
+// Add ?room=anything to the address to run a fresh vote without
+// clearing an old one. Each room keeps its own rounds.
+const ROOM = (new URLSearchParams(location.search).get("room") || "main").replace(/[^\w-]/g, "") || "main";
+
+/* ═══════════════════════════════════════════════════════════════════
+   BELOW HERE IS THE MACHINERY
+   ═══════════════════════════════════════════════════════════════════ */
+
+const ROOT = "palettevote/" + ROOM;
+
+let db = null;
+let palettes = [];         // [{num, label, src, tint}]
+let state = {};            // everything under ROOT: { round, rounds: { 0: {votes, pool, revealed, closed} } }
+let picks = [];            // palettes picked on this screen, not yet sent
+let view = "vote";
+let unlocked = false;
+let connected = false;
+let artistNo = "";
+try { artistNo = localStorage.getItem("boardArtistNo") || ""; } catch (e) {}
+
+const $ = (id) => document.getElementById(id);
+const pad = (n) => String(n).padStart(2, "0");
+
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+
+function flag(msg) {
+  const f = $("edFlag");
+  f.textContent = msg;
+  f.classList.add("on");
+  clearTimeout(flag.t);
+  flag.t = setTimeout(() => f.classList.remove("on"), 2800);
+}
+
+/* ── finding the palette images ─────────────────────────────────── */
+function tryLoad(n) {
+  return new Promise((res) => {
+    const src = IMAGE_FOLDER + IMAGE_PREFIX + pad(n) + IMAGE_EXT;
+    const im = new Image();
+    im.onload = () => res(src);
+    im.onerror = () => res(null);
+    im.src = src;
+  });
+}
+
+async function loadPalettes() {
+  for (let n = 1; n <= MAX_PALETTES; n++) {
+    const src = await tryLoad(n);
+    if (!src) break;
+    // The tint follows the palette, so a finalist keeps its color in every round.
+    palettes.push({ num: n, label: "Palette " + pad(n), src, tint: ((n - 1) % 7) + 1 });
+  }
+  render();
+}
+
+/* ── rounds ─────────────────────────────────────────────────────── */
+// Rounds past the end of ROUNDS are tiebreaks: one vote each.
+function cur() { return +state.round || 0; }
+function rulesFor(r) { return ROUNDS[r] || { votes: 1, keep: 1 }; }
+function isFinal(r) { return r >= ROUNDS.length - 1; }
+function roundData(r) { return (state.rounds && state.rounds[r]) || {}; }
+function roundName(r) {
+  if (r >= ROUNDS.length) return "Tiebreak";
+  if (ROUNDS.length > 1 && r === ROUNDS.length - 1) return "Final round";
+  return "Round " + (r + 1);
+}
+function poolFor(r) {
+  const p = roundData(r).pool;
+  if (r === 0 || !p) return palettes.map((x) => x.num);
+  return Object.values(p).map(Number);
+}
+function palettesFor(r) { const pool = poolFor(r); return palettes.filter((p) => pool.includes(p.num)); }
+function votesFor(r) { return roundData(r).votes || {}; }
+function isRevealed(r) { return !!roundData(r).revealed; }
+function isClosed(r) { return !!roundData(r).closed; }
+
+/* ── counting ───────────────────────────────────────────────────── */
+function choicesOf(v) {
+  if (!v || !v.choices) return [];
+  return Object.values(v.choices).map(Number);
+}
+function voterCount(r) { return Object.keys(votesFor(r)).length; }
+function myChoices() { return artistNo ? choicesOf(votesFor(cur())[artistNo]) : []; }
+function isFull() { return voterCount(cur()) >= MAX_VOTERS; }
+function list(nums) {
+  const names = nums.map((n) => "Palette " + pad(n));
+  if (names.length < 3) return names.join(" and ");
+  return names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+}
+function voteWord(n) { return n === 1 ? "vote" : "votes"; }
+
+function tally(r) {
+  const t = {}, who = {};
+  let cast = 0;
+  palettesFor(r).forEach((p) => { t[p.num] = 0; who[p.num] = []; });
+  const v = votesFor(r);
+  Object.keys(v).forEach((a) => {
+    choicesOf(v[a]).forEach((c) => {
+      if (t[c] !== undefined) { t[c]++; who[c].push(a); cast++; }
+    });
+  });
+  return { t, who, cast };
+}
+
+// Who moves on from round r. Ties at the cutoff all move on, so nobody is
+// dropped by a coin flip. Palettes with no votes never move on.
+function survivors(r, keep) {
+  const { t } = tally(r);
+  const sorted = palettesFor(r).map((p) => p.num).sort((a, b) => t[b] - t[a] || a - b);
+  if (sorted.length <= keep) return sorted.filter((n) => t[n] > 0);
+  const cutoff = t[sorted[keep - 1]];
+  return sorted.filter((n) => t[n] >= cutoff && t[n] > 0);
+}
+
+// Can this browser vote right now? Returns a reason when it cannot.
+function blocked() {
+  if (!connected) return "Not connected yet";
+  if (isClosed(cur())) return "Voting is closed for now";
+  const mine = myChoices().length;
+  if (mine && !LET_STUDENTS_CHANGE) return "Your ballot is in";
+  if (!mine && isFull()) return "All " + MAX_VOTERS + " artists have voted";
+  return "";
+}
+
+/* ── drawing ────────────────────────────────────────────────────── */
+let lastRound = null;
+function render() {
+  const r = cur();
+  if (lastRound !== r) { picks = []; lastRound = r; }
+  const rules = rulesFor(r);
+  const n = voterCount(r);
+  const howMany = Math.min(rules.votes, Math.max(1, palettesFor(r).length - 1));
+
+  $("voteRoundel").innerHTML = n + "<br>/" + MAX_VOTERS;
+  $("meterLabel").textContent = roundName(r) + ": artists voted";
+  $("meterCount").textContent = n + " of " + MAX_VOTERS;
+  $("meterFill").style.width = Math.min(100, (n / MAX_VOTERS) * 100) + "%";
+
+  if (connected) {
+    const count = palettesFor(r).length;
+    $("promptText").textContent = roundName(r) + ". " + (r === 0 ? "Every palette is in play" : count + " palettes left") +
+      ". You get " + (howMany === 1 ? "one vote" : howMany + " votes, on " + howMany + " different palettes") + ".";
+  }
+
+  $("viewVote").setAttribute("aria-current", view === "vote");
+  $("viewResults").setAttribute("aria-current", view === "results");
+  $("voteView").hidden = view !== "vote";
+  $("resultsView").hidden = view !== "results";
+  $("press").style.display = view === "vote" ? "" : "none";
+  $("barLeft").textContent = view === "vote"
+    ? roundName(r) + (r === 0 ? " · every palette" : " · " + palettesFor(r).length + " left")
+    : "The outcome";
+
+  renderStrip();
+  renderBoards();
+  renderResults();
+  renderPress();
+  renderDesk();
+}
+
+function renderStrip() {
+  const r = cur();
+  const total = Math.max(ROUNDS.length, r + 1);
+  let html = "";
+  for (let i = 0; i < total; i++) {
+    const ru = rulesFor(i);
+    const cls = i < r ? "done" : i === r ? "now" : "";
+    const sub = i < r
+      ? poolFor(i + 1).length + " moved on"
+      : ru.votes + " " + voteWord(ru.votes) + " each" + (isFinal(i) ? ", 1 winner" : ", top " + ru.keep + " move on");
+    html += `<div class="roundstep ${cls}">${roundName(i)}<small>${sub}</small></div>`;
+  }
+  $("roundStrip").innerHTML = html;
+}
+
+function renderBoards() {
+  const grid = $("boardGrid");
+  if (!palettes.length) {
+    grid.innerHTML = '<div class="post-empty">No palettes found<br>Put palette01.png, palette02.png and so on in a folder called images next to this page</div>';
+    return;
+  }
+  const r = cur();
+  const mine = myChoices();
+  const { t } = tally(r);
+  const showCounts = isRevealed(r) || unlocked;
+  grid.innerHTML = palettesFor(r).map((p) => {
+    const isPicked = picks.includes(p.num);
+    const isMine = !picks.length && mine.includes(p.num);
+    return `<article class="board q${p.tint}${isPicked ? " picked" : ""}${isMine ? " mine" : ""}" data-num="${p.num}" tabindex="0" aria-label="${p.label}">
+      <div class="board-hd">
+        <span>${p.label}</span>
+        <span class="count">${isMine ? "Your vote" : showCounts ? t[p.num] + " " + voteWord(t[p.num]) : r > 0 ? "Still in" : ""}</span>
+      </div>
+      <div class="stamp">${isMine ? "Your<br>vote" : "Picked"}</div>
+      <div class="board-img"><img src="${p.src}" alt="${p.label}"/></div>
+      <div class="board-foot">
+        <button class="btn${isPicked ? " btn-ink" : ""}" type="button">${isPicked ? "Picked" : isMine ? "Your vote" : "Pick this one"}</button>
+        <button class="btn btn-quiet zoom" data-zoom="${p.src}" type="button">Look closer</button>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+function renderPress() {
+  const r = cur();
+  const why = blocked();
+  const mine = myChoices();
+  const msg = $("pressMsg");
+  const max = Math.min(rulesFor(r).votes, palettesFor(r).length);
+  const left = max - picks.length;
+  if (why) {
+    msg.innerHTML = "<b>" + esc(why) + "</b>" + (mine.length ? " Your " + voteWord(mine.length) + ": " + list(mine) : "");
+  } else if (picks.length) {
+    msg.innerHTML = "<b>Your " + (picks.length === 1 ? "pick" : "picks") + "</b> " + list(picks) +
+      (left > 0 ? ". Pick " + left + " more, or vote with " + (picks.length === 1 ? "just this one" : "these") + "." : "");
+  } else if (mine.length) {
+    msg.innerHTML = "<b>Your " + voteWord(mine.length) + "</b> " + list(mine) + (LET_STUDENTS_CHANGE ? ". Tap palettes to pick again." : "");
+  } else {
+    msg.innerHTML = "<b>" + roundName(r) + "</b> Tap " + (max === 1 ? "the palette you want" : max + " different palettes");
+  }
+  $("voteBtn").disabled = !!why || !picks.length;
+  $("voteBtn").textContent = (mine.length ? "Change my " : "Cast my ") + voteWord(Math.max(picks.length, 1));
+  $("whoTag").textContent = artistNo ? "Artist " + artistNo : "Artist ?";
+
+  if (connected) {
+    $("barState").textContent = isClosed(r)
+      ? "Voting closed"
+      : isFull() ? "Every vote is in" : max === 1 ? "Pick one, then vote" : "Pick up to " + max + ", then vote";
+  }
+}
+
+// One round's results. Earlier rounds show who moved on.
+function resultsHTML(r) {
+  const n = voterCount(r);
+  const { t, who, cast } = tally(r);
+  const ps = palettesFor(r);
+  const max = Math.max(0, ...ps.map((p) => t[p.num]));
+  const sorted = [...ps].sort((a, b) => t[b.num] - t[a.num] || a.num - b.num);
+  const done = r < cur();
+  const moved = done ? poolFor(r + 1) : [];
+  const final = isFinal(r);
+  const leaders = max ? sorted.filter((p) => t[p.num] === max) : [];
+  const still = isClosed(r) || done ? "" : " Voting is still open.";
+
+  let head;
+  if (!n) {
+    head = `<div class="winner"><div class="roundel">NO<br>VOTES</div><div class="winner-txt">Nothing yet<small>The outcome appears as votes come in.</small></div></div>`;
+  } else if (done) {
+    head = `<div class="winner"><div class="roundel">ON<br>${moved.length}</div><div class="winner-txt">${list(moved)} moved on<small>${n} artists voted, ${cast} votes cast.</small></div></div>`;
+  } else if (final && leaders.length === 1) {
+    const w = leaders[0];
+    head = `<div class="winner"><div class="roundel">WIN<br>${pad(w.num)}</div><div class="winner-txt">${w.label} ${still ? "is in the lead" : "wins"}<small>${max} of ${n} votes (${Math.round((max / n) * 100)} percent of the room).${still}</small></div></div>`;
+  } else if (final) {
+    head = `<div class="winner"><div class="roundel">TIE</div><div class="winner-txt">${list(leaders.map((p) => p.num))} are tied<small>${max} votes each, out of ${n}.${still}</small></div></div>`;
+  } else {
+    const top = survivors(r, rulesFor(r).keep);
+    head = `<div class="winner"><div class="roundel">TOP<br>${top.length}</div><div class="winner-txt">${list(top)} ${still ? "lead so far" : "will move on"}<small>${n} artists voted, ${cast} votes cast. Percentages are out of the artists who voted, so with ${rulesFor(r).votes} votes each they add up to more than 100.${still}</small></div></div>`;
+  }
+
+  return `<div class="results${done ? " earlier" : ""}">${head}${sorted.map((p) => {
+    const c = t[p.num];
+    const pct = n ? Math.round((c / n) * 100) : 0;
+    const top = max && c === max;
+    const out = done && !moved.includes(p.num);
+    return `<div class="res q${p.tint}${top && !done ? " top" : ""}${out ? " out" : ""}">
+      <img src="${p.src}" alt="${p.label}" data-zoom="${p.src}"/>
+      <div>
+        <div class="res-hd"><span>${p.label}${done && !out ? '<span class="moved">Moved on</span>' : ""}</span><span class="n">${c} ${voteWord(c)} · ${pct}%</span></div>
+        <div class="track"><div class="fill" style="width:${max ? (c / max) * 100 : 0}%"></div></div>
+        ${who[p.num].length ? `<div class="res-who">${who[p.num].map((a) => "Artist " + esc(a)).join(" · ")}</div>` : ""}
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function renderResults() {
+  const box = $("resultsView");
+  if (!palettes.length) { box.innerHTML = ""; return; }
+  const r = cur();
+  let html = `<div class="round-hd"><span>${roundName(r)}</span><span class="arm">${isClosed(r) ? "Closed" : "Voting open"}</span></div>`;
+  if (isRevealed(r) || unlocked) html += resultsHTML(r);
+  else html += `<div class="hidden-note"><b>Results are hidden</b>${voterCount(r)} of ${MAX_VOTERS} artists have voted this round. The outcome shows here once the instructor reveals it.</div>`;
+  // Earlier rounds are already settled, so they always show.
+  for (let i = r - 1; i >= 0; i--) {
+    html += `<div class="round-hd earlier"><span>${roundName(i)}</span><span class="arm">Finished</span></div>` + resultsHTML(i);
+  }
+  box.innerHTML = html;
+}
+
+function renderDesk() {
+  if (!unlocked) return;
+  const r = cur();
+  $("deskRound").textContent = roundName(r);
+  $("tagReveal").textContent = isRevealed(r) ? "Showing" : "Hidden";
+  $("tagReveal").classList.toggle("on", isRevealed(r));
+  $("tagClosed").textContent = isClosed(r) ? "Closed" : "Open";
+  $("tagClosed").classList.toggle("on", isClosed(r));
+  $("revealBtn").textContent = isRevealed(r) ? "Hide results again" : "Show results to everyone";
+  $("closeBtn").textContent = isClosed(r) ? "Reopen voting" : "Close voting";
+  $("backBtn").disabled = r === 0;
+
+  // The next round button changes with where the room is.
+  const nb = $("nextBtn");
+  const { t } = tally(r);
+  const leaders = (() => {
+    const ps = palettesFor(r).map((p) => p.num);
+    const m = Math.max(0, ...ps.map((x) => t[x]));
+    return m ? ps.filter((x) => t[x] === m) : [];
+  })();
+  if (!isFinal(r)) {
+    const top = survivors(r, rulesFor(r).keep);
+    nb.hidden = false;
+    nb.textContent = "Narrow to the top " + rulesFor(r).keep + " and start " + roundName(r + 1);
+    $("nextNote").textContent = top.length
+      ? "Right now " + list(top) + " would move on" + (top.length > rulesFor(r).keep ? ", since there is a tie at the cutoff" : "") + ". The votes start fresh and every screen switches to " + roundName(r + 1) + "."
+      : "No votes yet this round, so nothing can move on.";
+  } else if (leaders.length > 1) {
+    nb.hidden = false;
+    nb.textContent = "Run a tiebreak between the " + leaders.length + " tied palettes";
+    $("nextNote").textContent = list(leaders) + " are tied. A tiebreak puts only those on screen, one vote each.";
+  } else {
+    nb.hidden = true;
+    $("nextNote").textContent = leaders.length
+      ? "This is the last round. " + list(leaders) + " is in the lead. Close voting and show the results to finish."
+      : "This is the last round. Waiting on votes.";
+  }
+
+  const v = votesFor(r);
+  const rows = Object.keys(v)
+    .map((a) => Object.assign({ who: a }, v[a]))
+    .sort((x, y) => (x.at || 0) - (y.at || 0));
+  $("ballotList").innerHTML = rows.length
+    ? rows.map((row) => `<div class="ballot"><span>Artist ${esc(row.who)}: ${list(choicesOf(row))}</span><button class="del" data-drop="${esc(row.who)}" type="button" aria-label="Remove this ballot">&times;</button></div>`).join("")
+    : '<div class="ans-empty">No ballots yet this round</div>';
+}
+
+/* ── picking and voting ─────────────────────────────────────────── */
+function openLb(src) { $("lbImg").src = src; $("lb").classList.add("open"); }
+$("lb").addEventListener("click", () => $("lb").classList.remove("open"));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("lb").classList.remove("open"); });
+
+// Tapping a picked palette drops it. Tapping a new one once every vote is
+// used swaps out the oldest pick.
+function pick(num) {
+  const why = blocked();
+  if (why) { $("barState").textContent = why; return; }
+  const max = Math.min(rulesFor(cur()).votes, palettesFor(cur()).length);
+  if (picks.includes(num)) picks = picks.filter((p) => p !== num);
+  else {
+    picks.push(num);
+    if (picks.length > max) picks.shift();
+  }
+  render();
+}
+
+document.addEventListener("click", (e) => {
+  const z = e.target.closest("[data-zoom]");
+  if (z) { openLb(z.dataset.zoom); return; }
+  const b = e.target.closest("#boardGrid .board");
+  if (b) pick(+b.dataset.num);
+});
+$("boardGrid").addEventListener("keydown", (e) => {
+  const b = e.target.closest(".board");
+  if (b && (e.key === "Enter" || e.key === " ") && e.target === b) { e.preventDefault(); pick(+b.dataset.num); }
+});
+
+let pending = false;
+function vote() {
+  if (!picks.length || blocked()) return;
+  if (!artistNo) { pending = true; openNumGate(); return; }
+  send();
+}
+
+function send() {
+  const r = cur();
+  const choices = picks.slice(0, rulesFor(r).votes);
+  const isNew = !votesFor(r)[artistNo];
+  // A transaction on the round's votes keeps the 30 cap honest when a lot
+  // of people press the button in the same second.
+  db.ref(`${ROOT}/rounds/${r}/votes`).transaction((all) => {
+    all = all || {};
+    if (!all[artistNo] && Object.keys(all).length >= MAX_VOTERS) return; // abort
+    all[artistNo] = { choices, at: (all[artistNo] && all[artistNo].at) || Date.now(), changedAt: isNew ? null : Date.now() };
+    return all;
+  }).then((res) => {
+    if (!res.committed) { $("barState").textContent = "All " + MAX_VOTERS + " artists have voted"; return; }
+    picks = [];
+    render();
+    $("barState").textContent = (isNew ? "Counted: " : "Changed to ") + list(choices);
+    const s = $("saveStamp");
+    s.innerHTML = (isNew ? (choices.length === 1 ? "Vote" : "Votes") + "<br>counted" : "Ballot<br>changed");
+    s.classList.add("on");
+    setTimeout(() => s.classList.remove("on"), 1400);
+  }).catch(dbTrouble);
+}
+$("voteBtn").addEventListener("click", vote);
+
+/* ── the artist number ──────────────────────────────────────────── */
+function openNumGate() {
+  $("numCode").value = artistNo;
+  $("numErr").classList.remove("on");
+  $("numGate").classList.add("open");
+  $("numCode").focus();
+}
+function takeNumber() {
+  let v = $("numCode").value.trim();
+  if (NUMBERS_ONLY) v = v.replace(/\D/g, "");
+  v = v.replace(/[.#$\[\]\/]/g, "").slice(0, 8);
+  if (!v) { $("numErr").classList.add("on"); return; }
+  artistNo = v;
+  try { localStorage.setItem("boardArtistNo", artistNo); } catch (e) {}
+  $("numGate").classList.remove("open");
+  render();
+  if (pending) { pending = false; if (picks.length && !blocked()) send(); }
+}
+$("whoTag").addEventListener("click", openNumGate);
+$("numGo").addEventListener("click", takeNumber);
+$("numCode").addEventListener("keydown", (e) => { if (e.key === "Enter") takeNumber(); });
+$("numCancel").addEventListener("click", () => { pending = false; $("numGate").classList.remove("open"); });
+
+/* ── views ──────────────────────────────────────────────────────── */
+$("viewVote").addEventListener("click", () => { view = "vote"; render(); });
+$("viewResults").addEventListener("click", () => { view = "results"; render(); });
+
+/* ── instructor desk ────────────────────────────────────────────── */
+$("deskBtn").addEventListener("click", () => {
+  if (unlocked) { $("editor").classList.add("open"); $("editor").scrollIntoView(); return; }
+  $("gateCode").value = "";
+  $("gateErr").classList.remove("on");
+  $("gate").classList.add("open");
+  $("gateCode").focus();
+});
+function tryGate() {
+  if ($("gateCode").value === TEACHER_CODE) {
+    unlocked = true;
+    $("gate").classList.remove("open");
+    $("editor").classList.add("open");
+    render();
+    $("editor").scrollIntoView();
+  } else {
+    $("gateErr").classList.add("on");
+  }
+}
+$("gateGo").addEventListener("click", tryGate);
+$("gateCode").addEventListener("keydown", (e) => { if (e.key === "Enter") tryGate(); });
+$("gateCancel").addEventListener("click", () => $("gate").classList.remove("open"));
+$("deskClose").addEventListener("click", () => {
+  unlocked = false;
+  $("editor").classList.remove("open");
+  render();
+});
+
+function setRound(k, v, msg) {
+  if (!db) return flag("Not connected to Firebase yet");
+  db.ref(`${ROOT}/rounds/${cur()}/${k}`).set(v).then(() => flag(msg)).catch(dbTrouble);
+}
+$("revealBtn").addEventListener("click", () => {
+  const on = isRevealed(cur());
+  setRound("revealed", !on, on ? "Results hidden again" : "Results showing on every screen");
+});
+$("closeBtn").addEventListener("click", () => {
+  const on = isClosed(cur());
+  setRound("closed", !on, on ? "Voting reopened" : "Voting closed");
+});
+$("clearBtn").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (!confirm("Clear all " + voterCount(cur()) + " ballots from " + roundName(cur()) + "? They cannot be brought back.")) return;
+  db.ref(`${ROOT}/rounds/${cur()}/votes`).remove().then(() => flag("This round's votes cleared")).catch(dbTrouble);
+});
+
+// Narrowing writes the next round in one go: who is in it, blank votes,
+// hidden results, open voting. The round just finished closes so late
+// ballots cannot land in it.
+$("nextBtn").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  const r = cur();
+  let next;
+  if (!isFinal(r)) {
+    next = survivors(r, rulesFor(r).keep);
+  } else {
+    const { t } = tally(r);
+    const ps = palettesFor(r).map((p) => p.num);
+    const m = Math.max(0, ...ps.map((x) => t[x]));
+    next = ps.filter((x) => t[x] === m);
+  }
+  if (next.length < 2) return flag("Not enough votes yet to narrow the field");
+  if (!confirm(list(next) + " will move on to " + roundName(r + 1) + ". Every screen switches over. Go?")) return;
+  const up = {};
+  up[`rounds/${r}/closed`] = true;
+  up[`rounds/${r + 1}`] = { pool: next, revealed: false, closed: false };
+  up["round"] = r + 1;
+  db.ref(ROOT).update(up).then(() => flag(roundName(r + 1) + " is open")).catch(dbTrouble);
+});
+
+// Going back keeps the earlier round's votes and reopens it.
+$("backBtn").addEventListener("click", () => {
+  const r = cur();
+  if (!db || r === 0) return;
+  if (!confirm("Go back to " + roundName(r - 1) + "? Its votes are still there and voting reopens. Votes in " + roundName(r) + " are dropped.")) return;
+  const up = {};
+  up[`rounds/${r}`] = null;
+  up[`rounds/${r - 1}/closed`] = false;
+  up["round"] = r - 1;
+  db.ref(ROOT).update(up).then(() => flag("Back to " + roundName(r - 1))).catch(dbTrouble);
+});
+
+$("restartBtn").addEventListener("click", () => {
+  if (!db) return flag("Not connected to Firebase yet");
+  if (!confirm("Start over? Every round and every vote is cleared.")) return;
+  db.ref(ROOT).set({ round: 0 }).then(() => flag("Back to Round 1 with a clean slate")).catch(dbTrouble);
+});
+
+$("ballotList").addEventListener("click", (e) => {
+  const d = e.target.closest("[data-drop]");
+  if (!d) return;
+  if (!confirm("Remove the ballot from Artist " + d.dataset.drop + "?")) return;
+  db.ref(`${ROOT}/rounds/${cur()}/votes/${d.dataset.drop}`).remove().then(() => flag("Ballot removed")).catch(dbTrouble);
+});
+
+$("downloadBtn").addEventListener("click", () => {
+  const lines = ["PALETTE VOTE  " + new Date().toLocaleString(), ""];
+  for (let r = 0; r <= cur(); r++) {
+    const { t, cast } = tally(r);
+    const n = voterCount(r);
+    lines.push(roundName(r).toUpperCase() + "  " + n + " artists voted, " + cast + " votes cast");
+    palettesFor(r).sort((a, b) => t[b.num] - t[a.num] || a.num - b.num)
+      .forEach((p) => lines.push("  " + p.label + ": " + t[p.num] + (n ? " (" + Math.round((t[p.num] / n) * 100) + "% of artists)" : "")));
+    if (r < cur()) lines.push("  Moved on: " + list(poolFor(r + 1)));
+    lines.push("  Ballots:");
+    const v = votesFor(r);
+    Object.keys(v).sort((a, b) => (v[a].at || 0) - (v[b].at || 0))
+      .forEach((a) => lines.push("    Artist " + a + ": " + list(choicesOf(v[a]))));
+    lines.push("");
+  }
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "palette-vote-" + ROOM + ".txt";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+
+/* ── when the database says no ──────────────────────────────────── */
+function dbTrouble(err) {
+  const denied = err && (err.code === "PERMISSION_DENIED" || /permission/i.test(err.message || ""));
+  const msg = denied
+    ? "Firebase blocked that. Add a palettevote branch to the database rules."
+    : "Firebase error: " + ((err && err.message) || "unknown");
+  $("barState").textContent = msg;
+  if (unlocked) flag(msg);
+  console.error("[palette vote]", err);
+}
+
+/* ── loading Firebase, with mirrors in case gstatic is blocked ─── */
+const MIRRORS = [
+  "https://www.gstatic.com/firebasejs/10.12.0/",
+  "https://cdn.jsdelivr.net/npm/firebase@10.12.0/",
+  "https://unpkg.com/firebase@10.12.0/"
+];
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = ok;
+    s.onerror = () => no(new Error(src));
+    document.head.appendChild(s);
+  });
+}
+async function loadFirebase() {
+  for (const base of MIRRORS) {
+    try {
+      await loadScript(base + "firebase-app-compat.js");
+      await loadScript(base + "firebase-auth-compat.js");
+      await loadScript(base + "firebase-database-compat.js");
+      if (window.firebase && firebase.database) return true;
+    } catch (e) { /* next mirror */ }
+  }
+  return false;
+}
+
+function netTrouble(err) {
+  const code = (err && err.code) || "";
+  const off = /operation-not-allowed|configuration-not-found/.test(code);
+  const net = /network-request-failed|timeout/.test(code);
+  let head = "Sign-in failed: " + ((err && err.message) || code);
+  let why = "";
+  if (off) {
+    head = "Anonymous sign-in is switched off";
+    why = "In the Firebase console open Authentication, then Sign-in method, and enable Anonymous.";
+  } else if (net && location.protocol === "file:") {
+    head = "This page is running off the hard drive";
+    why = "Firebase sign-in will not run from a file:// address. Open the page from its web address, or serve the folder with python3 -m http.server 8000 and visit localhost:8000.";
+  } else if (net) {
+    head = "Cannot reach the sign-in server";
+    why = "Check for a privacy extension or campus network blocking identitytoolkit.googleapis.com, and that this address is on the Authorized domains list in Firebase under Authentication, Settings.";
+  }
+  $("netMsg").innerHTML = esc(head) + (why ? '<span class="why">' + esc(why) + "</span>" : "");
+  $("netBar").classList.add("on");
+  $("barState").textContent = head;
+  console.error("[palette vote]", err);
+}
+
+function signIn(tries) {
+  return firebase.auth().signInAnonymously().catch((err) => {
+    const net = /network-request-failed|timeout/.test((err && err.code) || "");
+    if (net && tries > 0) return new Promise((go) => setTimeout(go, 1500)).then(() => signIn(tries - 1));
+    throw err;
+  });
+}
+
+function startUp() {
+  $("netBar").classList.remove("on");
+  $("barState").textContent = "Connecting";
+  signIn(3).then(() => {
+    db = firebase.database();
+    db.ref(ROOT).on("value", (s) => {
+      state = s.val() || {};
+      connected = true;
+      render();
+    }, dbTrouble);
+  }).catch(netTrouble);
+}
+$("netRetry").addEventListener("click", startUp);
+
+loadPalettes();
+loadFirebase().then((ready) => {
+  if (!ready) {
+    $("netMsg").innerHTML = "The Firebase library did not load" +
+      '<span class="why">All three mirrors were blocked. Usually an ad blocker, or a network that filters gstatic.com, jsdelivr and unpkg.</span>';
+    $("netBar").classList.add("on");
+    $("barState").textContent = "Offline";
+    return;
+  }
+  firebase.initializeApp(firebaseConfig);
+  startUp();
+});
+
+$("dateStamp").textContent = new Date().toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric"
+}).toUpperCase();
+</script>
+</body>
+</html>
