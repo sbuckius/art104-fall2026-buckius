@@ -272,7 +272,17 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
   border:3px solid var(--jet);background:var(--chrome);
   font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;color:var(--jet);
 }
-.qrow textarea{min-height:52px}
+.qrow textarea{min-height:110px;font-size:13px}
+.qfmt .qt{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.qfmt p{margin:0 0 6px}
+.qfmt .gap{height:6px}
+.qfmt ul{margin:2px 0 8px 18px;padding:0}
+.qfmt li{margin-bottom:7px}
+.qfmt li b{font-weight:600}
+.dealcell .qfmt{font-size:11.5px;line-height:1.45}
+.dealcell .qfmt .qt{font-size:11.5px}
+.pastebox{border:3px solid var(--jet);background:#fff;box-shadow:5px 5px 0 var(--chrome-deep);padding:12px 14px;margin:8px 0 14px}
+.pastebox textarea{min-height:120px}
 
 .deal{border:3px solid var(--jet);background:#fff;box-shadow:5px 5px 0 var(--chrome-deep);padding:14px 16px;margin-top:6px}
 .deal-hd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mars);margin-bottom:9px}
@@ -443,6 +453,11 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
     <p class="ed-note">Write all six. They stay in this order in the desk, and the deal below decides which group gets which one.</p>
     <label class="bl" for="edLabel">Day name</label>
     <input type="text" id="edLabel" placeholder="Day 3"/>
+    <div class="pastebox">
+      <label class="bl" for="edPaste" style="margin-top:0">Paste the whole sheet (optional)</label>
+      <textarea id="edPaste" placeholder="Group 1: Empty land&#10;PICK ONE OF THE FOLLOWING...&#10;&#10;* Take a side: ...&#10;&#10;Group 2 · Water and salt&#10;..."></textarea>
+      <div class="ed-actions"><button class="btn" id="edSplit" type="button">Split into the six boxes</button></div>
+    </div>
     <div id="edQuestions"></div>
     <div class="ed-actions">
       <button class="btn btn-ink" id="saveQuestions" type="button">Save all six</button>
@@ -461,10 +476,15 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
     </div>
 
     <div class="groupmark"><span>Add a day</span></div>
-    <p class="ed-note">Every day gets its own six blank boards and keeps its own answers. One question per box. Fewer is fine, the rest stay empty. Pasting a list into the first box spreads it across all six.</p>
+    <p class="ed-note">Every day gets its own six blank boards and keeps its own answers. One question per box. Fewer is fine, the rest stay empty. Paragraphs, bullets and indents are kept. Paste a whole sheet with Group 1, Group 2 and so on, and it splits itself into the six boxes.</p>
     <label class="bl" for="newLabel">Day name</label>
     <input type="text" id="newLabel" placeholder="Day 4"/>
     <label class="bl">Six questions, one per box</label>
+    <div class="pastebox">
+      <label class="bl" for="newPaste" style="margin-top:0">Paste the whole sheet (optional)</label>
+      <textarea id="newPaste" placeholder="Group 1: Empty land&#10;PICK ONE OF THE FOLLOWING...&#10;&#10;* Take a side: ...&#10;&#10;Group 2 · Water and salt&#10;..."></textarea>
+      <div class="ed-actions"><button class="btn" id="newSplit" type="button">Split into the six boxes</button></div>
+    </div>
     <div id="newQuestions"></div>
     <div class="ed-actions">
       <button class="btn" id="addDay" type="button">Add to the list</button>
@@ -679,7 +699,7 @@ function boardsHTML(m, bag, live) {
           <span class="count">${rows.length} ${rows.length === 1 ? "answer" : "answers"}</span>
         </div>
         <div class="board-q${q ? "" : " unset"}">${
-          q ? esc(q) : "No question dealt to this board yet"
+          q ? qHTML(q) : "No question dealt to this board yet"
         }</div>
         <div class="board-posts">${
           rows.length
@@ -1024,7 +1044,7 @@ function renderDeal() {
       const qi = deal[g];
       return `<div class="dealcell g${g + 1}">
         <b>Group ${g + 1} &rarr; Q${qi + 1}</b>
-        <span>${qs[qi] ? esc(qs[qi]) : "empty"}</span>
+        <span>${qs[qi] ? qHTML(qs[qi]) : "empty"}</span>
       </div>`;
     })
     .join("");
@@ -1058,7 +1078,7 @@ function fillDesk() {
 
 $("saveQuestions").addEventListener("click", () => {
   if (!db || !sessionId) return flag("Not connected to Firebase yet");
-  const qs = range(GROUPS).map((i) => $("edQ" + i).value.trim());
+  const qs = range(GROUPS).map((i) => tidy($("edQ" + i).value));
   if (!qs.some(Boolean)) return flag("Write at least one question first");
   db.ref(`${INDEX}/${sessionId}`)
     .update({ questions: qs, label: $("edLabel").value.trim() || "This day" })
@@ -1082,7 +1102,7 @@ function answerBlock(m, bag) {
       const rows = rowsFor(bag, g);
       return `<div class="ansgroup">
         <div class="ansgroup-hd">Group ${g + 1}<span>${rows.length} ${rows.length === 1 ? "answer" : "answers"}</span></div>
-        <div class="ansgroup-q">${qs[deal[g]] ? esc(qs[deal[g]]) : "No question dealt"}</div>
+        <div class="ansgroup-q">${qs[deal[g]] ? qHTML(qs[deal[g]]) : "No question dealt"}</div>
         ${
           rows.length
             ? rows.map((r) => `<div class="ans">${r.who ? esc(whoLabel(r.who)) + ": " : ""}${esc(r.text)}</div>`).join("")
@@ -1459,24 +1479,101 @@ $("newQuestions").innerHTML = range(GROUPS)
   )
   .join("");
 
-// Pasting a list of questions into any box spreads it down the boxes.
-$("newQuestions").addEventListener("paste", (e) => {
-  const box = e.target.closest("textarea");
-  if (!box) return;
-  const text = (e.clipboardData || window.clipboardData).getData("text");
-  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
-  if (lines.length < 2) return;
-  e.preventDefault();
-  let i = +box.id.replace("newQ", "");
-  lines.forEach((l) => {
-    if (i < GROUPS) $("newQ" + i++).value = l;
+/* ── pasting a whole sheet ──────────────────────────────────────────
+   A line that starts with "Group 1", "Group 2: ...", "Group 3 · ..." begins
+   a new board. Everything under it, blank lines and bullets included, is
+   that board's question. The "Group N" part is dropped because the boards
+   carry their own numbers and the deal can move a question to another
+   group. The name after it ("Empty land") becomes the title line.
+   ─────────────────────────────────────────────────────────────────── */
+const GROUP_LINE = /^\s*group\s*(\d+)\s*[:·.\-–—)]*\s*(.*)$/i;
+
+function splitSheet(text) {
+  const out = range(GROUPS).map(() => null);
+  let cur = null, next = 0, found = 0;
+  const sections = [];
+  String(text).replace(/\r\n?/g, "\n").split("\n").forEach((line) => {
+    const m = line.match(GROUP_LINE);
+    if (m) {
+      cur = { n: +m[1], lines: m[2].trim() ? [m[2].trim()] : [] };
+      sections.push(cur);
+    } else if (cur) {
+      cur.lines.push(line.replace(/\s+$/, ""));
+    }
   });
-  if (lines.length + +box.id.replace("newQ", "") > GROUPS) flag("Only six boxes, so the extra lines were left off");
+  sections.forEach((sec) => {
+    let i = sec.n >= 1 && sec.n <= GROUPS && out[sec.n - 1] == null ? sec.n - 1 : out.indexOf(null);
+    if (i < 0) return;
+    out[i] = tidy(sec.lines.join("\n"));
+    found++;
+  });
+  return { qs: out.map((q) => q || ""), found, extra: Math.max(0, sections.length - found) };
+}
+
+// Trims the ends and squeezes runs of blank lines down to one.
+function tidy(t) {
+  return String(t).replace(/\r\n?/g, "\n").replace(/[ \t]+$/gm, "").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+function fillFromSheet(pasteId, prefix) {
+  const r = splitSheet($(pasteId).value);
+  if (!r.found) return flag('No "Group 1", "Group 2" lines found. Each group needs its own line starting with Group and a number.');
+  range(GROUPS).forEach((i) => { $(prefix + i).value = r.qs[i]; });
+  $(pasteId).value = "";
+  flag(r.found + " of " + GROUPS + " boxes filled" + (r.extra ? ". " + r.extra + " extra group left off." : ". Check them, then save."));
+}
+
+$("edSplit").addEventListener("click", () => fillFromSheet("edPaste", "edQ"));
+$("newSplit").addEventListener("click", () => fillFromSheet("newPaste", "newQ"));
+
+// Pasting a whole sheet straight into any single box splits it too.
+["edQuestions", "newQuestions"].forEach((wrap) => {
+  $(wrap).addEventListener("paste", (e) => {
+    const box = e.target.closest("textarea");
+    if (!box) return;
+    const text = (e.clipboardData || window.clipboardData).getData("text");
+    const heads = text.split(/\r?\n/).filter((l) => GROUP_LINE.test(l)).length;
+    if (heads < 2) return;
+    e.preventDefault();
+    const prefix = wrap === "edQuestions" ? "edQ" : "newQ";
+    const r = splitSheet(text);
+    range(GROUPS).forEach((i) => { $(prefix + i).value = r.qs[i]; });
+    flag(r.found + " of " + GROUPS + " boxes filled from the paste. Check them, then save.");
+  });
 });
+
+// Turns a stored question into a title, paragraphs and a bullet list.
+function qHTML(q) {
+  const lines = tidy(q).split("\n");
+  const multi = lines.length > 1;
+  let html = "", inList = false, first = true;
+  const closeList = () => { if (inList) { html += "</ul>"; inList = false; } };
+  lines.forEach((raw) => {
+    if (!raw.trim()) { closeList(); html += '<div class="gap"></div>'; return; }
+    const indent = (raw.match(/^[ \t]*/)[0].replace(/\t/g, "    ").length);
+    const pad = indent ? ' style="margin-left:' + Math.min(indent, 16) * 6 + 'px"' : "";
+    const bullet = raw.match(/^\s*(?:[*•▪◦‣\-–]|\d+[.)])\s+(.*)$/);
+    if (bullet) {
+      if (!inList) { html += "<ul>"; inList = true; }
+      let body = esc(bullet[1]);
+      const lab = bullet[1].match(/^([^:]{1,40}):\s*(.*)$/);
+      if (lab) body = "<b>" + esc(lab[1]) + ":</b> " + esc(lab[2]);
+      html += "<li" + pad + ">" + body + "</li>";
+      first = false;
+      return;
+    }
+    closeList();
+    if (first && multi) html += '<div class="qt">' + esc(raw.trim()) + "</div>";
+    else html += "<p" + pad + ">" + esc(raw.trim()) + "</p>";
+    first = false;
+  });
+  closeList();
+  return '<div class="qfmt">' + html + "</div>";
+}
 
 function addFromForm(openIt) {
   if (!db) return flag("Not connected to Firebase yet");
-  const qs = range(GROUPS).map((i) => $("newQ" + i).value.replace(/\s+/g, " ").trim());
+  const qs = range(GROUPS).map((i) => tidy($("newQ" + i).value));
   if (!qs.some(Boolean)) return flag("Write at least one question first");
   makeDay($("newLabel").value.trim(), qs, openIt)
     .then(() => {
