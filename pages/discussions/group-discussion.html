@@ -361,7 +361,7 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
 .wk-edit textarea{resize:vertical;min-height:60px}
 .wk-edit input:focus,.wk-edit textarea:focus{border-color:var(--pulpred)}
 .wk-empty{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6c7a83;border:3px dashed var(--rule);padding:16px;text-align:center}
-.ed-flag{border:3px solid var(--cobalt);color:var(--cobalt);background:#fff;padding:11px 14px;margin-top:14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
+.ed-flag{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:900;width:min(520px,calc(100% - 32px));box-shadow:6px 6px 0 var(--jet);border:3px solid var(--cobalt);color:var(--cobalt);background:#fff;padding:11px 14px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;line-height:1.6;text-transform:uppercase;display:none}
 .ed-flag.on{display:block}
 
 .divider{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;color:var(--pulpred);text-align:center;letter-spacing:5px;text-transform:uppercase;margin:34px 0 0}
@@ -461,11 +461,11 @@ main{max-width:1240px;margin:0 auto;padding:22px 18px 150px}
     </div>
 
     <div class="groupmark"><span>Add a day</span></div>
-    <p class="ed-note">Every day gets its own six blank boards and keeps its own answers. One question per line, six lines. Fewer is fine, the rest stay empty.</p>
+    <p class="ed-note">Every day gets its own six blank boards and keeps its own answers. One question per box. Fewer is fine, the rest stay empty. Pasting a list into the first box spreads it across all six.</p>
     <label class="bl" for="newLabel">Day name</label>
     <input type="text" id="newLabel" placeholder="Day 4"/>
-    <label class="bl" for="newPrompts">Six questions, one per line</label>
-    <textarea id="newPrompts" rows="6" placeholder="What kind of labor goes unseen in your own household?&#10;Name a machine you were taught to be afraid of.&#10;Who taught you the skill you use most at work?&#10;Where does the care in this system actually happen?&#10;What does the interface hide from you?&#10;Whose name got left off the patent?"></textarea>
+    <label class="bl">Six questions, one per box</label>
+    <div id="newQuestions"></div>
     <div class="ed-actions">
       <button class="btn" id="addDay" type="button">Add to the list</button>
       <button class="btn btn-ink" id="startDay" type="button">Add and open now</button>
@@ -965,6 +965,7 @@ function dbTrouble(err) {
     ? "Firebase blocked that. The database rules need updating."
     : "Firebase error: " + ((err && err.message) || "unknown");
   $("barState").textContent = msg;
+  if (unlocked) flag(msg);
   console.error("[discussion boards]", err);
 }
 
@@ -1279,7 +1280,8 @@ function flag(msg) {
   const f = $("edFlag");
   f.textContent = msg;
   f.classList.add("on");
-  setTimeout(() => f.classList.remove("on"), 3200);
+  clearTimeout(flag.t);
+  flag.t = setTimeout(() => f.classList.remove("on"), 4500);
 }
 
 /* ── the day list ───────────────────────────────────────────────── */
@@ -1448,14 +1450,37 @@ function makeDay(label, questions, openIt) {
     .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
 }
 
+$("newQuestions").innerHTML = range(GROUPS)
+  .map(
+    (i) => `<div class="qrow">
+      <div class="qnum">Q${i + 1}</div>
+      <textarea id="newQ${i}" placeholder="Question ${i + 1}"></textarea>
+    </div>`
+  )
+  .join("");
+
+// Pasting a list of questions into any box spreads it down the boxes.
+$("newQuestions").addEventListener("paste", (e) => {
+  const box = e.target.closest("textarea");
+  if (!box) return;
+  const text = (e.clipboardData || window.clipboardData).getData("text");
+  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  if (lines.length < 2) return;
+  e.preventDefault();
+  let i = +box.id.replace("newQ", "");
+  lines.forEach((l) => {
+    if (i < GROUPS) $("newQ" + i++).value = l;
+  });
+  if (lines.length + +box.id.replace("newQ", "") > GROUPS) flag("Only six boxes, so the extra lines were left off");
+});
+
 function addFromForm(openIt) {
   if (!db) return flag("Not connected to Firebase yet");
-  const lines = $("newPrompts").value.split("\n").map((l) => l.trim()).filter(Boolean);
-  if (!lines.length) return flag("Write the questions first, one per line");
-  if (lines.length > GROUPS) return flag("That is more than " + GROUPS + " lines. Trim it down.");
-  makeDay($("newLabel").value.trim(), lines, openIt)
+  const qs = range(GROUPS).map((i) => $("newQ" + i).value.replace(/\s+/g, " ").trim());
+  if (!qs.some(Boolean)) return flag("Write at least one question first");
+  makeDay($("newLabel").value.trim(), qs, openIt)
     .then(() => {
-      $("newPrompts").value = "";
+      range(GROUPS).forEach((i) => { $("newQ" + i).value = ""; });
       $("newLabel").value = "";
       flag(openIt ? "New day is open. Six blank boards on screen." : "Added to the list. Open it when you are ready.");
     })
