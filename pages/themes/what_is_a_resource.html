@@ -1,0 +1,481 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>What Is a Resource?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: ART 104 pulp-zine cover, then a hub roundel wired to five tinted idea boards, then definition and term boards. Single light look, matching the course site. */
+:root{
+  --cobalt:#a01e5c;          /* mars magenta, the cover surface */
+  --chrome:#a8e6c0;          /* mint, the light mark on dark */
+  --chrome-deep:#2f7d7d;     /* teal, every drop shadow */
+  --pulpred:#5f7d1f;         /* deep grass green, accent */
+  --mars:#d63d84;            /* pink, small caps labels */
+  --jet:#14202a;
+  --pulp-deep:#dbe8dd;
+  --rule:#b9c8a8;
+  --cream:#f4f8f2;
+  --paper:#ffffff;
+  --muted:#4a5862;
+  --cover-ink:#f3e6ec;
+  --display:'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif:'Bitter', Georgia, 'Times New Roman', serif;
+  --body:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    linear-gradient(160deg,rgba(160,30,92,.13) 0%,rgba(47,125,125,.12) 50%,rgba(139,168,56,.15) 100%),
+    var(--cream);
+  background-attachment:fixed;
+  color:var(--jet);
+  font-family:var(--body);
+  font-size:15px;
+  line-height:1.55;
+}
+.gutter{
+  max-width:1240px;margin:0 auto;
+  padding-left:max(18px, env(safe-area-inset-left, 0px));
+  padding-right:max(18px, env(safe-area-inset-right, 0px));
+}
+
+/* ══ cover ══ */
+header{background:var(--cobalt);border-bottom:8px solid var(--jet)}
+.cover{padding-block:14px 0}
+.cover-top{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;padding-bottom:9px;
+}
+.stripes{
+  height:22px;border:3px solid var(--jet);
+  background:repeating-linear-gradient(107deg,var(--chrome) 0 15px,var(--jet) 15px 26px);
+}
+h1.logo{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(32px,8.6vw,88px);
+  line-height:.9;letter-spacing:-.02em;text-transform:uppercase;
+  color:#fff;text-align:center;margin:14px 0 6px;text-wrap:balance;
+  text-shadow:
+    -3px -3px 0 var(--jet), 3px -3px 0 var(--jet), -3px 3px 0 var(--jet), 3px 3px 0 var(--jet),
+    0 -3px 0 var(--jet), 0 3px 0 var(--jet), -3px 0 0 var(--jet), 3px 0 0 var(--jet),
+    7px 8px 0 var(--jet), 10px 11px 0 rgba(0,0,0,.4);
+}
+.cover-band{
+  display:flex;align-items:center;gap:14px;
+  border-top:3px solid var(--jet);border-bottom:3px solid var(--jet);
+  padding:9px 0;margin-top:12px;
+}
+.roundel{
+  width:56px;height:56px;flex:none;border-radius:50%;
+  background:var(--pulpred);border:4px solid var(--jet);
+  box-shadow:0 0 0 3px var(--chrome);
+  display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;
+  font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px;
+}
+.cover-tag{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;
+  color:#fff;line-height:1.2;flex:1;min-width:0;
+}
+.cover-kicker{
+  font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block;
+}
+.cover-foot{
+  padding:9px 0 12px;font-family:var(--serif);font-size:13px;color:var(--cover-ink);line-height:1.5;
+}
+
+main{padding-block:26px 60px}
+
+/* ══ section frames ══ */
+.frame{
+  border:4px solid var(--jet);box-shadow:7px 7px 0 var(--chrome-deep);
+  background:var(--paper);margin-bottom:34px;
+}
+.frame-bar{
+  font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--cobalt);border-bottom:3px solid var(--jet);
+  padding:7px 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.frame-bar .arm{color:var(--chrome)}
+.frame-body{padding:16px}
+
+/* ══ map ══ */
+.map{position:relative}
+.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.wires line{stroke:var(--jet);stroke-width:3;stroke-dasharray:6 6;fill:none}
+.wires circle{fill:var(--jet)}
+.grid{
+  position:relative;display:grid;gap:26px 28px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-areas:"a b c" "d hub e";
+  align-items:start;
+}
+.hub{
+  grid-area:hub;align-self:center;justify-self:center;
+  width:min(100%,320px);max-width:100%;aspect-ratio:1;border-radius:50%;
+  background:var(--jet);color:#fff;border:5px solid var(--jet);
+  box-shadow:0 0 0 5px var(--chrome), 9px 10px 0 5px var(--cobalt);
+  display:grid;place-content:center;text-align:center;padding:34px;
+  position:relative;z-index:1;
+}
+.hub .word{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:clamp(1.9rem,3.6vw,2.6rem);line-height:1;letter-spacing:-.01em;color:var(--chrome);
+}
+.hub .ipa{font-family:var(--serif);font-style:italic;font-size:13px;opacity:.8;margin-top:6px}
+.hub .senses{margin-top:14px;font-family:var(--serif);font-size:14px;line-height:1.4;display:grid;gap:8px}
+.hub .senses span{
+  display:block;font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--mars);
+}
+
+.board{
+  --bg:#fff;--ink:var(--jet);--sh:var(--jet);
+  position:relative;z-index:1;min-width:0;
+  background:var(--bg);border:4px solid var(--jet);box-shadow:6px 6px 0 var(--sh);
+  display:flex;flex-direction:column;
+}
+.board.q1{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
+.board.q2{--bg:#faead0;--ink:#8a5a16;--sh:#c9922f}
+.board.q3{--bg:#eaf3cd;--ink:#4d661a;--sh:#8ba838}
+.board.q4{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
+.board.q5{--bg:#ffe1ef;--ink:#a01e5c;--sh:#d63d84}
+.board.q6{--bg:#e2e6e8;--ink:#14202a;--sh:#5c6b74}
+.idea.a{grid-area:a}.idea.b{grid-area:b}.idea.c{grid-area:c}.idea.d{grid-area:d}.idea.e{grid-area:e}
+
+.board-hd{
+  border-bottom:3px solid var(--jet);padding:8px 11px;
+  font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;background:var(--ink);
+}
+.board-body{padding:12px 13px 14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.board h2,.board h4{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:-.005em;
+  font-size:1.25rem;line-height:1.1;margin:0;text-wrap:balance;color:var(--jet);
+}
+.board h4{font-size:1rem}
+.board p{margin:0;font-family:var(--serif);font-size:14px;line-height:1.55}
+.ask{
+  background:#fff;border:2px solid var(--jet);border-left:6px solid var(--ink);
+  box-shadow:3px 3px 0 rgba(20,32,42,.16);padding:7px 10px;
+}
+.ask b{
+  display:block;font-family:var(--display);font-weight:700;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--ink);margin-bottom:2px;
+}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:4px}
+.btn{
+  display:inline-block;font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;text-decoration:none;color:var(--jet);
+  padding:7px 12px;border:3px solid var(--jet);background:var(--chrome);box-shadow:3px 3px 0 var(--jet);
+  transition:transform .08s, box-shadow .08s;
+}
+.btn::after{content:" \2197"}
+.btn:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--jet)}
+.btn:focus-visible{outline:4px solid var(--cobalt);outline-offset:3px}
+
+/* ══ boards grids ══ */
+.tiles{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.src ul{margin:0;padding-left:18px;display:grid;gap:4px;font-family:var(--serif);font-size:14px}
+.term .btn{align-self:flex-start}
+
+.more{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.more .post{
+  background:#fff;border:2px solid var(--jet);border-left:6px solid var(--cobalt);
+  box-shadow:3px 3px 0 rgba(20,32,42,.16);padding:10px 12px;font-family:var(--serif);font-size:14px;
+}
+.more .post b{
+  display:block;font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--cobalt);margin-bottom:3px;
+}
+.divider{font-family:var(--display);font-weight:600;font-size:11px;color:var(--cobalt);text-align:center;letter-spacing:5px;margin:10px 0 0}
+
+@media (max-width:900px){
+  .grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"hub" "a" "b" "c" "d" "e";gap:22px}
+  .wires{display:none}
+  .hub{width:min(100%,290px)}
+  .tiles,.more{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .tiles,.more{grid-template-columns:minmax(0,1fr)}
+  .cover-band{flex-wrap:wrap}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header>
+  <div class="cover gutter">
+    <div class="cover-top"><span>ART 104</span><span>Week 8</span></div>
+    <div class="stripes"></div>
+    <h1 class="logo">What Is a Resource?</h1>
+    <div class="cover-band">
+      <div class="roundel">WK<br>8</div>
+      <div class="cover-tag">
+        <span class="cover-kicker">Nature as Resource</span>
+        Five ways to think about one word
+      </div>
+    </div>
+    <div class="cover-foot">Click any button to go deeper, then come back to the question at the center.</div>
+  </div>
+</header>
+
+<main class="gutter">
+
+  <section class="frame">
+    <div class="frame-bar"><span>General ideas and terms</span><span class="arm">9 terms</span></div>
+    <div class="frame-body tiles">
+      <article class="board q1 term"><div class="board-hd">Term 1</div><div class="board-body">
+        <h4>Natural resource</h4>
+        <p>Anything from nature that people use: water, soil, air, sunlight, plants, animals, minerals, fuels.</p>
+        <a class="btn" href="https://en.wikipedia.org/wiki/Natural_resource" target="_blank" rel="noopener">Read more</a>
+      </div></article>
+      <article class="board q2 term"><div class="board-hd">Term 2</div><div class="board-body">
+        <h4>Renewable and nonrenewable</h4>
+        <p>Renewable resources refill on a human timescale, like sun, wind and forests if cared for. Nonrenewable ones, like oil, lithium and sand, take millions of years to form.</p>
+        <a class="btn" href="https://education.nationalgeographic.org/resource/resource-types/" target="_blank" rel="noopener">National Geographic</a>
+      </div></article>
+      <article class="board q3 term"><div class="board-hd">Term 3</div><div class="board-body">
+        <h4>Land, labor, capital</h4>
+        <p>Economics calls these the factors of production: the earth, people's work, and the tools and money used to make things.</p>
+        <a class="btn" href="https://en.wikipedia.org/wiki/Factors_of_production" target="_blank" rel="noopener">Read more</a>
+      </div></article>
+      <article class="board q4 term"><div class="board-hd">Term 4</div><div class="board-body">
+        <h4>Human resources</h4>
+        <p>The name for workers inside a company, and for the department that manages them. People counted alongside materials.</p>
+        <a class="btn" href="https://en.wikipedia.org/wiki/Human_resources" target="_blank" rel="noopener">Read more</a>
+      </div></article>
+      <article class="board q5 term"><div class="board-hd">Term 5</div><div class="board-body">
+        <h4>Critical minerals</h4>
+        <p>Minerals a government decides its economy and security depend on, like lithium, cobalt and rare earths. The list changes as needs change.</p>
+        <a class="btn" href="https://www.everycrsreport.com/reports/IF13145.html" target="_blank" rel="noopener">The US list</a>
+      </div></article>
+      <article class="board q6 term"><div class="board-hd">Term 6</div><div class="board-body">
+        <h4>Extractivism</h4>
+        <p>An economy built on removing large amounts of raw material, usually shipped elsewhere, with the damage left where it was dug.</p>
+        <a class="btn" href="https://en.wikipedia.org/wiki/Extractivism" target="_blank" rel="noopener">Read more</a>
+      </div></article>
+      <article class="board q1 term"><div class="board-hd">Term 7</div><div class="board-body">
+        <h4>Resource curse</h4>
+        <p>The pattern where places rich in oil or minerals often end up poorer, less stable or less democratic than places without them.</p>
+        <a class="btn" href="https://en.wikipedia.org/wiki/Resource_curse" target="_blank" rel="noopener">Read more</a>
+      </div></article>
+      <article class="board q2 term"><div class="board-hd">Term 8</div><div class="board-body">
+        <h4>The commons</h4>
+        <p>Resources shared by a community, like a fishery or a pasture. Some argued they always get overused; Elinor Ostrom showed many communities manage them well for centuries.</p>
+        <a class="btn" href="https://en.wikipedia.org/wiki/Elinor_Ostrom" target="_blank" rel="noopener">Elinor Ostrom</a>
+      </div></article>
+      <article class="board q3 term"><div class="board-hd">Term 9</div><div class="board-body">
+        <h4>Ecosystem services</h4>
+        <p>The work nature does for free: bees pollinating, wetlands filtering water, forests storing carbon. Naming it this way puts nature's care in economic terms.</p>
+        <a class="btn" href="https://en.wikipedia.org/wiki/Ecosystem_service" target="_blank" rel="noopener">Read more</a>
+      </div></article>
+    </div>
+  </section>
+
+  <section class="frame">
+    <div class="frame-bar"><span>The map</span><span class="arm">5 lenses</span></div>
+    <div class="frame-body">
+      <div class="map" id="map">
+        <svg class="wires" id="wires" aria-hidden="true"></svg>
+        <div class="grid">
+
+          <div class="hub" id="hub">
+            <div class="word">Resource</div>
+            <div class="ipa">/ˈrē.sôrs/</div>
+            <div class="senses">
+              <div><span>1610s</span>a spring that rises again</div>
+              <div><span>Today</span>a stock to dig up and use up</div>
+            </div>
+          </div>
+
+          <article class="board q1 idea a" data-wire>
+            <div class="board-hd">The word itself</div>
+            <div class="board-body">
+              <h2>A spring that rises again</h2>
+              <p>"Resource" comes from the Latin <i>resurgere</i>, to rise again, through the French for a spring. The meaning of a country's wealth only arrived around 1779.</p>
+              <p class="ask"><b>Ask</b>What would it take for lithium or sand to be a resource in the older sense?</p>
+              <div class="links"><a class="btn" href="https://www.etymonline.com/word/resource" target="_blank" rel="noopener">Etymonline</a></div>
+            </div>
+          </article>
+
+          <article class="board q2 idea b" data-wire>
+            <div class="board-hd">Erich Zimmermann · 1933</div>
+            <div class="board-body">
+              <h2>Resources are not, they become</h2>
+              <p>Nothing is a resource on its own. Earth's stuff becomes one only when people decide it is useful, so what counts changes over time.</p>
+              <p class="ask"><b>Ask</b>Name something that wasn't a resource 100 years ago but is now. Name one that stopped being one.</p>
+              <div class="links"><a class="btn" href="https://en.wikipedia.org/wiki/Erich_Zimmermann" target="_blank" rel="noopener">Zimmermann</a></div>
+            </div>
+          </article>
+
+          <article class="board q3 idea c" data-wire>
+            <div class="board-hd">Robin Wall Kimmerer · Potawatomi</div>
+            <div class="board-body">
+              <h2>It or ki?</h2>
+              <p>English calls a tree, a river or a robin "it." Potawatomi speaks of them as living beings. Calling nature an object makes it easier to treat as property. Kimmerer offers "ki," plural "kin."</p>
+              <p class="ask"><b>Ask</b>Rewrite one sentence from this week's readings with "ki" in place of "it." What changes?</p>
+              <div class="links">
+                <a class="btn" href="https://orionmagazine.org/article/speaking-of-nature/" target="_blank" rel="noopener">Speaking of Nature</a>
+                <a class="btn" href="https://orionmagazine.org/article/robin-wall-kimmerer-language-animacy/" target="_blank" rel="noopener">Orion interview</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="board q4 idea d" data-wire>
+            <div class="board-hd">Martin Heidegger · 1954</div>
+            <div class="board-body">
+              <h2>The world as a stockpile</h2>
+              <p>Heidegger warned that modern technology teaches us to see everything as "standing reserve": a forest as paper supply, a river as power, waiting to be ordered and used.</p>
+              <p class="ask"><b>Ask</b>Look out a window. What would a mining company see? What would you see? A bird?</p>
+              <div class="links">
+                <a class="btn" href="https://en.wikipedia.org/wiki/The_Question_Concerning_Technology" target="_blank" rel="noopener">The essay</a>
+                <a class="btn" href="https://www.beyng.com/pages/en/QCT/QCT.017.html" target="_blank" rel="noopener">Standing reserve</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="board q5 idea e" data-wire>
+            <div class="board-hd">Raj Patel &amp; Jason W. Moore · 2017</div>
+            <div class="board-body">
+              <h2>Making things cheap</h2>
+              <p>Seven things were made cheap to build the modern world: nature, money, work, care, food, energy and lives. People become resources too, as in "human resources."</p>
+              <p class="ask"><b>Ask</b>Who in this week's readings is treated as a resource? What happens to them?</p>
+              <div class="links"><a class="btn" href="https://www.ucpress.edu/books/a-history-of-the-world-in-seven-cheap-things/paper" target="_blank" rel="noopener">Seven Cheap Things</a></div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="frame">
+    <div class="frame-bar"><span>Definitions from different sources</span><span class="arm">6 sources</span></div>
+    <div class="frame-body tiles">
+      <article class="board q1 src">
+        <div class="board-hd">Merriam-Webster</div>
+        <div class="board-body">
+          <ul>
+            <li>A source of supply or support</li>
+            <li>Something to fall back on when things get hard</li>
+            <li>A way to spend your free time</li>
+            <li>The ability to cope with a situation</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://www.merriam-webster.com/dictionary/resource" target="_blank" rel="noopener">Merriam-Webster</a></div>
+        </div>
+      </article>
+      <article class="board q2 src">
+        <div class="board-hd">Britannica Dictionary</div>
+        <div class="board-body">
+          <ul>
+            <li>What a country has to build wealth, like oil, minerals or coal</li>
+            <li>Money or supplies you can draw on</li>
+            <li>A helpful place or thing, like a library or website</li>
+            <li>Personal strengths and skill at solving problems</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://www.britannica.com/dictionary/resource" target="_blank" rel="noopener">Britannica</a></div>
+        </div>
+      </article>
+      <article class="board q3 src">
+        <div class="board-hd">Wiktionary</div>
+        <div class="board-body">
+          <ul>
+            <li>Something used to reach a goal, like raw materials or staff</li>
+            <li>A person's capacity to deal with difficulty</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://en.wiktionary.org/wiki/resource" target="_blank" rel="noopener">Wiktionary</a></div>
+        </div>
+      </article>
+      <article class="board q4 src">
+        <div class="board-hd">Vocabulary.com · natural resources</div>
+        <div class="board-body">
+          <ul>
+            <li>Things found in nature that people can use, like land, minerals, wood or solar energy</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://www.vocabulary.com/dictionary/natural%20resources" target="_blank" rel="noopener">Vocabulary.com</a></div>
+        </div>
+      </article>
+      <article class="board q5 src">
+        <div class="board-hd">Etymonline · word history</div>
+        <div class="board-body">
+          <ul>
+            <li>1610s: any means of meeting a need</li>
+            <li>From the French for a source or spring, from Latin "rise again"</li>
+            <li>By 1779: a country's wealth and supplies</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://www.etymonline.com/word/resource" target="_blank" rel="noopener">Etymonline</a></div>
+        </div>
+      </article>
+      <article class="board q6 src">
+        <div class="board-hd">Erich Zimmermann · economic geography</div>
+        <div class="board-body">
+          <ul>
+            <li>Not a fixed thing in nature</li>
+            <li>Whatever people value and can use at a given time, so it changes with technology and culture</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://en.wikipedia.org/wiki/Erich_Zimmermann" target="_blank" rel="noopener">Zimmermann</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="frame">
+    <div class="frame-bar"><span>More ways in</span><span class="arm">3 prompts</span></div>
+    <div class="frame-body more">
+      <div class="post"><b>Resourceful vs. resource-hungry</b>A resourceful person makes a lot from a little. What would a resourceful relationship with the earth look like?</div>
+      <div class="post"><b>Library, mental health, natural</b>We use "resources" for all three. Which use feels most like care, and why?</div>
+      <div class="post"><b>Who decides?</b>At Thacker Pass or in the Atacama, who calls the land a resource, and who calls it home, sacred or family?</div>
+    </div>
+  </section>
+
+  <p class="divider">◆ ◆ ◆</p>
+</main>
+
+<script>
+(function () {
+  var svg = document.getElementById('wires');
+  var map = document.getElementById('map');
+  var hub = document.getElementById('hub');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('[data-wire]'));
+  var NS = 'http://www.w3.org/2000/svg';
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    if (getComputedStyle(svg).display === 'none') return;
+    var m = map.getBoundingClientRect();
+    var h = hub.getBoundingClientRect();
+    var hx = h.left + h.width / 2 - m.left;
+    var hy = h.top + h.height / 2 - m.top;
+    cards.forEach(function (card) {
+      var r = card.getBoundingClientRect();
+      var cx = r.left + r.width / 2 - m.left;
+      var cy = r.top + r.height / 2 - m.top;
+      var tx, ty;
+      if (Math.abs(cy - hy) < r.height / 2) {
+        ty = hy; tx = cx < hx ? r.right - m.left : r.left - m.left;
+      } else {
+        tx = cx + (hx - cx) * 0.15; ty = cy < hy ? r.bottom - m.top : r.top - m.top;
+      }
+      var line = document.createElementNS(NS, 'line');
+      line.setAttribute('x1', hx); line.setAttribute('y1', hy);
+      line.setAttribute('x2', tx); line.setAttribute('y2', ty);
+      svg.appendChild(line);
+      var dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('cx', tx); dot.setAttribute('cy', ty); dot.setAttribute('r', 6);
+      svg.appendChild(dot);
+    });
+  }
+  draw();
+  window.addEventListener('resize', draw);
+  if (window.ResizeObserver) new ResizeObserver(draw).observe(map);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+})();
+</script>
+
+</body></html>
