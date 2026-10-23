@@ -195,6 +195,10 @@ main{padding-block:26px 60px}
   display:block;font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:2px;
   text-transform:uppercase;color:var(--cobalt);margin-bottom:3px;
 }
+.note{margin:0 0 16px;max-width:75ch;font-family:var(--serif);font-size:14px;color:var(--muted)}
+.groupmark{display:flex;align-items:center;gap:12px;margin:22px 0 14px;font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--cobalt)}
+.groupmark:first-child{margin-top:4px}
+.groupmark::before,.groupmark::after{content:"";flex:1;border-top:3px solid var(--cobalt)}
 .divider{font-family:var(--display);font-weight:600;font-size:11px;color:var(--cobalt);text-align:center;letter-spacing:5px;margin:10px 0 0}
 
 @media (max-width:900px){
@@ -227,6 +231,76 @@ main{padding-block:26px 60px}
 </header>
 
 <main class="gutter">
+
+  <section class="frame">
+    <div class="frame-bar"><span>Definitions from different sources</span><span class="arm">6 sources</span></div>
+    <div class="frame-body tiles">
+      <article class="board q1 src">
+        <div class="board-hd">Merriam-Webster</div>
+        <div class="board-body">
+          <ul>
+            <li>A source of supply or support</li>
+            <li>Something to fall back on when things get hard</li>
+            <li>A way to spend your free time</li>
+            <li>The ability to cope with a situation</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://www.merriam-webster.com/dictionary/resource" target="_blank" rel="noopener">Merriam-Webster</a></div>
+        </div>
+      </article>
+      <article class="board q2 src">
+        <div class="board-hd">Britannica Dictionary</div>
+        <div class="board-body">
+          <ul>
+            <li>What a country has to build wealth, like oil, minerals or coal</li>
+            <li>Money or supplies you can draw on</li>
+            <li>A helpful place or thing, like a library or website</li>
+            <li>Personal strengths and skill at solving problems</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://www.britannica.com/dictionary/resource" target="_blank" rel="noopener">Britannica</a></div>
+        </div>
+      </article>
+      <article class="board q3 src">
+        <div class="board-hd">Wiktionary</div>
+        <div class="board-body">
+          <ul>
+            <li>Something used to reach a goal, like raw materials or staff</li>
+            <li>A person's capacity to deal with difficulty</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://en.wiktionary.org/wiki/resource" target="_blank" rel="noopener">Wiktionary</a></div>
+        </div>
+      </article>
+      <article class="board q4 src">
+        <div class="board-hd">Vocabulary.com · natural resources</div>
+        <div class="board-body">
+          <ul>
+            <li>Things found in nature that people can use, like land, minerals, wood or solar energy</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://www.vocabulary.com/dictionary/natural%20resources" target="_blank" rel="noopener">Vocabulary.com</a></div>
+        </div>
+      </article>
+      <article class="board q5 src">
+        <div class="board-hd">Etymonline · word history</div>
+        <div class="board-body">
+          <ul>
+            <li>1610s: any means of meeting a need</li>
+            <li>From the French for a source or spring, from Latin "rise again"</li>
+            <li>By 1779: a country's wealth and supplies</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://www.etymonline.com/word/resource" target="_blank" rel="noopener">Etymonline</a></div>
+        </div>
+      </article>
+      <article class="board q6 src">
+        <div class="board-hd">Erich Zimmermann · economic geography</div>
+        <div class="board-body">
+          <ul>
+            <li>Not a fixed thing in nature</li>
+            <li>Whatever people value and can use at a given time, so it changes with technology and culture</li>
+          </ul>
+          <div class="links"><a class="btn" href="https://en.wikipedia.org/wiki/Erich_Zimmermann" target="_blank" rel="noopener">Zimmermann</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
 
   <section class="frame">
     <div class="frame-bar"><span>General ideas and terms</span><span class="arm">9 terms</span></div>
@@ -357,72 +431,272 @@ main{padding-block:26px 60px}
   </section>
 
   <section class="frame">
-    <div class="frame-bar"><span>Definitions from different sources</span><span class="arm">6 sources</span></div>
-    <div class="frame-body tiles">
-      <article class="board q1 src">
-        <div class="board-hd">Merriam-Webster</div>
-        <div class="board-body">
-          <ul>
-            <li>A source of supply or support</li>
-            <li>Something to fall back on when things get hard</li>
-            <li>A way to spend your free time</li>
-            <li>The ability to cope with a situation</li>
-          </ul>
-          <div class="links"><a class="btn" href="https://www.merriam-webster.com/dictionary/resource" target="_blank" rel="noopener">Merriam-Webster</a></div>
+    <div class="frame-bar"><span>Perspectives from Indigenous and other cultures</span><span class="arm">9 views</span></div>
+    <div class="frame-body">
+      <p class="note">These are many different peoples with their own languages, laws and histories, not one single view. Each one offers another way to answer the question: is nature a resource, a relative, or something else?</p>
+      <div class="tiles">
+      <article class="board q1"><div class="board-hd">Potawatomi · Turtle Island</div><div class="board-body">
+        <h4>Kin and the Honorable Harvest</h4>
+        <p>Robin Wall Kimmerer describes taking from the land as a relationship: ask permission, never take the first, take only what you need, and give something back.</p>
+        <p class="ask"><b>Ask</b>What would change if every mine followed the Honorable Harvest?</p>
+        <div class="links">
+          <a class="btn" href="https://orionmagazine.org/article/speaking-of-nature/" target="_blank" rel="noopener">Speaking of Nature</a>
         </div>
-      </article>
-      <article class="board q2 src">
-        <div class="board-hd">Britannica Dictionary</div>
-        <div class="board-body">
-          <ul>
-            <li>What a country has to build wealth, like oil, minerals or coal</li>
-            <li>Money or supplies you can draw on</li>
-            <li>A helpful place or thing, like a library or website</li>
-            <li>Personal strengths and skill at solving problems</li>
-          </ul>
-          <div class="links"><a class="btn" href="https://www.britannica.com/dictionary/resource" target="_blank" rel="noopener">Britannica</a></div>
+      </div></article>
+      <article class="board q2"><div class="board-hd">Haudenosaunee · Six Nations</div><div class="board-body">
+        <h4>The seventh generation</h4>
+        <p>Decisions should consider how they will affect people seven generations into the future, roughly 150 years from now.</p>
+        <p class="ask"><b>Ask</b>If a lithium mine had to answer to people living in 2175, what would they ask?</p>
+        <div class="links">
+          <a class="btn" href="https://www.haudenosauneeconfederacy.com/values/" target="_blank" rel="noopener">Haudenosaunee values</a>
+          <a class="btn" href="https://en.wikipedia.org/wiki/Seven_generation_sustainability" target="_blank" rel="noopener">Seven generations</a>
         </div>
-      </article>
-      <article class="board q3 src">
-        <div class="board-hd">Wiktionary</div>
-        <div class="board-body">
-          <ul>
-            <li>Something used to reach a goal, like raw materials or staff</li>
-            <li>A person's capacity to deal with difficulty</li>
-          </ul>
-          <div class="links"><a class="btn" href="https://en.wiktionary.org/wiki/resource" target="_blank" rel="noopener">Wiktionary</a></div>
+      </div></article>
+      <article class="board q3"><div class="board-hd">Māori · Aotearoa New Zealand</div><div class="board-body">
+        <h4>I am the river, the river is me</h4>
+        <p>In 2017 the Whanganui River became a legal person under the Te Awa Tupua Act. The iwi saying "Ko au te awa, ko te awa ko au" means the river and the people are one.</p>
+        <p class="ask"><b>Ask</b>If the Atacama salt flats were a legal person, what would they say in court?</p>
+        <div class="links">
+          <a class="btn" href="https://natlib.govt.nz/he-tohu/learning/social-inquiry-resources/cultural-interaction/cultural-interaction-supporting-activities-and-resources/change-maker-whanganui-river" target="_blank" rel="noopener">The Whanganui River</a>
         </div>
-      </article>
-      <article class="board q4 src">
-        <div class="board-hd">Vocabulary.com · natural resources</div>
-        <div class="board-body">
-          <ul>
-            <li>Things found in nature that people can use, like land, minerals, wood or solar energy</li>
-          </ul>
-          <div class="links"><a class="btn" href="https://www.vocabulary.com/dictionary/natural%20resources" target="_blank" rel="noopener">Vocabulary.com</a></div>
+      </div></article>
+      <article class="board q4"><div class="board-hd">Andean Quechua and Aymara</div><div class="board-body">
+        <h4>Pachamama and good living</h4>
+        <p>Pachamama is Mother Earth. Sumak kawsay, or buen vivir, means living well in balance with the earth and each other. Ecuador wrote rights of nature into its constitution in 2008, and Bolivia passed a Law of the Rights of Mother Earth in 2010.</p>
+        <p class="ask"><b>Ask</b>Lithium sits under salt flats in the Andes. Can Pachamama have rights and still be mined?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Rights_of_nature_in_Ecuador" target="_blank" rel="noopener">Rights of nature in Ecuador</a>
+          <a class="btn" href="https://en.wikipedia.org/wiki/Law_of_the_Rights_of_Mother_Earth" target="_blank" rel="noopener">Mother Earth law</a>
         </div>
-      </article>
-      <article class="board q5 src">
-        <div class="board-hd">Etymonline · word history</div>
-        <div class="board-body">
-          <ul>
-            <li>1610s: any means of meeting a need</li>
-            <li>From the French for a source or spring, from Latin "rise again"</li>
-            <li>By 1779: a country's wealth and supplies</li>
-          </ul>
-          <div class="links"><a class="btn" href="https://www.etymonline.com/word/resource" target="_blank" rel="noopener">Etymonline</a></div>
+      </div></article>
+      <article class="board q5"><div class="board-hd">Aboriginal Australians</div><div class="board-body">
+        <h4>Country</h4>
+        <p>Country means land, water, sky, plants, animals, people and ancestors as one living whole. People belong to Country and care for it, and Country cares for them.</p>
+        <p class="ask"><b>Ask</b>Bangka's tin and Baotou's rare earths come from someone's Country. What does it mean to dig up a place you belong to?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Country_(Indigenous_Australians)" target="_blank" rel="noopener">Country</a>
+          <a class="btn" href="https://soe.dcceew.gov.au/indigenous/environment/country-and-connections" target="_blank" rel="noopener">Country and connections</a>
         </div>
-      </article>
-      <article class="board q6 src">
-        <div class="board-hd">Erich Zimmermann · economic geography</div>
-        <div class="board-body">
-          <ul>
-            <li>Not a fixed thing in nature</li>
-            <li>Whatever people value and can use at a given time, so it changes with technology and culture</li>
-          </ul>
-          <div class="links"><a class="btn" href="https://en.wikipedia.org/wiki/Erich_Zimmermann" target="_blank" rel="noopener">Zimmermann</a></div>
+      </div></article>
+      <article class="board q6"><div class="board-hd">Kanaka Maoli · Hawaiʻi</div><div class="board-body">
+        <h4>Aloha ʻāina</h4>
+        <p>Love of the land. ʻĀina is often translated as "that which feeds," so land is family that nourishes you, not property.</p>
+        <p class="ask"><b>Ask</b>What in your life feeds you? Would you call it a resource?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Aloha_%CA%BB%C4%80ina" target="_blank" rel="noopener">Aloha ʻĀina</a>
         </div>
-      </article>
+      </div></article>
+      <article class="board q1"><div class="board-hd">Japan</div><div class="board-body">
+        <h4>Satoyama</h4>
+        <p>The village landscape between farmland and mountain: woods, rice paddies, ponds and streams used and cared for by people for centuries, so both people and wildlife thrive.</p>
+        <p class="ask"><b>Ask</b>Is there a landscape near you that people use and care for at the same time?</p>
+        <div class="links">
+          <a class="btn" href="https://nippon.com/en/images/i00059" target="_blank" rel="noopener">Living together with nature</a>
+        </div>
+      </div></article>
+      <article class="board q2"><div class="board-hd">Southern Africa</div><div class="board-body">
+        <h4>Ubuntu</h4>
+        <p>"I am because we are." A person becomes a person through other people. Some African thinkers extend this to the land and the living world around us.</p>
+        <p class="ask"><b>Ask</b>If we are who we are through each other, who is the cobalt miner to you?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Ubuntu_philosophy" target="_blank" rel="noopener">Ubuntu philosophy</a>
+        </div>
+      </div></article>
+      <article class="board q3"><div class="board-hd">Catholic tradition · 2015</div><div class="board-body">
+        <h4>Our common home</h4>
+        <p>In Laudato Si', Pope Francis calls the earth "our common home" and argues that harm to the planet and harm to the poor are the same crisis.</p>
+        <p class="ask"><b>Ask</b>Which reading this week shows harm to land and harm to people as one problem?</p>
+        <div class="links">
+          <a class="btn" href="https://www.ewtn.com/catholicism/library/summary-of-laudato-si-3173" target="_blank" rel="noopener">Summary of Laudato Si'</a>
+        </div>
+      </div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="frame">
+    <div class="frame-bar"><span>Other ways to look at it</span><span class="arm">6 lenses</span></div>
+    <div class="frame-body">
+      <div class="groupmark"><span>History and power</span></div>
+      <div class="tiles">
+      <article class="board q1"><div class="board-hd">History and power</div><div class="board-body">
+        <h4>Terra nullius</h4>
+        <p>"Nobody's land." A colonial legal idea that land was empty and free to claim, along with the Doctrine of Discovery that gave Christian nations the right to take lands they "found."</p>
+        <p class="ask"><b>Ask</b>Where do you hear the idea of "empty" land in this week's readings?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Terra_nullius" target="_blank" rel="noopener">Terra nullius</a>
+          <a class="btn" href="https://en.wikipedia.org/wiki/Discovery_doctrine" target="_blank" rel="noopener">Doctrine of Discovery</a>
+        </div>
+      </div></article>
+      <article class="board q2"><div class="board-hd">History and power</div><div class="board-body">
+        <h4>Enclosure of the commons</h4>
+        <p>Shared fields and forests in England, and later around the world, were fenced off and made private. Land people lived from became land a few people owned.</p>
+        <p class="ask"><b>Ask</b>What shared places near you have been fenced off or sold?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Enclosure" target="_blank" rel="noopener">Enclosure</a>
+        </div>
+      </div></article>
+      <article class="board q3"><div class="board-hd">History and power</div><div class="board-body">
+        <h4>Sacrifice zones</h4>
+        <p>Places written off for mining, drilling or waste so other places can stay clean. Baotou and the oil sands are examples.</p>
+        <p class="ask"><b>Ask</b>Who decides which places get sacrificed, and who never has to see them?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Sacrifice_zone" target="_blank" rel="noopener">Sacrifice zone</a>
+        </div>
+      </div></article>
+      </div>
+      <div class="groupmark"><span>Feminist and care lenses</span></div>
+      <div class="tiles">
+      <article class="board q2"><div class="board-hd">Feminist and care lenses</div><div class="board-body">
+        <h4>The Death of Nature</h4>
+        <p>Historian Carolyn Merchant shows how Europe moved from seeing the earth as a living mother to seeing it as a machine, which made it easier to dig into.</p>
+        <p class="ask"><b>Ask</b>Is it easier to mine a machine or a mother? Why?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/The_Death_of_Nature" target="_blank" rel="noopener">The Death of Nature</a>
+        </div>
+      </div></article>
+      <article class="board q3"><div class="board-hd">Feminist and care lenses</div><div class="board-body">
+        <h4>Nature's unpaid labor</h4>
+        <p>Like care work at home, nature's work of cleaning water, building soil and growing food is treated as free. Patel and Moore call this cheap nature and cheap care.</p>
+        <p class="ask"><b>Ask</b>What care work, by people or by nature, goes unseen in your daily life?</p>
+        <div class="links">
+          <a class="btn" href="https://www.ucpress.edu/books/a-history-of-the-world-in-seven-cheap-things/paper" target="_blank" rel="noopener">Seven Cheap Things</a>
+        </div>
+      </div></article>
+      <article class="board q4"><div class="board-hd">Feminist and care lenses</div><div class="board-body">
+        <h4>Make kin</h4>
+        <p>Donna Haraway asks us to build kinship with other species and the land, not only with blood relatives.</p>
+        <p class="ask"><b>Ask</b>Who or what outside your family do you count as kin?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Donna_Haraway" target="_blank" rel="noopener">Donna Haraway</a>
+        </div>
+      </div></article>
+      </div>
+      <div class="groupmark"><span>Matter and agency</span></div>
+      <div class="tiles">
+      <article class="board q3"><div class="board-hd">Matter and agency</div><div class="board-body">
+        <h4>Vibrant matter</h4>
+        <p>Jane Bennett argues that metals, electricity and waste act on the world. Matter is lively, not just passive stuff for us to use.</p>
+        <p class="ask"><b>Ask</b>What has a material, like a dead battery or a power outage, ever made you do?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/New_materialism" target="_blank" rel="noopener">New materialism</a>
+        </div>
+      </div></article>
+      <article class="board q4"><div class="board-hd">Matter and agency</div><div class="board-body">
+        <h4>Deep time</h4>
+        <p>Lithium, oil and ocean nodules took thousands to millions of years to form. We use them up in a few years.</p>
+        <p class="ask"><b>Ask</b>How long will the materials in your phone last compared to how long you'll keep it?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Deep_time" target="_blank" rel="noopener">Deep time</a>
+        </div>
+      </div></article>
+      <article class="board q5"><div class="board-hd">Matter and agency</div><div class="board-body">
+        <h4>The Anthropocene</h4>
+        <p>A name for our era, when humans have changed the planet so much that our plastics, concrete and devices will show up in the rock layers as "technofossils."</p>
+        <p class="ask"><b>Ask</b>What object from today do you think future geologists will find in the rock?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Anthropocene" target="_blank" rel="noopener">Anthropocene</a>
+        </div>
+      </div></article>
+      </div>
+      <div class="groupmark"><span>Economics and design</span></div>
+      <div class="tiles">
+      <article class="board q4"><div class="board-hd">Economics and design</div><div class="board-body">
+        <h4>Externalities</h4>
+        <p>Costs that don't show up in a product's price, like polluted water or sick workers. Someone else pays them.</p>
+        <p class="ask"><b>Ask</b>What is the hidden cost of something you bought this week?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Externality" target="_blank" rel="noopener">Externality</a>
+        </div>
+      </div></article>
+      <article class="board q5"><div class="board-hd">Economics and design</div><div class="board-body">
+        <h4>Doughnut economics</h4>
+        <p>Kate Raworth's model: meet everyone's basic needs without going past the planet's limits. The goal is the space in between.</p>
+        <p class="ask"><b>Ask</b>Does the world in this week's readings fit inside the doughnut?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Doughnut_(economic_model)" target="_blank" rel="noopener">Doughnut model</a>
+        </div>
+      </div></article>
+      <article class="board q6"><div class="board-hd">Economics and design</div><div class="board-body">
+        <h4>Repair and circular design</h4>
+        <p>Keep materials in use through repair, reuse and recycling, and make devices that can be opened and fixed, instead of digging up new ones.</p>
+        <p class="ask"><b>Ask</b>What would you repair if it were easy?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Circular_economy" target="_blank" rel="noopener">Circular economy</a>
+          <a class="btn" href="https://en.wikipedia.org/wiki/Right_to_repair" target="_blank" rel="noopener">Right to repair</a>
+        </div>
+      </div></article>
+      <article class="board q1"><div class="board-hd">Economics and design</div><div class="board-body">
+        <h4>Permacomputing</h4>
+        <p>From Week 2: technology that uses less energy and fewer materials, and lasts as long as possible.</p>
+        <p class="ask"><b>Ask</b>What would your favorite app look like if it had to run on very little?</p>
+        <div class="links">
+          <a class="btn" href="https://permacomputing.net/" target="_blank" rel="noopener">Permacomputing</a>
+        </div>
+      </div></article>
+      </div>
+      <div class="groupmark"><span>Faith and philosophy</span></div>
+      <div class="tiles">
+      <article class="board q5"><div class="board-hd">Faith and philosophy</div><div class="board-body">
+        <h4>Dominion or stewardship</h4>
+        <p>Two readings of Genesis: one where humans rule over nature, one where they are asked to tend and care for it.</p>
+        <p class="ask"><b>Ask</b>Which reading do the companies in this week's readings seem to follow?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Stewardship_(theology)" target="_blank" rel="noopener">Stewardship</a>
+        </div>
+      </div></article>
+      <article class="board q6"><div class="board-hd">Faith and philosophy</div><div class="board-body">
+        <h4>Buddhist interdependence</h4>
+        <p>Nothing exists on its own. Everything arises from everything else, so harming the land is harming ourselves.</p>
+        <p class="ask"><b>Ask</b>Trace one thing you're holding back through everything it depends on.</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Prat%C4%ABtyasamutp%C4%81da" target="_blank" rel="noopener">Dependent origination</a>
+        </div>
+      </div></article>
+      <article class="board q1"><div class="board-hd">Faith and philosophy</div><div class="board-body">
+        <h4>Khalifa</h4>
+        <p>In Islam, humans are trustees, or caretakers, of the earth on God's behalf, not its owners.</p>
+        <p class="ask"><b>Ask</b>What would change if a mine were run by trustees, not owners?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Islamic_environmentalism" target="_blank" rel="noopener">Islamic environmentalism</a>
+        </div>
+      </div></article>
+      <article class="board q2"><div class="board-hd">Faith and philosophy</div><div class="board-body">
+        <h4>Wu wei</h4>
+        <p>In Daoism, acting in harmony with the way of nature, not forcing it.</p>
+        <p class="ask"><b>Ask</b>What would mining look like if it couldn't force anything?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Wu_wei" target="_blank" rel="noopener">Wu wei</a>
+        </div>
+      </div></article>
+      </div>
+      <div class="groupmark"><span>Speculative and future views</span></div>
+      <div class="tiles">
+      <article class="board q6"><div class="board-hd">Speculative and future views</div><div class="board-body">
+        <h4>Space mining</h4>
+        <p>Asteroids and the Moon are being pitched as the next "empty" frontier for metals.</p>
+        <p class="ask"><b>Ask</b>Is the resource mindset just moving off Earth? Should it?</p>
+        <div class="links">
+          <a class="btn" href="https://en.wikipedia.org/wiki/Asteroid_mining" target="_blank" rel="noopener">Asteroid mining</a>
+        </div>
+      </div></article>
+      <article class="board q1"><div class="board-hd">Speculative and future views</div><div class="board-body">
+        <h4>Nature as data</h4>
+        <p>Sensors, satellites and AI turn forests, oceans and bodies into numbers to be measured and sold. Crawford traces this in Atlas of AI.</p>
+        <p class="ask"><b>Ask</b>What changes when a forest becomes a dataset?</p>
+        <div class="links">
+          <a class="btn" href="https://anatomyof.ai/" target="_blank" rel="noopener">Anatomy of an AI System</a>
+        </div>
+      </div></article>
+      <article class="board q2"><div class="board-hd">Speculative and future views</div><div class="board-body">
+        <h4>The material speaks</h4>
+        <p>Imagine lithium, sand or a river telling its own story. This is the heart of From It to Ki.</p>
+        <p class="ask"><b>Ask</b>If the material in your zine object could speak, what would it say first?</p>
+        <div class="links">
+          <a class="btn" href="https://orionmagazine.org/article/speaking-of-nature/" target="_blank" rel="noopener">Speaking of Nature</a>
+        </div>
+      </div></article>
+      </div>
     </div>
   </section>
 
