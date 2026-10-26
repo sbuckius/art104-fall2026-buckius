@@ -56,6 +56,15 @@ td{padding:8px 16px;border-top:1px solid var(--line);vertical-align:middle}
 .who{font-weight:700}
 .num{font-family:var(--display);font-weight:800;font-size:18px;margin-right:6px}
 .two{font-size:12px;color:var(--accent);font-weight:700;margin-left:6px}
+.sect{margin:0;padding:12px 16px 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent);border-top:1px solid var(--line)}
+.kwrap{overflow-x:auto}
+.kt th{padding-top:6px}
+.kt td{padding:7px 16px}
+.task{font-weight:700;font-size:14px}
+.pg{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.num.sm{font-size:16px}
+.nm{display:block;font-size:13px}
+.jobs{font-size:12px;color:var(--muted);white-space:nowrap}
 .ki{display:inline-block;font-size:12px;font-weight:700;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--fg);white-space:nowrap}
 .members{padding:10px 16px 14px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
 .members b{color:var(--fg)}
@@ -71,7 +80,7 @@ footer{font-size:13px;color:var(--muted)}
     <div>
       <p class="eyebrow">From It to Ki · group zine</p>
       <h1>Ki Group Maker</h1>
-      <p class="sub">Click the button to place artists #1 to #24 into 4 random groups. In each group, every artist becomes TeamMember 1 to 6, and each TeamMember is responsible for making one page. Three different members trace Ki 1, 2 and 3. Copy the result into Google Sheets to share it with the class.</p>
+      <p class="sub">Click the button to place artists #1 to #24 into 4 random groups. In each group, every artist becomes TeamMember 1 to 6, and each TeamMember is responsible for making one page. Each group also gets a ki task chart, with a different person for Ki 1, 2 and 3 on every task. Copy the result into Google Sheets to share it with the class.</p>
     </div>
   </header>
 
@@ -108,6 +117,12 @@ const ROLES=[
   {n:6,page:"Page 5 · Draw ki"},
 ];
 const STYLES=["A · Leaves","B · Earth Layers","C · Contour Lines","D · Crystals"];
+const KTASKS=[
+  {key:"home",label:"Find ki’s home",page:"Page 2"},
+  {key:"leaves",label:"When ki leaves home",page:"Page 3"},
+  {key:"owe",label:"What we owe ki",page:"Page 4"},
+  {key:"draw",label:"Draw ki",page:"Page 5"},
+];
 const $=id=>document.getElementById(id);
 const countSel=$("count");
 for(let n=16;n<=24;n++){const o=document.createElement("option");o.value=n;o.textContent=n;if(n===24)o.selected=true;countSel.appendChild(o)}
@@ -133,11 +148,17 @@ function makeGroups(total){
     let k=0;
     assign.forEach(a=>{if(a.student===null){a.student=extra[k++];a.second=true}});
     assign.sort((a,b)=>a.role.n-b.role.n);
-    // three different members trace Ki 1, 2 and 3; people with one role go first
-    const roleCount={}; assign.forEach(a=>{roleCount[a.student]=(roleCount[a.student]||0)+1});
-    const pool=shuffle(m).sort((x,y)=>roleCount[x]-roleCount[y]);
-    const tracers={}; pool.slice(0,3).forEach((s,i)=>{tracers[s]=i+1});
-    return {g:gi+1,members:m.slice().sort((a,b)=>a-b),assign,style:styles[gi],tracers};
+    // ki tasks: for each task, Ki 1, 2 and 3 go to three different people,
+    // always picking whoever has the fewest jobs so far
+    const load={}; m.forEach(s=>load[s]=0); assign.forEach(a=>{load[a.student]++});
+    const kiTasks={};
+    KTASKS.forEach(t=>{
+      const pick=shuffle(m).sort((x,y)=>load[x]-load[y]).slice(0,3);
+      const kis=shuffle([1,2,3]);
+      kiTasks[t.key]={};
+      pick.forEach((s,i)=>{kiTasks[t.key][kis[i]]=s; load[s]++});
+    });
+    return {g:gi+1,members:m.slice().sort((a,b)=>a-b),assign,style:styles[gi],kiTasks,load};
   });
 }
 
@@ -154,9 +175,11 @@ function render(data,animate){
       return `<tr>
         <td><span class="chip" style="background:var(--r${a.role.n})">TEAMMEMBER ${a.role.n}</span></td>
         <td class="page">${a.role.page}</td>
-        <td class="who"><span class="num">#${pad(a.student)}</span>${nm?escapeHTML(nm):""}${a.second?'<span class="two">2nd role</span>':""}${gr.tracers[a.student]?`<span class="ki">traces Ki ${gr.tracers[a.student]}</span>`:""}</td>
+        <td class="who"><span class="num">#${pad(a.student)}</span>${nm?escapeHTML(nm):""}${a.second?'<span class="two">2nd role</span>':""}</td>
       </tr>`}).join("");
-    const mem=gr.members.map(s=>{const nm=label(s);return `<b>#${pad(s)}</b>${nm?" "+escapeHTML(nm):""}`}).join(", ");
+    const who=s=>{const nm=label(s);return `<span class="num sm">#${pad(s)}</span>${nm?`<span class="nm">${escapeHTML(nm)}</span>`:""}`};
+    const krows=KTASKS.map(t=>`<tr><td class="task">${t.label}<span class="pg">${t.page}</span></td>${[1,2,3].map(k=>`<td>${who(gr.kiTasks[t.key][k])}</td>`).join("")}</tr>`).join("");
+    const mem=gr.members.map(s=>{const nm=label(s);return `<b>#${pad(s)}</b>${nm?" "+escapeHTML(nm):""} <span class="jobs">${gr.load[s]} jobs</span>`}).join(" · ");
     card.innerHTML=`
       <div class="ghead" style="background:var(--g${gr.g})">
         <h2>Group ${gr.g}</h2>
@@ -164,7 +187,9 @@ function render(data,animate){
         ${showStyle?`<span class="style">Template ${gr.style}</span>`:""}
       </div>
       <table><thead><tr><th>Role</th><th>Responsible for</th><th>Artist #</th></tr></thead><tbody>${rows}</tbody></table>
-      <div class="members">Members: ${mem}<br>Ki tracers: ${Object.entries(gr.tracers).sort((a,b)=>a[1]-b[1]).map(([s,k])=>`Ki ${k} <b>#${pad(+s)}</b>`).join(", ")}</div>`;
+      <p class="sect">Ki tasks</p>
+      <div class="kwrap"><table class="kt"><thead><tr><th>Task</th><th>Ki 1</th><th>Ki 2</th><th>Ki 3</th></tr></thead><tbody>${krows}</tbody></table></div>
+      <div class="members">Members: ${mem}</div>`;
     grid.appendChild(card);
   });
   const t=new Date(data.made||Date.now());
@@ -183,18 +208,20 @@ function asText(){
   return current.map(gr=>{
     const head=`Group ${gr.g}`+($("styles").checked?` (Template ${gr.style})`:"");
     const lines=gr.assign.map(a=>{const nm=label(a.student);return `  TeamMember ${a.role.n}, ${a.role.page}: artist #${pad(a.student)}${nm?" "+nm:""}${a.second?" (2nd role)":""}`});
-    const tr="  Ki tracers: "+Object.entries(gr.tracers).sort((a,b)=>a[1]-b[1]).map(([s,k])=>`Ki ${k} artist #${pad(+s)}`).join(", ");
-    return [head,...lines,tr].join("\n");
+    const kl=KTASKS.map(t=>`  ${t.label} (${t.page}): `+[1,2,3].map(k=>{const s=gr.kiTasks[t.key][k];const nm=label(s);return `Ki ${k} artist #${pad(s)}${nm?" "+nm:""}`}).join(", "));
+    return [head,...lines,"  Ki tasks:",...kl].join("\n");
   }).join("\n\n");
 }
 function asSheet(){
   if(!current) return "";
   const showStyle=$("styles").checked;
-  const head=["Group",...(showStyle?["Template"]:[]),"TeamMember","Responsible for","Artist #","Name","Traces","Note"];
+  const head=["Group",...(showStyle?["Template"]:[]),"Role or task","Page","Ki","Artist #","Name","Note"];
   const rows=[head];
-  current.forEach(gr=>gr.assign.forEach(a=>{
-    rows.push([`Group ${gr.g}`,...(showStyle?[gr.style]:[]),`TeamMember ${a.role.n}`,a.role.page,a.student,label(a.student),gr.tracers[a.student]?`Ki ${gr.tracers[a.student]}`:"",a.second?"2nd role":""]);
-  }));
+  current.forEach(gr=>{
+    const st=showStyle?[gr.style]:[];
+    gr.assign.forEach(a=>rows.push([`Group ${gr.g}`,...st,`TeamMember ${a.role.n} (responsible for page)`,a.role.page,"",a.student,label(a.student),a.second?"2nd role":""]));
+    KTASKS.forEach(t=>[1,2,3].forEach(k=>{const s=gr.kiTasks[t.key][k];rows.push([`Group ${gr.g}`,...st,t.label,t.page,`Ki ${k}`,s,label(s),""])}));
+  });
   return rows.map(r=>r.map(c=>String(c).replace(/[\t\n]/g," ")).join("\t")).join("\n");
 }
 function copyOut(text,msg){
@@ -216,7 +243,7 @@ function save(){try{localStorage.setItem("kiGroups",JSON.stringify({current,name
 function load(){
   try{
     const s=JSON.parse(localStorage.getItem("kiGroups")||"null");
-    if(s&&s.current&&s.current[0]&&s.current[0].tracers){
+    if(s&&s.current&&s.current[0]&&s.current[0].kiTasks){
       s.current.forEach(g=>{if(g.style==="A · Flat")g.style="A · Leaves"});$("names").value=s.names||"";$("styles").checked=s.styles!==false;countSel.value=s.count||24;current=s.current;render(current,false);return true}
   }catch(e){}
   return false;
