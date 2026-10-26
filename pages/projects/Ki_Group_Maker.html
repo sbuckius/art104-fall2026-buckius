@@ -1,0 +1,216 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ki Group Maker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: a control strip above four group cards in a 2x2 grid (one column on phones). */
+:root{
+  --bg:#F3F6EC; --surface:#FFFFFF; --fg:#26432F; --muted:#5B6B58; --line:#D8E2C6;
+  --accent:#E2389A; --accent-ink:#FFFFFF; --soft:#E6EDD9;
+  --g1:#E2389A; --g2:#4F86C6; --g3:#3F7D3A; --g4:#8E1F56;
+  --r1:#E2389A; --r2:#26432F; --r3:#4F86C6; --r4:#5FAE48; --r5:#B83068; --r6:#6B1647;
+  --display:"Bricolage Grotesque", "Trebuchet MS", sans-serif;
+  --body:"Atkinson Hyperlegible", "Trebuchet MS", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17241B; --surface:#21332A; --fg:#EEF2E6; --muted:#A9B8A4; --line:#34493B; --soft:#2A3E31;
+  --accent:#F05DAE; --accent-ink:#17241B; --r2:#7FA88A; --r6:#C0508F; --g4:#C0508F; --g3:#6FAE5F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17241B; --surface:#21332A; --fg:#EEF2E6; --muted:#A9B8A4; --line:#34493B; --soft:#2A3E31;
+  --accent:#F05DAE; --accent-ink:#17241B; --r2:#7FA88A; --r6:#C0508F; --g4:#C0508F; --g3:#6FAE5F; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 4px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1;margin:0;text-wrap:balance}
+.sub{margin:8px 0 0;color:var(--muted);max-width:60ch}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.controls label{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px}
+select,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.go{font-family:var(--display);font-weight:800;font-size:18px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:12px 26px;cursor:pointer}
+.go:hover{filter:brightness(1.06)} .go:active{transform:translateY(1px)}
+.ghost{font:inherit;font-size:14px;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+button:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.spacer{flex:1}
+.status{font-size:14px;color:var(--muted)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+summary{cursor:pointer;font-weight:700}
+details p{margin:8px 0;color:var(--muted);font-size:14px}
+#names{width:100%;min-height:150px;font-size:14px;line-height:1.4}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.group{background:var(--surface);border-radius:16px;overflow:hidden;border:1px solid var(--line);min-width:0}
+.ghead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;color:#fff}
+.ghead h2{font-family:var(--display);font-weight:800;font-size:24px;margin:0}
+.style{font-size:13px;font-weight:700;background:rgba(255,255,255,.22);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.count{font-size:13px;opacity:.9}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:700;padding:10px 16px 6px}
+td{padding:8px 16px;border-top:1px solid var(--line);vertical-align:middle}
+.chip{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.08em;color:#fff;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.page{font-size:14px;color:var(--muted)}
+.who{font-weight:700}
+.num{font-family:var(--display);font-weight:800;font-size:18px;margin-right:6px}
+.two{font-size:12px;color:var(--accent);font-weight:700;margin-left:6px}
+.members{padding:10px 16px 14px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.members b{color:var(--fg)}
+.fade{animation:fade .45s ease both}
+@keyframes fade{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none}}
+footer{font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow">From It to Ki · group zine</p>
+      <h1>Ki Group Maker</h1>
+      <p class="sub">Click the button to place artists #1 to #24 into 4 random groups. In each group, every artist becomes TeamMember 1 to 6, and each TeamMember makes the final decision on one page. Copy the result into Google Sheets to share it with the class.</p>
+    </div>
+  </header>
+
+  <div class="controls">
+    <button class="go" id="go" type="button">Make groups</button>
+    <label for="count">Students
+      <select id="count"></select>
+    </label>
+    <label for="styles"><input type="checkbox" id="styles" checked> Deal a template style to each group</label>
+    <span class="spacer"></span>
+    <button class="ghost" id="sheet" type="button">Copy for Google Sheets</button>
+    <button class="ghost" id="copy" type="button">Copy as text</button>
+    <span class="status" id="status" role="status"></span>
+  </div>
+
+  <details>
+    <summary>Add student names (optional)</summary>
+    <p>One name per line, in artist-number order: line 1 is artist #1, line 2 is artist #2, and so on. Leave it empty to show artist numbers only.</p>
+    <textarea id="names" placeholder="Ana&#10;Ben&#10;Chris"></textarea>
+  </details>
+
+  <main class="grid" id="grid" aria-live="polite"></main>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const ROLES=[
+  {n:1,page:"Cover"},
+  {n:2,page:"Page 1 · Our object"},
+  {n:3,page:"Page 2 · Ki’s home"},
+  {n:4,page:"Page 3 · When ki leaves home"},
+  {n:5,page:"Page 4 · What we owe ki"},
+  {n:6,page:"Page 5 · Draw ki"},
+];
+const STYLES=["A · Flat","B · Earth Layers","C · Contour Lines","D · Crystals"];
+const $=id=>document.getElementById(id);
+const countSel=$("count");
+for(let n=16;n<=24;n++){const o=document.createElement("option");o.value=n;o.textContent=n;if(n===24)o.selected=true;countSel.appendChild(o)}
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function names(){return $("names").value.split("\n").map(s=>s.trim())}
+function label(n){const nm=names()[n-1];return nm?nm:""}
+function pad(n){return String(n).padStart(2,"0")}
+
+function makeGroups(total){
+  const students=shuffle(Array.from({length:total},(_,i)=>i+1));
+  const groups=[[],[],[],[]];
+  students.forEach((s,i)=>groups[i%4].push(s));
+  const styles=shuffle(STYLES);
+  return groups.map((members,gi)=>{
+    const roleOrder=shuffle(ROLES);
+    const m=shuffle(members);
+    const assign=roleOrder.map((r,i)=>({role:r,student:null}));
+    // everyone gets one role first
+    m.forEach((s,i)=>{assign[i].student=s});
+    // leftover roles go to different random members (a second role)
+    const extra=shuffle(m);
+    let k=0;
+    assign.forEach(a=>{if(a.student===null){a.student=extra[k++];a.second=true}});
+    assign.sort((a,b)=>a.role.n-b.role.n);
+    return {g:gi+1,members:m.slice().sort((a,b)=>a-b),assign,style:styles[gi]};
+  });
+}
+
+let current=null;
+function render(data,animate){
+  const grid=$("grid"); grid.innerHTML="";
+  const showStyle=$("styles").checked;
+  data.forEach(gr=>{
+    const card=document.createElement("section");
+    card.className="group"+(animate?" fade":"");
+    card.style.animationDelay=(gr.g-1)*70+"ms";
+    const rows=gr.assign.map(a=>{
+      const nm=label(a.student);
+      return `<tr>
+        <td><span class="chip" style="background:var(--r${a.role.n})">TEAMMEMBER ${a.role.n}</span></td>
+        <td class="page">${a.role.page}</td>
+        <td class="who"><span class="num">#${pad(a.student)}</span>${nm?escapeHTML(nm):""}${a.second?'<span class="two">2nd role</span>':""}</td>
+      </tr>`}).join("");
+    const mem=gr.members.map(s=>{const nm=label(s);return `<b>#${pad(s)}</b>${nm?" "+escapeHTML(nm):""}`}).join(", ");
+    card.innerHTML=`
+      <div class="ghead" style="background:var(--g${gr.g})">
+        <h2>Group ${gr.g}</h2>
+        <span class="count">${gr.members.length} artists</span>
+        ${showStyle?`<span class="style">Template ${gr.style}</span>`:""}
+      </div>
+      <table><thead><tr><th>Role</th><th>Decides</th><th>Artist #</th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="members">Members: ${mem}</div>`;
+    grid.appendChild(card);
+  });
+  const t=new Date(data.made||Date.now());
+  $("foot").textContent=`Dealt ${t.toLocaleString([], {dateStyle:"medium",timeStyle:"short"})}. Groups of ${Math.floor(data.total/4)} to ${Math.ceil(data.total/4)}; in a group with fewer than 6 people, some artists take a 2nd role.`;
+}
+function escapeHTML(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function generate(animate=true){
+  const total=+countSel.value;
+  const data=makeGroups(total); data.total=total; data.made=Date.now();
+  current=data; render(data,animate); save();
+  $("status").textContent=animate?"New groups made.":"";
+}
+function asText(){
+  if(!current) return "";
+  return current.map(gr=>{
+    const head=`Group ${gr.g}`+($("styles").checked?` (Template ${gr.style})`:"");
+    const lines=gr.assign.map(a=>{const nm=label(a.student);return `  TeamMember ${a.role.n}, ${a.role.page}: artist #${pad(a.student)}${nm?" "+nm:""}${a.second?" (2nd role)":""}`});
+    return [head,...lines].join("\n");
+  }).join("\n\n");
+}
+function asSheet(){
+  if(!current) return "";
+  const showStyle=$("styles").checked;
+  const head=["Group",...(showStyle?["Template"]:[]),"TeamMember","Decides","Artist #","Name","Note"];
+  const rows=[head];
+  current.forEach(gr=>gr.assign.forEach(a=>{
+    rows.push([`Group ${gr.g}`,...(showStyle?[gr.style]:[]),`TeamMember ${a.role.n}`,a.role.page,a.student,label(a.student),a.second?"2nd role":""]);
+  }));
+  return rows.map(r=>r.map(c=>String(c).replace(/[\t\n]/g," ")).join("\t")).join("\n");
+}
+function copyOut(text,msg){
+  navigator.clipboard.writeText(text).then(()=>{$("status").textContent=msg})
+  .catch(()=>{
+    const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");$("status").textContent=msg}catch(e){$("status").textContent="Copy was blocked. Select the groups on the page and copy them."}
+    ta.remove();
+  });
+}
+$("copy").addEventListener("click",()=>copyOut(asText(),"Copied as text."));
+$("sheet").addEventListener("click",()=>copyOut(asSheet(),"Copied. Click cell A1 in a Google Sheet and paste."));
+$("go").addEventListener("click",()=>generate(true));
+countSel.addEventListener("change",()=>generate(true));
+$("styles").addEventListener("change",()=>{if(current){render(current,false);save()}});
+$("names").addEventListener("input",()=>{if(current)render(current,false);save()});
+
+function save(){try{localStorage.setItem("kiGroups",JSON.stringify({current,names:$("names").value,styles:$("styles").checked,count:countSel.value}))}catch(e){}}
+function load(){
+  try{
+    const s=JSON.parse(localStorage.getItem("kiGroups")||"null");
+    if(s&&s.current){$("names").value=s.names||"";$("styles").checked=s.styles!==false;countSel.value=s.count||24;current=s.current;render(current,false);return true}
+  }catch(e){}
+  return false;
+}
+if(!load()) generate(false);
+</script>
+
+</body></html>
