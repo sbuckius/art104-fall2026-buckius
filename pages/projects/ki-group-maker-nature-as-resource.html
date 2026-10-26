@@ -49,7 +49,7 @@ details p{margin:8px 0;color:var(--muted);font-size:14px}
 .style{font-size:13px;font-weight:700;background:rgba(255,255,255,.22);border-radius:999px;padding:4px 10px;white-space:nowrap}
 .count{font-size:13px;opacity:.9}
 table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-th{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:700;padding:10px 16px 6px}
+th{white-space:nowrap;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:700;padding:10px 16px 6px}
 td{padding:8px 16px;border-top:1px solid var(--line);vertical-align:middle}
 .chip{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.08em;color:#fff;border-radius:999px;padding:4px 10px;white-space:nowrap}
 .page{font-size:14px;color:var(--muted)}
@@ -67,7 +67,7 @@ td{padding:8px 16px;border-top:1px solid var(--line);vertical-align:middle}
 .jobs{font-size:13px;color:var(--muted)}
 .mh{margin:0 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent)}
 .joblist{list-style:none;margin:0;padding:0;display:grid;gap:3px}
-.kt th .pg{text-transform:none;letter-spacing:0;font-weight:400}
+.kt th .pg{text-transform:none;letter-spacing:0;font-weight:400;white-space:normal}
 .ki{display:inline-block;font-size:12px;font-weight:700;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--fg);white-space:nowrap}
 .members{padding:10px 16px 14px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
 .members b{color:var(--fg)}
@@ -83,7 +83,6 @@ footer{font-size:13px;color:var(--muted)}
     <div>
       <p class="eyebrow">From It to Ki · group zine</p>
       <h1>Ki Group Maker</h1>
-      <p class="sub">Click the button to place artists #1 to #24 into 4 random groups. In each group, every artist becomes TeamMember 1 to 6, and each TeamMember is responsible for making one page. Each person also gets a ki bundle: place (Pages 2 and 3) or care (Pages 4 and 5) for one ki. Groups choose their object and 3 ki together first, then use these to split up the work. Copy the result into Google Sheets to share it with the class.</p>
     </div>
   </header>
 
@@ -141,34 +140,30 @@ const BUNDLE={
 };
 // the TeamMember page that goes naturally with each bundle
 const NAT={place:{1:3,2:4,3:1},care:{1:5,2:6,3:2}};
+const PAGES=ROLES.map(r=>r.page);
+// who makes which pages, and which ki bundles go with them, for each group size
+const PLANS={
+  6:[{pages:[0],place:[3]},{pages:[1],care:[3]},{pages:[2],place:[1]},{pages:[3],place:[2]},{pages:[4],care:[1]},{pages:[5],care:[2]}],
+  5:[{pages:[0,1],place:[3]},{pages:[2],place:[1]},{pages:[3],place:[2]},{pages:[4],care:[1]},{pages:[5],care:[2,3]}],
+  4:[{pages:[0,1,5],extra:"Checks all sources"},{pages:[2],place:[1],care:[1]},{pages:[3],place:[2],care:[2]},{pages:[4],place:[3],care:[3]}],
+};
 function makeGroups(total){
   const students=shuffle(Array.from({length:total},(_,i)=>i+1));
   const groups=[[],[],[],[]];
   students.forEach((s,i)=>groups[i%4].push(s));
   const styles=shuffle(STYLES);
   return groups.map((members,gi)=>{
-    const m=shuffle(members), n=m.length;
-    const bundles={place:{},care:{}}, roleOf={}, extras=[];
-    if(n>=5){
-      const slots=[["place",1],["place",2],["place",3],["care",1],["care",2],["care",3]];
-      slots.slice(0,Math.min(n,6)).forEach(([t,k],i)=>{bundles[t][k]=m[i];roleOf[NAT[t][k]]=m[i]});
-      if(n===5){
-        // a place person takes the Ki 3 care bundle; a care person makes Page 1
-        bundles.care[3]=shuffle(m.slice(0,3))[0];
-        roleOf[NAT.care[3]]=shuffle(m.slice(3,5))[0];
-      }
-    }else{
-      // three people each own one ki from start to finish;
-      // the fourth makes the cover, Page 1 and Page 5 and checks the sources
-      [1,2,3].forEach(k=>{bundles.place[k]=m[k-1];bundles.care[k]=m[k-1]});
-      roleOf[3]=m[0];roleOf[4]=m[1];roleOf[5]=m[2];
-      roleOf[1]=m[3];roleOf[2]=m[3];roleOf[6]=m[3];
-      extras.push({student:m[3],text:"Checks all sources"});
-    }
-    const seen=new Set();
-    const assign=ROLES.map(r=>{const st=roleOf[r.n];const a={role:r,student:st,second:seen.has(st)};seen.add(st);return a});
+    const m=shuffle(members), n=Math.max(4,Math.min(6,m.length));
+    const bundles={place:{},care:{}}, extras=[];
+    const assign=PLANS[n].map((p,i)=>{
+      const st=m[i];
+      (p.place||[]).forEach(k=>bundles.place[k]=st);
+      (p.care||[]).forEach(k=>bundles.care[k]=st);
+      if(p.extra) extras.push({student:st,text:p.extra});
+      return {n:i+1,pages:p.pages.map(j=>PAGES[j]),student:st};
+    });
     const jobs={}; m.forEach(x=>jobs[x]=[]);
-    assign.forEach(a=>jobs[a.student].push(`TeamMember ${a.role.n}`));
+    assign.forEach(a=>jobs[a.student].push(`TeamMember ${a.n}`));
     ["place","care"].forEach(t=>[1,2,3].forEach(k=>jobs[bundles[t][k]].push(`Ki ${k} ${t}`)));
     extras.forEach(e=>jobs[e.student].push(e.text));
     return {g:gi+1,members:m.slice().sort((a,b)=>a-b),assign,style:styles[gi],bundles,extras,jobs};
@@ -186,9 +181,9 @@ function render(data,animate){
     const rows=gr.assign.map(a=>{
       const nm=label(a.student);
       return `<tr>
-        <td><span class="chip" style="background:var(--r${a.role.n})">TEAMMEMBER ${a.role.n}</span></td>
-        <td class="page">${a.role.page}</td>
-        <td class="who"><span class="num">#${pad(a.student)}</span>${nm?escapeHTML(nm):""}${a.second?'<span class="two">2nd role</span>':""}</td>
+        <td><span class="chip" style="background:var(--r${a.n})">TEAMMEMBER ${a.n}</span></td>
+        <td class="page">${a.pages.join(" + ")}</td>
+        <td class="who"><span class="num">#${pad(a.student)}</span>${nm?escapeHTML(nm):""}</td>
       </tr>`}).join("");
     const who=s=>{const nm=label(s);return `<span class="num sm">#${pad(s)}</span>${nm?`<span class="nm">${escapeHTML(nm)}</span>`:""}`};
     const krows=[1,2,3].map(k=>`<tr><td class="task">Ki ${k}</td><td>${who(gr.bundles.place[k])}</td><td>${who(gr.bundles.care[k])}</td></tr>`).join("");
@@ -196,7 +191,7 @@ function render(data,animate){
     card.innerHTML=`
       <div class="ghead" style="background:var(--g${gr.g})">
         <h2>Group ${gr.g}</h2>
-        <span class="count">${gr.members.length} artists</span>
+        <span class="count">${gr.members.length} artists · TeamMembers 1 to ${gr.assign.length}</span>
         ${showStyle?`<span class="style">Template ${gr.style}</span>`:""}
       </div>
       <table><thead><tr><th>Role</th><th>Responsible for</th><th>Artist #</th></tr></thead><tbody>${rows}</tbody></table>
@@ -206,7 +201,7 @@ function render(data,animate){
     grid.appendChild(card);
   });
   const t=new Date(data.made||Date.now());
-  $("foot").textContent=`Dealt ${t.toLocaleString([], {dateStyle:"medium",timeStyle:"short"})}. Groups of ${Math.floor(data.total/4)} to ${Math.ceil(data.total/4)}; in a group of 5, one person takes a 2nd bundle; in a group of 4, three people each own one ki and the fourth makes the cover, Page 1 and Page 5.`;
+  $("foot").textContent=`Dealt ${t.toLocaleString([], {dateStyle:"medium",timeStyle:"short"})}. Groups of ${Math.floor(data.total/4)} to ${Math.ceil(data.total/4)}; a group of 5 has TeamMembers 1 to 5 (TeamMember 1 makes the cover and Page 1); a group of 4 has TeamMembers 1 to 4 (TeamMember 1 makes the cover, Page 1 and Page 5).`;
 }
 function escapeHTML(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 
@@ -220,7 +215,7 @@ function asText(){
   if(!current) return "";
   return current.map(gr=>{
     const head=`Group ${gr.g}`+($("styles").checked?` (Template ${gr.style})`:"");
-    const lines=gr.assign.map(a=>{const nm=label(a.student);return `  TeamMember ${a.role.n}, ${a.role.page}: artist #${pad(a.student)}${nm?" "+nm:""}${a.second?" (2nd role)":""}`});
+    const lines=gr.assign.map(a=>{const nm=label(a.student);return `  TeamMember ${a.n}, ${a.pages.join(" + ")}: artist #${pad(a.student)}${nm?" "+nm:""}`});
     const kl=["place","care"].map(t=>`  Ki ${t} bundles (${BUNDLE[t].tasks}, ${BUNDLE[t].pages}): `+[1,2,3].map(k=>{const x=gr.bundles[t][k];const nm=label(x);return `Ki ${k} artist #${pad(x)}${nm?" "+nm:""}`}).join(", "));
     const ex=gr.extras.map(e=>`  ${e.text}: artist #${pad(e.student)}`);
     return [head,...lines,...kl,...ex].join("\n");
@@ -233,7 +228,7 @@ function asSheet(){
   const rows=[head];
   current.forEach(gr=>{
     const st=showStyle?[gr.style]:[];
-    gr.assign.forEach(a=>rows.push([`Group ${gr.g}`,...st,`TeamMember ${a.role.n} (responsible for page)`,a.role.page,"",a.student,label(a.student),a.second?"2nd role":""]));
+    gr.assign.forEach(a=>rows.push([`Group ${gr.g}`,...st,`TeamMember ${a.n} (responsible for ${a.pages.length>1?"pages":"page"})`,a.pages.join(" + "),"",a.student,label(a.student),""]));
     ["place","care"].forEach(t=>[1,2,3].forEach(k=>{const x=gr.bundles[t][k];rows.push([`Group ${gr.g}`,...st,`Ki ${t} bundle: ${BUNDLE[t].tasks}`,BUNDLE[t].pages,`Ki ${k}`,x,label(x),""])}));
     gr.extras.forEach(e=>rows.push([`Group ${gr.g}`,...st,e.text,"All pages","",e.student,label(e.student),""]));
   });
@@ -258,7 +253,7 @@ function save(){try{localStorage.setItem("kiGroups",JSON.stringify({current,name
 function load(){
   try{
     const s=JSON.parse(localStorage.getItem("kiGroups")||"null");
-    if(s&&s.current&&s.current[0]&&s.current[0].bundles){
+    if(s&&s.current&&s.current[0]&&s.current[0].bundles&&s.current[0].assign[0].pages){
       s.current.forEach(g=>{if(g.style==="A · Flat")g.style="A · Leaves"});$("names").value=s.names||"";$("styles").checked=s.styles!==false;countSel.value=s.count||24;current=s.current;render(current,false);return true}
   }catch(e){}
   return false;
