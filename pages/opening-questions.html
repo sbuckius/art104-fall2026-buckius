@@ -386,6 +386,14 @@ const FIRST_LABEL  = "Week 1";
 const WORD_MIN = 13;
 const WORD_MAX = 30;
 
+// How wide one answer can get before it wraps to a new line, as a share
+// of the board's width. Lower it for narrower, taller blocks of text.
+const WRAP_SHARE = 0.4;
+// Hard cap on that width in pixels, so long answers stay compact on big screens.
+const WRAP_MAX_PX = 340;
+// Space kept clear between any answer and the edge of the board.
+const EDGE_PAD = 10;
+
 // Palette the words are drawn in, straight from the site's color scheme.
 const INK = [
   [139,168,56],   // grass green
@@ -463,17 +471,78 @@ new p5((p) => {
   };
 }, document.createElement("div"));
 
+/* Break an answer into lines no wider than maxW. A single word that is
+   too long on its own gets split across lines too. */
+function wrapLines(p, text, maxW) {
+  const lines = [];
+  let line = "";
+  String(text).split(/\s+/).filter(Boolean).forEach((word) => {
+    const test = line ? line + " " + word : word;
+    if (p.textWidth(test) <= maxW) {
+      line = test;
+      return;
+    }
+    if (line) {
+      lines.push(line);
+      line = "";
+    }
+    while (p.textWidth(word) > maxW && word.length > 1) {
+      let cut = word.length - 1;
+      while (cut > 1 && p.textWidth(word.slice(0, cut)) > maxW) cut--;
+      lines.push(word.slice(0, cut));
+      word = word.slice(cut);
+    }
+    line = word;
+  });
+  if (line) lines.push(line);
+  return lines.length ? lines : [""];
+}
+
+function clampMid(v, lo, hi) {
+  if (lo > hi) return (lo + hi) / 2;
+  return Math.min(hi, Math.max(lo, v));
+}
+
+/* Each answer is wrapped, measured with its tilt, shrunk if it still
+   cannot fit, then nudged inward so no corner leaves the board.
+   Nothing about the stored answer changes; this is only how it is drawn. */
 function drawWord(w) {
   if (!sketch) return;
   const p = sketch;
-  const scale = p.height / 700;
+  const W = p.width;
+  const H = p.height;
+  const angle = w.angle || 0;
+  const rad = (angle * Math.PI) / 180;
+  const cos = Math.abs(Math.cos(rad));
+  const sin = Math.abs(Math.sin(rad));
+  const maxW = Math.max(60, Math.min(W * WRAP_SHARE, WRAP_MAX_PX));
+
   p.push();
-  p.translate(w.nx * p.width, w.ny * p.height);
-  p.rotate(w.angle);
-  p.fill(w.color[0], w.color[1], w.color[2]);
   p.textFont("'Space Grotesk', sans-serif");
-  p.textSize(Math.max(10, Math.min(WORD_MAX, w.size) * scale));
-  p.text(w.text, 0, 0);
+
+  let size = Math.max(10, Math.min(WORD_MAX, w.size || WORD_MIN) * (H / 700));
+  let lines, lead, rw, rh;
+  for (let tries = 0; tries < 40; tries++) {
+    p.textSize(size);
+    lead = size * 1.12;
+    lines = wrapLines(p, w.text, maxW);
+    const bw = Math.max(...lines.map((l) => p.textWidth(l)));
+    const bh = lines.length * lead;
+    rw = bw * cos + bh * sin;
+    rh = bw * sin + bh * cos;
+    if ((rw <= W - 2 * EDGE_PAD && rh <= H - 2 * EDGE_PAD) || size <= 6) break;
+    size *= 0.9;
+  }
+
+  const cx = clampMid(w.nx * W, rw / 2 + EDGE_PAD, W - rw / 2 - EDGE_PAD);
+  const cy = clampMid(w.ny * H, rh / 2 + EDGE_PAD, H - rh / 2 - EDGE_PAD);
+
+  p.translate(cx, cy);
+  p.rotate(angle);
+  p.fill(w.color[0], w.color[1], w.color[2]);
+  p.textSize(size);
+  const mid = (lines.length - 1) / 2;
+  lines.forEach((l, i) => p.text(l, 0, (i - mid) * lead));
   p.pop();
 }
 
@@ -604,7 +673,7 @@ function updateMeter() {
   const n = words.length;
   $("meterCount").textContent = n === 1 ? "1 answer" : n + " answers";
   $("meterFill").style.width = Math.min(100, n * 4) + "%";
-  $("meterLabel").textContent = n === 0 ? "Add images." : "Images are being added.";
+  $("meterLabel").textContent = n === 0 ? "Add a response." : "Responses are coming in.";
   renderAnswers();
 }
 
