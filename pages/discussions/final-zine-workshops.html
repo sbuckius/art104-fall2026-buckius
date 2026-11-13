@@ -256,6 +256,25 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
   h1.logo .the{letter-spacing:3px}
   .toast{width:70px;height:70px;font-size:9px;right:10px}
 }
+#printSheet{display:none}
+.pr-head{border-bottom:3px solid #000;padding-bottom:8px;margin-bottom:16px}
+.pr-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:1px}
+.pr-sub{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#333;margin-top:5px}
+.pr-ws{margin-bottom:18px}
+.pr-ws+.pr-ws{border-top:2px solid #000;padding-top:12px}
+.pr-ws h2{font-family:'Space Grotesk',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.pr-part{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#444;margin:10px 0 4px}
+.pr-q{break-inside:avoid;page-break-inside:avoid;margin:6px 0}
+.pr-q b{font-family:'Space Grotesk',sans-serif;font-size:11.5px;display:block}
+.pr-a{font-family:'Bitter',serif;font-size:12px;line-height:1.5;border-left:3px solid #000;padding:2px 0 2px 10px;margin-top:3px;white-space:pre-wrap}
+.pr-none{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#777;padding-left:12px}
+.pr-imgs{display:flex;flex-wrap:wrap;gap:8px}
+.pr-imgs figure{width:150px;margin:0;break-inside:avoid}
+.pr-imgs img{width:150px;border:1px solid #000;display:block}
+.pr-imgs figcaption{font-size:10px;line-height:1.3;margin-top:2px}
+.pr-fb{font-family:'Bitter',serif;font-size:11.5px;line-height:1.45;margin:3px 0;padding-left:10px;border-left:3px solid #999}
+body.sheet-printing>*:not(#printSheet){display:none!important}
+body.sheet-printing #printSheet{display:block!important;color:#000;background:#fff;padding:0}
 @media print{
   .bg,.tabs,.bar,.jumpbox,.btn,.upl,.fbform,.prompts,.thumb .x,.vote,.divider,.cover-foot,.stripes{display:none!important}
   body{background:#fff}
@@ -295,6 +314,7 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
     <div class="spacer"></div>
     <button class="btn ghost" id="jumpMine">Go to my group</button>
     <button class="btn ghost" id="printMine">Print my group</button>
+    <button class="btn plum" id="exportMine">Export my work (PDF)</button>
     <button class="btn ghost" id="openInstructor">Instructor desk</button>
   </div>
 
@@ -391,6 +411,7 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="printSheet"></div>
 
 <!-- Firebase (compat). Leave apiKey empty to run in local mode. -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -968,6 +989,49 @@ $("myArtist").value=safeGet("fzw_artist")||"";
 $("myArtist").oninput=()=>{safeSet("fzw_artist",$("myArtist").value);renderSolo(workshop(curW));renderVote(workshop(curW))};
 $("filters").querySelectorAll("button").forEach(b=>b.onclick=()=>{filter=b.dataset.f;syncFilters();renderGrid()});
 $("jumpMine").onclick=()=>{const g=myGroup(); if(!g){toast("Choose your group first");return} filter="all";syncFilters();renderGrid();$("g"+g)?.scrollIntoView({behavior:"smooth"})};
+/* ============ EXPORT MY WORK ============
+   Builds one sheet of everything this person did, in every workshop:
+   their own answers, their group's answers, images and feedback.
+   Then hands it to the browser's print window, where Save as PDF is a choice. */
+async function loadKind(k){
+  if(mode==="firebase"){ const v=(await db.ref(ROOT+"/"+k).once("value")).val()||{}; return v; }
+  return state[k]||{};
+}
+function groupFor(a){
+  const chosen=myGroup(); if(chosen) return chosen;
+  for(let g=1;g<=gc();g++){ const m=((get(["groups",g])||{}).members||"").split(/[,\s]+/).filter(Boolean); if(m.includes(String(a))) return g; }
+  return 0;
+}
+$("exportMine").onclick=async()=>{
+  const a=myArtist(); if(!a){toast("Add your artist number first");$("myArtist").focus();return}
+  const g=groupFor(a); toast("Building...");
+  let solo,answers,images,feedback;
+  try{ [solo,answers,images,feedback]=await Promise.all(["solo","answers","images","feedback"].map(loadKind)); }catch(e){ toast("Could not load. Try again."); return; }
+  const meta=g?(get(["groups",g])||{}):{};
+  const blocks=DEFAULT_WORKSHOPS.map(d=>{
+    const w=workshop(d.id); const st=soloN(w);
+    const mine=((solo[d.id]||{})[a])||{}; const ga=g?(((answers[d.id]||{})[g])||{}):{};
+    const imgs=g?Object.values(((images[d.id]||{})[g])||{}).sort((x,y)=>x.t-y.t):[];
+    const fbs=g?Object.values(((feedback[d.id]||{})[g])||{}).sort((x,y)=>x.t-y.t):[];
+    const qa=(q,i,v)=>`<div class="pr-q"><b>${i+1}. ${esc(q)}</b>${(v||"").trim()?`<div class="pr-a">${esc(v)}</div>`:`<div class="pr-none">No answer</div>`}</div>`;
+    const anyMine=w.questions.slice(0,st).some((_,i)=>(mine[i]||"").trim());
+    const anyGroup=w.questions.some((_,i)=>i>=st&&(ga[i]||"").trim());
+    if(!anyMine&&!anyGroup&&!imgs.length&&!fbs.length) return "";
+    return `<div class="pr-ws"><h2>${esc(d.tab)}: ${esc(w.title)}</h2>
+      ${st?`<div class="pr-part">On your own</div>${w.questions.slice(0,st).map((q,i)=>qa(q,i,mine[i])).join("")}`:""}
+      ${st<w.questions.length?`<div class="pr-part">${g?"With your group (Group "+g+")":"With your group (no group chosen)"}</div>${w.questions.map((q,i)=>i<st?"":qa(q,i,ga[i])).join("")}`:""}
+      ${imgs.length?`<div class="pr-part">Progress images</div><div class="pr-imgs">${imgs.map(im=>`<figure><img src="${im.thumb}" alt=""/><figcaption>${[im.caption?esc(im.caption):"",im.by?"Artist "+esc(im.by):""].filter(Boolean).join(" · ")}</figcaption></figure>`).join("")}</div>`:""}
+      ${fbs.length?`<div class="pr-part">Feedback your group received</div>${fbs.map(f=>`<div class="pr-fb"><b>${f.inst?"Instructor":"Artist "+esc(f.by||"?")}:</b> ${esc(f.text)}</div>`).join("")}`:""}
+    </div>`;
+  }).filter(Boolean);
+  const date=new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  $("printSheet").innerHTML=`<div class="pr-head"><div class="pr-title">Pluriverse 3055 or Proposed Zine: my work</div>
+    <div class="pr-sub">Artist ${esc(a)}${g?" · Group "+g+(meta.name?": "+esc(meta.name):""):""}${meta.option?" · Option "+esc(meta.option):""}${meta.members?" · Artists "+esc(meta.members):""} · ${date}</div></div>
+    ${blocks.length?blocks.join(""):`<div class="pr-none">Nothing saved yet for artist ${esc(a)}${g?"":". Choose your group at the top to include your group's answers."}</div>`}`;
+  document.body.classList.add("sheet-printing");
+  setTimeout(()=>window.print(),120);
+};
+window.addEventListener("afterprint",()=>document.body.classList.remove("sheet-printing"));
 $("printMine").onclick=()=>{const g=myGroup(); if(!g){toast("Choose your group first");return} filter="mine";syncFilters();renderGrid();setTimeout(()=>window.print(),300)};
 
 /* ============ INSTRUCTOR ============ */
