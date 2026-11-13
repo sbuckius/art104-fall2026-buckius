@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Final Zine Workshops</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%232f7d7d' stroke='%2314202a' stroke-width='6'/%3E%3Ccircle cx='32' cy='32' r='31' fill='none' stroke='%23a8e6c0' stroke-width='2'/%3E%3Ctext x='32' y='43' font-family='Arial' font-weight='700' font-size='30' text-anchor='middle' fill='%23fff'%3EZ%3C/text%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
@@ -34,11 +35,21 @@ h1.logo .the{display:block;font-weight:700;font-size:clamp(11px,2vw,20px);letter
 .roundel{width:56px;height:56px;flex:none;border-radius:50%;background:var(--pulpred);border:4px solid var(--jet);box-shadow:0 0 0 3px var(--chrome);display:grid;place-items:center;color:#fff;text-align:center;line-height:1.05;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;text-transform:uppercase;padding:4px}
 .cover-tag{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(14px,2.4vw,24px);letter-spacing:1px;color:#fff;line-height:1.2;flex:1;min-width:0}
 .cover-kicker{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--chrome);margin-bottom:4px;display:block}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 4px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 16px}
 .tab{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 12px;cursor:pointer;border:3px solid var(--jet);background:var(--pulp-deep);color:var(--jet);box-shadow:3px 3px 0 var(--jet);text-align:left}
 .tab small{display:block;font-weight:600;font-size:9.5px;letter-spacing:1px;opacity:.8}
 .tab:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--jet)}
 .tab.on{background:var(--chrome);box-shadow:3px 3px 0 var(--chrome-deep)}
+.tab.locked{background:#5d7136;color:#c9d6b0;border-style:dashed;box-shadow:none;cursor:not-allowed}
+.tab.locked:hover{transform:none}
+.tab .lk{display:inline-block;margin-left:6px;font-size:10px}
+.tab.instlocked{border-style:dashed}
+.openlist{display:flex;flex-direction:column;gap:8px}
+.openrow{display:flex;align-items:center;gap:10px;border:3px solid var(--jet);background:#fff;padding:8px 11px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.panel .openrow input{width:18px;height:18px;padding:0;border:0;margin:0;accent-color:var(--pulpred);flex:none}
+.openrow span{flex:1;min-width:0}
+.openrow.on{background:var(--chrome)}
+.openrow small{font-size:10px;letter-spacing:1.5px;color:var(--muted)}
 .cover-foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:9px 0 12px;font-family:'Bitter',serif;font-size:12.5px;color:#e9f2df;line-height:1.5}
 .cover-foot b{color:var(--chrome);font-family:'Space Grotesk',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:11px}
 
@@ -272,10 +283,6 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
       </div>
     </div>
     <nav class="tabs" id="tabs"></nav>
-    <div class="cover-foot">
-      <span><b>How it works</b> Pick your group, answer your questions together, and upload pictures of your progress.</span>
-      <span><b>Give back</b> Leave feedback on other groups' boards and on their images.</span>
-    </div>
   </div>
 </header>
 
@@ -341,6 +348,9 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
     </div>
     <div id="instBody" class="hidden">
       <div class="grp">
+        <div class="groupmark"><span>Open workshops</span></div>
+        <p>Students can only see the workshops that are open. Workshop 1 starts open. Tick a workshop to open it for everyone. It shows up for students in a second or two, with no reload.</p>
+        <div class="openlist" id="openList"></div>
         <div class="groupmark"><span>Groups</span></div>
         <div class="inrow">
           <div class="field"><label for="groupCount">Number of groups (1 to 24)</label><input id="groupCount" type="number" min="1" max="24" style="width:120px"/></div>
@@ -410,13 +420,14 @@ const PASSCODE = "collage";
 const ASSIGNMENT_PDF = "final_project_description.pdf";
 const WRITING_PDF = "final-project-writing.pdf";
 const MAX_GROUPS = 24;
+const MAX_PICKS = 3;   // how many favorite zine styles each person can vote for
 const MAX_IMAGES_PER_GROUP = 12;
 
 const GROUP_COLORS = ["#293E40","#70335F","#3C747F","#88486E","#404A1B","#2B4D5A","#C1699F","#5E7A2E"];
 
 const DEFAULT_WORKSHOPS = [
   {id:"w1", tab:"Workshop 1", title:"Finding your direction", date:"Intro day", vote:true, solo:6, assign:true,
-   intro:"Figure out the direction of your zine: what you care about, which route pulls you, and what your zine could argue. Step 1: vote for your favorite zine style. Step 2: answer the first questions on your own. Step 3: answer the rest with your group.",
+   intro:"",
    questions:[
     "What idea from this class has stayed with you most? Look back at your reflection sheets.",
     "What frustrates or worries you about climate, technology or nature right now?",
@@ -438,7 +449,7 @@ const DEFAULT_WORKSHOPS = [
     "Your palette, design format and type, and where they come from.",
     "Which images will you make first, and how?",
     "What feedback do you want from other groups?"]},
-  {id:"w3", tab:"Workshop 3", title:"Draft paper and draft visuals", date:"Mon, Nov 30",
+  {id:"w3", tab:"Workshop 3", title:"Draft text and draft visuals", date:"Mon, Nov 30",
    intro:"Upload a draft image for every page you have so far.",
    questions:[
     "Which pages have a draft image, and which still need one?",
@@ -446,7 +457,7 @@ const DEFAULT_WORKSHOPS = [
     "Who is writing which essay section?",
     "What is working best so far?",
     "What feedback do you want on your images?"]},
-  {id:"w4", tab:"Workshop 4", title:"Written paper", date:"Mon, Dec 7",
+  {id:"w4", tab:"Workshop 4", title:"Written text", date:"Mon, Dec 7",
    intro:"Check your essay against the template and rubric.",
    questions:[
     "Your essay's three headings (artwork, connections, conclusion).",
@@ -546,7 +557,8 @@ const FEEDBACK_PROMPTS = ["I notice...","This connects to...","What if...","The 
 
 /* ============ STATE ============ */
 let state = { config:{groupCount:12, workshops:{}}, groups:{}, answers:{}, images:{}, feedback:{} };
-let curW = localStorage.getItem("fzw_ws") || "w1";
+let curW = safeGet("fzw_ws") || "w1";
+let wantW = curW;   // the tab this person chose; curW falls back to an open one if it is locked
 let filter = "all";
 let instructor = false;
 let mode = "local";
@@ -610,9 +622,22 @@ function listenWorkshop(){
 function showBanner(t,warn){const b=$("modeBanner");b.innerHTML=t;b.classList.remove("hidden");b.classList.toggle("warn",!!warn)}
 
 /* ============ RENDER ============ */
+// Workshop 1 starts open. The rest stay closed to students until the
+// instructor opens them from the desk.
+function isOpen(id){ const o=(state.config&&state.config.open)||{}; return o[id]!==undefined?!!o[id]:id==="w1"; }
+function pickWorkshop(){
+  let next=wantW;
+  if(!instructor && !isOpen(next)){ const open=DEFAULT_WORKSHOPS.filter(d=>isOpen(d.id)); next=open.length?open[open.length-1].id:"w1"; }
+  if(next!==curW){ curW=next; lastStructureKey=""; soloKey=""; listenWorkshop(); }
+}
 function renderTabs(){
-  $("tabs").innerHTML=DEFAULT_WORKSHOPS.map(d=>{const w=workshop(d.id);return `<button class="tab ${d.id===curW?'on':''}" data-w="${d.id}">${esc(d.tab)}<small>${esc(w.date)}</small></button>`}).join("");
-  $("tabs").querySelectorAll(".tab").forEach(b=>b.onclick=()=>{curW=b.dataset.w;safeSet("fzw_ws",curW);listenWorkshop();render(true)});
+  $("tabs").innerHTML=DEFAULT_WORKSHOPS.map(d=>{const w=workshop(d.id);const open=isOpen(d.id);const lock=!open&&!instructor;
+    return `<button class="tab ${d.id===curW?'on':''} ${lock?'locked':''} ${!open&&instructor?'instlocked':''}" data-w="${d.id}" ${lock?'aria-disabled="true" title="Opens when your instructor opens it"':''}>${esc(d.tab)}${!open?'<span class="lk">&#128274;</span>':''}<small>${lock?'Not open yet':esc(w.date)}</small></button>`}).join("");
+  $("tabs").querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.w;
+    if(!instructor && !isOpen(id)){ toast("Not open yet"); return; }
+    wantW=id; safeSet("fzw_ws",id); pickWorkshop(); render(true);
+  });
 }
 function renderGroupSelect(){
   const sel=$("myGroup"); const v=sel.value||safeGet("fzw_group")||"";
@@ -645,13 +670,13 @@ function renderAssign(w){
     <ul>
       <li>A zine of at least 8 pages. In a group, each person makes at least 2 pages.</li>
       <li>An essay of about 800 words at the end of the zine. In a group, each person writes at least one section.</li>
-      <li>A group proposal, a draft paper and draft visuals, and a 4 minute presentation of the finished zine.</li>
+      <li>A group proposal, a draft text and draft visuals, and a 4 minute presentation of the finished zine.</li>
     </ul>
     <span class="lbl">Workshops ahead</span>
     <ul>
       <li>Workshop 2, Mon Nov 23: proposal check-in</li>
-      <li>Workshop 3, Mon Nov 30: draft paper and draft visuals</li>
-      <li>Workshop 4, Mon Dec 7: written paper</li>
+      <li>Workshop 3, Mon Nov 30: draft text and draft visuals</li>
+      <li>Workshop 4, Mon Dec 7: written text</li>
       <li>Workshop 5, Wed Dec 9: final zine and presentation</li>
     </ul>
     <p>Read the full assignment and the description of the written parts before you start Step 3 with your group.</p>
@@ -668,7 +693,6 @@ function renderSolo(w){
     soloKey=key;
     const open=sec.querySelector("details")?.open;
     sec.innerHTML=`<h3>Step 2: on your own</h3>
-      <p class="vsub">Answer these by yourself, after you vote and before you work with your group. Your answers save under your artist number as you type. Read the class answers at the bottom to find people who care about the same things.</p>
       ${me?"":`<div class="need">Add your artist number at the top to start answering</div>`}
       <div class="sq">${qs.map((q,i)=>`<div class="q"><div class="qt"><b>${i+1}</b> ${esc(q)}</div><textarea data-sq="${i}" placeholder="Your own answer" ${me?"":"disabled"}></textarea><div class="saved" data-ssaved="${i}"></div></div>`).join("")}</div>
       <details ${open?"open":""}><summary>Read the class answers</summary><div data-k="classans"></div></details>`;
@@ -701,26 +725,32 @@ function picHtml(s,imgs){
     <span class="pcount">${i+1} / ${list.length}</span>`:"";
   return `<img src="${list[i][1]}" alt="${esc(s.name)} example ${i+1}"/>${nav}`;
 }
+// A vote is a set of picks. Older single votes (a plain style id) still count.
+function picksOf(v){ if(!v) return []; if(typeof v==="string") return [v]; return Object.keys(v).sort((a,b)=>(v[a]||0)-(v[b]||0)); }
+function voteTally(votes){ const t={}; Object.values(votes||{}).forEach(v=>picksOf(v).forEach(id=>{t[id]=(t[id]||0)+1})); return t; }
 function renderVote(w){
   const sec=$("voteSec");
   if(!w.vote){sec.classList.add("hidden");return}
   sec.classList.remove("hidden");
-  const votes=get(["votes",curW])||{}; const me=myArtist(); const mine=me?votes[me]:null;
-  const tally={}; Object.values(votes).forEach(v=>{tally[v]=(tally[v]||0)+1});
-  const total=Object.keys(votes).length; const max=Math.max(1,...Object.values(tally));
+  const votes=get(["votes",curW])||{}; const me=myArtist(); const mine=me?picksOf(votes[me]):[];
+  const tally=voteTally(votes);
+  const total=Object.keys(votes).filter(a=>picksOf(votes[a]).length).length; const max=Math.max(1,...Object.values(tally));
   const imgs=(state.config&&state.config.styleImgs)||{};
-  sec.innerHTML=`<h3>${soloN(w)?"Step 1: vote for":"Vote:"} your favorite zine style</h3>
-    <p class="vsub">Open the examples, then vote for the style you most want to make. Everyone votes once (add your artist number at the top). You can change your vote. ${total} vote${total===1?"":"s"} so far.</p>
-    <div class="styles">${STYLES.map(s=>`<div class="style ${mine===s.id?'picked':''}">
+  sec.innerHTML=`<h3>${soloN(w)?"Step 1: pick":"Pick"} your ${MAX_PICKS} favorite zine styles</h3>
+    <div class="styles">${STYLES.map(s=>`<div class="style ${mine.includes(s.id)?'picked':''}">
       <div class="pic">${picHtml(s,imgs)}</div>
       <div class="sb"><div class="sn">${esc(s.name)}</div><div class="sd">${esc(s.desc)}</div>
         <div class="sx">${s.ex.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`).join(" · ")}</div>
         ${instructor?`<div class="instrow"><label class="instup">Add example images<input type="file" accept="image/*" multiple class="hidden" data-simg="${s.id}"/></label>${styleImgList(imgs,s.id).length?`<span class="instup" data-sdel="${s.id}">Remove the one showing</span>`:""}</div>`:""}
-        <div class="sf"><button class="btn small ${mine===s.id?'plum':''}" data-vote="${s.id}">${mine===s.id?"Your vote":"Vote"}</button><div class="tally"><i style="width:${(tally[s.id]||0)/max*100}%"></i></div><span class="tnum">${tally[s.id]||0}</span></div>
+        <div class="sf"><button class="btn small ${mine.includes(s.id)?'plum':''}" data-vote="${s.id}">${mine.includes(s.id)?"Your pick":"Pick"}</button><div class="tally"><i style="width:${(tally[s.id]||0)/max*100}%"></i></div><span class="tnum">${tally[s.id]||0}</span></div>
       </div></div>`).join("")}</div>`;
   sec.querySelectorAll("[data-vote]").forEach(b=>b.onclick=()=>{
     const a=myArtist(); if(!a){toast("Add your artist number first");$("myArtist").focus();return}
-    write(["votes",curW,a],b.dataset.vote===mine?null:b.dataset.vote);
+    const id=b.dataset.vote; const cur=picksOf(votes[a]);
+    let next;
+    if(cur.includes(id)) next=cur.filter(x=>x!==id);
+    else { if(cur.length>=MAX_PICKS){toast(`You can pick ${MAX_PICKS}. Take one back first.`);return} next=[...cur,id]; }
+    write(["votes",curW,a],next.length?Object.fromEntries(next.map((x,i)=>[x,i+1])):null);
   });
   sec.querySelectorAll("[data-simg]").forEach(inp=>inp.onchange=async()=>{
     const id=inp.dataset.simg; const files=[...inp.files]; if(!files.length) return;
@@ -755,10 +785,10 @@ function counts(g){
 }
 let lastStructureKey="";
 function render(force){
-  renderTabs(); renderGroupSelect();
+  pickWorkshop(); renderTabs(); renderGroupSelect();
   const w=workshop(curW);
-  $("wsHead").innerHTML=`<div class="sheet-bar"><span>${esc(w.tab)}</span><span class="arm">${esc(w.date)} · ${w.questions.length} questions</span></div><h2>${esc(w.title)}</h2><p class="dayprompt">${esc(w.intro||"")}</p>
-    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?(w.vote?`<li class="part">Step 1 · Vote for your favorite zine style (below)</li>`:"")+`<li class="part">Step 2 · On your own</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
+  $("wsHead").innerHTML=`<div class="sheet-bar"><span>${esc(w.tab)}</span><span class="arm">${esc(w.date)} · ${w.questions.length} questions</span></div><h2>${esc(w.title)}</h2>${w.intro?`<p class="dayprompt">${esc(w.intro)}</p>`:`<div style="height:12px"></div>`}
+    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?(w.vote?`<li class="part">Step 1 · Pick your ${MAX_PICKS} favorite zine styles (below)</li>`:"")+`<li class="part">Step 2 · On your own</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
   $("wsRoundel").innerHTML="WS<br>"+esc(curW.slice(1)); $("coverTitle").textContent=w.title; $("coverKicker").textContent=w.tab+" · "+w.date;
   renderSolo(w); renderVote(w); renderAssign(w);
   // chips
@@ -949,6 +979,8 @@ $("lockAgain").onclick=()=>{instructor=false;fillInst();lastStructureKey="";rend
 function fillInst(){
   $("instLock").classList.toggle("hidden",instructor); $("instBody").classList.toggle("hidden",!instructor);
   if(!instructor) return; const w=workshop(curW);
+  $("openList").innerHTML=DEFAULT_WORKSHOPS.map(d=>{const o=isOpen(d.id);const ww=workshop(d.id);return `<label class="openrow ${o?'on':''}"><input type="checkbox" data-open="${d.id}" ${o?'checked':''}/><span>${esc(d.tab)} · ${esc(ww.title)}</span><small>${o?'Open':'Closed'}</small></label>`}).join("");
+  $("openList").querySelectorAll("[data-open]").forEach(c=>c.onchange=()=>write(["config","open",c.dataset.open],c.checked).then(()=>{fillInst();render();toast(c.checked?"Opened":"Closed")}));
   $("groupCount").value=gc(); $("wsTitle").value=w.title; $("wsDate").value=w.date; $("wsIntro").value=w.intro||""; $("wsSolo").value=soloN(w); $("wsQs").value=w.questions.join("\n");
 }
 $("saveGroups").onclick=()=>{const n=Math.min(MAX_GROUPS,Math.max(1,parseInt($("groupCount").value)||1)); write(["config","groupCount"],n).then(()=>{lastStructureKey="";render();toast("Saved "+n+" groups")})};
@@ -979,10 +1011,10 @@ $("expHtml").onclick=()=>{
       ${imgs.length?`<div class="imgs">${imgs.map(im=>`<figure><img src="${im.thumb}"/><figcaption>${esc(im.caption||"")}</figcaption></figure>`).join("")}</div>`:""}
       ${fbs.length?`<h3>Feedback</h3><ul>${fbs.map(f=>`<li><b>${f.inst?"Instructor":"Artist "+esc(f.by||"?")}:</b> ${esc(f.text)}</li>`).join("")}</ul>`:""}</section>`);
   }
-  const vt={};Object.values(get(["votes",curW])||{}).forEach(v=>vt[v]=(vt[v]||0)+1);
+  const vt=voteTally(get(["votes",curW]));
   const sb=get(["solo",curW])||{}; const sArt=Object.keys(sb).sort((a,b)=>(+a||0)-(+b||0));
   const soloHtml=soloN(w)?`<section><h2>Step 2: individual answers</h2>${sArt.length?sArt.map(a=>`<h3>Artist ${esc(a)}</h3>${w.questions.slice(0,soloN(w)).map((q,i)=>`<p><b>${i+1}. ${esc(q)}</b><br>${sb[a][i]?linkify(sb[a][i]):"<em>No answer</em>"}</p>`).join("")}`).join(""):"<p><em>No individual answers yet</em></p>"}</section>`:"";
-  const voteHtml=w.vote?`<section><h2>Zine style vote</h2><ul>${STYLES.map(s=>`<li>${esc(s.name)}: ${vt[s.id]||0}</li>`).join("")}</ul></section>`:"";
+  const voteHtml=w.vote?`<section><h2>Zine style vote (top ${MAX_PICKS} picks each)</h2><ol>${[...STYLES].sort((x,y)=>(vt[y.id]||0)-(vt[x.id]||0)).map(s=>`<li>${esc(s.name)}: ${vt[s.id]||0}</li>`).join("")}</ol><h3>Picks by artist</h3><ul>${Object.entries(get(["votes",curW])||{}).sort((x,y)=>(+x[0]||0)-(+y[0]||0)).map(([a,v])=>`<li>Artist ${esc(a)}: ${picksOf(v).map(id=>esc((STYLES.find(t=>t.id===id)||{name:id}).name)).join(", ")}</li>`).join("")}</ul></section>`:"";
   const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(w.title)}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 16px;color:#222}h1{color:#4d661a;text-transform:uppercase}section{border-top:4px solid #14202a;padding:10px 0 20px}h2{color:#a01e5c;text-transform:uppercase}h3{font-size:14px;margin:10px 0 2px;color:#2f7d7d}.m{color:#666}.imgs{display:flex;flex-wrap:wrap;gap:8px}figure{width:200px;margin:0}figure img{width:200px;border:2px solid #14202a}figcaption{font-size:12px;color:#555}</style></head><body><h1>${esc(w.tab)}: ${esc(w.title)}</h1><p>${esc(w.date)}</p>${soloHtml}${voteHtml}${rows.join("")}</body></html>`;
   download(`final-zine-${curW}.html`,html,"text/html");
 };
