@@ -70,6 +70,17 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .workshop-head h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.2vw,30px);text-transform:uppercase;color:var(--cobalt);letter-spacing:.5px;padding:12px 14px 0}
 .dayprompt{font-family:'Bitter',serif;font-style:italic;font-size:14px;line-height:1.55;padding:4px 14px 10px;color:var(--jet)}
 .qlist{list-style:none;counter-reset:q;border-top:3px solid var(--jet);background:var(--pulp-pale);padding:10px 14px 12px;display:grid;gap:6px}
+.assign{border:4px solid var(--jet);background:#fff;box-shadow:7px 7px 0 var(--pulpred);padding:16px 18px 18px;margin-bottom:18px}
+.assign h3{font-family:'Space Grotesk',sans-serif;font-size:18px;text-transform:uppercase;color:var(--cobalt);letter-spacing:1px;margin-bottom:6px}
+.assign p,.assign li{font-family:'Bitter',serif;font-size:13.5px;line-height:1.6;color:#334051}
+.assign p{margin-bottom:10px;max-width:86ch}
+.assign .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px;margin:4px 0 14px}
+.assign .opt{border:3px solid var(--jet);background:var(--pulp-pale);padding:9px 11px;font-family:'Bitter',serif;font-size:13px;line-height:1.5;color:#334051}
+.assign a.btn{text-decoration:none}
+.assign .opt b{display:block;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mars);margin-bottom:3px}
+.assign ul{margin:0 0 14px 20px;max-width:86ch}
+.assign li a{color:var(--pulpred);font-weight:600}
+.assign .lbl{display:block;margin:4px 0 6px}
 .qlist li.part{counter-increment:none;padding:6px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--mars)}
 .qlist li.part::before{display:none}
 .solo .sq{display:grid;gap:12px}
@@ -94,6 +105,16 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .style.picked{box-shadow:5px 5px 0 var(--mars);background:#f4fbfa}
 .style.picked .sn{background:var(--pulpred);color:#fff}
 .style .pic{aspect-ratio:240/170;background:#eee;border-bottom:3px solid var(--jet)}
+.style .pic{position:relative;overflow:hidden}
+.pnav{position:absolute;top:50%;transform:translateY(-50%);width:28px;height:34px;border:2px solid var(--jet);background:rgba(255,255,255,.92);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;line-height:1;cursor:pointer;padding:0}
+.pnav:hover{background:var(--chrome)}
+.pnav.prev{left:6px}.pnav.next{right:6px}
+.pdots{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;gap:5px}
+.pdots button{width:10px;height:10px;border:2px solid var(--jet);background:#fff;padding:0;cursor:pointer}
+.pdots button.on{background:var(--mars)}
+.pcount{position:absolute;top:6px;right:6px;background:var(--jet);color:#fff;font-family:'Space Mono',monospace;font-size:10px;padding:1px 6px}
+.instrow{display:flex;gap:12px;flex-wrap:wrap}
+.instrow .instup{padding:0 0 0 10px}
 .style .pic svg,.style .pic img{width:100%;height:100%;display:block;object-fit:cover}
 .style .sb{display:flex;flex-direction:column;gap:5px;flex:1}
 .style .sn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;background:var(--chrome);border-bottom:3px solid var(--jet)}
@@ -271,8 +292,9 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
   </div>
 
   <section class="workshop-head" id="wsHead"></section>
-  <section class="vote solo hidden" id="soloSec"></section>
   <section class="vote hidden" id="voteSec"></section>
+  <section class="vote solo hidden" id="soloSec"></section>
+  <section class="assign hidden" id="assignSec"></section>
 
   <div class="jumpbox">
     <div class="jump-row">
@@ -382,14 +404,19 @@ const FIREBASE_CONFIG = {
 const USE_FIREBASE = true;
 const ROOT = "finalworkshops";
 const PASSCODE = "collage";
+// The assignment PDF linked before the group part of Workshop 1.
+// A plain file name means it sits in the same folder as this page on GitHub.
+// If it lives somewhere else, put its full address here instead.
+const ASSIGNMENT_PDF = "final_project_description.pdf";
+const WRITING_PDF = "final-project-writing.pdf";
 const MAX_GROUPS = 24;
 const MAX_IMAGES_PER_GROUP = 12;
 
 const GROUP_COLORS = ["#293E40","#70335F","#3C747F","#88486E","#404A1B","#2B4D5A","#C1699F","#5E7A2E"];
 
 const DEFAULT_WORKSHOPS = [
-  {id:"w1", tab:"Workshop 1", title:"Finding your direction", date:"Intro day", vote:true, solo:6,
-   intro:"Figure out the direction of your zine: what you care about, which route pulls you, and what your zine could argue. Part 1 is on your own, Part 2 is with your group. Then vote for your favorite zine style.",
+  {id:"w1", tab:"Workshop 1", title:"Finding your direction", date:"Intro day", vote:true, solo:6, assign:true,
+   intro:"Figure out the direction of your zine: what you care about, which route pulls you, and what your zine could argue. Step 1: vote for your favorite zine style. Step 2: answer the first questions on your own. Step 3: answer the rest with your group.",
    questions:[
     "What idea from this class has stayed with you most? Look back at your reflection sheets.",
     "What frustrates or worries you about climate, technology or nature right now?",
@@ -444,9 +471,19 @@ const STYLES = [
  {id:"riso", name:"Riso print", desc:"Pictured: a furry orange figure on pale blue from Lumps and Bumps. Two or three inks that overlap, grainy texture, bold simple shapes.",
   ex:[["Rachel Sender, Lumps and Bumps","https://rachelsender.com/Lumps-and-Bumps-riso-poster-zine"]]},
  {id:"photo", name:"Photo zine", desc:"Pictured: a grid of collected objects, each one photographed and lined up like a specimen. Your own photos carry the story with very few words.",
-  ex:[["Luana Lloyd, Irrelevant Life Photos","https://www.behance.net/gallery/205887887/irrelevant-life-photos-a-project-zine-about-observing"],["Internet Archive, Zines Collection","https://archive.org/details/zines"]]},
+  ex:[["Igor Furtado, Extinção? (photos and poetry, 2022)","https://www.dazeddigital.com/art-photography/article/57049/1/inside-the-new-zine-exploring-love-nature-and-survival-in-brazil-extincao"],["Open Eye Gallery, Connections to Nature (read online, 2026)","https://openeye.org.uk/connections-to-nature/"],["Luana Lloyd, Irrelevant Life Photos","https://www.behance.net/gallery/205887887/irrelevant-life-photos-a-project-zine-about-observing"],["Internet Archive, Zines Collection","https://archive.org/details/zines"]]},
  {id:"drawn", name:"Hand-drawn diary", desc:"Pictured: All The Dogs I Saw in Tokyo, bright painted dogs and hand lettering on green. Drawings and handwriting, like a sketchbook or travel journal.",
   ex:[["Tess Smith-Roberts, All The Dogs I Saw in Tokyo","https://tesssmithroberts.co.uk/All-The-Dogs-I-Saw-in-Tokyo"]]},
+ {id:"painted", name:"Painted zine", desc:"Watercolor, gouache or acrylic on every page, like a sketchbook of painted plates. Soft color, visible brushstrokes, words lettered or typed beside the paintings.",
+  ex:[["Giulia Casarotto, All About Pigeons","https://giuliacasarotto.substack.com/p/how-i-made-a-zine"],["Hunker Down, climate zine (SEACC)","https://issuu.com/seacc/docs/hunker_down_5.5_x_8"]]},
+ {id:"code", name:"Zine made with code", desc:"Pages generated by a program: rules, randomness, webcam input or data become the images and layout. Every print can come out different.",
+  ex:[["p5.genzine, Munus Shih and Iley Cao","https://parsons.edu/dt-2023/p5-genzine/"],["p5.genzine project site","https://munusshih.github.io/p5-genzine-thesis"],["Nathalie Lawhead, Electric Zine Maker","https://alienmelon.itch.io/electric-zine-maker"]]},
+ {id:"threed", name:"3D modeled zine", desc:"Beings, machines and worlds built in Blender or another 3D program, then rendered, glitched or 3D printed and photographed. Strange materials, impossible objects, scenes from any angle.",
+  ex:[["Oops! All 3D (zine of 3D art)","https://curiousbats.itch.io/oops-all-3d"],["3D art zines on itch.io","https://itch.io/misc/tag-3d-art/tag-zine"]]},
+ {id:"stitched", name:"Hand-stitched zine", desc:"Thread sewn through the pages: embroidered words, stitched drawings, fabric and woven swatches. Slow, tactile work about care, repair and connection.",
+  ex:[["Yangzom, T.H.R.E.A.D (hand-sewn red thread)","https://goodpress.co.uk/products/t-h-r-e-a-d-by-yangzom"],["Emily Larned, Sewing by Hand (zine essay on hand sewing)","https://library.louisville.edu/zines/sewing-hand"],["Jess Bailey, Many Hands Make a Quilt","https://shop.tatter.org/products/many-hands-make-a-quilt-short-stories-of-radical-quilting-by-jess-bailey"],["Social Fabric, The Lives of Our Beloved Textiles","https://socialfabriczine.com/"],["Thread and Fabric in Feminist Zines (M/C Journal)","https://journal.media-culture.org.au/index.php/mcjournal/article/view/3015"],["Quilt zines at the Barnard Zine Library","https://zines.barnard.edu/news/weve-got-zine-quilt"]]},
+ {id:"dictionary", name:"Dictionary or glossary zine", desc:"One word per page, A to Z. Each entry defines a term for a new world, with an image, a short story or an example. Good for collecting the ideas a pluriverse is built from.",
+  ex:[["Pluriverse: A Post-Development Dictionary (2019, free PDF)","https://radicalecologicaldemocracy.org/pluriverse/"]]},
  {id:"type", name:"Typographic manifesto", desc:"Pictured: white chalky letterforms built like buildings on a dark ground. Letters and words become the images, with big type and strong statements.",
   ex:[["Petr Persik, The Glyph Manifesto","https://www.are.na/petr-persik/zine-the-glyph-manifesto"]]},
  {id:"catalog", name:"Catalog from the future", desc:"Pictured: the TBD Catalog cover, a pile of strange future products, a sale sticker and a panda. Products, prices and reviews from a world that does not exist yet.",
@@ -479,6 +516,12 @@ function styleSvg(id){
   switch(id){
    case "collage": s=`<rect width="${W}" height="${H}" fill="#f3efe6"/>`+R(18,20,110,80,"#bdbdbd",-6)+R(95,48,120,70,"#2b2b2b",5)+R(40,92,90,52,"#C1699F",-3,.9)+`<text x="104" y="92" font-family="Courier New" font-weight="700" font-size="22" fill="#fff" transform="rotate(5 150 80)">CUT!</text>`+R(150,18,60,24,"#fff",8)+`<text x="156" y="35" font-size="13" font-family="Courier New" transform="rotate(8 180 30)">paste</text>`;break;
    case "copymachine": s=`<rect width="${W}" height="${H}" fill="#dcdcdc"/><rect x="14" y="14" width="212" height="142" fill="#f7f7f2"/><rect x="24" y="24" width="90" height="70" fill="#1c1c1c" transform="rotate(-3 69 59)"/><circle cx="62" cy="58" r="20" fill="#9a9a9a"/><text x="124" y="48" font-family="Courier New" font-weight="700" font-size="18" fill="#1c1c1c">XEROX</text><text x="124" y="70" font-family="Courier New" font-size="12" fill="#1c1c1c">ME & MAIL</text><text x="124" y="86" font-family="Courier New" font-size="12" fill="#1c1c1c">ME BACK</text><rect x="24" y="108" width="190" height="4" fill="#555"/><rect x="24" y="120" width="160" height="4" fill="#555"/><rect x="24" y="132" width="175" height="4" fill="#555"/><rect x="0" y="0" width="${W}" height="${H}" fill="url(#cm)" opacity=".18"/><defs><pattern id="cm" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#000"/></pattern></defs>`;break;
+   case "painted": s=`<rect width="${W}" height="${H}" fill="#fbf6ea"/><ellipse cx="80" cy="80" rx="58" ry="42" fill="#7db8c4" opacity=".55"/><ellipse cx="150" cy="95" rx="62" ry="40" fill="#e85fa0" opacity=".45"/><ellipse cx="120" cy="60" rx="40" ry="26" fill="#f2c14e" opacity=".55"/><path d="M30 140 C70 120 120 150 210 130" stroke="#4d661a" stroke-width="7" stroke-linecap="round" fill="none" opacity=".75"/><text x="20" y="160" font-family="cursive" font-size="12" fill="#5a3d2b">painted, tuesday</text>`;break;
+   case "code": { let g=""; for(let i=0;i<60;i++){ const x=(i*37)%220+10, y=(i*53)%120+10, r=4+(i*7)%14; g+=`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${["#2f7d7d","#d63d84","#4d661a"][i%3]}" stroke-width="1.5"/>`; }
+     s=`<rect width="${W}" height="${H}" fill="#14202a"/>${g}<rect x="0" y="138" width="${W}" height="32" fill="#14202a"/><text x="12" y="158" font-family="Courier New" font-size="12" fill="#a8e6c0">for (page of zine) draw();</text>`;break; }
+   case "threed": s=`<defs><linearGradient id="svgA3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8e6c0"/><stop offset="1" stop-color="#2f7d7d"/></linearGradient><radialGradient id="svgB3" cx=".35" cy=".35"><stop offset="0" stop-color="#ffe1ef"/><stop offset="1" stop-color="#a01e5c"/></radialGradient></defs><rect width="${W}" height="${H}" fill="#e2e6e8"/><path d="M0 130 L240 110 L240 170 L0 170Z" fill="#c9cfd3"/><path d="M40 110 L90 85 L140 110 L90 135Z" fill="#cfeee0"/><path d="M40 110 L90 135 L90 160 L40 135Z" fill="url(#svgA3)"/><path d="M140 110 L90 135 L90 160 L140 135Z" fill="#245f5f"/><circle cx="175" cy="78" r="34" fill="url(#svgB3)"/><ellipse cx="175" cy="132" rx="30" ry="6" fill="#14202a" opacity=".2"/>`;break;
+   case "stitched": s=`<rect width="${W}" height="${H}" fill="#f3ead8"/><rect x="18" y="18" width="204" height="134" fill="none" stroke="#a01e5c" stroke-width="2.5" stroke-dasharray="7 5"/><path d="M50 120 C70 60 110 60 120 95 S170 130 190 60" fill="none" stroke="#2f7d7d" stroke-width="3" stroke-dasharray="9 5"/><circle cx="70" cy="58" r="16" fill="none" stroke="#a01e5c" stroke-width="3" stroke-dasharray="6 4"/><path d="M150 40 l10 10 m0 -10 l-10 10 M168 40 l10 10 m0 -10 l-10 10 M186 40 l10 10 m0 -10 l-10 10" stroke="#4d661a" stroke-width="2.5"/><text x="40" y="142" font-family="cursive" font-size="14" fill="#a01e5c">mend</text>`;break;
+   case "dictionary": s=`<rect width="${W}" height="${H}" fill="#fbfaf4"/><rect x="120" y="0" width="2" height="${H}" fill="#14202a" opacity=".25"/><text x="16" y="44" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#4d661a">Kin</text><text x="16" y="62" font-family="Georgia,serif" font-style="italic" font-size="11" fill="#555">n. / pronoun</text>`+L(76,90,"#999",16)+L(88,80,"#999",16)+L(100,94,"#999",16)+`<text x="134" y="44" font-family="Georgia,serif" font-weight="700" font-size="22" fill="#a01e5c">Degrowth</text>`+L(60,90,"#999",134)+L(72,80,"#999",134)+`<circle cx="180" cy="118" r="24" fill="#a8e6c0" stroke="#14202a" stroke-width="2"/><text x="16" y="150" font-family="Courier New" font-size="11" fill="#14202a">A to Z for 3055</text>`;break;
    case "riso": s=`<rect width="${W}" height="${H}" fill="#fbf7ef"/><g style="mix-blend-mode:multiply"><circle cx="95" cy="85" r="52" fill="#ff48b0" opacity=".85"/><circle cx="140" cy="85" r="52" fill="#0078bf" opacity=".85"/><rect x="40" y="128" width="160" height="18" fill="#ffe800" opacity=".9"/></g>`;break;
    case "photo": s=`<rect width="${W}" height="${H}" fill="#fff"/>`+R(16,16,100,72,"#8a8f8c")+R(124,16,100,72,"#5f6663")+R(16,96,208,58,"#a9aeab")+`<circle cx="60" cy="125" r="14" fill="#d9dcda"/>`;break;
    case "drawn": s=`<rect width="${W}" height="${H}" fill="#fffdf6"/><path d="M30 120 q20 -50 45 -10 t45 -5 t45 -20 t40 10" stroke="#222" stroke-width="3" fill="none"/><circle cx="70" cy="60" r="20" stroke="#222" stroke-width="3" fill="#fbe3ef"/><path d="M60 58 q10 8 20 0" stroke="#222" stroke-width="2" fill="none"/><text x="120" y="55" font-family="cursive" font-size="16" fill="#70335F">dog #12</text><text x="30" y="150" font-family="cursive" font-size="13" fill="#555">tuesday, by the river</text>`;break;
@@ -577,6 +620,43 @@ function renderGroupSelect(){
   sel.value=v;
 }
 
+function renderAssign(w){
+  const sec=$("assignSec");
+  if(!w.assign){sec.classList.add("hidden");return}
+  sec.classList.remove("hidden");
+  if(sec.dataset.done) return; sec.dataset.done="1";
+  sec.innerHTML=`<span class="lbl">Before Step 3</span>
+    <h3>The assignment: Pluriverse 3055 OR Proposed Zine</h3>
+    <p>For your final project you will make a zine about climate, technology and nature, working alone or in a group of 2 to 4. Your zine makes a claim, uses course themes as lenses, and includes a manifesto. Pick one of four options:</p>
+    <div class="opts">
+      <div class="opt"><b>Option A · Pluriverse 3055</b>Invent a world in the year 3055 and show how people, nature and technology live there.</div>
+      <div class="opt"><b>Option B · Earth now</b>Focus on a real place, technology, issue or idea on Earth today.</div>
+      <div class="opt"><b>Option C · Site specific</b>Study a real site in Silicon Valley and what it tells us.</div>
+      <div class="opt"><b>Option D · Your own</b>Propose your own direction for the zine.</div>
+    </div>
+    <span class="lbl">Pluriverse zines and books to look at</span>
+    <ul>
+      <li><a href="https://eprints.lancs.ac.uk/222098/2/ICT4S-Zine_Liminal_Excavations_FINAL.pdf" target="_blank" rel="noopener">ICT4S Zine 2024</a>: a DIY zine on technology and sustainability, with "Sustainability From the Pluriverse" by Lupita Guillén Mandujano, plus pieces on data centers, plants and speculative worlds (free PDF)</li>
+      <li><a href="https://plurality-university.org/media/pages/projects/u-zine/u-zine-7-clothes/57e2548b97-1647248682/u-zine5_mep_publication_clothes_preview.pdf" target="_blank" rel="noopener">U+ Zine, Plurality University Network</a>: short themed zines about alternative presents and futures through art and fiction. This issue on clothes is arranged like drawers in a wardrobe.</li>
+      <li><a href="https://re-publica.com/de/session/pluriversal-care-zine-community-design-experiment" target="_blank" rel="noopener">Pluriversal Care Zine</a>: a workshop where people built one large group zine, based on Arturo Escobar's idea of "community as a verb"</li>
+      <li><a href="https://radicalecologicaldemocracy.org/pluriverse/" target="_blank" rel="noopener">Pluriverse: A Post-Development Dictionary</a>: over 100 short entries on ideas like Degrowth, Ubuntu and Buen Vivir (free PDF)</li>
+    </ul>
+    <span class="lbl">What you will make</span>
+    <ul>
+      <li>A zine of at least 8 pages. In a group, each person makes at least 2 pages.</li>
+      <li>An essay of about 800 words at the end of the zine. In a group, each person writes at least one section.</li>
+      <li>A group proposal, a draft paper and draft visuals, and a 4 minute presentation of the finished zine.</li>
+    </ul>
+    <span class="lbl">Workshops ahead</span>
+    <ul>
+      <li>Workshop 2, Mon Nov 23: proposal check-in</li>
+      <li>Workshop 3, Mon Nov 30: draft paper and draft visuals</li>
+      <li>Workshop 4, Mon Dec 7: written paper</li>
+      <li>Workshop 5, Wed Dec 9: final zine and presentation</li>
+    </ul>
+    <p>Read the full assignment and the description of the written parts before you start Step 3 with your group.</p>
+    <div class="ed-actions" style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn plum" href="${esc(ASSIGNMENT_PDF)}" target="_blank" rel="noopener">Open the assignment (PDF)</a><a class="btn" href="${esc(WRITING_PDF)}" target="_blank" rel="noopener">Open the written parts (PDF)</a></div>`;
+}
 let soloKey="";
 function renderSolo(w){
   const sec=$("soloSec"); const n=soloN(w);
@@ -587,8 +667,8 @@ function renderSolo(w){
   if(key!==soloKey){
     soloKey=key;
     const open=sec.querySelector("details")?.open;
-    sec.innerHTML=`<h3>Part 1: on your own</h3>
-      <p class="vsub">Answer these by yourself, before you work with your group. Your answers save under your artist number as you type. Read the class answers at the bottom to find people who care about the same things.</p>
+    sec.innerHTML=`<h3>Step 2: on your own</h3>
+      <p class="vsub">Answer these by yourself, after you vote and before you work with your group. Your answers save under your artist number as you type. Read the class answers at the bottom to find people who care about the same things.</p>
       ${me?"":`<div class="need">Add your artist number at the top to start answering</div>`}
       <div class="sq">${qs.map((q,i)=>`<div class="q"><div class="qt"><b>${i+1}</b> ${esc(q)}</div><textarea data-sq="${i}" placeholder="Your own answer" ${me?"":"disabled"}></textarea><div class="saved" data-ssaved="${i}"></div></div>`).join("")}</div>
       <details ${open?"open":""}><summary>Read the class answers</summary><div data-k="classans"></div></details>`;
@@ -606,6 +686,21 @@ function renderSolo(w){
     return `<div class="classq"><div class="qt">${i+1}. ${esc(q)}</div>${rows.length?`<div class="fb">${rows.map(a=>`<div class="fbitem"><span class="who">Artist ${esc(a)}${a===me?" (you)":""}</span>${linkify(all[a][i])}</div>`).join("")}</div>`:`<p class="empty-note">No answers yet</p>`}</div>`;
   }).join("");
 }
+const picIdx={};
+function styleImgList(imgs,id){
+  const v=imgs[id]; if(!v) return [];
+  if(typeof v==="string") return [["a0",v]];
+  return Object.entries(v).filter(([,x])=>typeof x==="string").sort((a,b)=>a[0]<b[0]?-1:1);
+}
+function picHtml(s,imgs){
+  const list=styleImgList(imgs,s.id);
+  if(!list.length) return styleSvg(s.id);
+  let i=picIdx[s.id]||0; if(i>=list.length) i=list.length-1; picIdx[s.id]=i;
+  const nav=list.length>1?`<button class="pnav prev" data-pnav="${s.id}:-1" aria-label="Previous image">&#8249;</button><button class="pnav next" data-pnav="${s.id}:1" aria-label="Next image">&#8250;</button>
+    <div class="pdots">${list.map((_,j)=>`<button class="${j===i?"on":""}" data-pdot="${s.id}:${j}" aria-label="Image ${j+1} of ${list.length}"></button>`).join("")}</div>
+    <span class="pcount">${i+1} / ${list.length}</span>`:"";
+  return `<img src="${list[i][1]}" alt="${esc(s.name)} example ${i+1}"/>${nav}`;
+}
 function renderVote(w){
   const sec=$("voteSec");
   if(!w.vote){sec.classList.add("hidden");return}
@@ -614,13 +709,13 @@ function renderVote(w){
   const tally={}; Object.values(votes).forEach(v=>{tally[v]=(tally[v]||0)+1});
   const total=Object.keys(votes).length; const max=Math.max(1,...Object.values(tally));
   const imgs=(state.config&&state.config.styleImgs)||{};
-  sec.innerHTML=`<h3>Vote: your favorite zine style</h3>
+  sec.innerHTML=`<h3>${soloN(w)?"Step 1: vote for":"Vote:"} your favorite zine style</h3>
     <p class="vsub">Open the examples, then vote for the style you most want to make. Everyone votes once (add your artist number at the top). You can change your vote. ${total} vote${total===1?"":"s"} so far.</p>
     <div class="styles">${STYLES.map(s=>`<div class="style ${mine===s.id?'picked':''}">
-      <div class="pic">${imgs[s.id]?`<img src="${imgs[s.id]}" alt="${esc(s.name)} example"/>`:styleSvg(s.id)}</div>
+      <div class="pic">${picHtml(s,imgs)}</div>
       <div class="sb"><div class="sn">${esc(s.name)}</div><div class="sd">${esc(s.desc)}</div>
         <div class="sx">${s.ex.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`).join(" · ")}</div>
-        ${instructor?`<label class="instup">${imgs[s.id]?"Replace":"Add"} example image<input type="file" accept="image/*" class="hidden" data-simg="${s.id}"/></label>${imgs[s.id]?` <span class="instup" data-sdel="${s.id}">remove</span>`:""}`:""}
+        ${instructor?`<div class="instrow"><label class="instup">Add example images<input type="file" accept="image/*" multiple class="hidden" data-simg="${s.id}"/></label>${styleImgList(imgs,s.id).length?`<span class="instup" data-sdel="${s.id}">Remove the one showing</span>`:""}</div>`:""}
         <div class="sf"><button class="btn small ${mine===s.id?'plum':''}" data-vote="${s.id}">${mine===s.id?"Your vote":"Vote"}</button><div class="tally"><i style="width:${(tally[s.id]||0)/max*100}%"></i></div><span class="tnum">${tally[s.id]||0}</span></div>
       </div></div>`).join("")}</div>`;
   sec.querySelectorAll("[data-vote]").forEach(b=>b.onclick=()=>{
@@ -628,9 +723,24 @@ function renderVote(w){
     write(["votes",curW,a],b.dataset.vote===mine?null:b.dataset.vote);
   });
   sec.querySelectorAll("[data-simg]").forEach(inp=>inp.onchange=async()=>{
-    const f=inp.files[0]; if(!f) return; const d=await resize(f,700,0.75); write(["config","styleImgs",inp.dataset.simg],d).then(()=>toast("Image added"));
+    const id=inp.dataset.simg; const files=[...inp.files]; if(!files.length) return;
+    toast("Adding...");
+    let cur=imgs[id];
+    if(typeof cur==="string"){ await write(["config","styleImgs",id],{a0:cur}); cur={a0:cur}; }
+    for(const f of files){ try{ const d=await resize(f,700,0.75); const k=uid(); await write(["config","styleImgs",id,k],d); picIdx[id]=Infinity; }catch(e){toast("Could not read "+f.name)} }
+    toast(files.length>1?files.length+" images added":"Image added");
   });
-  sec.querySelectorAll("[data-sdel]").forEach(b=>b.onclick=()=>write(["config","styleImgs",b.dataset.sdel],null));
+  sec.querySelectorAll("[data-sdel]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.sdel; const cur=imgs[id];
+    if(typeof cur==="string"){ write(["config","styleImgs",id],null); return; }
+    const list=styleImgList(imgs,id); if(!list.length) return;
+    const i=Math.min(picIdx[id]||0,list.length-1); write(["config","styleImgs",id,list[i][0]],null);
+  });
+  sec.querySelectorAll("[data-pnav]").forEach(b=>b.onclick=e=>{
+    e.stopPropagation(); const [id,d]=b.dataset.pnav.split(":"); const n=styleImgList(imgs,id).length; if(!n) return;
+    picIdx[id]=(((Math.min(picIdx[id]||0,n-1))+(+d))%n+n)%n; renderVote(w);
+  });
+  sec.querySelectorAll("[data-pdot]").forEach(b=>b.onclick=e=>{ e.stopPropagation(); const [id,i]=b.dataset.pdot.split(":"); picIdx[id]=+i; renderVote(w); });
 }
 function soloN(w){return Math.max(0,Math.min(w.questions.length,parseInt(w.solo)||0))}
 function groupStatus(g){
@@ -648,9 +758,9 @@ function render(force){
   renderTabs(); renderGroupSelect();
   const w=workshop(curW);
   $("wsHead").innerHTML=`<div class="sheet-bar"><span>${esc(w.tab)}</span><span class="arm">${esc(w.date)} · ${w.questions.length} questions</span></div><h2>${esc(w.title)}</h2><p class="dayprompt">${esc(w.intro||"")}</p>
-    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?`<li class="part">Part 1 · On your own</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Part 2 · With your group</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
+    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?`<li class="part">Step 2 · On your own</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
   $("wsRoundel").innerHTML="WS<br>"+esc(curW.slice(1)); $("coverTitle").textContent=w.title; $("coverKicker").textContent=w.tab+" · "+w.date;
-  renderSolo(w); renderVote(w);
+  renderSolo(w); renderVote(w); renderAssign(w);
   // chips
   const mg=myGroup();
   $("chips").innerHTML=Array.from({length:gc()},(_,i)=>{const g=i+1;const st=groupStatus(g);const c=counts(g);
@@ -689,7 +799,7 @@ function cardShell(g){
         <input data-meta="members" placeholder="Artist numbers, e.g. 3, 12, 19"/>
         <select data-meta="option" class="opt"><option value="">Option</option><option>A</option><option>B</option><option>C</option><option>D</option></select>
       </div>`:`<div class="metaro" data-k="members"></div>`}
-      ${soloN(w)?`<div class="parthd">Part 2 · With your group</div>`:""}${w.questions.map((q,i)=>i<soloN(w)?"":`<div class="q"><div class="qt"><b>${i+1}</b> ${esc(q)}</div>
+      ${soloN(w)?`<div class="parthd">Step 3 · With your group</div>`:""}${w.questions.map((q,i)=>i<soloN(w)?"":`<div class="q"><div class="qt"><b>${i+1}</b> ${esc(q)}</div>
         ${mine||instructor?`<textarea data-q="${i}" placeholder="Your group's answer"></textarea><div class="saved" data-saved="${i}"></div>`:`<div class="ans" data-a="${i}"></div>`}</div>`).join("")}
       <div class="sect">
         <div class="row"><span class="lbl">Progress images</span><span class="lbl" data-k="imgcount"></span></div>
@@ -871,7 +981,7 @@ $("expHtml").onclick=()=>{
   }
   const vt={};Object.values(get(["votes",curW])||{}).forEach(v=>vt[v]=(vt[v]||0)+1);
   const sb=get(["solo",curW])||{}; const sArt=Object.keys(sb).sort((a,b)=>(+a||0)-(+b||0));
-  const soloHtml=soloN(w)?`<section><h2>Part 1: individual answers</h2>${sArt.length?sArt.map(a=>`<h3>Artist ${esc(a)}</h3>${w.questions.slice(0,soloN(w)).map((q,i)=>`<p><b>${i+1}. ${esc(q)}</b><br>${sb[a][i]?linkify(sb[a][i]):"<em>No answer</em>"}</p>`).join("")}`).join(""):"<p><em>No individual answers yet</em></p>"}</section>`:"";
+  const soloHtml=soloN(w)?`<section><h2>Step 2: individual answers</h2>${sArt.length?sArt.map(a=>`<h3>Artist ${esc(a)}</h3>${w.questions.slice(0,soloN(w)).map((q,i)=>`<p><b>${i+1}. ${esc(q)}</b><br>${sb[a][i]?linkify(sb[a][i]):"<em>No answer</em>"}</p>`).join("")}`).join(""):"<p><em>No individual answers yet</em></p>"}</section>`:"";
   const voteHtml=w.vote?`<section><h2>Zine style vote</h2><ul>${STYLES.map(s=>`<li>${esc(s.name)}: ${vt[s.id]||0}</li>`).join("")}</ul></section>`:"";
   const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(w.title)}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 16px;color:#222}h1{color:#4d661a;text-transform:uppercase}section{border-top:4px solid #14202a;padding:10px 0 20px}h2{color:#a01e5c;text-transform:uppercase}h3{font-size:14px;margin:10px 0 2px;color:#2f7d7d}.m{color:#666}.imgs{display:flex;flex-wrap:wrap;gap:8px}figure{width:200px;margin:0}figure img{width:200px;border:2px solid #14202a}figcaption{font-size:12px;color:#555}</style></head><body><h1>${esc(w.tab)}: ${esc(w.title)}</h1><p>${esc(w.date)}</p>${soloHtml}${voteHtml}${rows.join("")}</body></html>`;
   download(`final-zine-${curW}.html`,html,"text/html");
