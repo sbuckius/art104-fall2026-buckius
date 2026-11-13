@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Final Zine Workshops</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%232f7d7d' stroke='%2314202a' stroke-width='6'/%3E%3Ccircle cx='32' cy='32' r='31' fill='none' stroke='%23a8e6c0' stroke-width='2'/%3E%3Ctext x='32' y='43' font-family='Arial' font-weight='700' font-size='30' text-anchor='middle' fill='%23fff'%3EZ%3C/text%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bitter:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
@@ -438,38 +437,40 @@ const DEFAULT_WORKSHOPS = [
 
 
 const STYLES = [
- {id:"collage", name:"Cut-and-paste collage", desc:"Photocopied, glued, layered. Fast, rough and loud.",
-  ex:[["Evolution of a Race Riot","http://issuu.com/poczineproject/docs/evolution-of-a-race-riot-issue-1"],["Shotgun Seamstress","https://softskull.com/books/shotgun-seamstress/"]]},
- {id:"riso", name:"Riso print", desc:"Two or three bright inks that overlap. Bold shapes, grainy texture.",
+ {id:"collage", name:"Cut-and-paste collage", desc:"Pictured: the Shotgun Seamstress cover, a black and white photo of Osa Atoe cut out over hot pink, with stars and letters snipped from other pages. Photocopied, glued, layered, loud.",
+  ex:[["Evolution of a Race Riot","http://issuu.com/poczineproject/docs/evolution-of-a-race-riot-issue-1"],["Shotgun Seamstress","https://softskull.com/books/shotgun-seamstress/"],["POC Zine Project","https://issuu.com/poczineproject"],["Queer Zine Archive Project","https://www.qzap.org/"]]},
+ {id:"copymachine", name:"Copy machine artist zine", desc:"Cheap, fast, self-published booklets made on a copy machine, the way artists outside the mainstream have spoken up since the 1970s. Mixes collage, drawing, photos and performance notes, with roots in punk, street, queer and feminist art.",
+  ex:[["Copy Machine Manifestos: Artists Who Make Zines (Brooklyn Museum)","https://www.brooklynmuseum.org/exhibitions/copy_machine_manifestos_artists_who_make_zines"]]},
+ {id:"riso", name:"Riso print", desc:"Pictured: a furry orange figure on pale blue from Lumps and Bumps. Two or three inks that overlap, grainy texture, bold simple shapes.",
   ex:[["Rachel Sender, Lumps and Bumps","https://rachelsender.com/Lumps-and-Bumps-riso-poster-zine"]]},
- {id:"photo", name:"Photo zine", desc:"Your own photos carry the story, with very few words.",
-  ex:[["Luana Lloyd, Irrelevant Life Photos","https://www.behance.net/gallery/205887887/irrelevant-life-photos-a-project-zine-about-observing"]]},
- {id:"drawn", name:"Hand-drawn diary", desc:"Drawings and handwriting, like a sketchbook or travel journal.",
+ {id:"photo", name:"Photo zine", desc:"Pictured: a grid of collected objects, each one photographed and lined up like a specimen. Your own photos carry the story with very few words.",
+  ex:[["Luana Lloyd, Irrelevant Life Photos","https://www.behance.net/gallery/205887887/irrelevant-life-photos-a-project-zine-about-observing"],["Internet Archive, Zines Collection","https://archive.org/details/zines"]]},
+ {id:"drawn", name:"Hand-drawn diary", desc:"Pictured: All The Dogs I Saw in Tokyo, bright painted dogs and hand lettering on green. Drawings and handwriting, like a sketchbook or travel journal.",
   ex:[["Tess Smith-Roberts, All The Dogs I Saw in Tokyo","https://tesssmithroberts.co.uk/All-The-Dogs-I-Saw-in-Tokyo"]]},
- {id:"type", name:"Typographic manifesto", desc:"Letters and words are the images. Big type, strong statements.",
+ {id:"type", name:"Typographic manifesto", desc:"Pictured: white chalky letterforms built like buildings on a dark ground. Letters and words become the images, with big type and strong statements.",
   ex:[["Petr Persik, The Glyph Manifesto","https://www.are.na/petr-persik/zine-the-glyph-manifesto"]]},
- {id:"catalog", name:"Catalog from the future", desc:"Products, prices and reviews from a world that does not exist yet.",
+ {id:"catalog", name:"Catalog from the future", desc:"Pictured: the TBD Catalog cover, a pile of strange future products, a sale sticker and a panda. Products, prices and reviews from a world that does not exist yet.",
   ex:[["Near Future Laboratory, TBD Catalog","https://tbdcatalog.com"]]},
- {id:"explainer", name:"Activist explainer", desc:"Diagrams, arrows and clear words that teach and persuade.",
-  ex:[["Movement Generation, Just Transition zine","https://movementgeneration.org/justtransition/"],["Anatomy of an AI System","https://www.coe.int/en/web/freedom-expression/anatomy-of-an-ai-system"]]},
- {id:"fanzine", name:"Sci-fi fanzine", desc:"Typewritten columns, letters to the editor, cover art from other worlds.",
-  ex:[["The Comet (1930)","https://fanac.org/fanzines/Comet/"],["Khatru","https://fancyclopedia.org/Khatru"]]},
- {id:"fieldguide", name:"Field guide", desc:"Labeled plates of beings, plants and machines, like a naturalist's notebook.",
+ {id:"explainer", name:"Activist explainer", desc:"Pictured: a black and white diagram of linked circles and icons, mapping a whole system on one page. Diagrams, arrows and clear words that teach and persuade.",
+  ex:[["Movement Generation, Just Transition zine","https://movementgeneration.org/justtransition/"],["Anatomy of an AI System","https://www.coe.int/en/web/freedom-expression/anatomy-of-an-ai-system"],["Slingshot","https://slingshotcollective.org/"]]},
+ {id:"fanzine", name:"Sci-fi fanzine", desc:"Pictured: the 1930 cover of The Comet, hand lettered and faded, from the Science Correspondence Club. Typed columns, letters to the editor, stories from other worlds.",
+  ex:[["The Comet (1930)","https://fanac.org/fanzines/Comet/"],["Khatru","https://fancyclopedia.org/Khatru"],["Slant","https://fanac.org/fanzines/Slant/"],["Energumen","https://fanac.org/fanzines/Energumen/"],["The Witch and the Chameleon","https://en.wikipedia.org/wiki/The_Witch_and_the_Chameleon"]]},
+ {id:"fieldguide", name:"Field guide", desc:"Pictured: Dear Data postcards, where dots, lines and colors record a week of everyday life. Labeled plates of beings, plants, machines and data.",
   ex:[["Mark Dion","https://art21.org/artist/mark-dion/"],["Dear Data","https://giorgialupi.com/dear-data"]]},
- {id:"designref", name:"Design reference book", desc:"Clean grids, color studies and collected references.",
+ {id:"designref", name:"Design reference book", desc:"Pictured: a black and white spread of sketches, scraps and notes pinned together. Clean grids, color studies and collected references.",
   ex:[["Chuck Anderson, Eternal Reference","https://nopattern.com/ETERNAL-REFERENCE"],["Aïe: Ms Authenticity Gets Sick","https://encc.eu/articles/aie"]]},
- {id:"pulp", name:"Pulp sci-fi magazine", desc:"Painted rocket-age covers, giant titles, cliffhanger stories from tomorrow.",
-  ex:[["Amazing Stories (1926 on)","https://en.wikipedia.org/wiki/Amazing_Stories"],["FANAC Fanzine Archive","https://fanac.org/fanzines/"]]},
- {id:"colony", name:"Space colony brochure", desc:"Glossy cutaway views of future habitats, like NASA's 1970s colony paintings.",
+ {id:"pulp", name:"Pulp sci-fi magazine", desc:"Pictured: a 1926 Amazing Stories cover, a ringed planet hanging over a ship and tiny people in yellow and red. Painted covers, giant titles, cliffhangers from tomorrow.",
+  ex:[["Amazing Stories (1926 on)","https://en.wikipedia.org/wiki/Amazing_Stories"],["FANAC Fanzine Archive","https://fanac.org/fanzines/"],["Aurora (SF3)","https://sf3.org/history/janus-aurora-covers/"]]},
+ {id:"colony", name:"Space colony brochure", desc:"Pictured: the inside of a ring shaped space colony, a green valley curving up into the sky. Glossy cutaway views of future habitats from NASA's 1970s paintings.",
   ex:[["Space Colony Art from the 1970s","https://publicdomainreview.org/collection/space-colony-art-from-the-1970s/"],["NASA Ames art (NSS)","https://nss.org/settlement/nasa/70sArtHiRes/70sArt/art.html"]]},
- {id:"afrofuturist", name:"Afrofuturist time zine", desc:"Cosmic collage, sound and memory that bend time and rewrite who gets a future.",
-  ex:[["Black Quantum Futurism zines","https://www.blackquantumfuturism.com/bqfzines"]]},
- {id:"solarpunk", name:"Solarpunk", desc:"Green cities, solar sails, gardens on rooftops. Hopeful, handmade, Art Nouveau curves.",
+ {id:"afrofuturist", name:"Afrofuturist time zine", desc:"Pictured: a Black Quantum Futurism collage, a group portrait framed by mirrored cosmic patterns. Collage, sound and memory that bend time and rewrite who gets a future.",
+  ex:[["Black Quantum Futurism (about the collective)","https://en.wikipedia.org/wiki/Black_Quantum_Futurism"],["BQF zine: Black Space-Time Liberation, Non-Linear Reflection Tour","https://blackquantumfuturism.square.site/product/black-space-time-liberation-non-linear-reflection-tour-zine/CNEMPGPHQFKXKEJOYZCYIHIF?cp=true&sa=true&sbp=false&q=false"]]},
+ {id:"solarpunk", name:"Solarpunk", desc:"Pictured: a train winding past mountains, greenhouse domes and wildflowers. Green cities, solar power and gardens. Hopeful, handmade, full of plants.",
   ex:[["Solarpunk Magazine","https://solarpunkmagazine.com/"],["Solarpunk Magazine issues","https://solarpunkmagazine.com/category/magazine-issues/"]]},
- {id:"perma", name:"Permacomputing low-tech", desc:"Dithered images, one or two colors, small files. Made to last on very little energy.",
+ {id:"perma", name:"Permacomputing low-tech", desc:"Pictured: a sepia photo of small salvaged computers and tangled cables. Dithered images, one or two colors, small files, made to last on very little energy.",
   ex:[["Low-tech Magazine, the solar website","https://solar.lowtechmagazine.com/about/the-solar-website/"],["permacomputing.net","https://permacomputing.net/"]]},
- {id:"modern", name:"Modern design", desc:"Swiss grids, sans serif type, flat color and lots of white space.",
-  ex:[["A Book on Zines (Behance)","https://www.behance.net/gallery/250032781/A-Book-on-Zines"],["International Typographic Style","https://en.wikipedia.org/wiki/International_Typographic_Style"],["Josef Müller-Brockmann","https://en.wikipedia.org/wiki/Josef_M%C3%BCller-Brockmann"]]}
+ {id:"modern", name:"Modern design", desc:"Pictured: A Book on Zines, stacked copies with bold overlapping color shapes on yellow. Swiss style grids, sans serif type, flat color and white space.",
+  ex:[["A Book on Zines (Behance)","https://www.behance.net/gallery/250032781/A-Book-on-Zines"],["International Typographic Style","https://en.wikipedia.org/wiki/International_Typographic_Style"],["Josef Müller-Brockmann","https://en.wikipedia.org/wiki/Josef_M%C3%BCller-Brockmann"],["A Book on Zines (Victionary)","https://victionary.com/products/a-book-on-zines"]]}
 ];
 function styleSvg(id){
   const W=240,H=170; let s="";
@@ -477,6 +478,7 @@ function styleSvg(id){
   const L=(y,w,c="#3a3a3a",x=20)=>`<rect x="${x}" y="${y}" width="${w}" height="5" rx="2" fill="${c}"/>`;
   switch(id){
    case "collage": s=`<rect width="${W}" height="${H}" fill="#f3efe6"/>`+R(18,20,110,80,"#bdbdbd",-6)+R(95,48,120,70,"#2b2b2b",5)+R(40,92,90,52,"#C1699F",-3,.9)+`<text x="104" y="92" font-family="Courier New" font-weight="700" font-size="22" fill="#fff" transform="rotate(5 150 80)">CUT!</text>`+R(150,18,60,24,"#fff",8)+`<text x="156" y="35" font-size="13" font-family="Courier New" transform="rotate(8 180 30)">paste</text>`;break;
+   case "copymachine": s=`<rect width="${W}" height="${H}" fill="#dcdcdc"/><rect x="14" y="14" width="212" height="142" fill="#f7f7f2"/><rect x="24" y="24" width="90" height="70" fill="#1c1c1c" transform="rotate(-3 69 59)"/><circle cx="62" cy="58" r="20" fill="#9a9a9a"/><text x="124" y="48" font-family="Courier New" font-weight="700" font-size="18" fill="#1c1c1c">XEROX</text><text x="124" y="70" font-family="Courier New" font-size="12" fill="#1c1c1c">ME & MAIL</text><text x="124" y="86" font-family="Courier New" font-size="12" fill="#1c1c1c">ME BACK</text><rect x="24" y="108" width="190" height="4" fill="#555"/><rect x="24" y="120" width="160" height="4" fill="#555"/><rect x="24" y="132" width="175" height="4" fill="#555"/><rect x="0" y="0" width="${W}" height="${H}" fill="url(#cm)" opacity=".18"/><defs><pattern id="cm" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#000"/></pattern></defs>`;break;
    case "riso": s=`<rect width="${W}" height="${H}" fill="#fbf7ef"/><g style="mix-blend-mode:multiply"><circle cx="95" cy="85" r="52" fill="#ff48b0" opacity=".85"/><circle cx="140" cy="85" r="52" fill="#0078bf" opacity=".85"/><rect x="40" y="128" width="160" height="18" fill="#ffe800" opacity=".9"/></g>`;break;
    case "photo": s=`<rect width="${W}" height="${H}" fill="#fff"/>`+R(16,16,100,72,"#8a8f8c")+R(124,16,100,72,"#5f6663")+R(16,96,208,58,"#a9aeab")+`<circle cx="60" cy="125" r="14" fill="#d9dcda"/>`;break;
    case "drawn": s=`<rect width="${W}" height="${H}" fill="#fffdf6"/><path d="M30 120 q20 -50 45 -10 t45 -5 t45 -20 t40 10" stroke="#222" stroke-width="3" fill="none"/><circle cx="70" cy="60" r="20" stroke="#222" stroke-width="3" fill="#fbe3ef"/><path d="M60 58 q10 8 20 0" stroke="#222" stroke-width="2" fill="none"/><text x="120" y="55" font-family="cursive" font-size="16" fill="#70335F">dog #12</text><text x="30" y="150" font-family="cursive" font-size="13" fill="#555">tuesday, by the river</text>`;break;
