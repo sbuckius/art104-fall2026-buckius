@@ -758,7 +758,7 @@ function render(force){
   renderTabs(); renderGroupSelect();
   const w=workshop(curW);
   $("wsHead").innerHTML=`<div class="sheet-bar"><span>${esc(w.tab)}</span><span class="arm">${esc(w.date)} · ${w.questions.length} questions</span></div><h2>${esc(w.title)}</h2><p class="dayprompt">${esc(w.intro||"")}</p>
-    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?`<li class="part">Step 2 · On your own</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
+    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?(w.vote?`<li class="part">Step 1 · Vote for your favorite zine style (below)</li>`:"")+`<li class="part">Step 2 · On your own</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
   $("wsRoundel").innerHTML="WS<br>"+esc(curW.slice(1)); $("coverTitle").textContent=w.title; $("coverKicker").textContent=w.tab+" · "+w.date;
   renderSolo(w); renderVote(w); renderAssign(w);
   // chips
