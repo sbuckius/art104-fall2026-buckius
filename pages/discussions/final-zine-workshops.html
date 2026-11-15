@@ -133,6 +133,10 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .style .sx{font-size:11.5px;padding:0 10px;line-height:1.5}
 .style .sx a{color:var(--pulpred);font-weight:600}
 .style .instup{font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mars);cursor:pointer;text-decoration:underline;padding:0 10px}
+.diagwrap{border:3px solid var(--jet);background:#fff;padding:10px;margin:4px 0 16px;box-shadow:4px 4px 0 var(--jet)}
+.ideadiagram{width:100%;height:auto;display:block}
+@media(max-width:640px){.diagwrap{overflow-x:auto}.ideadiagram{min-width:600px}}
+.phtag{position:absolute;left:8px;top:8px;font-family:'Space Grotesk',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;background:#fff;border:2px solid var(--jet);padding:2px 6px}
 .style .sf{display:flex;align-items:center;gap:8px;margin-top:auto;padding:8px 10px 10px}
 .tally{flex:1;height:14px;border:2px solid var(--jet);background:var(--glass);overflow:hidden}
 .tally i{display:block;height:100%;background:repeating-linear-gradient(107deg,var(--chrome-deep) 0 8px,var(--jet) 8px 14px);transition:width .4s}
@@ -320,6 +324,7 @@ body.sheet-printing #printSheet{display:block!important;color:#000;background:#f
 
   <section class="workshop-head" id="wsHead"></section>
   <section class="vote hidden" id="voteSec"></section>
+  <section class="vote ideas hidden" id="ideaSec"></section>
   <section class="vote solo hidden" id="soloSec"></section>
   <section class="assign hidden" id="assignSec"></section>
 
@@ -442,12 +447,13 @@ const ASSIGNMENT_PDF = "final_project_description.pdf";
 const WRITING_PDF = "final-project-writing.pdf";
 const MAX_GROUPS = 24;
 const MAX_PICKS = 3;   // how many favorite zine styles each person can vote for
+const MAX_IDEA_PICKS = 3;   // how many idea sources each person can pick in Workshop 1, Step 2
 const MAX_IMAGES_PER_GROUP = 12;
 
 const GROUP_COLORS = ["#293E40","#70335F","#3C747F","#88486E","#404A1B","#2B4D5A","#C1699F","#5E7A2E"];
 
 const DEFAULT_WORKSHOPS = [
-  {id:"w1", tab:"Workshop 1", title:"Finding your direction", date:"Intro day", vote:true, solo:6, assign:true,
+  {id:"w1", tab:"Workshop 1", title:"Finding your direction", date:"Intro day", vote:true, ideas:true, solo:6, assign:true,
    intro:"",
    questions:[
     "What idea from this class has stayed with you most? Look back at your reflection sheets.",
@@ -574,6 +580,124 @@ function styleSvg(id){
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sketch of ${id} style">${s}</svg>`;
 }
 
+/* ============ WHERE YOUR IDEA CAN COME FROM (Workshop 1, Step 2) ============ */
+const IDEA_SOURCES = [
+ {id:"i_reflect", short:"Your reading responses", name:"Your weekly reading responses",
+  desc:"Go back to your Spark, Friction and Speculate answers on the weekly reflection sheets. A question you asked, a speculative artwork you devised, or a future you imagined can grow into the whole zine.",
+  ex:"Look for: the answer you wrote the most about, or the one you keep thinking about."},
+ {id:"i_groupzine", short:"A class group zine", name:"One of the group zines from class",
+  desc:"Pick up a zine your group already made and push it further: Solarpunk, Parallel Worlds, Nature Machines or From It to Ki.",
+  ex:"Look for: a page you wanted more time on, or an idea your group did not get to."},
+ {id:"i_passion", short:"Something you care about", name:"Something you feel strongly about",
+  desc:"A worry, a hope or a frustration that the readings or class discussions stirred up. Start from what you are passionate about.",
+  ex:"Look for: the moment in class when you wanted to say more."},
+ {id:"i_artwork", short:"An artwork from class", name:"Inspiration from an artwork",
+  desc:"An artwork you looked at in class that made you see something differently. Respond to it, extend it or imagine its future.",
+  ex:"Look for: the artwork you described to someone outside class."},
+ {id:"i_cyborg", short:"The Carrier Cyborg", name:"The Carrier Cyborg project",
+  desc:"Grow your carrier cyborg into a world, a field guide or a speculative artwork: where it lives, what it carries and who it cares for.",
+  ex:"Look for: the part of your cyborg that had the most story in it."},
+ {id:"i_combo", short:"A mix of activities", name:"A combination of class activities",
+  desc:"Collage two or more class activities together, like a reading response with a group zine, or an artwork with a presentation, so their ideas mix into something new.",
+  ex:"Look for: pieces from different parts of the class that you could cut up and layer into one zine."},
+ {id:"i_present", short:"The weekly presentations", name:"The weekly presentations",
+  desc:"A presentation, yours or a classmate's, that opened a topic you want to go deeper into.",
+  ex:"Look for: a presentation you still have questions about."},
+ {id:"i_whatif", short:"A what-if question", name:"A what-if question",
+  desc:"A what-if question inspired by an idea in the course. What if data centers answered to their neighbors? What if machines cared for creeks?",
+  ex:"Look for: the idea from class that made you ask \"but what if...?\""},
+ {id:"i_dream", short:"An artwork you want to make", name:"An artwork you really want to make",
+  desc:"An artwork that you really want to make that was inspired by the course. The zine can be where you plan it, show it or imagine it finished.",
+  ex:"Look for: the thing you keep sketching in the margins."},
+ {id:"i_lived", short:"Your lived experience", name:"Your lived experience",
+  desc:"A lived experience, personal conviction or cultural issue that connects directly to your life, that you want to explore, and that connects to ideas in the course.",
+  ex:"Look for: the story from your own life that a reading made you think of."},
+ {id:"i_spark", short:"An idea sparked in class", name:"An idea sparked in class",
+  desc:"An idea that was sparked in class, in a reading, an activity or a conversation, that you want to develop into a zine.",
+  ex:"Look for: the idea you wrote down and said \"I want to do something with this.\""}
+];
+const IDEA_COLORS=["#293E40","#3C747F","#70335F","#5E7A2E","#C1699F","#88486E","#2B4D5A","#8E1F2F","#404A1B","#9A3E6C","#4d661a"];
+function ideaSvg(id){
+  const W=240,H=170; let s="";
+  switch(id){
+   case "i_reflect": s=`<rect width="${W}" height="${H}" fill="#f7fbf5"/><rect x="34" y="18" width="150" height="134" fill="#fff" stroke="#14202a" stroke-width="3" transform="rotate(-4 109 85)"/><rect x="56" y="24" width="150" height="134" fill="#fff" stroke="#14202a" stroke-width="3"/><text x="70" y="50" font-family="Courier New" font-weight="700" font-size="13" fill="#d63d84">SPARK</text><rect x="70" y="58" width="120" height="4" fill="#a8c9c9"/><rect x="70" y="66" width="100" height="4" fill="#a8c9c9"/><text x="70" y="90" font-family="Courier New" font-weight="700" font-size="13" fill="#2f7d7d">FRICTION</text><rect x="70" y="98" width="110" height="4" fill="#a8c9c9"/><text x="70" y="126" font-family="Courier New" font-weight="700" font-size="13" fill="#4d661a">SPECULATE</text><rect x="70" y="134" width="90" height="4" fill="#a8c9c9"/><path d="M196 30 l20 -14 l8 10 l-20 14z" fill="#f2c14e" stroke="#14202a" stroke-width="2"/>`;break;
+   case "i_groupzine": s=`<rect width="${W}" height="${H}" fill="#eef4ee"/>`+[["#f6c343","SOLARPUNK"],["#7db8c4","PARALLEL WORLDS"],["#a8e6c0","NATURE MACHINES"],["#e85fa0","FROM IT TO KI"]].map(([c,t],i)=>{const x=22+(i%2)*104,y=12+Math.floor(i/2)*78,r=(i%2?3:-3);return `<g transform="rotate(${r} ${x+48} ${y+34})"><rect x="${x+4}" y="${y+4}" width="94" height="66" fill="#14202a"/><rect x="${x}" y="${y}" width="94" height="66" fill="${c}" stroke="#14202a" stroke-width="3"/><text x="${x+8}" y="${y+18}" font-family="Courier New" font-weight="700" font-size="9" fill="#14202a">${t}</text><rect x="${x+8}" y="${y+28}" width="60" height="4" fill="#14202a" opacity=".35"/><rect x="${x+8}" y="${y+38}" width="46" height="4" fill="#14202a" opacity=".35"/></g>`}).join("");break;
+   case "i_passion": s=`<rect width="${W}" height="${H}" fill="#fdf0f6"/><path d="M120 140 C40 90 60 30 100 40 C112 43 118 52 120 60 C122 52 128 43 140 40 C180 30 200 90 120 140Z" fill="#d63d84" stroke="#14202a" stroke-width="3"/><path d="M40 40 l-14 -10 M36 70 l-18 0 M200 40 l14 -10 M204 70 l18 0" stroke="#14202a" stroke-width="3" stroke-linecap="round"/><text x="74" y="160" font-family="Courier New" font-weight="700" font-size="12" fill="#14202a">I CARE ABOUT</text>`;break;
+   case "i_artwork": s=`<rect width="${W}" height="${H}" fill="#f4f1ea"/><rect x="50" y="20" width="140" height="104" fill="#c9a96e"/><rect x="60" y="30" width="120" height="84" fill="#2b4d5a"/><circle cx="96" cy="64" r="18" fill="#f2c14e"/><path d="M60 114 L100 80 L130 100 L180 60 L180 114Z" fill="#8EA347"/><rect x="104" y="132" width="32" height="10" fill="#fff" stroke="#14202a" stroke-width="2"/><path d="M30 160 H210" stroke="#14202a" stroke-width="3"/>`;break;
+   case "i_cyborg": s=`<rect width="${W}" height="${H}" fill="#e9f1f0"/><rect x="92" y="22" width="56" height="44" rx="10" fill="#cfd8e3" stroke="#14202a" stroke-width="3"/><circle cx="110" cy="44" r="6" fill="#d63d84"/><circle cx="130" cy="44" r="6" fill="#d63d84"/><path d="M120 22 V10" stroke="#14202a" stroke-width="3"/><circle cx="120" cy="8" r="4" fill="#f2c14e"/><path d="M80 70 h80 l-8 70 h-64z" fill="#8EA347" stroke="#14202a" stroke-width="3"/><path d="M96 80 q24 26 48 0" fill="none" stroke="#14202a" stroke-width="2"/><path d="M104 96 h32 v24 h-32z" fill="#f6c343" stroke="#14202a" stroke-width="2"/><path d="M80 80 L50 110 M160 80 L190 110" stroke="#14202a" stroke-width="4" stroke-linecap="round"/><path d="M40 112 q8 14 18 0" fill="#6aa84f"/><text x="150" y="158" font-family="Courier New" font-size="10" fill="#14202a">carries kin</text>`;break;
+   case "i_combo": s=`<rect width="${W}" height="${H}" fill="#f7fbf5"/><circle cx="92" cy="80" r="50" fill="#2f7d7d" opacity=".75"/><circle cx="148" cy="80" r="50" fill="#d63d84" opacity=".7"/><circle cx="120" cy="118" r="44" fill="#f2c14e" opacity=".75"/><text x="104" y="98" font-family="Courier New" font-weight="700" font-size="20" fill="#14202a">+ +</text>`;break;
+   case "i_present": s=`<rect width="${W}" height="${H}" fill="#eef4ee"/><rect x="40" y="18" width="160" height="96" fill="#fff" stroke="#14202a" stroke-width="3"/><rect x="54" y="32" width="60" height="44" fill="#a8e6c0"/><rect x="122" y="34" width="64" height="6" fill="#14202a"/><rect x="122" y="48" width="54" height="5" fill="#a8c9c9"/><rect x="122" y="60" width="60" height="5" fill="#a8c9c9"/><rect x="54" y="88" width="128" height="5" fill="#a8c9c9"/><path d="M120 114 V130" stroke="#14202a" stroke-width="3"/>`+[70,100,140,170].map(x=>`<circle cx="${x}" cy="148" r="10" fill="#70335F"/><rect x="${x-12}" y="156" width="24" height="14" rx="6" fill="#70335F"/>`).join("");break;
+   case "i_whatif": s=`<rect width="${W}" height="${H}" fill="#eef4ee"/><path d="M40 30 h160 a14 14 0 0 1 14 14 v70 a14 14 0 0 1 -14 14 h-110 l-26 22 v-22 h-24 a14 14 0 0 1 -14 -14 v-70 a14 14 0 0 1 14 -14z" fill="#fff" stroke="#14202a" stroke-width="3"/><text x="58" y="74" font-family="Space Grotesk,Arial" font-weight="700" font-size="26" fill="#2f7d7d">WHAT IF</text><text x="174" y="76" font-family="Georgia,serif" font-weight="700" font-size="40" fill="#d63d84">?</text><rect x="58" y="90" width="120" height="5" fill="#a8c9c9"/><rect x="58" y="102" width="90" height="5" fill="#a8c9c9"/>`;break;
+   case "i_lived": s=`<rect width="${W}" height="${H}" fill="#fdf0f6"/><path d="M60 150 V90 L120 44 L180 90 V150Z" fill="#fff" stroke="#14202a" stroke-width="3"/><path d="M48 96 L120 36 L192 96" fill="none" stroke="#14202a" stroke-width="4" stroke-linecap="round"/><rect x="106" y="112" width="28" height="38" fill="#70335F" stroke="#14202a" stroke-width="2"/><rect x="76" y="100" width="22" height="20" fill="#a8e6c0" stroke="#14202a" stroke-width="2"/><rect x="142" y="100" width="22" height="20" fill="#a8e6c0" stroke="#14202a" stroke-width="2"/><path d="M120 92 c-8 -10 -22 -2 -12 8 l12 10 l12 -10 c10 -10 -4 -18 -12 -8z" fill="#d63d84"/><path d="M196 150 q14 -30 6 -60" fill="none" stroke="#5E7A2E" stroke-width="4"/><circle cx="202" cy="86" r="10" fill="#8EA347"/><path d="M20 156 H220" stroke="#14202a" stroke-width="3"/>`;break;
+   case "i_spark": s=`<rect width="${W}" height="${H}" fill="#fdf6d8"/><circle cx="120" cy="72" r="34" fill="#f6c343" stroke="#14202a" stroke-width="3"/><path d="M106 104 h28 v14 h-28z M108 122 h24 v8 h-24z" fill="#a8c9c9" stroke="#14202a" stroke-width="2"/><path d="M110 74 l8 10 l8 -18" fill="none" stroke="#14202a" stroke-width="3"/>`+[[-1,0],[1,0],[-.7,-.7],[.7,-.7],[0,-1]].map(([x,y])=>`<path d="M${120+x*46} ${72+y*46} L${120+x*62} ${72+y*62}" stroke="#d63d84" stroke-width="4" stroke-linecap="round"/>`).join("")+`<text x="120" y="156" text-anchor="middle" font-family="Courier New" font-weight="700" font-size="12" fill="#14202a">SPARKED IN CLASS</text>`;break;
+   case "i_dream": s=`<rect width="${W}" height="${H}" fill="#fdf6e8"/><rect x="34" y="26" width="172" height="120" fill="#fff" stroke="#14202a" stroke-width="3"/><path d="M120 26 V146" stroke="#14202a" stroke-width="2"/><path d="M50 116 q20 -50 50 -20" fill="none" stroke="#70335F" stroke-width="3"/><circle cx="74" cy="64" r="14" fill="none" stroke="#70335F" stroke-width="3" stroke-dasharray="5 4"/><circle cx="162" cy="72" r="20" fill="#f2c14e" stroke="#14202a" stroke-width="3"/><path d="M154 94 h16 v10 h-16z" fill="#a8c9c9" stroke="#14202a" stroke-width="2"/><path d="M162 42 v-10 M186 56 l8 -6 M138 56 l-8 -6" stroke="#14202a" stroke-width="3" stroke-linecap="round"/><path d="M196 150 l-40 -40 l8 -8 l40 40z" fill="#d63d84" stroke="#14202a" stroke-width="2"/>`;break;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder for ${id.slice(2)}">${s}</svg>`;
+}
+// The diagram: the places an idea can come from, all feeding one final project idea.
+function ideaDiagram(){
+  const W=940,H=540,cx=W/2,cy=H/2,rx=372,ry=222,bw=176,bh=62;
+  const n=IDEA_SOURCES.length;
+  const off=n%2?0:0.5; const pts=IDEA_SOURCES.map((s,i)=>{const a=-Math.PI/2+(i+off)*2*Math.PI/n;return [cx+rx*Math.cos(a),cy+ry*Math.sin(a)]});
+  const wrap=(t,max)=>{const w=t.split(" ");const out=[""];w.forEach(x=>{if((out[out.length-1]+" "+x).trim().length>max)out.push(x);else out[out.length-1]=(out[out.length-1]+" "+x).trim()});return out};
+  let g=pts.map(([x,y])=>`<line x1="${x}" y1="${y}" x2="${cx}" y2="${cy}" stroke="#14202a" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>`).join("");
+  g+=`<ellipse cx="${cx}" cy="${cy}" rx="118" ry="62" fill="#d63d84" stroke="#14202a" stroke-width="4"/><ellipse cx="${cx}" cy="${cy}" rx="104" ry="50" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="${cx}" y="${cy-8}" text-anchor="middle" font-family="Space Grotesk,Arial" font-weight="700" font-size="17" fill="#fff" letter-spacing="1">YOUR FINAL</text><text x="${cx}" y="${cy+14}" text-anchor="middle" font-family="Space Grotesk,Arial" font-weight="700" font-size="17" fill="#fff" letter-spacing="1">PROJECT IDEA</text>`;
+  g+=pts.map(([x,y],i)=>{const s=IDEA_SOURCES[i];const c=IDEA_COLORS[i%IDEA_COLORS.length];const lines=wrap(s.short,15);
+    return `<g><rect x="${x-bw/2+5}" y="${y-bh/2+5}" width="${bw}" height="${bh}" fill="#14202a"/><rect x="${x-bw/2}" y="${y-bh/2}" width="${bw}" height="${bh}" fill="#fff" stroke="#14202a" stroke-width="3"/><rect x="${x-bw/2}" y="${y-bh/2}" width="40" height="${bh}" fill="${c}" stroke="#14202a" stroke-width="3"/><text x="${x-bw/2+20}" y="${y+8}" text-anchor="middle" font-family="Space Grotesk,Arial" font-weight="700" font-size="22" fill="#fff">${i+1}</text>${lines.map((l,j)=>`<text x="${x-bw/2+52}" y="${y+5+(j-(lines.length-1)/2)*17}" font-family="IBM Plex Sans,Arial" font-weight="600" font-size="14.5" fill="#14202a">${esc(l)}</text>`).join("")}</g>`}).join("");
+  return `<svg class="ideadiagram" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: eleven places your final project idea can come from">${g}</svg>`;
+}
+const ideaIdx={};
+function ideaPicHtml(s,imgs){
+  const list=styleImgList(imgs,s.id);
+  if(!list.length) return ideaSvg(s.id)+(instructor?`<span class="phtag">Placeholder</span>`:"");
+  let i=ideaIdx[s.id]||0; if(i>=list.length) i=list.length-1; ideaIdx[s.id]=i;
+  const nav=list.length>1?`<button class="pnav prev" data-inav="${s.id}:-1" aria-label="Previous image">&#8249;</button><button class="pnav next" data-inav="${s.id}:1" aria-label="Next image">&#8250;</button>
+    <div class="pdots">${list.map((_,j)=>`<button class="${j===i?"on":""}" data-idot="${s.id}:${j}" aria-label="Image ${j+1} of ${list.length}"></button>`).join("")}</div>
+    <span class="pcount">${i+1} / ${list.length}</span>`:"";
+  return `<img src="${list[i][1]}" alt="${esc(s.name)} example ${i+1}"/>${nav}`;
+}
+function renderIdea(w){
+  const sec=$("ideaSec");
+  if(!w.ideas){sec.classList.add("hidden");return}
+  sec.classList.remove("hidden");
+  const votes=get(["ideaVotes",curW])||{}; const me=myArtist(); const mine=me?picksOf(votes[me]):[];
+  const tally=voteTally(votes); const max=Math.max(1,...Object.values(tally));
+  const imgs=(state.config&&state.config.ideaImgs)||{};
+  const open=sec.querySelector("details.dg")?.open;
+  sec.innerHTML=`<h3>Step 2: where could your idea come from?</h3>
+    <p class="vsub">Your final project idea can start in any of these eleven places. Look at the diagram, then pick up to ${MAX_IDEA_PICKS} that feel most inspiring to you. Use your picks when you answer the questions below.</p>
+    <div class="diagwrap">${ideaDiagram()}</div>
+    <div class="styles">${IDEA_SOURCES.map((s,n)=>`<div class="style ${mine.includes(s.id)?'picked':''}">
+      <div class="pic">${ideaPicHtml(s,imgs)}</div>
+      <div class="sb"><div class="sn">${n+1}. ${esc(s.name)}</div><div class="sd">${esc(s.desc)}</div>
+        <div class="sd"><i>${esc(s.ex)}</i></div>
+        ${instructor?`<div class="instrow"><label class="instup">Add images<input type="file" accept="image/*" multiple class="hidden" data-iimg="${s.id}"/></label>${styleImgList(imgs,s.id).length?`<span class="instup" data-idel="${s.id}">Remove the one showing</span>`:""}</div>`:""}
+        <div class="sf"><button class="btn small ${mine.includes(s.id)?'plum':''}" data-ivote="${s.id}">${mine.includes(s.id)?"Your pick":"Pick"}</button><div class="tally"><i style="width:${(tally[s.id]||0)/max*100}%"></i></div><span class="tnum">${tally[s.id]||0}</span></div>
+      </div></div>`).join("")}</div>`;
+  sec.querySelectorAll("[data-ivote]").forEach(b=>b.onclick=()=>{
+    const a=myArtist(); if(!a){toast("Add your artist number first");$("myArtist").focus();return}
+    const id=b.dataset.ivote; const cur=picksOf(votes[a]); let next;
+    if(cur.includes(id)) next=cur.filter(x=>x!==id);
+    else { if(cur.length>=MAX_IDEA_PICKS){toast(`You can pick ${MAX_IDEA_PICKS}. Take one back first.`);return} next=[...cur,id]; }
+    write(["ideaVotes",curW,a],next.length?Object.fromEntries(next.map((x,i)=>[x,i+1])):null);
+  });
+  sec.querySelectorAll("[data-iimg]").forEach(inp=>inp.onchange=async()=>{
+    const id=inp.dataset.iimg; const files=[...inp.files]; if(!files.length) return; toast("Adding...");
+    for(const f of files){ try{ const d=await resize(f,700,0.75); await write(["config","ideaImgs",id,uid()],d); ideaIdx[id]=Infinity; }catch(e){toast("Could not read "+f.name)} }
+    toast(files.length>1?files.length+" images added":"Image added");
+  });
+  sec.querySelectorAll("[data-idel]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.idel; const list=styleImgList(imgs,id); if(!list.length) return;
+    const i=Math.min(ideaIdx[id]||0,list.length-1); write(["config","ideaImgs",id,list[i][0]],null);
+  });
+  sec.querySelectorAll("[data-inav]").forEach(b=>b.onclick=e=>{
+    e.stopPropagation(); const [id,d]=b.dataset.inav.split(":"); const n=styleImgList(imgs,id).length; if(!n) return;
+    ideaIdx[id]=(((Math.min(ideaIdx[id]||0,n-1))+(+d))%n+n)%n; renderIdea(w);
+  });
+  sec.querySelectorAll("[data-idot]").forEach(b=>b.onclick=e=>{ e.stopPropagation(); const [id,i]=b.dataset.idot.split(":"); ideaIdx[id]=+i; renderIdea(w); });
+}
+
 const FEEDBACK_PROMPTS = ["I notice...","This connects to...","What if...","The strongest image is...","I'm confused by...","Push further by..."];
 
 /* ============ STATE ============ */
@@ -607,7 +731,7 @@ function get(path){ // path array into state
 /* ============ STORAGE LAYER ============ */
 const LOCAL_KEY="fzw_localdb";
 function localLoad(){ try{ const s=JSON.parse(safeGet(LOCAL_KEY)||"null"); if(s) state={...state,...s}; }catch(e){} }
-function localSave(){ safeSet(LOCAL_KEY, JSON.stringify({config:state.config,groups:state.groups,answers:state.answers,images:state.images,feedback:state.feedback,votes:state.votes||{},solo:state.solo||{},full:state.full||{}})); }
+function localSave(){ safeSet(LOCAL_KEY, JSON.stringify({config:state.config,groups:state.groups,answers:state.answers,images:state.images,feedback:state.feedback,votes:state.votes||{},ideaVotes:state.ideaVotes||{},solo:state.solo||{},full:state.full||{}})); }
 function setLocal(path,val){
   let o=state; for(let i=0;i<path.length-1;i++){ o[path[i]]=o[path[i]]||{}; o=o[path[i]]; }
   if(val===null) delete o[path[path.length-1]]; else o[path[path.length-1]]=val;
@@ -635,7 +759,7 @@ let wsRefs=[];
 function listenWorkshop(){
   if(mode!=="firebase"||!db) return;
   wsRefs.forEach(r=>r.off()); wsRefs=[];
-  ["answers","images","feedback","votes","solo"].forEach(k=>{
+  ["answers","images","feedback","votes","solo","ideaVotes"].forEach(k=>{
     const r=db.ref(`${ROOT}/${k}/${curW}`); wsRefs.push(r);
     r.on("value",s=>{ state[k]=state[k]||{}; state[k][curW]=s.val()||{}; render(); });
   });
@@ -713,7 +837,7 @@ function renderSolo(w){
   if(key!==soloKey){
     soloKey=key;
     const open=sec.querySelector("details")?.open;
-    sec.innerHTML=`<h3>Step 2: on your own</h3>
+    sec.innerHTML=`<h3>Step 2, continued: your answers</h3>
       ${me?"":`<div class="need">Add your artist number at the top to start answering</div>`}
       <div class="sq">${qs.map((q,i)=>`<div class="q"><div class="qt"><b>${i+1}</b> ${esc(q)}</div><textarea data-sq="${i}" placeholder="Your own answer" ${me?"":"disabled"}></textarea><div class="saved" data-ssaved="${i}"></div></div>`).join("")}</div>
       <details ${open?"open":""}><summary>Read the class answers</summary><div data-k="classans"></div></details>`;
@@ -809,9 +933,9 @@ function render(force){
   pickWorkshop(); renderTabs(); renderGroupSelect();
   const w=workshop(curW);
   $("wsHead").innerHTML=`<div class="sheet-bar"><span>${esc(w.tab)}</span><span class="arm">${esc(w.date)} · ${w.questions.length} questions</span></div><h2>${esc(w.title)}</h2>${w.intro?`<p class="dayprompt">${esc(w.intro)}</p>`:`<div style="height:12px"></div>`}
-    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?(w.vote?`<li class="part">Step 1 · Pick your ${MAX_PICKS} favorite zine styles (below)</li>`:"")+`<li class="part">Step 2 · On your own</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
+    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?(w.vote?`<li class="part">Step 1 · Pick your ${MAX_PICKS} favorite zine styles (below)</li>`:"")+`<li class="part">Step 2 · On your own${w.ideas?": pick where your idea could come from (below), then answer":""}</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
   $("wsRoundel").innerHTML="WS<br>"+esc(curW.slice(1)); $("coverTitle").textContent=w.title; $("coverKicker").textContent=w.tab+" · "+w.date;
-  renderSolo(w); renderVote(w); renderAssign(w);
+  renderSolo(w); renderVote(w); renderIdea(w); renderAssign(w);
   // chips
   const mg=myGroup();
   $("chips").innerHTML=Array.from({length:gc()},(_,i)=>{const g=i+1;const st=groupStatus(g);const c=counts(g);
@@ -1005,8 +1129,8 @@ function groupFor(a){
 $("exportMine").onclick=async()=>{
   const a=myArtist(); if(!a){toast("Add your artist number first");$("myArtist").focus();return}
   const g=groupFor(a); toast("Building...");
-  let solo,answers,images,feedback;
-  try{ [solo,answers,images,feedback]=await Promise.all(["solo","answers","images","feedback"].map(loadKind)); }catch(e){ toast("Could not load. Try again."); return; }
+  let solo,answers,images,feedback,ideaVotes;
+  try{ [solo,answers,images,feedback,ideaVotes]=await Promise.all(["solo","answers","images","feedback","ideaVotes"].map(loadKind)); }catch(e){ toast("Could not load. Try again."); return; }
   const meta=g?(get(["groups",g])||{}):{};
   const blocks=DEFAULT_WORKSHOPS.map(d=>{
     const w=workshop(d.id); const st=soloN(w);
@@ -1014,11 +1138,12 @@ $("exportMine").onclick=async()=>{
     const imgs=g?Object.values(((images[d.id]||{})[g])||{}).sort((x,y)=>x.t-y.t):[];
     const fbs=g?Object.values(((feedback[d.id]||{})[g])||{}).sort((x,y)=>x.t-y.t):[];
     const qa=(q,i,v)=>`<div class="pr-q"><b>${i+1}. ${esc(q)}</b>${(v||"").trim()?`<div class="pr-a">${esc(v)}</div>`:`<div class="pr-none">No answer</div>`}</div>`;
-    const anyMine=w.questions.slice(0,st).some((_,i)=>(mine[i]||"").trim());
+    const myIdeas=w.ideas?picksOf(((ideaVotes||{})[d.id]||{})[a]).map(id=>(IDEA_SOURCES.find(t=>t.id===id)||{name:id}).name):[];
+    const anyMine=myIdeas.length||w.questions.slice(0,st).some((_,i)=>(mine[i]||"").trim());
     const anyGroup=w.questions.some((_,i)=>i>=st&&(ga[i]||"").trim());
     if(!anyMine&&!anyGroup&&!imgs.length&&!fbs.length) return "";
     return `<div class="pr-ws"><h2>${esc(d.tab)}: ${esc(w.title)}</h2>
-      ${st?`<div class="pr-part">On your own</div>${w.questions.slice(0,st).map((q,i)=>qa(q,i,mine[i])).join("")}`:""}
+      ${st?`<div class="pr-part">On your own</div>${myIdeas.length?`<div class="pr-q"><b>Where my idea could come from</b><div class="pr-a">${myIdeas.map(esc).join("; ")}</div></div>`:""}${w.questions.slice(0,st).map((q,i)=>qa(q,i,mine[i])).join("")}`:""}
       ${st<w.questions.length?`<div class="pr-part">${g?"With your group (Group "+g+")":"With your group (no group chosen)"}</div>${w.questions.map((q,i)=>i<st?"":qa(q,i,ga[i])).join("")}`:""}
       ${imgs.length?`<div class="pr-part">Progress images</div><div class="pr-imgs">${imgs.map(im=>`<figure><img src="${im.thumb}" alt=""/><figcaption>${[im.caption?esc(im.caption):"",im.by?"Artist "+esc(im.by):""].filter(Boolean).join(" · ")}</figcaption></figure>`).join("")}</div>`:""}
       ${fbs.length?`<div class="pr-part">Feedback your group received</div>${fbs.map(f=>`<div class="pr-fb"><b>${f.inst?"Instructor":"Artist "+esc(f.by||"?")}:</b> ${esc(f.text)}</div>`).join("")}`:""}
@@ -1056,7 +1181,7 @@ $("resetWs").onclick=()=>{write(["config","workshops",curW],null).then(()=>{fill
 let clearArmed=false;
 $("clearWs").onclick=()=>{
   if(!clearArmed){clearArmed=true;$("clearWs").textContent="Click again to clear everything in this workshop";setTimeout(()=>{clearArmed=false;$("clearWs").textContent="Clear this workshop's answers, images and feedback"},4000);return}
-  clearArmed=false; ["answers","images","feedback","full","votes","solo"].forEach(k=>write([k,curW],null));
+  clearArmed=false; ["answers","images","feedback","full","votes","solo","ideaVotes"].forEach(k=>write([k,curW],null));
   $("clearWs").textContent="Clear this workshop's answers, images and feedback"; toast("Workshop cleared");
 };
 function download(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
@@ -1078,8 +1203,10 @@ $("expHtml").onclick=()=>{
   const vt=voteTally(get(["votes",curW]));
   const sb=get(["solo",curW])||{}; const sArt=Object.keys(sb).sort((a,b)=>(+a||0)-(+b||0));
   const soloHtml=soloN(w)?`<section><h2>Step 2: individual answers</h2>${sArt.length?sArt.map(a=>`<h3>Artist ${esc(a)}</h3>${w.questions.slice(0,soloN(w)).map((q,i)=>`<p><b>${i+1}. ${esc(q)}</b><br>${sb[a][i]?linkify(sb[a][i]):"<em>No answer</em>"}</p>`).join("")}`).join(""):"<p><em>No individual answers yet</em></p>"}</section>`:"";
+  const it=voteTally(get(["ideaVotes",curW]));
+  const ideaHtml=w.ideas?`<section><h2>Where ideas come from (up to ${MAX_IDEA_PICKS} picks each)</h2><ol>${[...IDEA_SOURCES].sort((x,y)=>(it[y.id]||0)-(it[x.id]||0)).map(s=>`<li>${esc(s.name)}: ${it[s.id]||0}</li>`).join("")}</ol><h3>Picks by artist</h3><ul>${Object.entries(get(["ideaVotes",curW])||{}).sort((x,y)=>(+x[0]||0)-(+y[0]||0)).map(([a,v])=>`<li>Artist ${esc(a)}: ${picksOf(v).map(id=>esc((IDEA_SOURCES.find(t=>t.id===id)||{name:id}).name)).join(", ")}</li>`).join("")}</ul></section>`:"";
   const voteHtml=w.vote?`<section><h2>Zine style vote (top ${MAX_PICKS} picks each)</h2><ol>${[...STYLES].sort((x,y)=>(vt[y.id]||0)-(vt[x.id]||0)).map(s=>`<li>${esc(s.name)}: ${vt[s.id]||0}</li>`).join("")}</ol><h3>Picks by artist</h3><ul>${Object.entries(get(["votes",curW])||{}).sort((x,y)=>(+x[0]||0)-(+y[0]||0)).map(([a,v])=>`<li>Artist ${esc(a)}: ${picksOf(v).map(id=>esc((STYLES.find(t=>t.id===id)||{name:id}).name)).join(", ")}</li>`).join("")}</ul></section>`:"";
-  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(w.title)}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 16px;color:#222}h1{color:#4d661a;text-transform:uppercase}section{border-top:4px solid #14202a;padding:10px 0 20px}h2{color:#a01e5c;text-transform:uppercase}h3{font-size:14px;margin:10px 0 2px;color:#2f7d7d}.m{color:#666}.imgs{display:flex;flex-wrap:wrap;gap:8px}figure{width:200px;margin:0}figure img{width:200px;border:2px solid #14202a}figcaption{font-size:12px;color:#555}</style></head><body><h1>${esc(w.tab)}: ${esc(w.title)}</h1><p>${esc(w.date)}</p>${soloHtml}${voteHtml}${rows.join("")}</body></html>`;
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(w.title)}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 16px;color:#222}h1{color:#4d661a;text-transform:uppercase}section{border-top:4px solid #14202a;padding:10px 0 20px}h2{color:#a01e5c;text-transform:uppercase}h3{font-size:14px;margin:10px 0 2px;color:#2f7d7d}.m{color:#666}.imgs{display:flex;flex-wrap:wrap;gap:8px}figure{width:200px;margin:0}figure img{width:200px;border:2px solid #14202a}figcaption{font-size:12px;color:#555}</style></head><body><h1>${esc(w.tab)}: ${esc(w.title)}</h1><p>${esc(w.date)}</p>${voteHtml}${ideaHtml}${soloHtml}${rows.join("")}</body></html>`;
   download(`final-zine-${curW}.html`,html,"text/html");
 };
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("lightbox").classList.remove("on");$("instructor").classList.remove("on");lbCur=null}});
