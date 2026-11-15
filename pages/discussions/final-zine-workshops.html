@@ -276,6 +276,12 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .pr-imgs figure{width:150px;margin:0;break-inside:avoid}
 .pr-imgs img{width:150px;border:1px solid #000;display:block}
 .pr-imgs figcaption{font-size:10px;line-height:1.3;margin-top:2px}
+.pr-picks{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 6px}
+.pr-pick{width:200px;border:1px solid #000;break-inside:avoid;page-break-inside:avoid}
+.pr-pick .pp-img{height:110px;overflow:hidden;border-bottom:1px solid #000;background:#fff}
+.pr-pick .pp-img img,.pr-pick .pp-img svg{width:100%;height:110px;object-fit:cover;display:block}
+.pr-pick .pp-t{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;padding:5px 7px 0}
+.pr-pick .pp-d{font-family:'Bitter',serif;font-size:10px;line-height:1.35;padding:2px 7px 6px}
 .pr-fb{font-family:'Bitter',serif;font-size:11.5px;line-height:1.45;margin:3px 0;padding-left:10px;border-left:3px solid #999}
 body.sheet-printing>*:not(#printSheet){display:none!important}
 body.sheet-printing #printSheet{display:block!important;color:#000;background:#fff;padding:0}
@@ -1118,8 +1124,13 @@ $("jumpMine").onclick=()=>{const g=myGroup(); if(!g){toast("Choose your group fi
    their own answers, their group's answers, images and feedback.
    Then hands it to the browser's print window, where Save as PDF is a choice. */
 async function loadKind(k){
-  if(mode==="firebase"){ const v=(await db.ref(ROOT+"/"+k).once("value")).val()||{}; return v; }
+  if(mode==="firebase"){ const v=(await db.ref(ROOT+"/"+k).once("value")).val(); return v||state[k]||{}; }
   return state[k]||{};
+}
+function prPick(n,s,imgs,svgFn){
+  const list=styleImgList(imgs||{},s.id);
+  const pic=list.length?`<img src="${list[0][1]}" alt=""/>`:svgFn(s.id);
+  return `<div class="pr-pick"><div class="pp-img">${pic}</div><div class="pp-t">${n}. ${esc(s.name)}</div><div class="pp-d">${esc(s.desc||"")}</div></div>`;
 }
 function groupFor(a){
   const chosen=myGroup(); if(chosen) return chosen;
@@ -1129,8 +1140,8 @@ function groupFor(a){
 $("exportMine").onclick=async()=>{
   const a=myArtist(); if(!a){toast("Add your artist number first");$("myArtist").focus();return}
   const g=groupFor(a); toast("Building...");
-  let solo,answers,images,feedback,ideaVotes;
-  try{ [solo,answers,images,feedback,ideaVotes]=await Promise.all(["solo","answers","images","feedback","ideaVotes"].map(loadKind)); }catch(e){ toast("Could not load. Try again."); return; }
+  let solo,answers,images,feedback,ideaVotes,votes,config;
+  try{ [solo,answers,images,feedback,ideaVotes,votes,config]=await Promise.all(["solo","answers","images","feedback","ideaVotes","votes","config"].map(loadKind)); }catch(e){ toast("Could not load. Try again."); return; }
   const meta=g?(get(["groups",g])||{}):{};
   const blocks=DEFAULT_WORKSHOPS.map(d=>{
     const w=workshop(d.id); const st=soloN(w);
@@ -1138,12 +1149,17 @@ $("exportMine").onclick=async()=>{
     const imgs=g?Object.values(((images[d.id]||{})[g])||{}).sort((x,y)=>x.t-y.t):[];
     const fbs=g?Object.values(((feedback[d.id]||{})[g])||{}).sort((x,y)=>x.t-y.t):[];
     const qa=(q,i,v)=>`<div class="pr-q"><b>${i+1}. ${esc(q)}</b>${(v||"").trim()?`<div class="pr-a">${esc(v)}</div>`:`<div class="pr-none">No answer</div>`}</div>`;
-    const myIdeas=w.ideas?picksOf(((ideaVotes||{})[d.id]||{})[a]).map(id=>(IDEA_SOURCES.find(t=>t.id===id)||{name:id}).name):[];
-    const anyMine=myIdeas.length||w.questions.slice(0,st).some((_,i)=>(mine[i]||"").trim());
+    const myStyles=w.vote?picksOf(((votes||{})[d.id]||{})[a]).map(id=>STYLES.find(t=>t.id===id)).filter(Boolean):[];
+    const myIdeas=w.ideas?picksOf(((ideaVotes||{})[d.id]||{})[a]).map(id=>IDEA_SOURCES.find(t=>t.id===id)).filter(Boolean):[];
+    const cfg=config||state.config||{};
+    const stylesHtml=myStyles.length?`<div class="pr-part">Step 1: my favorite zine styles</div><div class="pr-picks">${myStyles.map((s,i)=>prPick(i+1,s,cfg.styleImgs,styleSvg)).join("")}</div>`:"";
+    const ideasHtml=myIdeas.length?`<div class="pr-part">Step 2: where my idea could come from</div><div class="pr-picks">${myIdeas.map((s,i)=>prPick(i+1,s,cfg.ideaImgs,ideaSvg)).join("")}</div>`:"";
+    const anyMine=myStyles.length||myIdeas.length||w.questions.slice(0,st).some((_,i)=>(mine[i]||"").trim());
     const anyGroup=w.questions.some((_,i)=>i>=st&&(ga[i]||"").trim());
     if(!anyMine&&!anyGroup&&!imgs.length&&!fbs.length) return "";
     return `<div class="pr-ws"><h2>${esc(d.tab)}: ${esc(w.title)}</h2>
-      ${st?`<div class="pr-part">On your own</div>${myIdeas.length?`<div class="pr-q"><b>Where my idea could come from</b><div class="pr-a">${myIdeas.map(esc).join("; ")}</div></div>`:""}${w.questions.slice(0,st).map((q,i)=>qa(q,i,mine[i])).join("")}`:""}
+      ${stylesHtml}${ideasHtml}
+      ${st?`<div class="pr-part">On your own${myIdeas.length?": my answers":""}</div>${w.questions.slice(0,st).map((q,i)=>qa(q,i,mine[i])).join("")}`:""}
       ${st<w.questions.length?`<div class="pr-part">${g?"With your group (Group "+g+")":"With your group (no group chosen)"}</div>${w.questions.map((q,i)=>i<st?"":qa(q,i,ga[i])).join("")}`:""}
       ${imgs.length?`<div class="pr-part">Progress images</div><div class="pr-imgs">${imgs.map(im=>`<figure><img src="${im.thumb}" alt=""/><figcaption>${[im.caption?esc(im.caption):"",im.by?"Artist "+esc(im.by):""].filter(Boolean).join(" · ")}</figcaption></figure>`).join("")}</div>`:""}
       ${fbs.length?`<div class="pr-part">Feedback your group received</div>${fbs.map(f=>`<div class="pr-fb"><b>${f.inst?"Instructor":"Artist "+esc(f.by||"?")}:</b> ${esc(f.text)}</div>`).join("")}`:""}
