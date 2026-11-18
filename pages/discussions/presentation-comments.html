@@ -154,6 +154,9 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 150px}
 .board.p5{--bg:#d5efee;--ink:#245f5f;--sh:#2f7d7d}
 .board.p6{--bg:#dde9f7;--ink:#3a6b8c;--sh:#7db8c4}
 
+.board-qs{margin:0;padding:12px 14px 12px 34px;background:var(--pulp-pale);border-bottom:3px solid var(--jet);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;line-height:1.35;color:var(--jet);display:grid;gap:7px}
+.board-qs li::marker{color:var(--mars);font-weight:700}
 .board-hd{
   display:flex;justify-content:space-between;align-items:center;gap:9px;
   border-bottom:3px solid var(--jet);padding:8px 11px;
@@ -395,13 +398,8 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 150px}
     <div class="cover-band">
       <div class="roundel" id="dayRoundel">DAY<br>1</div>
       <div class="cover-tag">
-        <span class="cover-kicker">On the floor today</span>
-        <span id="promptText">Loading today's boards</span>
+        <span id="promptText">Presentations</span>
       </div>
-    </div>
-    <div class="cover-foot">
-      <span><b>How it works</b> One board for every presenter. Leave a comment on each one as it happens.</span>
-      <span><b>Yours to keep</b> Export everything you wrote as a PDF at the bottom of the page.</span>
     </div>
   </div>
 </header>
@@ -437,7 +435,6 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 150px}
 
   <section class="exportbox">
     <h3>Take your comments with you</h3>
-    <p>This builds a clean sheet of everything you wrote today, under each presenter's name, and hands it to your browser's print window. Choose Save as PDF as the destination. On a phone, use the share icon and then Print, then pinch out on the preview to get the PDF option.</p>
     <div class="ed-actions">
       <button class="btn btn-ink" id="pdfMine" type="button">Export my comments as PDF</button>
       <button class="btn btn-quiet" id="pdfMineAll" type="button">Every day I have commented on</button>
@@ -458,26 +455,27 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 150px}
     </div>
     <p class="ed-note">Changes here reach every open browser in a second or two. Students do not need to reload.</p>
 
-    <div class="groupmark"><span>Today's presenters</span></div>
-    <p class="ed-note">One name per line, in the order they present. Blank lines are skipped. Boards appear in this order and are numbered down the page.</p>
+    <div class="groupmark"><span>Today's questions</span></div>
+    <p class="ed-note">Questions for the viewers, one per line. They show in large type at the top of every presentation's board.</p>
     <label class="bl" for="edLabel">Day name</label>
     <input type="text" id="edLabel" placeholder="Presentation Day 1"/>
-    <label class="bl" for="edPrompt">What are they commenting on (optional, sits above every board)</label>
-    <input type="text" id="edPrompt" placeholder="One thing that worked, one question you still have."/>
-    <label class="bl" for="edRoster">Presenters, one per line</label>
-    <textarea id="edRoster" rows="12" placeholder="Ada Lovelace&#10;Grace Hopper&#10;Hedy Lamarr"></textarea>
-    <div class="rosternote" id="rosterCount">0 names</div>
+    <label class="bl" for="edQuestions">Questions for viewers, one per line</label>
+    <textarea id="edQuestions" rows="5" placeholder="Answer their question: what is your answer to the question they asked at the end?&#10;What is working? What is the strongest idea or image, and why?&#10;Push it further: what one change, page or idea would make it stronger?"></textarea>
+    <label class="bl" for="edCount">Number of presentations</label>
+    <input type="number" id="edCount" min="1" max="26" placeholder="12"/>
+    <div class="rosternote" id="rosterCount"></div>
     <div class="ed-actions">
-      <button class="btn btn-ink" id="saveRoster" type="button">Save the roster</button>
+      <button class="btn btn-ink" id="saveRoster" type="button">Save</button>
       <button class="btn" id="clearDay" type="button">Clear this day's comments</button>
     </div>
 
     <div class="groupmark"><span>Add a day</span></div>
-    <p class="ed-note">Every day gets its own roster of boards and keeps its own comments.</p>
+    <p class="ed-note">Every day gets its own boards and keeps its own comments.</p>
     <label class="bl" for="newLabel">Day name</label>
     <input type="text" id="newLabel" placeholder="Presentation Day 2"/>
-    <label class="bl" for="newRoster">Presenters, one per line</label>
-    <textarea id="newRoster" rows="6" placeholder="Leave this blank to start with numbered boards and fill in the names later"></textarea>
+    <label class="bl" for="newCount">Number of presentations</label>
+    <input type="number" id="newCount" min="1" max="26" placeholder="12"/>
+    <p class="ed-note">The new day starts with today's questions. Change them after you open it.</p>
     <div class="ed-actions">
       <button class="btn" id="addDay" type="button">Add to the list</button>
       <button class="btn btn-ink" id="startDay" type="button">Add and open now</button>
@@ -535,7 +533,7 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 150px}
 <div class="overlay" id="gate">
   <div class="box">
     <h3>Instructor desk</h3>
-    <p>Enter the passcode to set the roster, open a new day, or export.</p>
+    <p>Enter the passcode to set the questions, open a new day, or export.</p>
     <input type="password" id="gateCode" placeholder="PASSCODE"/>
     <div class="err" id="gateErr">That passcode does not match</div>
     <div class="box-actions">
@@ -580,8 +578,11 @@ const SHOW_ARCHIVE_TO_STUDENTS = true;
 // The first day, if the database is empty. Leave the roster blank to get
 // twenty six numbered boards you can name later.
 const FIRST_LABEL = "Presentation Day 1";
-const FIRST_PROMPT = "One thing that worked, and one question you still have.";
-const FIRST_ROSTER = [];
+const FIRST_QUESTIONS = [
+  "Answer their question: what is your answer to the question they asked at the end?",
+  "What is working? What is the strongest idea or image, and why?",
+  "Push it further: what one change, page or idea would make it stronger?"
+];
 
 // Same Firebase project as the other class tools, under its own key, so
 // none of them touch each other's data. Add a matching "crits" branch to
@@ -643,7 +644,10 @@ function listOf(val, len, fill) {
   return out;
 }
 function rosterOf(m) { return listOf(m && m.roster, BOARDS, ""); }
-function nameOf(m, i) { return (rosterOf(m)[i] || "").trim() || "Presenter " + (i + 1); }
+function nameOf(m, i) { return "Presentation " + (i + 1); }
+// How many boards this day shows: the number set on the desk, else all of them.
+function NB(m) { const n = parseInt((m || meta) && (m || meta).count, 10); return n > 0 ? Math.min(n, BOARDS) : BOARDS; }
+function questionsOf(m) { const q = (m && m.questions) || []; return (Array.isArray(q) ? q : Object.values(q)).map((x) => String(x || "").trim()).filter(Boolean); }
 
 // Each comment keeps its own database key so a single one can be removed
 // without touching the rest of the board.
@@ -654,13 +658,13 @@ function rowsFor(bag, i) {
     .sort((a, b) => (a.at || 0) - (b.at || 0));
 }
 function countPosts(bag) {
-  return range(BOARDS).reduce((n, i) => n + Object.keys((bag && bag["p" + i]) || {}).length, 0);
+  return range(NB()).reduce((n, i) => n + Object.keys((bag && bag["p" + i]) || {}).length, 0);
 }
 function mineOn(bag, i) {
   return artistNo ? rowsFor(bag, i).filter((r) => r.who === artistNo) : [];
 }
 function boardsIDone(bag) {
-  return range(BOARDS).filter((i) => mineOn(bag, i).length).length;
+  return range(NB()).filter((i) => mineOn(bag, i).length).length;
 }
 
 /* ── drawing the boards ─────────────────────────────────────────── */
@@ -671,12 +675,14 @@ function visibleRows(bag, i) {
 }
 
 function boardsHTML(m, bag, live) {
-  return range(BOARDS)
+  return range(NB())
     .map((i) => {
       const rows = visibleRows(bag, i);
       const mine = mineOn(bag, i).length;
       const total = rowsFor(bag, i).length;
+      const qs = questionsOf(m);
       return `<article class="board p${(i % 6) + 1}${mine ? " mine" : ""}" id="board${i}">
+        ${qs.length ? `<ol class="board-qs">${qs.map((q) => `<li>${esc(q)}</li>`).join("")}</ol>` : ""}
         <div class="board-hd">
           <span class="no">${i + 1}</span>
           <span class="nm" title="${esc(nameOf(m, i))}">${esc(nameOf(m, i))}</span>
@@ -731,12 +737,12 @@ function renderBoards() {
   const total = countPosts(posts);
   const done = boardsIDone(posts);
   $("meterCount").textContent = artistNo
-    ? done + " of " + BOARDS + " boards"
+    ? done + " of " + NB() + " boards"
     : total + (total === 1 ? " comment" : " comments");
-  $("meterFill").style.width = (artistNo ? (done / BOARDS) * 100 : Math.min(100, total / 2)) + "%";
+  $("meterFill").style.width = (artistNo ? (done / NB()) * 100 : Math.min(100, total / 2)) + "%";
   $("meterLabel").textContent = !artistNo
     ? "The floor is open"
-    : done === BOARDS
+    : done === NB()
     ? "You have commented on every board"
     : "Your comments so far";
   renderJump();
@@ -745,7 +751,7 @@ function renderBoards() {
 }
 
 function renderJump() {
-  $("jumpStrip").innerHTML = range(BOARDS)
+  $("jumpStrip").innerHTML = range(NB())
     .map((i) => {
       const mine = mineOn(posts, i).length;
       const any = rowsFor(posts, i).length;
@@ -768,7 +774,7 @@ $("jumpStrip").addEventListener("click", (e) => {
 
 function renderPicker() {
   const keep = $("pPick").value;
-  $("pPick").innerHTML = range(BOARDS)
+  $("pPick").innerHTML = range(NB())
     .map((i) => `<option value="${i}">${i + 1}. ${esc(nameOf(meta, i))}</option>`)
     .join("");
   if (keep) $("pPick").value = keep;
@@ -968,9 +974,13 @@ function prHead(title, sub) {
     <div class="pr-sub">${esc(sub)}</div></div>`;
 }
 
+function qsBlock(m) {
+  const qs = questionsOf(m);
+  return qs.length ? `<div class="pr-block"><div class="pr-block-hd">Questions</div>${qs.map((q, i) => `<div class="pr-line">${i + 1}. ${esc(q)}</div>`).join("")}</div>` : "";
+}
 // One student's comments across a day, under each presenter's name.
 function sheetForStudent(m, bag, no, label) {
-  const blocks = range(BOARDS)
+  const blocks = range(NB(m))
     .map((i) => {
       const rows = rowsFor(bag, i).filter((r) => r.who === no);
       if (!rows.length) return "";
@@ -983,16 +993,16 @@ function sheetForStudent(m, bag, no, label) {
   return (
     prHead(
       label || m.label || "Presentation day",
-      "Artist " + no + " · " + n + " of " + BOARDS + " boards · " + stamp()
-    ) + (blocks.length ? blocks.join("") : '<div class="pr-none">No comments recorded for this day</div>')
+      "Artist " + no + " · " + n + " of " + NB(m) + " boards · " + stamp()
+    ) + qsBlock(m) + (blocks.length ? blocks.join("") : '<div class="pr-none">No comments recorded for this day</div>')
   );
 }
 
 // Every board with every comment on it, one presenter per page.
 function sheetForBoards(m, bag) {
   return (
-    prHead(m.label || "Presentation day", countPosts(bag) + " comments · " + stamp()) +
-    range(BOARDS)
+    prHead(m.label || "Presentation day", countPosts(bag) + " comments · " + stamp()) + qsBlock(m) +
+    range(NB(m))
       .map((i) => {
         const rows = rowsFor(bag, i);
         return `<div class="pr-block${i ? " pr-break" : ""}">
@@ -1053,7 +1063,7 @@ $("pdfStudent").addEventListener("click", () => {
 
 function renderWhoList() {
   const seen = new Set();
-  range(BOARDS).forEach((i) => rowsFor(posts, i).forEach((r) => { if (r.who) seen.add(r.who); }));
+  range(NB()).forEach((i) => rowsFor(posts, i).forEach((r) => { if (r.who) seen.add(r.who); }));
   const list = [...seen].sort((a, b) => (+a || 0) - (+b || 0));
   const keep = $("pdfWho").value;
   $("pdfWho").innerHTML =
@@ -1107,11 +1117,9 @@ function attachDay(id) {
     meta = s.val() || {};
     if (!previewId) $("barDay").textContent = meta.label || "This day";
     const named = rosterOf(meta).filter((n) => n && n.trim()).length;
-    $("promptText").textContent = named
-      ? named + " presenters on the board today"
-      : BOARDS + " boards, waiting on names";
+    $("promptText").textContent = "Presentations";
     $("dayRoundel").innerHTML = roundelText(meta.label);
-    $("dayPrompt").hidden = !meta.prompt;
+    $("dayPrompt").hidden = true;
     $("dayPrompt").textContent = meta.prompt || "";
     document.title = (meta.label ? meta.label + " · " : "") + "Presentation Comments";
     renderBoards();
@@ -1136,35 +1144,36 @@ function roundelText(label) {
 /* ── the desk ───────────────────────────────────────────────────── */
 function fillDesk() {
   $("edLabel").value = meta.label || "";
-  $("edPrompt").value = meta.prompt || "";
-  $("edRoster").value = rosterOf(meta).join("\n").replace(/\n+$/, "");
+  $("edQuestions").value = questionsOf(meta).join("\n");
+  $("edCount").value = meta.count || "";
   countRoster();
 }
 
 function countRoster() {
-  const n = $("edRoster").value.split("\n").filter((l) => l.trim()).length;
-  $("rosterCount").textContent =
-    n + (n === 1 ? " name" : " names") + (n > BOARDS ? " — more than " + BOARDS + ", the rest will be dropped" : "");
+  const n = $("edQuestions").value.split("\n").filter((l) => l.trim()).length;
+  $("rosterCount").textContent = n + (n === 1 ? " question" : " questions");
 }
-$("edRoster").addEventListener("input", countRoster);
+$("edQuestions").addEventListener("input", countRoster);
 
 $("saveRoster").addEventListener("click", () => {
   if (!db || !sessionId) return flag("Not connected to Firebase yet");
-  const names = $("edRoster").value.split("\n").map((l) => l.trim()).filter(Boolean).slice(0, BOARDS);
+  const qs = $("edQuestions").value.split("\n").map((l) => l.trim()).filter(Boolean);
+  const cnt = parseInt($("edCount").value, 10);
   db.ref(`${INDEX}/${sessionId}`)
     .update({
-      roster: listOf(names, BOARDS, ""),
+      questions: qs.length ? qs : null,
+      count: cnt > 0 ? Math.min(cnt, BOARDS) : null,
       label: $("edLabel").value.trim() || "This day",
-      prompt: $("edPrompt").value.trim() || null
+      prompt: null
     })
-    .then(() => flag("Saved. Every browser has the roster now."))
+    .then(() => flag("Saved. Every browser has the questions now."))
     .catch(() => flag("Firebase refused the write. Check the database rules."));
 });
 
 $("clearDay").addEventListener("click", () => {
   if (!db) return flag("Not connected to Firebase yet");
   if (previewId) return flag("Stop the preview first, then clear");
-  if (!confirm("Clear every comment from " + (meta.label || "this day") + "? The roster stays.")) return;
+  if (!confirm("Clear every comment from " + (meta.label || "this day") + "? The questions stay.")) return;
   db.ref(`${POSTS}/${sessionId}`).remove().then(() => flag("All boards wiped clean")).catch(dbTrouble);
 });
 
@@ -1172,7 +1181,7 @@ $("clearDay").addEventListener("click", () => {
 function renderAnswers() {
   const box = $("answerList");
   if (!box) return;
-  box.innerHTML = range(BOARDS)
+  box.innerHTML = range(NB())
     .map((i) => {
       const rows = rowsFor(posts, i);
       return `<div class="ansgroup">
@@ -1196,7 +1205,7 @@ function loadAllPosts() {
 
 $("downloadAnswers").addEventListener("click", () => {
   const lines = [(meta.label || "Untitled").toUpperCase(), ""];
-  range(BOARDS).forEach((i) => {
+  range(NB()).forEach((i) => {
     lines.push(i + 1 + ". " + nameOf(meta, i).toUpperCase());
     rowsFor(posts, i).forEach((r) => lines.push("- " + whoLabel(r.who) + ": " + r.text));
     lines.push("");
@@ -1303,13 +1312,13 @@ function renderDays() {
           </div>
         </div>`;
       }
-      const named = listOf(d.roster, BOARDS, "").filter((n) => n && n.trim()).length;
+      const nq = questionsOf(d).length;
       return `<div class="wk${here ? " live" : ""}">
         <div class="wk-main">
           <div class="wk-name">${esc(d.label) || "Untitled"}${
             id === liveId ? '<span class="wk-tag">On screen now</span>' : ""
           }${id === previewId ? '<span class="wk-tag wk-tag-you">You are reading this</span>' : ""}</div>
-          <div class="wk-q">${named} of ${BOARDS} boards named</div>
+          <div class="wk-q">${NB(d)} presentations · ${nq} ${nq === 1 ? "question" : "questions"}</div>
         </div>
         <div class="wk-btns">
           ${id === liveId ? "" : `<button class="btn btn-ink" data-act="open" data-id="${id}" type="button">Open</button>`}
@@ -1362,12 +1371,14 @@ $("dayList").addEventListener("click", (e) => {
   }
 });
 
-function makeDay(label, names, openIt) {
+function makeDay(label, count, openIt) {
   const id = "d" + Date.now() + Math.floor(Math.random() * 1000);
+  const qs = questionsOf(meta);
   return db.ref(`${INDEX}/${id}`)
     .set({
       label: label || "Presentation Day " + nextDayNumber(),
-      roster: listOf(names, BOARDS, ""),
+      questions: qs.length ? qs : FIRST_QUESTIONS,
+      count: count > 0 ? Math.min(count, BOARDS) : null,
       created: Date.now()
     })
     .then(() => (openIt ? db.ref(CURRENT).set(id) : null));
@@ -1375,12 +1386,12 @@ function makeDay(label, names, openIt) {
 
 function addFromForm(openIt) {
   if (!db) return flag("Not connected to Firebase yet");
-  const names = $("newRoster").value.split("\n").map((l) => l.trim()).filter(Boolean).slice(0, BOARDS);
-  makeDay($("newLabel").value.trim(), names, openIt)
+  const cnt = parseInt($("newCount").value, 10) || 0;
+  makeDay($("newLabel").value.trim(), cnt, openIt)
     .then(() => {
-      $("newRoster").value = "";
+      $("newCount").value = "";
       $("newLabel").value = "";
-      flag(openIt ? "New day is open with " + BOARDS + " blank boards." : "Added to the list.");
+      flag(openIt ? "New day is open." : "Added to the list.");
     })
     .catch(dbTrouble);
 }
@@ -1398,8 +1409,7 @@ function watchCurrentDay() {
       db.ref(`${INDEX}/${first}`)
         .set({
           label: FIRST_LABEL,
-          prompt: FIRST_PROMPT,
-          roster: listOf(FIRST_ROSTER, BOARDS, ""),
+          questions: FIRST_QUESTIONS,
           created: Date.now()
         })
         .catch(dbTrouble);
@@ -1415,7 +1425,7 @@ function watchCurrentDay() {
   db.ref(".info/connected").on("value", (s) => {
     if (previewId) return;
     $("barState").textContent = s.val() === true
-      ? "Live. Pick a presenter, then post."
+      ? ""
       : "Reconnecting to the database";
   });
 }
