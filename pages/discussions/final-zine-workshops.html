@@ -101,6 +101,22 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .timer{display:flex;flex-wrap:wrap;align-items:center;gap:10px;border:3px solid var(--jet);background:var(--pulp-pale);padding:10px 12px;margin:8px 0 12px}
 .timer .tnum{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;letter-spacing:2px;min-width:110px;color:var(--cobalt)}
 .timer .tnum.done{color:var(--mars)}
+.timer.mini{padding:6px 10px;gap:8px;border-width:2px;max-width:560px}
+.timer.mini .tnum{font-size:22px;min-width:70px}
+.timer.mini .btn{padding:5px 9px;font-size:9px}
+.timer .tlab{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);line-height:1.3}
+.ctimer{border:4px solid var(--jet);background:var(--jet);color:#fff;padding:14px 20px 16px;margin-bottom:18px;box-shadow:7px 7px 0 var(--mars);display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px}
+.ctimer .chd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--chrome)}
+.ctimer .clab{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.ctimer .cnum{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:84px;line-height:1;letter-spacing:3px;color:var(--chrome);min-width:250px}
+.ctimer .cnum.done{color:var(--pink);animation:cblink 1s steps(2) infinite}
+.ctimer .cnum.idle{color:#6d8a80}
+@keyframes cblink{50%{opacity:.35}}
+.ctimer .cctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctimer .cctl input{border:2px solid var(--chrome);background:transparent;color:#fff;padding:6px 8px;font-size:13px;width:190px}
+.cpill{position:fixed;left:14px;bottom:14px;z-index:60;background:var(--jet);color:var(--chrome);border:3px solid var(--chrome);padding:6px 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:1px;box-shadow:4px 4px 0 var(--mars);cursor:pointer}
+.cpill small{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#fff}
+.cpill.done{color:var(--pink)}
 .steplinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .pairbox{border:3px solid var(--jet);background:var(--pulp-pale);padding:10px 12px;margin:6px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px}
 .pairbox small{display:block;font-weight:500;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
@@ -113,6 +129,45 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .visitbox{margin:6px 0 10px}
 .prompts.static{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
 .prompts.static span{border:2px solid var(--jet);background:#fff;padding:3px 8px;font-size:12px}
+.flowsec{margin-bottom:18px;padding:14px 18px 18px;border:4px solid var(--jet);background:#fff;box-shadow:6px 6px 0 var(--chrome-deep)}
+.flowhd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mars);margin-bottom:10px}
+.flow{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:20px 22px;align-items:stretch}
+.fl{position:relative;border:3px solid var(--jet);padding:7px 8px 9px;display:flex;flex-direction:column;gap:3px;background:var(--pulp-pale)}
+.fl.go{cursor:pointer}.fl.go:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--jet)}
+.fl:not(:last-child)::after{content:"";position:absolute;right:-21px;top:50%;width:16px;height:3px;background:var(--jet)}
+.fl:not(:last-child)::before{content:"";position:absolute;right:-22px;top:calc(50% - 5px);border:6px solid transparent;border-left:8px solid var(--jet);border-right:0;z-index:1}
+.fl .fn{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;width:fit-content;min-width:24px;height:22px;padding:0 5px;display:grid;place-items:center;border:2px solid var(--jet);background:#fff}
+.fl b{font-family:'Space Grotesk',sans-serif;font-size:12px;line-height:1.25;text-transform:uppercase;letter-spacing:.5px}
+.fl small{font-family:'Bitter',serif;font-size:11.5px;line-height:1.35;color:var(--muted)}
+.fl-before{background:#eee;border-style:dashed}
+.fl-solo{background:#fde3ef}.fl-pair{background:#d9efe9}.fl-wall{background:#fff1c7}.fl-group{background:#e7efcf}.fl-share{background:#f5d2e3}
+@media (max-width:700px){.flow{grid-template-columns:1fr}.fl:not(:last-child)::after{right:auto;left:50%;top:auto;bottom:-20px;width:3px;height:16px}.fl:not(:last-child)::before{right:auto;left:calc(50% - 5px);top:auto;bottom:-23px;border:6px solid transparent;border-top:8px solid var(--jet);border-bottom:0}}
+.laterstep{position:relative;filter:grayscale(.85)}
+.laterstep::before{content:"";position:absolute;inset:-4px;z-index:20;pointer-events:none;background:repeating-linear-gradient(135deg,rgba(70,76,82,.62) 0 16px,rgba(95,101,107,.56) 16px 32px)}
+.laterstep:not(.secdiv)::after{content:"Not yet · we'll get here soon";position:absolute;left:50%;top:22px;transform:translateX(-50%);z-index:21;pointer-events:none;background:#fff;color:var(--jet);border:3px solid var(--jet);box-shadow:4px 4px 0 var(--jet);padding:6px 14px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+#grid.laterstep::after,#jumpBox.laterstep::after{display:none}
+.secdiv.laterstep::after{content:"Coming up";margin-left:auto;position:relative;z-index:21;background:#fff;color:var(--jet);border:2px solid var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:2px 10px}
+.secdiv.isnow::after{content:"Now";margin-left:auto;background:#fff;color:var(--jet);border:2px solid var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:2px 10px}
+.fl .fnow{display:none;position:absolute;top:-12px;right:8px;background:var(--mars);color:#fff;border:2px solid var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:1px 7px}
+.fl.now{outline:4px solid var(--mars);outline-offset:3px}
+.fl.now .fnow{display:block}
+.fl.later{opacity:.45;filter:grayscale(.8)}
+.fl.past .fn::after{content:" ✓"}
+.flowtop{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.flowtop .flowhd{margin:0}
+.flowctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.flowctl .lbl{font-size:9px}
+.secdiv{display:flex;align-items:center;gap:12px;margin:26px 0 0;padding:9px 16px;border:4px solid var(--jet);border-bottom:0;color:#fff}
+.secdiv .sdn{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;background:#fff;color:var(--jet);border:2px solid var(--jet);padding:1px 8px}
+.secdiv .sdt{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;text-transform:uppercase}
+[data-tint] .stepno{display:none}
+[data-tint] .workshop-head,[data-tint] .qlist{background:transparent}
+[data-tint].workshop-head .qlist{background:rgba(255,255,255,.55)}
+.headact{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 14px 14px;border-top:3px solid var(--jet)}
+.headact .timer{margin:0}
+.postrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px}
+.postrow .saved{margin:0}
+.tkq .qt{color:var(--mars)}
 .pairsteps{margin:4px 0 12px 20px;font-family:'Bitter',serif;font-size:13.5px;line-height:1.6;color:#334051}
 .pq{display:grid;gap:12px}
 .pq .q textarea{border-left-color:var(--mars)}
@@ -318,6 +373,7 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .pr-ws{margin-bottom:18px}
 .pr-ws+.pr-ws{border-top:2px solid #000;padding-top:12px}
 .pr-ws h2{font-family:'Space Grotesk',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.pr-sec{-webkit-print-color-adjust:exact;print-color-adjust:exact;break-inside:auto}
 .pr-part{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#444;margin:10px 0 4px}
 .pr-q{break-inside:avoid;page-break-inside:avoid;margin:6px 0}
 .pr-q b{font-family:'Space Grotesk',sans-serif;font-size:11.5px;display:block}
@@ -389,13 +445,15 @@ body.sheet-printing #printSheet{display:block!important;color:#000;background:#f
   <section class="vote solo hidden" id="soloSec"></section>
   <section class="assign hidden" id="assignSec"></section>
   <section class="assign step hidden" id="shareSec"></section>
+  <section class="flowsec hidden" id="flowSec"></section>
+  <section class="ctimer" id="classTimer"></section>
   <section class="assign step hidden" id="pageSec"></section>
   <section class="assign step hidden" id="gpairSec"></section>
   <section class="assign step hidden" id="pairSec"></section>
   <section class="assign step hidden" id="wallSec"></section>
   <section class="assign step hidden" id="nextSec"></section>
 
-  <div class="jumpbox">
+  <div class="jumpbox" id="jumpBox">
     <div class="jump-row">
       <div class="jump-hd">Jump to a group</div>
       <div class="filters" id="filters">
@@ -440,6 +498,12 @@ body.sheet-printing #printSheet{display:block!important;color:#000;background:#f
       <div class="inrow"><input id="passIn" type="password" placeholder="PASSCODE"/><button class="btn" id="passGo">Unlock</button></div>
     </div>
     <div id="instBody" class="hidden">
+      <div class="grp">
+        <div class="groupmark"><span>Today's steps</span></div>
+        <p>Every step starts grayed out. Move the class forward here, or with the Back, Next step and Show all buttons in the "Today, in order" box at the top of the page. You can also click a step box there.</p>
+        <p id="instStepNow" style="font-weight:700"></p>
+        <div class="inrow"><button class="btn small ghost" id="dStPrev">Back</button><button class="btn small plum" id="dStNext">Next step</button><button class="btn small ghost" id="dStAll">Show all</button></div>
+      </div>
       <div class="grp">
         <div class="groupmark"><span>Open workshops</span></div>
         <p>Students can only see the workshops that are open. Workshop 1 starts open. Tick a workshop to open it for everyone. It shows up for students in a second or two, with no reload.</p>
@@ -782,7 +846,7 @@ function renderIdea(w){
 /* ============ WORKSHOP 2: SHARE, ONE ON ONE, TAKEAWAY WALL ============ */
 const tm={}; // timers by id
 function timerHtml(id,presets){
-  return `<div class="timer" data-timer="${id}"><span class="tnum" data-tnum>${fmtT((tm[id]&&tm[id].left)||presets[0]*60)}</span>
+  return `<div class="timer mini" data-timer="${id}"><span class="tlab">Your timer<br>only on your screen</span><span class="tnum" data-tnum>${fmtT((tm[id]&&tm[id].left)||presets[0]*60)}</span>
     ${presets.map(m=>`<button class="btn small" data-tset="${m}">${m} min</button>`).join("")}
     <button class="btn small plum" data-tgo>Start</button><button class="btn small ghost" data-treset>Reset</button></div>`;
 }
@@ -842,19 +906,126 @@ function makePairs(){
   write(["pairs",curW],out).then(()=>toast(bad?"Pairs made. A few people have no partner in a round":"Pairs made for 3 rounds"));
 }
 let pairKey="";
+const FLOWS={
+  w2:[["before","Proposal presentations","3 minutes per group. Comment in the presentation tool",""],
+      ["pair","One on one · Round 1","Zoom breakout room, 8 minutes. Write down what you hear, add a takeaway, then Post","pairSec"],
+      ["pair","One on one · Round 2","A new breakout room and a new partner","pairSec"],
+      ["pair","One on one · Round 3","A third breakout room and partner","pairSec"],
+      ["wall","Takeaway wall","Your three takeaways show up here","wallSec"],
+      ["group","Next steps, with your group","10 minutes. Fill in your group card","wsHead"],
+      ["share","Share with the class","Each group shares its plan in one or two sentences","nextSec"]],
+  w3:[["before","Draft presentations","Each group presents its draft",""],
+      ["solo","Page by page, on your own","15 minutes. Comment on every page of two groups","pageSec"],
+      ["pair","One on one · Round 1","Zoom breakout room. Talk through your outline, then Post","pairSec"],
+      ["pair","One on one · Round 2","A new breakout room and a new partner","pairSec"],
+      ["pair","One on one · Round 3","A third breakout room and partner","pairSec"],
+      ["group","With your group","Read your comments. Plan your changes on your card","wsHead"]],
+  w4:[["before","Written text turned in","Bring your zine with the text placed in it",""],
+      ["pair","Paired group check · Round 1","7 minutes. One group shares, the other checks","gpairSec"],
+      ["pair","Paired group check · Round 2","Swap. Tick your checklist as you listen","gpairSec"],
+      ["group","With your group","Write your fix list for Wed, Dec 9","wsHead"]]
+};
+let srvOff=0, ctKey="", ctToasted=0;
+const CT_PRESETS=[2,3,4,7,8,10,15];
+function ctState(){ return (state.config&&state.config.timer)||{}; }
+function ctLeft(){ const t=ctState(); if(t.end) return Math.max(0,(t.end-(Date.now()+srvOff))/1000); return t.left!=null?t.left:null; }
+function ctWrite(o){ return write(["config","timer"],o); }
+function renderClassTimer(){
+  const sec=$("classTimer"); const t=ctState();
+  const key=instructor+"|"+!!t.end+"|"+(t.label||"");
+  if(key!==ctKey){ ctKey=key;
+    sec.innerHTML=`<div><div class="chd">Class timer · everyone sees this</div><div class="clab" id="ctLab">${esc(t.label||"")}</div></div>
+      <div class="cnum idle" id="ctNum">--:--</div>
+      ${instructor?`<div class="cctl"><input id="ctLabIn" placeholder="Label, e.g. Round 1" value="${esc(t.label||"")}"/>
+        ${CT_PRESETS.map(m=>`<button class="btn small" data-ct="${m}">${m} min</button>`).join("")}
+        <button class="btn small plum" id="ctGo">${t.end?"Pause":"Start"}</button><button class="btn small ghost" id="ctReset">Reset</button></div>`:""}`;
+    if(instructor){
+      const lab=()=>$("ctLabIn").value.trim();
+      sec.querySelectorAll("[data-ct]").forEach(b=>b.onclick=()=>{ const s2=+b.dataset.ct*60; ctWrite({len:s2,left:s2,end:null,label:lab()}); });
+      $("ctGo").onclick=()=>{ const c=ctState(); if(c.end){ ctWrite({...c,left:ctLeft(),end:null}); return; }
+        const left=c.left!=null&&c.left>0?c.left:(c.len||480); ctWrite({len:c.len||left,left,end:Date.now()+srvOff+left*1000,label:lab()}); };
+      $("ctReset").onclick=()=>{ const c=ctState(); ctWrite({len:c.len||480,left:c.len||480,end:null,label:lab()}); };
+      $("ctLabIn").onchange=()=>{ const c=ctState(); ctWrite({...c,label:lab()}); };
+    }
+  }
+  paintClassTimer();
+}
+function paintClassTimer(){
+  const t=ctState(); const left=ctLeft(); const num=$("ctNum"), pill=$("cPill"); if(!num||!pill) return;
+  const has=left!=null; const done=has&&left<=0;
+  num.textContent=has?fmtT(left):"--:--"; num.classList.toggle("idle",!t.end&&!done); num.classList.toggle("done",done);
+  const lb=$("ctLab"); if(lb&&lb.textContent!==(t.label||"")) lb.textContent=t.label||"";
+  const show=!!t.end||done; pill.classList.toggle("hidden",!show); pill.classList.toggle("done",done);
+  if(show) pill.innerHTML=`<small>${esc(t.label||"Class timer")}</small>${done?"Time":fmtT(left)}`;
+  if(t.end&&left<=0&&ctToasted!==t.end){ ctToasted=t.end; toast("Time"); }
+}
+setInterval(paintClassTimer,250);
+document.addEventListener("click",e=>{ if(e.target.closest&&e.target.closest("#cPill")) $("classTimer").scrollIntoView({behavior:"smooth"}); });
+const DIVS={
+  w2:[["pairSec","pair","1 to 3","One on one, up to three rounds"],["wallSec","wall","4","Takeaway wall"],["wsHead","group","5","Next steps, with your group"],["nextSec","share","6","Share with the class"]],
+  w3:[["pageSec","solo","1","Page by page, on your own"],["pairSec","pair","2 to 4","One on one, up to three rounds"],["wsHead","group","5","With your group"]],
+  w4:[["gpairSec","pair","1 and 2","Paired group check, two rounds"],["wsHead","group","3","With your group: your fix list"]]
+};
+const DIV_COL={solo:["#d63d84","#fdeef5"],pair:["#2f7d7d","#e6f4f0"],wall:["#b8860b","#fff6dc"],group:["#4d661a","#f0f5e2"],share:["#a01e5c","#fbe8f1"]};
+let divKey="";
+function renderDividers(){
+  const defs=DIVS[curW]||[]; const key=curW+"|"+defs.map(([id])=>{const el=$(id);return el&&!el.classList.contains("hidden")?1:0}).join("");
+  if(key!==divKey){ divKey=key; buildDividers(defs); }
+  // gray out steps the class hasn't reached yet (still usable)
+  const c=curStep(); const fl=FLOWS[curW]||[];
+  document.querySelectorAll(".laterstep").forEach(el=>el.classList.remove("laterstep"));
+  document.querySelectorAll(".secdiv.isnow").forEach(el=>el.classList.remove("isnow"));
+  if(c===null) return;
+  defs.forEach(([id])=>{ const el=$(id); if(!el||el.classList.contains("hidden")) return;
+    const idx=fl.map((f,i)=>f[3]===id?i:-1).filter(i=>i>=0); if(!idx.length) return;
+    const d=el.previousElementSibling&&el.previousElementSibling.classList.contains("secdiv")?el.previousElementSibling:null;
+    if(Math.min(...idx)>c){ el.classList.add("laterstep"); if(d) d.classList.add("laterstep");
+      if(id==="wsHead"){ $("jumpBox").classList.add("laterstep"); $("grid").classList.add("laterstep"); } }
+    if(idx.includes(c)&&d) d.classList.add("isnow"); });
+}
+function buildDividers(defs){
+  document.querySelectorAll(".secdiv").forEach(d=>d.remove());
+  document.querySelectorAll("[data-tint]").forEach(el=>{el.style.background="";el.style.boxShadow="";delete el.dataset.tint;});
+  defs.forEach(([id,k,n,t])=>{ const el=$(id); if(!el||el.classList.contains("hidden")) return; const c=DIV_COL[k];
+    const d=document.createElement("div"); d.className="secdiv"; d.style.background=c[0];
+    d.innerHTML=`<span class="sdn">${esc(n)}</span><span class="sdt">${esc(t)}</span>`; el.before(d);
+    el.dataset.tint=k; el.style.background=c[1]; el.style.boxShadow=`7px 7px 0 ${c[0]}`; });
+}
+function curStep(){ const v=((state.config||{}).step||{})[curW]; if(v===undefined||v===null) return 0; return +v<0?null:+v; } // starts on "Before"; -1 = show all
+function setStep(v){ return write(["config","step",curW],v); }
+function renderFlow(w){
+  const sec=$("flowSec"); const fl=FLOWS[curW];
+  if(!fl){sec.classList.add("hidden");return}
+  sec.classList.remove("hidden");
+  const key=curW+"|"+instructor;
+  if(sec.dataset.k!==key){ sec.dataset.k=key;
+    sec.innerHTML=`<div class="flowtop"><div class="flowhd">Today, in order</div>${instructor?`<div class="flowctl"><span class="lbl">Instructor: set the step everyone is on</span><button class="btn small ghost" id="stPrev">Back</button><button class="btn small plum" id="stNext">Next step</button><button class="btn small ghost" id="stClear">Show all</button></div>`:""}</div>
+      <ol class="flow">${fl.map(([k,t,d,go],i)=>`<li class="fl fl-${k}${go||instructor?" go":""}" data-i="${i}" ${go?`data-go="${go}"`:""} tabindex="0" role="button"><span class="fn">${k==="before"?"Before":i}</span><span class="fnow">Now</span><b>${esc(t)}</b><small>${esc(d)}</small></li>`).join("")}</ol>
+      ${instructor?`<p class="hint" style="margin-top:8px">Click a box to make it the current step for everyone. Later steps look grayed out on everyone's screens until you get to them, but students can still read and type in them. The page starts with every step grayed out. Show all removes the gray.</p>`:""}`;
+    sec.querySelectorAll(".fl").forEach(el=>{ const f=()=>{ if(instructor) setStep(+el.dataset.i); if(el.dataset.go) $(el.dataset.go)?.scrollIntoView({behavior:"smooth"}); };
+      el.onclick=f; el.onkeydown=e=>{if(e.key==="Enter")f()}; });
+    if(instructor){
+      $("stNext").onclick=()=>{ const c=curStep(); setStep(c===null?0:Math.min(fl.length-1,c+1)); };
+      $("stPrev").onclick=()=>{ const c=curStep(); if(c!==null) setStep(Math.max(0,c-1)); };
+      $("stClear").onclick=()=>setStep(-1);
+    }
+  }
+  const c=curStep();
+  sec.querySelectorAll(".fl").forEach(el=>{ const i=+el.dataset.i; el.classList.toggle("now",c===i); el.classList.toggle("past",c!==null&&i<c); el.classList.toggle("later",c!==null&&i>c); });
+}
 const PAIR_CFG={
-  proposal:{stepno:"Step 1 · One on one, three times", title:"Meet three people from other groups",
-    hint:"After the presentations, bring your proposal slides. You meet three different people, one at a time. In each round, each of you gets 4 minutes, then swap. When it is your turn to hear feedback, write down what your partner says about your zine here: everyone in the class can read it below.",
-    steps:["Show your proposal in 1 minute: your claim, your option and your favorite page.","Your partner gives you feedback: one thing that is working, and one thing that could be improved or pushed further. Use \"I notice\", \"What if\" or \"Push further by\".","While you listen, write down what your partner said about your zine in this round's box. Then swap."],
-    qs:[["gave","What my partner said is working in our zine","Working"],["bring","What my partner said could be improved or pushed further","Improve or push further"]]},
-  outline:{stepno:"Step 2 · One on one, three times", title:"Talk through your outline with three people",
-    hint:"In Zoom breakout rooms. You meet three different people from other groups, one at a time. In each round, each of you gets 4 minutes, then swap. When it is your turn to hear feedback, write down what your partner says about your outline here: everyone in the class can read it below.",
-    steps:["Share your outline slide and read it in 2 minutes: your title, your claim and your three connections.","Your partner tells you which connection is strongest, which one needs more, and whether your claim and your conclusion match.","While you listen, write down what your partner said in this round's box. Then swap."],
+  proposal:{stepno:"Step 1 · One on one, up to three times", title:"Meet up to three people in breakout rooms",
+    hint:"After the presentations, bring your proposal slides. Zoom puts you in a breakout room with a random partner, up to three times. At the start of each round, type your partner's artist number in that round's box. In each round, each of you gets 4 minutes, then swap. When it is your turn to hear feedback, write down what your partner says about your zine. Your notes save as you type, but the class only sees them after you press Post. Fill in only the rounds you have.",
+    steps:["Show your proposal in 1 minute: your claim, your option and your favorite page.","Your partner gives you feedback: one thing that is working, one thing that could be improved or pushed further, and one idea for something to add, change, remove or alter. Use \"I notice\", \"What if\" or \"Push further by\".","While you listen, write down what your partner said about your zine in this round's box. Then swap.","After you swap, write one takeaway from this one on one and press Post round. Your feedback goes on the feedback wall and your takeaway goes on the takeaway wall."],
+    qs:[["gave","What my partner said is working in our zine","Working"],["bring","What my partner said could be improved or pushed further","Improve or push further"],["idea","An idea my partner suggested: something to add, change, remove or alter","Idea"]]},
+  outline:{stepno:"Step 2 · One on one, up to three times", title:"Talk through your outline with up to three people",
+    hint:"In Zoom breakout rooms. Zoom puts you in a breakout room with a random partner, up to three times. At the start of each round, type your partner's artist number in that round's box. In each round, each of you gets 4 minutes, then swap. When it is your turn to hear feedback, write down what your partner says about your outline. Your notes save as you type, but the class only sees them after you press Post. Fill in only the rounds you have.",
+    steps:["Share your outline slide and read it in 2 minutes: your title, your claim and your three connections.","Your partner tells you which connection is strongest, which one needs more, and whether your claim and your conclusion match.","While you listen, write down what your partner said in this round's box. Then swap.","After you swap, press Post round to share your notes with the class."],
     qs:[["gave","What my partner said is the strongest connection","Strongest"],["bring","What my partner said needs more, or could be pushed further","Needs more"],["match","What my partner said about our claim and our conclusion: do they match?","Claim and conclusion"]]}
 };
 function pairCfg(w){ return PAIR_CFG[(w&&w.pairCfg)||"proposal"]; }
 const fbText=(e,w)=>pairCfg(w||workshop(curW)).qs.filter(([k])=>(e[k]||"").trim()).map(([k,,l])=>l+": "+e[k].trim()).join("\n");
-function partnerOf(a,r){ const p=get(["pairs",curW])||{}; return (p["r"+r]&&p["r"+r][a])||""; }
+function partnerOf(a,r){ return ""; } // partners are chosen by students, not assigned
 function renderPairs(w){
   const sec=$("pairSec");
   if(!w.pairs){sec.classList.add("hidden");pairKey="";return}
@@ -872,14 +1043,13 @@ function renderPairs(w){
       <p class="hint">${esc(pc.hint)}</p>
       <ol class="pairsteps">${pc.steps.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>
       ${timerHtml("pair",[8,4])}
-      ${instructor?`<div class="instrow"><button class="btn small plum" id="mkPairs">Make pairs for 3 rounds</button>${made?`<button class="btn small ghost" id="clrPairs">Clear pairs</button>`:""}</div>`:""}
       ${me?"":`<div class="need">Add your artist number at the top to see your partners and write your feedback</div>`}
       <div class="rounds">${[1,2,3].map((r,ri)=>`<div class="round">
         <div class="rhd">Round ${r}</div>
-        ${autos[ri]?`<div class="pairbox"><small>Your partner</small>${autos[ri].split(", ").map(who).join("<br>")}</div>`:""}
-        <div class="q"><div class="qt">Partner's artist number</div><input type="number" min="1" max="99" data-pr="${r}" data-pp="partner" placeholder="e.g. 14" ${me?"":"disabled"}/></div>
+        <div class="q"><div class="qt">Your partner's artist number</div><input type="number" min="1" max="99" data-pr="${r}" data-pp="partner" placeholder="e.g. 14" ${me?"":"disabled"}/></div>
         ${pc.qs.map(([k,q])=>`<div class="q"><div class="qt">${esc(q)}</div><textarea data-pr="${r}" data-pp="${k}" placeholder="Your notes" ${me?"":"disabled"}></textarea></div>`).join("")}
-        <div class="saved" data-psaved="${r}"></div>
+        ${w.wall?`<div class="q tkq"><div class="qt">My takeaway from this one on one: an idea I am bringing back or a change I will make</div><textarea data-pr="${r}" data-pp="tk" placeholder="My takeaway" ${me?"":"disabled"}></textarea></div>`:""}
+        <div class="postrow"><button class="btn small plum" data-post="${r}" ${me?"":"disabled"}>Post round ${r}</button><span class="saved" data-psaved="${r}"></span></div>
       </div>`).join("")}</div>
       <h3 style="margin-top:18px">Everyone's one on one feedback</h3>
       <p class="hint">The feedback each person heard about their zine, with their group. Find yours, and your group's.</p>
@@ -887,17 +1057,32 @@ function renderPairs(w){
     wireTimer(sec,"pair",[8,4]);
     sec.querySelectorAll("[data-pp]").forEach(el=>el.addEventListener("input",()=>{
       const a=myArtist(); if(!a) return; const r=el.dataset.pr, k=el.dataset.pp; const tk="p_"+r+k; clearTimeout(timers[tk]);
-      const sv=sec.querySelector(`[data-psaved="${r}"]`); sv.textContent="saving...";
-      timers[tk]=setTimeout(()=>write(["pair",curW,a,"r"+r,k],el.value).then(()=>{sv.textContent="saved"}),600);
+      const sv=sec.querySelector(`[data-psaved="${r}"]`); sv.textContent="saving..."; el.dataset.dirty="1";
+      timers[tk]=setTimeout(()=>write(["pair",curW,a,"r"+r,k],el.value).then(()=>{delete el.dataset.dirty;sv.textContent=((get(["pair",curW,a,"r"+r])||{}).posted)?"saved · posted":"saved · not posted yet"}),600);
     }));
+    sec.querySelectorAll("[data-post]").forEach(b=>b.onclick=()=>{
+      const a=myArtist(); if(!a){toast("Add your artist number first");$("myArtist").focus();return}
+      const r=b.dataset.post; const box=b.closest(".round");
+      const vals={}; box.querySelectorAll("[data-pp]").forEach(el=>vals[el.dataset.pp]=el.value);
+      const e=(get(["pair",curW,a,"r"+r])||{});
+      if(e.posted){ write(["pair",curW,a,"r"+r,"posted"],null).then(()=>toast("Round "+r+" taken off the walls")); return; }
+      const hasText=Object.entries(vals).some(([k,v])=>k!=="partner"&&(v||"").trim());
+      if(!hasText){toast("Write your notes first");return}
+      const full={...e,...vals,posted:Date.now()};
+      write(["pair",curW,a,"r"+r],full).then(()=>toast("Round "+r+" posted"));
+    });
     if($("mkPairs")) $("mkPairs").onclick=makePairs;
     if($("clrPairs")) $("clrPairs").onclick=()=>{ if(confirmDelete("all pairs")) write(["pairs",curW],null); };
   }
-  sec.querySelectorAll("[data-pp]").forEach(el=>{ if(document.activeElement===el) return; const r=el.dataset.pr,k=el.dataset.pp;
+  sec.querySelectorAll("[data-pp]").forEach(el=>{ if(document.activeElement===el||el.dataset.dirty) return; const r=el.dataset.pr,k=el.dataset.pp;
     let v=((mine["r"+r]||{})[k])||""; if(k==="partner"&&!v&&autos[r-1]) v=autos[r-1].split(", ")[0]; if(el.value!==v) el.value=v; });
-  // the public feedback wall, grouped by the person who received it
+  // post buttons and status
+  sec.querySelectorAll("[data-post]").forEach(b=>{ const r=b.dataset.post; const e=(mine["r"+r]||{}); const sv=sec.querySelector(`[data-psaved="${r}"]`);
+    b.textContent=e.posted?`Unpost round ${r}`:`Post round ${r}`; b.classList.toggle("plum",!e.posted); b.classList.toggle("ghost",!!e.posted);
+    if(sv&&!/saving/.test(sv.textContent)) sv.textContent=e.posted?"posted · edits update your post":(Object.entries(e).some(([k,v])=>k!=="partner"&&String(v||"").trim())?"saved · not posted yet":""); });
+  // the public feedback wall, grouped by the person who received it (posted rounds only)
   const all=get(["pair",curW])||{}; const by={};
-  Object.entries(all).forEach(([from,v])=>[1,2,3].forEach(r=>{ const e=(v||{})["r"+r]||{}; const to=String(e.partner||partnerOf(from,r).split(", ")[0]||"").trim();
+  Object.entries(all).forEach(([from,v])=>[1,2,3].forEach(r=>{ const e=(v||{})["r"+r]||{}; if(!e.posted) return; const to=String(e.partner||partnerOf(from,r).split(", ")[0]||"").trim();
     if(fbText(e)) (by[from]=by[from]||[]).push({from:to||"?",r,text:fbText(e)}); }));
   const keys=Object.keys(by).sort((x,y)=>(groupOf(x)-groupOf(y))||((+x)-(+y)));
   $("fbWall").innerHTML=keys.length?keys.map(to=>`<div class="fbcard${to===me?" me":""}"><h4>Artist ${esc(to)}${groupOf(to)?" · "+esc(groupLabel(groupOf(to))):""}${to===me?" (you)":""}</h4>${by[to].sort((x,y)=>x.r-y.r).map(c=>`<div class="fbrow"><b>From Artist ${esc(c.from)} · round ${c.r}</b>${esc(c.text).replace(/\n/g,"<br>")}</div>`).join("")}</div>`).join(""):`<p class="empty-note">No feedback posted yet.</p>`;
@@ -909,16 +1094,15 @@ function renderWall(w){
   if(sec.dataset.w!==curW){ sec.dataset.w=curW;
     sec.innerHTML=`<span class="stepno">Step 2 · Back together</span>
       <h3>Takeaway wall</h3>
-      <p class="hint">Back in the main room, post one takeaway from your one on one: an idea you are bringing back or a change you will make.</p>
-      <div class="wallform"><textarea id="wallText" placeholder="My takeaway"></textarea><button class="btn plum" id="wallSend">Post</button></div>
+      <p class="hint">One takeaway from each one on one: an idea you are bringing back or a change you will make. Your takeaway shows up here when you post that round.</p>
       <div class="wall" id="wallList"></div>`;
-    $("wallSend").onclick=()=>{ const a=myArtist(); const t=$("wallText").value.trim();
-      if(!a){toast("Add your artist number first");$("myArtist").focus();return} if(!t) return;
-      write(["takeaways",curW,uid()],{text:t,by:a,g:groupOf(a)||myGroup()||null,t:Date.now()}).then(()=>{$("wallText").value="";toast("Posted")}); };
   }
   const items=Object.entries(get(["takeaways",curW])||{}).sort((x,y)=>x[1].t-y[1].t);
+  Object.entries(get(["pair",curW])||{}).forEach(([a,v])=>[1,2,3].forEach(r=>{ const e=(v||{})["r"+r]||{};
+    if(e.posted&&(e.tk||"").trim()) items.push(["r|"+a+"|"+r,{text:e.tk.trim(),by:a,g:groupOf(a)||null,t:e.posted,round:r}]); }));
+  items.sort((x,y)=>x[1].t-y[1].t);
   const cols=["#a8e6c0","#f6c343","#7db8c4","#f5b8d4","#e8f0c8","#cfe3f2"];
-  $("wallList").innerHTML=items.length?items.map(([id,n])=>`<div class="note" style="background:${cols[(n.g||0)%cols.length]}">${esc(n.text)}<span class="by">Artist ${esc(n.by)}${n.g?" · "+esc(groupLabel(n.g)):""}</span>${instructor||n.by===myArtist()?`<button class="del" data-wdel="${id}" aria-label="Delete this takeaway">×</button>`:""}</div>`).join(""):`<p class="empty-note">No takeaways yet.</p>`;
+  $("wallList").innerHTML=items.length?items.map(([id,n])=>`<div class="note" style="background:${cols[(n.g||0)%cols.length]}">${esc(n.text)}<span class="by">Artist ${esc(n.by)}${n.round?" · round "+n.round:""}${n.g?" · "+esc(groupLabel(n.g)):""}</span>${(instructor||n.by===myArtist())&&!n.round?`<button class="del" data-wdel="${id}" aria-label="Delete this takeaway">×</button>`:""}</div>`).join(""):`<p class="empty-note">No takeaways yet.</p>`;
   $("wallList").querySelectorAll("[data-wdel]").forEach(b=>b.onclick=()=>{ if(confirmDelete("this takeaway")) write(["takeaways",curW,b.dataset.wdel],null); });
 }
 
@@ -928,15 +1112,10 @@ function renderNext(w){
   sec.classList.remove("hidden");
   const n=w.next, base=w.questions.length-n, labels=w.questions.slice(base).map(q=>q.replace(/:\s*_+\s*$/,"").replace(/ \(.*?\)$/,""));
   if(sec.dataset.w!==curW){ sec.dataset.w=curW;
-    sec.innerHTML=`<span class="stepno">Step 3 · Back with your group</span>
-      <h3>Next steps, as a group</h3>
-      <p class="hint">Meet with your group. Read the feedback each of you got from your three partners (in Step 1), the comments on your presentation and the takeaway wall. Fill in the Step 3 blanks on your group card: changes, additions, decisions still to make, who does what next, how you will manage the project and anything about working together you need to address. Everyone can see them here, and each group shares its plan with the class.</p>
-      ${timerHtml("next",[10,2])}
-      <div class="steplinks"><button class="btn small plum" id="nextMine">Fill in my group's card</button></div>
+    sec.innerHTML=`<span class="stepno">Step 4 · Share with the class</span>
+      <h3>Everyone's next steps</h3>
+      <p class="hint">Your group's answers from step 5 show up here for the whole class. When time is up, each group shares one or two sentences about its plan.</p>
       <div class="nextgrid" id="nextGrid"></div>`;
-    wireTimer(sec,"next",[10,2]);
-    $("nextMine").onclick=()=>{ const g=myGroup(); if(!g){toast("Choose your group at the top first");$("myGroup").focus();return}
-      const c=$("g"+g); if(c){ c.scrollIntoView({behavior:"smooth"}); const t=c.querySelector(`textarea[data-q="${base}"]`); if(t) setTimeout(()=>t.focus(),500);} };
   }
   const cards=[];
   for(let g=1;g<=gc();g++){
@@ -963,7 +1142,7 @@ function renderPages(w){
       <div class="prompts static">${(w.prompts||FEEDBACK_PROMPTS).map(p=>`<span>${esc(p)}</span>`).join("")}</div>
       ${timerHtml("pages",[15,5])}
       <div class="visitbox" id="visitBox"></div>
-      <div class="steplinks"><button class="btn small ghost" data-goto="pairSec">Step 2 · One on one</button><button class="btn small ghost" id="pgMine">Step 3 · Your group's card</button></div>`;
+      <div class="steplinks"><button class="btn small ghost" data-goto="pairSec">Next: one on one</button><button class="btn small ghost" id="pgMine">Your group's card</button></div>`;
     wireTimer(sec,"pages",[15,5]);
     sec.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>$(b.dataset.goto).scrollIntoView({behavior:"smooth"}));
     $("pgMine").onclick=()=>{ const g=myGroup(); if(!g){toast("Choose your group at the top first");$("myGroup").focus();return} filter="all";syncFilters();renderGrid();$("g"+g)?.scrollIntoView({behavior:"smooth"}); };
@@ -1066,6 +1245,7 @@ function readFull(w,g,id){
 function startFirebase(){
   firebase.initializeApp(FIREBASE_CONFIG);
   db=firebase.database();
+  db.ref(".info/serverTimeOffset").on("value",s=>{srvOff=s.val()||0;});
   firebase.auth().signInAnonymously().catch(e=>{showBanner("<b>Firebase blocked sign in.</b> Turn on Anonymous sign in for the project. "+esc(e.message),true)});
   firebase.auth().onAuthStateChanged(u=>{
     if(!u) return;
@@ -1161,12 +1341,12 @@ function renderSolo(w){
       <details ${open?"open":""}><summary>Read the class answers</summary><div data-k="classans"></div></details>`;
     sec.querySelectorAll("textarea[data-sq]").forEach(t=>t.addEventListener("input",()=>{
       const a=myArtist(); if(!a) return; const i=t.dataset.sq; const k="s_"+i; clearTimeout(timers[k]);
-      const sv=sec.querySelector(`[data-ssaved="${i}"]`); sv.textContent="saving...";
-      timers[k]=setTimeout(()=>write(["solo",curW,a,i],t.value).then(()=>{sv.textContent="saved"}),600);
+      const sv=sec.querySelector(`[data-ssaved="${i}"]`); sv.textContent="saving..."; t.dataset.dirty="1";
+      timers[k]=setTimeout(()=>write(["solo",curW,a,i],t.value).then(()=>{delete t.dataset.dirty;sv.textContent="saved"}),600);
     }));
   }
   const all=get(["solo",curW])||{}; const mine=(me&&all[me])||{};
-  sec.querySelectorAll("textarea[data-sq]").forEach(t=>{ if(document.activeElement!==t){const v=mine[t.dataset.sq]||""; if(t.value!==v) t.value=v;} });
+  sec.querySelectorAll("textarea[data-sq]").forEach(t=>{ if(document.activeElement!==t&&!t.dataset.dirty){const v=mine[t.dataset.sq]||""; if(t.value!==v) t.value=v;} });
   const arts=Object.keys(all).sort((a,b)=>(+a||0)-(+b||0));
   sec.querySelector('[data-k="classans"]').innerHTML=qs.map((q,i)=>{
     const rows=arts.filter(a=>(all[a][i]||"").trim());
@@ -1250,10 +1430,22 @@ let lastStructureKey="";
 function render(force){
   pickWorkshop(); renderTabs(); renderGroupSelect();
   const w=workshop(curW);
-  $("wsHead").innerHTML=`<div class="sheet-bar"><span>${esc(w.tab)}</span><span class="arm">${esc(w.date)} · ${w.questions.length} questions</span></div><h2>${esc(w.title)}</h2>${w.intro?`<p class="dayprompt">${esc(w.intro)}</p>`:`<div style="height:12px"></div>`}
-    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?(w.vote?`<li class="part">Step 1 · Pick your ${MAX_PICKS} favorite zine styles (below)</li>`:"")+`<li class="part">Step 2 · On your own${w.ideas?": pick where your idea could come from (below), then answer":""}</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+(w.next&&i===w.questions.length-w.next?`<li class="part">Step 1 · One on one · Step 2 · Takeaway wall · Step 3 · Next steps, with your group, on your group card</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
+  const gh=!!(w.pairs||w.gpair); const ghIntro={w4:"Back with your own group: read what the other group said and look at your checklist. Then write your fix list together on your group card below.",w2:"Back with your group: read the feedback and takeaways your group heard in the one on ones. Then answer these questions together on your group card below.",w3:"Back with your group: read the comments on your pages and the feedback from the one on ones. Then answer these questions together on your group card below."}[curW]||"Answer these questions together on your group card below.";
+  const headHtml=`<div class="sheet-bar"><span>${esc(w.tab)}</span><span class="arm">${esc(w.date)} · ${w.questions.length} questions</span></div><h2>${gh?"Now meet with your group":esc(w.title)}</h2>${gh?`<p class="dayprompt">${esc(ghIntro)}</p>`:(w.intro?`<p class="dayprompt">${esc(w.intro)}</p>`:`<div style="height:12px"></div>`)}
+    <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?(w.vote?`<li class="part">Step 1 · Pick your ${MAX_PICKS} favorite zine styles (below)</li>`:"")+`<li class="part">Step 2 · On your own${w.ideas?": pick where your idea could come from (below), then answer":""}</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+""+`<li>${esc(q)}</li>`).join("")}</ol>${gh?`<div class="headact">${w.next?timerHtml("next",[10,2]):""}<button class="btn plum" id="headMine">Fill in my group's card</button></div>`:""}`;
+  const headKey=headHtml.replace(/<span class="tnum"[^<]*<\/span>/g,"")+curW;
+  if($("wsHead").dataset.h!==headKey){ $("wsHead").dataset.h=headKey; $("wsHead").innerHTML=headHtml;
+    if(gh){ if(w.next) wireTimer($("wsHead"),"next",[10,2]);
+      $("headMine").onclick=()=>{ const g=myGroup(); if(!g){toast("Choose your group at the top first");$("myGroup").focus();return}
+        filter="all";syncFilters();renderGrid(); const c=$("g"+g); if(c){ c.scrollIntoView({behavior:"smooth"}); const t=c.querySelector("textarea[data-q]:not([disabled])"); if(t) setTimeout(()=>t.focus(),500);} }; } }
   $("wsRoundel").innerHTML="WS<br>"+esc(curW.slice(1)); $("coverTitle").textContent=w.title; $("coverKicker").textContent=w.tab+" · "+w.date;
-  renderSolo(w); renderVote(w); renderIdea(w); renderAssign(w); renderShare(w); renderPages(w); renderGPair(w); renderPairs(w); renderWall(w); renderNext(w);
+  renderSolo(w); renderVote(w); renderIdea(w); renderAssign(w); renderShare(w); renderFlow(w); renderClassTimer(); renderPages(w); renderGPair(w); renderPairs(w); renderWall(w); renderNext(w);
+  { const head=$("wsHead"); let prev=head.previousElementSibling; if(prev&&prev.classList.contains("secdiv")) prev=prev.previousElementSibling;
+    if(w.pairs||w.gpair){ const anchor=w.gpair?$("gpairSec"):(w.wall?$("wallSec"):$("pairSec")); if(prev!==anchor){ anchor.after(head); divKey=""; } }
+    else if(head.nextElementSibling!==$("voteSec")){ $("voteSec").before(head); divKey=""; } }
+  { const nx=$("nextSec"), gr=$("grid"); let after=gr.nextElementSibling; if(after&&after.classList.contains("secdiv")) after=after.nextElementSibling;
+    if(after!==nx){ gr.after(nx); divKey=""; } } // group cards (step 5) come before sharing with the class (step 6)
+  renderDividers();
   // chips
   const mg=myGroup();
   $("chips").innerHTML=Array.from({length:gc()},(_,i)=>{const g=i+1;const st=groupStatus(g);const c=counts(g);
@@ -1292,7 +1484,7 @@ function cardShell(g){
         <input data-meta="members" placeholder="Artist numbers, e.g. 3, 12, 19"/>
         <select data-meta="option" class="opt"><option value="">Option</option><option>A</option><option>B</option><option>C</option><option>D</option></select>
       </div>`:`<div class="metaro" data-k="members"></div>`}
-      ${soloN(w)?`<div class="parthd">Step 3 · With your group</div>`:""}${w.questions.map((q,i)=>i<soloN(w)?"":`${w.next&&i===0&&w.questions.length>w.next?`<div class="parthd">Before you share</div>`:""}${w.next&&i===w.questions.length-w.next?`<div class="parthd">Step 3 · Next steps, as a group</div>`:""}<div class="q"><div class="qt"><b>${i+1}</b> ${esc(q)}</div>
+      ${soloN(w)?`<div class="parthd">Step 3 · With your group</div>`:""}${w.questions.map((q,i)=>i<soloN(w)?"":`${w.next&&i===0&&w.questions.length>w.next?`<div class="parthd">Before you share</div>`:""}${w.next&&i===w.questions.length-w.next?`<div class="parthd">Next steps, as a group</div>`:""}<div class="q"><div class="qt"><b>${i+1}</b> ${esc(q)}</div>
         ${mine||instructor?`<textarea data-q="${i}" placeholder="Your group's answer"></textarea><div class="saved" data-saved="${i}"></div>`:`<div class="ans" data-a="${i}"></div>`}</div>`).join("")}
       ${w.checklist?`<div class="sect"><div class="row"><span class="lbl">Requirements checklist</span><span class="lbl" data-k="ckcount"></span></div>
         <div class="cklist">${w.checklist.map((c,i)=>`<label class="ck"><input type="checkbox" data-ck="${i}" ${mine||instructor?"":"disabled"}/><span>${esc(c)}</span></label>`).join("")}</div></div>`:""}
@@ -1479,7 +1671,7 @@ $("exportMine").onclick=async()=>{
     const recv=[]; if(w.pairs) Object.entries((pair||{})[d.id]||{}).forEach(([from,v])=>[1,2,3].forEach(r=>{const e=(v||{})["r"+r]||{}; /* the listener writes down feedback, so it is already in their own rounds */}));
     const rounds=[1,2,3].map(r=>pp["r"+r]||{}).map((e,i)=>(e.partner||pairCfg(w).qs.some(([k])=>(e[k]||"").trim()))?`<div class="pr-q"><b>Round ${i+1}${e.partner?" · with Artist "+esc(e.partner):""}</b>${pairCfg(w).qs.filter(([k])=>(e[k]||"").trim()).map(([k,q])=>`<div class="pr-a"><i>${esc(q)}:</i> ${esc(e[k])}</div>`).join("")}</div>`:"").join("");
     const pairHtml=(rounds||recv.length)?`<div class="pr-part">${w.pairCfg==="outline"?"Step 2":"Step 1"}: one on one, three rounds: feedback I heard</div>${rounds}${recv.length?`<div class="pr-q"><b>Feedback I received</b>${recv.map(c=>`<div class="pr-a">From Artist ${esc(c.from)} (round ${c.r}): ${esc(c.text).replace(/\n/g,"<br>")}</div>`).join("")}</div>`:""}`:"";
-    const myTk=w.wall?Object.values((takeaways||{})[d.id]||{}).filter(t=>String(t.by)===String(a)).sort((x,y)=>x.t-y.t):[];
+    const myTk=w.wall?[...Object.values((takeaways||{})[d.id]||{}).filter(t=>String(t.by)===String(a)),...[1,2,3].map(r=>({r,...(pp["r"+r]||{})})).filter(e=>(e.tk||"").trim()).map(e=>({text:"Round "+e.r+": "+e.tk.trim(),t:e.posted||0}))].sort((x,y)=>x.t-y.t):[];
     const tkHtml=myTk.length?`<div class="pr-part">Step 2: my takeaway${myTk.length>1?"s":""}</div>${myTk.map(t=>`<div class="pr-q"><div class="pr-a">${esc(t.text)}</div></div>`).join("")}`:"";
     const anyMine=pairHtml||tkHtml||myStyles.length||myIdeas.length||w.questions.slice(0,st).some((_,i)=>(mine[i]||"").trim());
     const anyGroup=w.questions.some((_,i)=>i>=st&&(ga[i]||"").trim());
@@ -1498,15 +1690,33 @@ $("exportMine").onclick=async()=>{
   $("printSheet").innerHTML=`<div class="pr-head"><div class="pr-title">Pluriverse 3055 or Proposed Zine: my work</div>
     <div class="pr-sub">Artist ${esc(a)}${g?" · Group "+g+(meta.name?": "+esc(meta.name):""):""}${meta.option?" · Option "+esc(meta.option):""}${meta.members?" · Artists "+esc(meta.members):""} · ${date}</div></div>
     ${blocks.length?blocks.join(""):`<div class="pr-none">Nothing saved yet for artist ${esc(a)}${g?"":". Choose your group at the top to include your group's answers."}</div>`}`;
+  colorSections($("printSheet"));
   document.body.classList.add("sheet-printing");
   setTimeout(()=>window.print(),120);
 };
+function colorSections(root){
+  const cols=[["#d63d84","#fdeef5"],["#2f7d7d","#e6f3f2"],["#4d661a","#eff5e3"],["#a01e5c","#f8e6ee"],["#3c8aa0","#e6f2f6"],["#b8741a","#fbf1e1"]];
+  root.querySelectorAll(".pr-ws").forEach(ws=>{ let i=0, cur=null;
+    [...ws.children].forEach(ch=>{
+      if(ch.classList.contains("pr-part")){ const c=cols[i++%cols.length]; cur=document.createElement("div"); cur.className="pr-sec";
+        cur.style.cssText=`border-left:6px solid ${c[0]};background:${c[1]};padding:4px 12px 8px;margin:10px 0`;
+        ch.style.color=c[0]; ch.style.fontSize="11px"; ws.insertBefore(cur,ch); cur.appendChild(ch); cur.dataset.c=c[0]; }
+      else if(cur) cur.appendChild(ch);
+    });
+    ws.querySelectorAll(".pr-sec").forEach(sec=>sec.querySelectorAll(".pr-a,.pr-fb").forEach(a=>a.style.borderLeftColor=sec.dataset.c));
+  });
+}
 window.addEventListener("afterprint",()=>document.body.classList.remove("sheet-printing"));
 $("printMine").onclick=()=>{const g=myGroup(); if(!g){toast("Choose your group first");return} filter="mine";syncFilters();renderGrid();setTimeout(()=>window.print(),300)};
 
 /* ============ INSTRUCTOR ============ */
-$("openInstructor").onclick=()=>{ $("instructor").classList.add("on"); fillInst(); };
+$("openInstructor").onclick=()=>{ $("instructor").classList.add("on"); fillInst(); paintInstStep(); };
 $("instClose").onclick=()=>$("instructor").classList.remove("on");
+function paintInstStep(){ const el=$("instStepNow"); if(!el) return; const fl=FLOWS[curW]; if(!fl){el.textContent="This workshop has no steps.";return}
+  const c=curStep(); el.textContent=c===null?"Showing all steps (nothing grayed).":"Current step: "+(c===0?"Before · ":c+" · ")+fl[c][1]; }
+$("dStNext").onclick=()=>{ const fl=FLOWS[curW]; if(!fl) return; const c=curStep(); setStep(c===null?0:Math.min(fl.length-1,c+1)).then(paintInstStep); };
+$("dStPrev").onclick=()=>{ const c=curStep(); if(c!==null&&FLOWS[curW]) setStep(Math.max(0,c-1)).then(paintInstStep); };
+$("dStAll").onclick=()=>{ if(FLOWS[curW]) setStep(-1).then(paintInstStep); };
 $("passGo").onclick=()=>{ if($("passIn").value===PASSCODE){instructor=true;$("passIn").value="";fillInst();lastStructureKey="";render();toast("Instructor mode on")} else toast("Wrong passcode") };
 $("passIn").onkeydown=e=>{if(e.key==="Enter")$("passGo").click()};
 $("lockAgain").onclick=()=>{instructor=false;fillInst();lastStructureKey="";render();toast("Locked")};
@@ -1552,7 +1762,7 @@ $("expHtml").onclick=()=>{
   const it=voteTally(get(["ideaVotes",curW]));
   const ideaHtml=w.ideas?`<section><h2>Where ideas come from (up to ${MAX_IDEA_PICKS} picks each)</h2><ol>${[...IDEA_SOURCES].sort((x,y)=>(it[y.id]||0)-(it[x.id]||0)).map(s=>`<li>${esc(s.name)}: ${it[s.id]||0}</li>`).join("")}</ol><h3>Picks by artist</h3><ul>${Object.entries(get(["ideaVotes",curW])||{}).sort((x,y)=>(+x[0]||0)-(+y[0]||0)).map(([a,v])=>`<li>Artist ${esc(a)}: ${picksOf(v).map(id=>esc((IDEA_SOURCES.find(t=>t.id===id)||{name:id}).name)).join(", ")}</li>`).join("")}</ul></section>`:"";
   const voteHtml=w.vote?`<section><h2>Zine style vote (top ${MAX_PICKS} picks each)</h2><ol>${[...STYLES].sort((x,y)=>(vt[y.id]||0)-(vt[x.id]||0)).map(s=>`<li>${esc(s.name)}: ${vt[s.id]||0}</li>`).join("")}</ol><h3>Picks by artist</h3><ul>${Object.entries(get(["votes",curW])||{}).sort((x,y)=>(+x[0]||0)-(+y[0]||0)).map(([a,v])=>`<li>Artist ${esc(a)}: ${picksOf(v).map(id=>esc((STYLES.find(t=>t.id===id)||{name:id}).name)).join(", ")}</li>`).join("")}</ul></section>`:"";
-  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(w.title)}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 16px;color:#222}h1{color:#4d661a;text-transform:uppercase}section{border-top:4px solid #14202a;padding:10px 0 20px}h2{color:#a01e5c;text-transform:uppercase}h3{font-size:14px;margin:10px 0 2px;color:#2f7d7d}.m{color:#666}.imgs{display:flex;flex-wrap:wrap;gap:8px}figure{width:200px;margin:0}figure img{width:200px;border:2px solid #14202a}figcaption{font-size:12px;color:#555}</style></head><body><h1>${esc(w.tab)}: ${esc(w.title)}</h1><p>${esc(w.date)}</p>${voteHtml}${ideaHtml}${w.wall?`<section><h2>Takeaway wall</h2><ul>${Object.values(get(["takeaways",curW])||{}).sort((x,y)=>x.t-y.t).map(t=>`<li>${esc(t.text)} <i>(Artist ${esc(t.by)}${t.g?", Group "+t.g:""})</i></li>`).join("")||"<li>None</li>"}</ul></section>`:""}${w.gpair?`<section><h2>Breakout rooms</h2><ul>${Object.entries(get(["gpairs",curW])||{}).map(([k,v])=>`<li>Room ${esc(k.slice(4))}: ${String(v).split(",").map(x=>"Group "+esc(x)).join(" + ")}</li>`).join("")||"<li>None</li>"}</ul></section>`:""}${w.pairs?`<section><h2>One on one feedback (3 rounds)</h2><ul>${Object.entries(get(["pair",curW])||{}).sort((x,y)=>(+x[0])-(+y[0])).map(([a,v])=>[1,2,3].map(r=>{const e=(v||{})["r"+r]||{}; const t=fbText(e,w); return t?`<li><b>Artist ${esc(a)} heard from Artist ${esc(e.partner||"?")} (round ${r}):</b> ${esc(t).replace(/\n/g," · ")}</li>`:"";}).join("")).join("")||"<li>None</li>"}</ul></section>`:""}${soloHtml}${rows.join("")}</body></html>`;
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(w.title)}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 16px;color:#222}h1{color:#4d661a;text-transform:uppercase}section{border-top:4px solid #14202a;padding:10px 0 20px}h2{color:#a01e5c;text-transform:uppercase}h3{font-size:14px;margin:10px 0 2px;color:#2f7d7d}.m{color:#666}.imgs{display:flex;flex-wrap:wrap;gap:8px}figure{width:200px;margin:0}figure img{width:200px;border:2px solid #14202a}figcaption{font-size:12px;color:#555}</style></head><body><h1>${esc(w.tab)}: ${esc(w.title)}</h1><p>${esc(w.date)}</p>${voteHtml}${ideaHtml}${w.wall?`<section><h2>Takeaway wall</h2><ul>${[...Object.values(get(["takeaways",curW])||{}),...Object.entries(get(["pair",curW])||{}).flatMap(([a,v])=>[1,2,3].map(r=>({...((v||{})["r"+r]||{}),a,r})).filter(e=>e.posted&&(e.tk||"").trim()).map(e=>({text:e.tk.trim()+" (round "+e.r+")",by:e.a,g:groupOf(e.a)||null,t:e.posted})))].sort((x,y)=>x.t-y.t).map(t=>`<li>${esc(t.text)} <i>(Artist ${esc(t.by)}${t.g?", Group "+t.g:""})</i></li>`).join("")||"<li>None</li>"}</ul></section>`:""}${w.gpair?`<section><h2>Breakout rooms</h2><ul>${Object.entries(get(["gpairs",curW])||{}).map(([k,v])=>`<li>Room ${esc(k.slice(4))}: ${String(v).split(",").map(x=>"Group "+esc(x)).join(" + ")}</li>`).join("")||"<li>None</li>"}</ul></section>`:""}${w.pairs?`<section><h2>One on one feedback (3 rounds)</h2><ul>${Object.entries(get(["pair",curW])||{}).sort((x,y)=>(+x[0])-(+y[0])).map(([a,v])=>[1,2,3].map(r=>{const e=(v||{})["r"+r]||{}; const t=fbText(e,w); return t?`<li><b>Artist ${esc(a)} heard from Artist ${esc(e.partner||"?")} (round ${r})${e.posted?"":", not posted"}:</b> ${esc(t).replace(/\n/g," · ")}${(e.tk||"").trim()?" · Takeaway: "+esc(e.tk.trim()):""}</li>`:"";}).join("")).join("")||"<li>None</li>"}</ul></section>`:""}${soloHtml}${rows.join("")}</body></html>`;
   download(`final-zine-${curW}.html`,html,"text/html");
 };
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("lightbox").classList.remove("on");$("instructor").classList.remove("on");lbCur=null}});
@@ -1566,5 +1776,6 @@ if(USE_FIREBASE && FIREBASE_CONFIG.apiKey && window.firebase){
 }
 render();
 </script>
+<div class="cpill hidden" id="cPill" title="Class timer"></div>
 </body>
 </html>
