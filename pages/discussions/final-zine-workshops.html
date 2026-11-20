@@ -104,6 +104,15 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .steplinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .pairbox{border:3px solid var(--jet);background:var(--pulp-pale);padding:10px 12px;margin:6px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px}
 .pairbox small{display:block;font-weight:500;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.cklist{display:grid;gap:6px;margin-top:6px}
+.ck{display:flex;gap:8px;align-items:flex-start;border:2px solid var(--jet);background:#fff;padding:6px 8px;font-size:13px;line-height:1.4;cursor:pointer}
+.ck input{margin-top:3px;width:16px;height:16px;flex:none;accent-color:var(--mars)}
+.visits{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.visits .btn{text-align:left;line-height:1.4}
+.visits small{font-size:10px;letter-spacing:1px}
+.visitbox{margin:6px 0 10px}
+.prompts.static{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.prompts.static span{border:2px solid var(--jet);background:#fff;padding:3px 8px;font-size:12px}
 .pairsteps{margin:4px 0 12px 20px;font-family:'Bitter',serif;font-size:13.5px;line-height:1.6;color:#334051}
 .pq{display:grid;gap:12px}
 .pq .q textarea{border-left-color:var(--mars)}
@@ -112,6 +121,18 @@ main{max-width:1320px;margin:0 auto;padding:22px 18px 120px}
 .pairlist span{border:2px solid var(--jet);background:#fff;padding:3px 8px;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:600}
 .wallform{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
 .wallform textarea{flex:1 1 280px;min-height:58px;border:3px solid var(--jet);padding:8px 10px;font-family:'Bitter',serif;font-size:14px}
+.rounds{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.round{border:3px solid var(--jet);background:#fff;padding:10px 12px;display:grid;gap:10px;align-content:start}
+.round .rhd{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--cobalt);margin:-10px -12px 0;padding:6px 12px;border-bottom:3px solid var(--jet)}
+.round .q textarea{min-height:80px;border-left-color:var(--mars)}
+.round input{border:3px solid var(--jet);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;padding:7px 9px;width:120px}
+.fbwall{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:8px}
+.fbcard{border:3px solid var(--jet);background:#fff;box-shadow:4px 4px 0 var(--jet)}
+.fbcard.me{box-shadow:4px 4px 0 var(--mars)}
+.fbcard h4{font-family:'Space Grotesk',sans-serif;font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:#fff;background:var(--jet);padding:7px 10px}
+.fbcard .fbrow{padding:8px 10px;border-bottom:1px dashed #b9c7c0;font-family:'Bitter',serif;font-size:13.5px;line-height:1.45}
+.fbcard .fbrow:last-child{border-bottom:0}
+.fbcard .fbrow b{display:block;font-family:'Space Grotesk',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mars);margin-bottom:2px}
 .nextgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:12px}
 .nextcard{border:3px solid var(--jet);background:#fff;box-shadow:4px 4px 0 var(--jet)}
 .nextcard h4{font-family:'Space Grotesk',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#fff;background:var(--cobalt);padding:7px 10px;border-bottom:3px solid var(--jet)}
@@ -368,6 +389,8 @@ body.sheet-printing #printSheet{display:block!important;color:#000;background:#f
   <section class="vote solo hidden" id="soloSec"></section>
   <section class="assign hidden" id="assignSec"></section>
   <section class="assign step hidden" id="shareSec"></section>
+  <section class="assign step hidden" id="pageSec"></section>
+  <section class="assign step hidden" id="gpairSec"></section>
   <section class="assign step hidden" id="pairSec"></section>
   <section class="assign step hidden" id="wallSec"></section>
   <section class="assign step hidden" id="nextSec"></section>
@@ -400,6 +423,7 @@ body.sheet-printing #printSheet{display:block!important;color:#000;background:#f
       <div id="lbBy"></div>
       <div class="lbl" style="margin-top:8px">Feedback on this image</div>
       <div class="fb" id="lbFb"></div>
+      <div class="prompts" id="lbPrompts"></div>
       <div class="fbform"><textarea id="lbFbText" placeholder="What is working? What could push it further?"></textarea><button class="btn small" id="lbFbSend">Add</button></div>
     </div>
   </div>
@@ -513,7 +537,7 @@ const DEFAULT_WORKSHOPS = [
     "What would a reader see on the pages? Name three images you could make.",
     "Which readings or artworks from the course connect to your idea?"]},
   {id:"w2", tab:"Workshop 2", title:"After the proposals", date:"Mon, Nov 23", pairs:true, wall:true, next:7,
-   intro:"After the proposal presentations: meet one on one with someone from another group to trade feedback, post your takeaway to the class wall, then meet with your group to decide your next steps.",
+   intro:"After the proposal presentations: meet one on one with three people from other groups and post feedback for each, post your takeaway to the class wall, then meet with your group to decide your next steps.",
    questions:[
     "Changes we will make to our proposal: ____",
     "Additions: new pages, images, readings or ideas we will add: ____",
@@ -522,21 +546,32 @@ const DEFAULT_WORKSHOPS = [
     "Project management: our schedule, when we check in, and where we keep and share our files: ____",
     "Working together: anything about communication or teamwork we need to address, and how: ____",
     "What we will share with the class (one or two sentences): ____"]},
-  {id:"w3", tab:"Workshop 3", title:"Draft text and draft visuals", date:"Mon, Nov 30",
-   intro:"Upload a draft image for every page you have so far.",
+  {id:"w3", tab:"Workshop 3", title:"After the drafts", date:"Mon, Nov 30", pages:true, pairs:true, pairCfg:"outline", maxImgs:16,
+   prompts:["This image carries the claim...","I can't tell what this page is about...","This page could connect to...","The strongest part of this page is...","Push this further by..."],
+   intro:"On Zoom, after the draft presentations. Step 1: on your own, leave a comment on every page of two other groups' drafts. Step 2: talk through your outline one on one with three people in breakout rooms. Step 3: read your comments with your group and plan your changes.",
    questions:[
-    "Which pages have a draft image, and which still need one?",
-    "Your essay title and claim (1 to 3 sentences).",
-    "Who is writing which essay section?",
-    "What is working best so far?",
-    "What feedback do you want on your images?"]},
-  {id:"w4", tab:"Workshop 4", title:"Written text", date:"Mon, Dec 7",
-   intro:"Check your essay against the template and rubric.",
+    "Link to our draft slides (set sharing so anyone with the link can view): ____",
+    "What we heard most often in the page comments and the one on ones: ____",
+    "Changes we will make before Mon, Dec 7, and who does each: ____"]},
+  {id:"w4", tab:"Workshop 4", title:"Paired group check", date:"Mon, Dec 7", gpair:true,
+   checklist:[
+    "At least 8 pages",
+    "A cover that tells the reader what the zine is",
+    "An image made by our group on every page",
+    "Name, role and sources on every page",
+    "3 to 5 sentences on every page (optional but suggested)",
+    "The same palette, type and page design on every page",
+    "Manifesto: 10 points, designed as part of the zine",
+    "Written text placed in the zine: about 800 words, three parts with headings",
+    "At least 3 readings referenced and cited in MLA",
+    "The works cited and the sources page match",
+    "Two or more course lenses show up in the zine",
+    "No typos or unclear lines left"],
+   intro:"On Zoom, after the written text is turned in. Two groups share a breakout room and check each other's zines against the requirements. The group hearing the check ticks its own checklist and writes down what the other group said.",
    questions:[
-    "Your essay's three headings (artwork, connections, conclusion).",
-    "Which reading does each connection paragraph use, what does it argue, and which zine page does it land on?",
-    "What changed after feedback?",
-    "What is left to finish before Dec 9, and who is doing it?"]},
+    "What the other group said is working: ____",
+    "What they said to fix: typos, unclear lines, missing names, roles or sources: ____",
+    "Our fix list before Wed, Dec 9, and who does each: ____"]},
   {id:"w5", tab:"Workshop 5", title:"Final zine and presentation", date:"Wed, Dec 9",
    intro:"Share the finished zine and plan your 4 minute presentation.",
    questions:[
@@ -780,65 +815,92 @@ function renderShare(w){
 }
 function groupOf(a){ for(let g=1;g<=gc();g++){ const m=((get(["groups",g])||{}).members||"").split(/[,\s]+/).filter(Boolean); if(m.includes(String(a))) return g; } return 0; }
 function groupLabel(g){ if(!g) return ""; const nm=(get(["groups",g])||{}).name||""; return "Group "+g+(nm?": "+nm:""); }
+const ROUNDS=3;
 function makePairs(){
-  // everyone listed in a group, shuffled, then paired with someone from a different group
+  // three rounds; each person meets someone from another group, a new person each round
   const people=[]; for(let g=1;g<=gc();g++){ ((get(["groups",g])||{}).members||"").split(/[,\s]+/).filter(Boolean).forEach(a=>people.push({a,g})); }
   if(people.length<2){toast("Add artist numbers to the group cards first");return}
-  let best=null;
-  for(let tries=0;tries<200;tries++){
-    const p=[...people].sort(()=>Math.random()-.5); const pairs=[]; const used=new Set();
-    for(let i=0;i<p.length;i++){ if(used.has(i)) continue;
-      let j=p.findIndex((x,k)=>k>i&&!used.has(k)&&x.g!==p[i].g);
-      if(j<0) continue; used.add(i);used.add(j); pairs.push([p[i],p[j]]); }
-    const left=p.filter((_,i)=>!used.has(i));
-    left.forEach(x=>{ const t=pairs.find(pr=>pr.length===2&&pr.every(y=>y.g!==x.g)); if(t) t.push(x); else pairs.push([x]); });
-    const bad=pairs.filter(pr=>pr.length<2).length; if(!best||bad<best.bad){best={pairs,bad}} if(!bad) break;
+  const met={}, metG={}; people.forEach(x=>{met[x.a]=new Set();metG[x.a]=new Set()});
+  const out={}; let bad=0;
+  for(let r=1;r<=ROUNDS;r++){
+    let best=null;
+    for(let tries=0;tries<600;tries++){
+      const p=[...people].sort(()=>Math.random()-.5); const pairs=[]; const used=new Set();
+      const ok=(x,y)=>x.g!==y.g&&!met[x.a].has(y.a);
+      for(let i=0;i<p.length;i++){ if(used.has(i)) continue;
+        const j=p.findIndex((x,k)=>k>i&&!used.has(k)&&ok(p[i],x));
+        if(j<0) continue; used.add(i);used.add(j); pairs.push([p[i],p[j]]); }
+      const left=p.filter((_,i)=>!used.has(i));
+      left.forEach(x=>{ const t=pairs.find(pr=>pr.length===2&&pr.every(y=>ok(x,y))); if(t) t.push(x); else pairs.push([x]); });
+      const nb=pairs.filter(pr=>pr.length<2).length; let pen=0; pairs.forEach(pr=>pr.forEach(x=>pr.forEach(y=>{ if(x!==y&&metG[x.a].has(y.g)) pen++; })));
+      const sc=nb*1000+pen; if(!best||sc<best.sc) best={pairs,nb,sc}; if(!sc) break;
+    }
+    bad+=best.nb; const rr={};
+    best.pairs.forEach(pr=>pr.forEach(x=>{ const others=pr.filter(y=>y!==x); rr[x.a]=others.map(y=>y.a).join(", "); others.forEach(y=>{met[x.a].add(y.a);metG[x.a].add(y.g)}); }));
+    out["r"+r]=rr;
   }
-  const out={}; best.pairs.forEach(pr=>pr.forEach(x=>{ out[x.a]=pr.filter(y=>y!==x).map(y=>y.a).join(", "); }));
-  write(["pairs",curW],out).then(()=>toast(best.bad?"Pairs made. Someone has no partner yet":"Pairs made"));
+  write(["pairs",curW],out).then(()=>toast(bad?"Pairs made. A few people have no partner in a round":"Pairs made for 3 rounds"));
 }
 let pairKey="";
-const PAIR_QS=[["gave","Feedback I gave my partner: one strength, and one thing to push further"],["got","Feedback I got from my partner"],["bring","One idea I am bringing back to my group"]];
+const PAIR_CFG={
+  proposal:{stepno:"Step 1 · One on one, three times", title:"Meet three people from other groups",
+    hint:"After the presentations, bring your proposal slides. You meet three different people, one at a time. In each round, each of you gets 4 minutes, then swap. When it is your turn to hear feedback, write down what your partner says about your zine here: everyone in the class can read it below.",
+    steps:["Show your proposal in 1 minute: your claim, your option and your favorite page.","Your partner gives you feedback: one thing that is working, and one thing that could be improved or pushed further. Use \"I notice\", \"What if\" or \"Push further by\".","While you listen, write down what your partner said about your zine in this round's box. Then swap."],
+    qs:[["gave","What my partner said is working in our zine","Working"],["bring","What my partner said could be improved or pushed further","Improve or push further"]]},
+  outline:{stepno:"Step 2 · One on one, three times", title:"Talk through your outline with three people",
+    hint:"In Zoom breakout rooms. You meet three different people from other groups, one at a time. In each round, each of you gets 4 minutes, then swap. When it is your turn to hear feedback, write down what your partner says about your outline here: everyone in the class can read it below.",
+    steps:["Share your outline slide and read it in 2 minutes: your title, your claim and your three connections.","Your partner tells you which connection is strongest, which one needs more, and whether your claim and your conclusion match.","While you listen, write down what your partner said in this round's box. Then swap."],
+    qs:[["gave","What my partner said is the strongest connection","Strongest"],["bring","What my partner said needs more, or could be pushed further","Needs more"],["match","What my partner said about our claim and our conclusion: do they match?","Claim and conclusion"]]}
+};
+function pairCfg(w){ return PAIR_CFG[(w&&w.pairCfg)||"proposal"]; }
+const fbText=(e,w)=>pairCfg(w||workshop(curW)).qs.filter(([k])=>(e[k]||"").trim()).map(([k,,l])=>l+": "+e[k].trim()).join("\n");
+function partnerOf(a,r){ const p=get(["pairs",curW])||{}; return (p["r"+r]&&p["r"+r][a])||""; }
 function renderPairs(w){
   const sec=$("pairSec");
   if(!w.pairs){sec.classList.add("hidden");pairKey="";return}
   sec.classList.remove("hidden");
   const me=myArtist(); const pairs=get(["pairs",curW])||{}; const mine=(me&&get(["pair",curW,me]))||{};
-  const auto=me&&pairs[me]?pairs[me]:"";
-  const key=curW+"|"+me+"|"+auto+"|"+instructor+"|"+JSON.stringify(pairs).length;
+  const autos=[1,2,3].map(r=>me?partnerOf(me,r):"");
+  const made=Object.keys(pairs).length>0;
+  const key=curW+"|"+me+"|"+autos.join("/")+"|"+instructor+"|"+made;
   if(key!==pairKey){
     pairKey=key;
-    const partnerTxt=auto?auto.split(", ").map(a=>`Artist ${esc(a)}${groupOf(a)?" · "+esc(groupLabel(groupOf(a))):""}`).join("<br>"):"";
-    const list=Object.keys(pairs).sort((x,y)=>(+x)-(+y));
-    const seen=new Set(); const chips=list.filter(a=>{ if(seen.has(a)) return false; pairs[a].split(", ").forEach(b=>seen.add(b)); seen.add(a); return true; })
-      .map(a=>`<span>${[a,...pairs[a].split(", ")].map(x=>"Artist "+esc(x)).join(" + ")}</span>`).join("");
-    sec.innerHTML=`<span class="stepno">Step 1 · One on one</span>
-      <h3>Meet one person from another group</h3>
-      <p class="hint">After the presentations, bring your proposal slides. Each of you gets 4 minutes, then swap.</p>
-      <ol class="pairsteps">
-        <li>Show your proposal in 1 minute: your claim, your option and your favorite page.</li>
-        <li>Your partner asks two questions, then gives feedback: one strength and one thing to push further. Use "I notice", "What if" or "Push further by".</li>
-        <li>Swap. Then write down what you gave, what you got and one idea to bring back.</li>
-      </ol>
-      ${timerHtml("pair",[4,8])}
-      ${instructor?`<div class="instrow"><button class="btn small plum" id="mkPairs">Make pairs from the group cards</button>${list.length?`<button class="btn small ghost" id="clrPairs">Clear pairs</button>`:""}</div>`:""}
-      ${me?(auto?`<div class="pairbox"><small>Your partner</small>${partnerTxt}</div>`:`<p class="hint">${list.length?"You are not on a group card yet, so you have no assigned partner. Find someone from another group.":"Find someone from another group, or wait for your instructor to make pairs."}</p>`):`<div class="need">Add your artist number at the top to see your partner and save your notes</div>`}
-      <div class="pq">
-        <div class="q"><div class="qt"><b>1</b> My partner's artist number</div><input type="number" min="1" max="99" data-pp="partner" placeholder="e.g. 14" ${me?"":"disabled"}/><div class="saved" data-psaved="partner"></div></div>
-        ${PAIR_QS.map(([k,q],i)=>`<div class="q"><div class="qt"><b>${i+2}</b> ${esc(q)}</div><textarea data-pp="${k}" placeholder="Your notes" ${me?"":"disabled"}></textarea><div class="saved" data-psaved="${k}"></div></div>`).join("")}
-      </div>
-      ${list.length?`<details><summary>All pairs</summary><div class="pairlist">${chips}</div></details>`:""}`;
-    wireTimer(sec,"pair",[4,8]);
+    const who=a=>`Artist ${esc(a)}${groupOf(a)?" · "+esc(groupLabel(groupOf(a))):""}`;
+    const pc=pairCfg(w);
+    sec.innerHTML=`<span class="stepno">${esc(pc.stepno)}</span>
+      <h3>${esc(pc.title)}</h3>
+      <p class="hint">${esc(pc.hint)}</p>
+      <ol class="pairsteps">${pc.steps.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>
+      ${timerHtml("pair",[8,4])}
+      ${instructor?`<div class="instrow"><button class="btn small plum" id="mkPairs">Make pairs for 3 rounds</button>${made?`<button class="btn small ghost" id="clrPairs">Clear pairs</button>`:""}</div>`:""}
+      ${me?"":`<div class="need">Add your artist number at the top to see your partners and write your feedback</div>`}
+      <div class="rounds">${[1,2,3].map((r,ri)=>`<div class="round">
+        <div class="rhd">Round ${r}</div>
+        ${autos[ri]?`<div class="pairbox"><small>Your partner</small>${autos[ri].split(", ").map(who).join("<br>")}</div>`:""}
+        <div class="q"><div class="qt">Partner's artist number</div><input type="number" min="1" max="99" data-pr="${r}" data-pp="partner" placeholder="e.g. 14" ${me?"":"disabled"}/></div>
+        ${pc.qs.map(([k,q])=>`<div class="q"><div class="qt">${esc(q)}</div><textarea data-pr="${r}" data-pp="${k}" placeholder="Your notes" ${me?"":"disabled"}></textarea></div>`).join("")}
+        <div class="saved" data-psaved="${r}"></div>
+      </div>`).join("")}</div>
+      <h3 style="margin-top:18px">Everyone's one on one feedback</h3>
+      <p class="hint">The feedback each person heard about their zine, with their group. Find yours, and your group's.</p>
+      <div class="fbwall" id="fbWall"></div>`;
+    wireTimer(sec,"pair",[8,4]);
     sec.querySelectorAll("[data-pp]").forEach(el=>el.addEventListener("input",()=>{
-      const a=myArtist(); if(!a) return; const k=el.dataset.pp; clearTimeout(timers["p_"+k]);
-      const sv=sec.querySelector(`[data-psaved="${k}"]`); sv.textContent="saving...";
-      timers["p_"+k]=setTimeout(()=>write(["pair",curW,a,k],el.value).then(()=>{sv.textContent="saved"}),600);
+      const a=myArtist(); if(!a) return; const r=el.dataset.pr, k=el.dataset.pp; const tk="p_"+r+k; clearTimeout(timers[tk]);
+      const sv=sec.querySelector(`[data-psaved="${r}"]`); sv.textContent="saving...";
+      timers[tk]=setTimeout(()=>write(["pair",curW,a,"r"+r,k],el.value).then(()=>{sv.textContent="saved"}),600);
     }));
     if($("mkPairs")) $("mkPairs").onclick=makePairs;
     if($("clrPairs")) $("clrPairs").onclick=()=>{ if(confirmDelete("all pairs")) write(["pairs",curW],null); };
   }
-  sec.querySelectorAll("[data-pp]").forEach(el=>{ if(document.activeElement===el) return; const k=el.dataset.pp;
-    let v=mine[k]||""; if(k==="partner"&&!v&&auto) v=auto.split(", ")[0]; if(el.value!==v) el.value=v; });
+  sec.querySelectorAll("[data-pp]").forEach(el=>{ if(document.activeElement===el) return; const r=el.dataset.pr,k=el.dataset.pp;
+    let v=((mine["r"+r]||{})[k])||""; if(k==="partner"&&!v&&autos[r-1]) v=autos[r-1].split(", ")[0]; if(el.value!==v) el.value=v; });
+  // the public feedback wall, grouped by the person who received it
+  const all=get(["pair",curW])||{}; const by={};
+  Object.entries(all).forEach(([from,v])=>[1,2,3].forEach(r=>{ const e=(v||{})["r"+r]||{}; const to=String(e.partner||partnerOf(from,r).split(", ")[0]||"").trim();
+    if(fbText(e)) (by[from]=by[from]||[]).push({from:to||"?",r,text:fbText(e)}); }));
+  const keys=Object.keys(by).sort((x,y)=>(groupOf(x)-groupOf(y))||((+x)-(+y)));
+  $("fbWall").innerHTML=keys.length?keys.map(to=>`<div class="fbcard${to===me?" me":""}"><h4>Artist ${esc(to)}${groupOf(to)?" · "+esc(groupLabel(groupOf(to))):""}${to===me?" (you)":""}</h4>${by[to].sort((x,y)=>x.r-y.r).map(c=>`<div class="fbrow"><b>From Artist ${esc(c.from)} · round ${c.r}</b>${esc(c.text).replace(/\n/g,"<br>")}</div>`).join("")}</div>`).join(""):`<p class="empty-note">No feedback posted yet.</p>`;
 }
 function renderWall(w){
   const sec=$("wallSec");
@@ -847,7 +909,7 @@ function renderWall(w){
   if(sec.dataset.w!==curW){ sec.dataset.w=curW;
     sec.innerHTML=`<span class="stepno">Step 2 · Back together</span>
       <h3>Takeaway wall</h3>
-      <p class="hint">Back in the main room, post one takeaway from your one on one: an idea you are bringing back, a change you will make, or something you want the whole class to hear.</p>
+      <p class="hint">Back in the main room, post one takeaway from your one on one: an idea you are bringing back or a change you will make.</p>
       <div class="wallform"><textarea id="wallText" placeholder="My takeaway"></textarea><button class="btn plum" id="wallSend">Post</button></div>
       <div class="wall" id="wallList"></div>`;
     $("wallSend").onclick=()=>{ const a=myArtist(); const t=$("wallText").value.trim();
@@ -868,7 +930,7 @@ function renderNext(w){
   if(sec.dataset.w!==curW){ sec.dataset.w=curW;
     sec.innerHTML=`<span class="stepno">Step 3 · Back with your group</span>
       <h3>Next steps, as a group</h3>
-      <p class="hint">Meet with your group. Use the comments on your presentation, your one on one notes and the takeaway wall. Fill in the Step 3 blanks on your group card: changes, additions, decisions still to make, who does what next, how you will manage the project and anything about working together you need to address. Everyone can see them here, and each group shares its plan with the class.</p>
+      <p class="hint">Meet with your group. Read the feedback each of you got from your three partners (in Step 1), the comments on your presentation and the takeaway wall. Fill in the Step 3 blanks on your group card: changes, additions, decisions still to make, who does what next, how you will manage the project and anything about working together you need to address. Everyone can see them here, and each group shares its plan with the class.</p>
       ${timerHtml("next",[10,2])}
       <div class="steplinks"><button class="btn small plum" id="nextMine">Fill in my group's card</button></div>
       <div class="nextgrid" id="nextGrid"></div>`;
@@ -883,6 +945,75 @@ function renderNext(w){
     cards.push(`<div class="nextcard"><h4>${esc(groupLabel(g))}</h4>${labels.map((l,j)=>`<div class="nr"><b>${esc(l)}</b>${vals[j]?esc(vals[j]).replace(/\n/g,"<br>"):"<i>Not filled in yet</i>"}</div>`).join("")}</div>`);
   }
   $("nextGrid").innerHTML=cards.length?cards.join(""):`<p class="empty-note">No group has filled in its next steps yet.</p>`;
+}
+
+
+/* ============ WORKSHOP 3: PAGE BY PAGE ============ */
+function activeGroups(){ const out=[]; for(let g=1;g<=gc();g++){ const m=((get(["groups",g])||{}).members||"").trim(); const im=Object.keys(get(["images",curW,g])||{}).length; if(m||im) out.push(g); } return out; }
+function visitsFor(g){ const act=activeGroups(); if(!g||act.length<2) return []; const i=act.indexOf(g); if(i<0) return act.slice(0,2);
+  const n=Math.min(2,act.length-1); return Array.from({length:n},(_,k)=>act[(i+k+1)%act.length]); }
+function renderPages(w){
+  const sec=$("pageSec");
+  if(!w.pages){sec.classList.add("hidden");return}
+  sec.classList.remove("hidden");
+  if(sec.dataset.w!==curW){ sec.dataset.w=curW;
+    sec.innerHTML=`<span class="stepno">Step 1 · Page by page, on your own</span>
+      <h3>Comment on every page of two other groups' drafts</h3>
+      <p class="hint">No screen sharing needed. First, one person in your group pastes your draft slides link on your group card and uploads one image per page, captioned with the page number and title. Then visit the two groups below. Click each page image and leave one comment on it. Start with a prompt.</p>
+      <div class="prompts static">${(w.prompts||FEEDBACK_PROMPTS).map(p=>`<span>${esc(p)}</span>`).join("")}</div>
+      ${timerHtml("pages",[15,5])}
+      <div class="visitbox" id="visitBox"></div>
+      <div class="steplinks"><button class="btn small ghost" data-goto="pairSec">Step 2 · One on one</button><button class="btn small ghost" id="pgMine">Step 3 · Your group's card</button></div>`;
+    wireTimer(sec,"pages",[15,5]);
+    sec.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>$(b.dataset.goto).scrollIntoView({behavior:"smooth"}));
+    $("pgMine").onclick=()=>{ const g=myGroup(); if(!g){toast("Choose your group at the top first");$("myGroup").focus();return} filter="all";syncFilters();renderGrid();$("g"+g)?.scrollIntoView({behavior:"smooth"}); };
+  }
+  const g=myGroup(); const v=visitsFor(g); const box=$("visitBox");
+  const fbAll=get(["feedback",curW])||{};
+  const pill=x=>{ const imgs=Object.keys(get(["images",curW,x])||{}); const me=myArtist();
+    const done=imgs.filter(id=>Object.values(fbAll[x]||{}).some(f=>f.img===id&&String(f.by)===String(me))).length;
+    return `<button class="btn small" data-visit="${x}">${esc(groupLabel(x))}<br><small>${imgs.length?`${done} of ${imgs.length} pages commented`:"no pages posted yet"}</small></button>`; };
+  const html=!g?`<div class="need">Choose your group at the top to see which two groups you visit</div>`:(v.length?`<div class="lbl">Your two groups to visit</div><div class="visits">${v.map(pill).join("")}</div>`:`<p class="empty-note">Your two groups appear once other groups add their artist numbers.</p>`);
+  if(box.dataset.h!==html){ box.dataset.h=html; box.innerHTML=html;
+    box.querySelectorAll("[data-visit]").forEach(b=>b.onclick=()=>{filter="all";syncFilters();renderGrid();$("g"+b.dataset.visit)?.scrollIntoView({behavior:"smooth"})}); }
+}
+
+/* ============ WORKSHOP 4: PAIRED GROUP CHECK ============ */
+function makeGroupPairs(){
+  const act=activeGroups(); if(act.length<2){toast("Add artist numbers to the group cards first");return}
+  const order=[...act].sort(()=>Math.random()-.5); const rooms=[];
+  for(let i=0;i+1<order.length;i+=2) rooms.push([order[i],order[i+1]]);
+  if(order.length%2) rooms[rooms.length-1].push(order[order.length-1]);
+  const out={}; rooms.forEach((r,i)=>{ out["room"+(i+1)]=r.join(","); });
+  write(["gpairs",curW],out).then(()=>toast("Groups paired"));
+}
+function roomOf(g){ const p=get(["gpairs",curW])||{}; for(const [k,v] of Object.entries(p)){ const gs=String(v).split(",").map(Number); if(gs.includes(g)) return {room:k.replace("room",""),gs}; } return null; }
+function renderGPair(w){
+  const sec=$("gpairSec");
+  if(!w.gpair){sec.classList.add("hidden");return}
+  sec.classList.remove("hidden");
+  const p=get(["gpairs",curW])||{}; const g=myGroup(); const mr=roomOf(g);
+  const key=curW+"|"+instructor+"|"+JSON.stringify(p)+"|"+g;
+  if(sec.dataset.k===key) return; sec.dataset.k=key;
+  const rooms=Object.entries(p).sort((a,b)=>(+a[0].slice(4))-(+b[0].slice(4)));
+  sec.innerHTML=`<span class="stepno">Step 1 · Paired group check</span>
+    <h3>Check another group's zine, then swap</h3>
+    <p class="hint">In Zoom breakout rooms, two groups to a room. Bring your zine as it is now, with the written text placed in it.</p>
+    <ol class="pairsteps">
+      <li>Round 1 (7 minutes): the first group shares its screen and scrolls through its zine, page by page.</li>
+      <li>The other group goes through the checklist out loud: what is there, what is missing, typos and unclear lines, and what is working.</li>
+      <li>While you listen, tick the boxes on your own group card and write down what the other group said.</li>
+      <li>Swap for round 2. Then, back with your own group, write your fix list on your card.</li>
+    </ol>
+    ${timerHtml("gpair",[7,3])}
+    ${instructor?`<div class="instrow"><button class="btn small plum" id="mkGPairs">Pair the groups</button>${rooms.length?`<button class="btn small ghost" id="clrGPairs">Clear</button>`:""}</div>`:""}
+    ${g?(mr?`<div class="pairbox"><small>Your breakout room</small>Room ${esc(mr.room)}: ${mr.gs.filter(x=>x!==g).map(x=>esc(groupLabel(x))).join(" and ")}</div>`:`<p class="empty-note">Your partner group appears here once your instructor pairs the groups.</p>`):`<div class="need">Choose your group at the top to see your partner group</div>`}
+    ${rooms.length?`<div class="lbl" style="margin-top:10px">All breakout rooms</div><div class="pairlist">${rooms.map(([k,v])=>`<span>Room ${esc(k.slice(4))}: ${String(v).split(",").map(x=>"Group "+esc(x)).join(" + ")}</span>`).join("")}</div>`:""}
+    <div class="steplinks"><button class="btn small plum" id="gpMine">Go to my group's checklist</button></div>`;
+  wireTimer(sec,"gpair",[7,3]);
+  if($("mkGPairs")) $("mkGPairs").onclick=makeGroupPairs;
+  if($("clrGPairs")) $("clrGPairs").onclick=()=>write(["gpairs",curW],null);
+  $("gpMine").onclick=()=>{ if(!g){toast("Choose your group at the top first");$("myGroup").focus();return} filter="all";syncFilters();renderGrid();$("g"+g)?.scrollIntoView({behavior:"smooth"}); };
 }
 
 const FEEDBACK_PROMPTS = ["I notice...","This connects to...","What if...","The strongest image is...","I'm confused by...","Push further by..."];
@@ -918,7 +1049,7 @@ function get(path){ // path array into state
 /* ============ STORAGE LAYER ============ */
 const LOCAL_KEY="fzw_localdb";
 function localLoad(){ try{ const s=JSON.parse(safeGet(LOCAL_KEY)||"null"); if(s) state={...state,...s}; }catch(e){} }
-function localSave(){ safeSet(LOCAL_KEY, JSON.stringify({config:state.config,groups:state.groups,answers:state.answers,images:state.images,feedback:state.feedback,votes:state.votes||{},ideaVotes:state.ideaVotes||{},pairs:state.pairs||{},pair:state.pair||{},takeaways:state.takeaways||{},solo:state.solo||{},full:state.full||{}})); }
+function localSave(){ safeSet(LOCAL_KEY, JSON.stringify({config:state.config,groups:state.groups,answers:state.answers,images:state.images,feedback:state.feedback,votes:state.votes||{},ideaVotes:state.ideaVotes||{},pairs:state.pairs||{},pair:state.pair||{},takeaways:state.takeaways||{},checks:state.checks||{},gpairs:state.gpairs||{},solo:state.solo||{},full:state.full||{}})); }
 function setLocal(path,val){
   let o=state; for(let i=0;i<path.length-1;i++){ o[path[i]]=o[path[i]]||{}; o=o[path[i]]; }
   if(val===null) delete o[path[path.length-1]]; else o[path[path.length-1]]=val;
@@ -946,7 +1077,7 @@ let wsRefs=[];
 function listenWorkshop(){
   if(mode!=="firebase"||!db) return;
   wsRefs.forEach(r=>r.off()); wsRefs=[];
-  ["answers","images","feedback","votes","solo","ideaVotes","pairs","pair","takeaways"].forEach(k=>{
+  ["answers","images","feedback","votes","solo","ideaVotes","pairs","pair","takeaways","checks","gpairs"].forEach(k=>{
     const r=db.ref(`${ROOT}/${k}/${curW}`); wsRefs.push(r);
     r.on("value",s=>{ state[k]=state[k]||{}; state[k][curW]=s.val()||{}; render(); });
   });
@@ -1122,7 +1253,7 @@ function render(force){
   $("wsHead").innerHTML=`<div class="sheet-bar"><span>${esc(w.tab)}</span><span class="arm">${esc(w.date)} · ${w.questions.length} questions</span></div><h2>${esc(w.title)}</h2>${w.intro?`<p class="dayprompt">${esc(w.intro)}</p>`:`<div style="height:12px"></div>`}
     <ol class="qlist">${w.questions.map((q,i)=>(soloN(w)&&i===0?(w.vote?`<li class="part">Step 1 · Pick your ${MAX_PICKS} favorite zine styles (below)</li>`:"")+`<li class="part">Step 2 · On your own${w.ideas?": pick where your idea could come from (below), then answer":""}</li>`:"")+(soloN(w)&&i===soloN(w)?`<li class="part">Step 3 · With your group</li>`:"")+(w.next&&i===w.questions.length-w.next?`<li class="part">Step 1 · One on one · Step 2 · Takeaway wall · Step 3 · Next steps, with your group, on your group card</li>`:"")+`<li>${esc(q)}</li>`).join("")}</ol>`;
   $("wsRoundel").innerHTML="WS<br>"+esc(curW.slice(1)); $("coverTitle").textContent=w.title; $("coverKicker").textContent=w.tab+" · "+w.date;
-  renderSolo(w); renderVote(w); renderIdea(w); renderAssign(w); renderShare(w); renderPairs(w); renderWall(w); renderNext(w);
+  renderSolo(w); renderVote(w); renderIdea(w); renderAssign(w); renderShare(w); renderPages(w); renderGPair(w); renderPairs(w); renderWall(w); renderNext(w);
   // chips
   const mg=myGroup();
   $("chips").innerHTML=Array.from({length:gc()},(_,i)=>{const g=i+1;const st=groupStatus(g);const c=counts(g);
@@ -1163,18 +1294,20 @@ function cardShell(g){
       </div>`:`<div class="metaro" data-k="members"></div>`}
       ${soloN(w)?`<div class="parthd">Step 3 · With your group</div>`:""}${w.questions.map((q,i)=>i<soloN(w)?"":`${w.next&&i===0&&w.questions.length>w.next?`<div class="parthd">Before you share</div>`:""}${w.next&&i===w.questions.length-w.next?`<div class="parthd">Step 3 · Next steps, as a group</div>`:""}<div class="q"><div class="qt"><b>${i+1}</b> ${esc(q)}</div>
         ${mine||instructor?`<textarea data-q="${i}" placeholder="Your group's answer"></textarea><div class="saved" data-saved="${i}"></div>`:`<div class="ans" data-a="${i}"></div>`}</div>`).join("")}
+      ${w.checklist?`<div class="sect"><div class="row"><span class="lbl">Requirements checklist</span><span class="lbl" data-k="ckcount"></span></div>
+        <div class="cklist">${w.checklist.map((c,i)=>`<label class="ck"><input type="checkbox" data-ck="${i}" ${mine||instructor?"":"disabled"}/><span>${esc(c)}</span></label>`).join("")}</div></div>`:""}
       <div class="sect">
-        <div class="row"><span class="lbl">Progress images</span><span class="lbl" data-k="imgcount"></span></div>
+        <div class="row"><span class="lbl">${w.pages?"Draft pages: one image per page":"Progress images"}</span><span class="lbl" data-k="imgcount"></span></div>
         <div class="gallery" data-k="gallery"></div>
         ${mine||instructor?`<div class="upl" style="margin-top:8px">
-          <input type="text" data-k="cap" placeholder="Caption: page, what it shows, who made it"/>
+          <input type="text" data-k="cap" placeholder="${w.pages?"Caption: Page 1: cover, made by…":"Caption: page, what it shows, who made it"}"/>
           <label class="btn small plum" style="cursor:pointer">Upload images<input type="file" accept="image/*" multiple data-k="file" class="hidden"/></label>
         </div>`:""}
       </div>
       <div class="sect">
         <div class="row"><span class="lbl">Feedback for G${g}</span></div>
         <div class="fb" data-k="fb"></div>
-        ${mine&&!instructor?`<p class="empty-note">Other groups and your instructor leave feedback here.</p>`:`<div class="prompts">${FEEDBACK_PROMPTS.map(p=>`<button data-p="${esc(p)}">${esc(p)}</button>`).join("")}</div>
+        ${mine&&!instructor?`<p class="empty-note">Other groups and your instructor leave feedback here.</p>`:`<div class="prompts">${(w.prompts||FEEDBACK_PROMPTS).map(p=>`<button data-p="${esc(p)}">${esc(p)}</button>`).join("")}</div>
         <div class="fbform"><textarea data-k="fbtext" placeholder="Feedback for this group"></textarea><button class="btn small" data-k="fbsend">Add</button></div>`}
       </div>
     </div></article>`;
@@ -1189,6 +1322,7 @@ function wireCard(g){
       timers[k]=setTimeout(()=>write(["answers",curW,g,i],t.value).then(()=>{s.textContent="saved"}),600);
     });
   });
+  card.querySelectorAll("[data-ck]").forEach(el=>el.addEventListener("change",()=>write(["checks",curW,g,el.dataset.ck],el.checked||null)));
   card.querySelectorAll("[data-meta]").forEach(el=>{
     el.addEventListener(el.tagName==="SELECT"?"change":"input",()=>{
       const k="m"+g+el.dataset.meta; clearTimeout(timers[k]);
@@ -1198,9 +1332,9 @@ function wireCard(g){
   const file=card.querySelector('[data-k="file"]');
   if(file) file.addEventListener("change",async()=>{
     const cap=card.querySelector('[data-k="cap"]');
-    const existing=Object.keys(get(["images",curW,g])||{}).length;
-    const files=[...file.files].slice(0,Math.max(0,MAX_IMAGES_PER_GROUP-existing));
-    if(!files.length){toast(`Up to ${MAX_IMAGES_PER_GROUP} images per group per workshop`);return}
+    const existing=Object.keys(get(["images",curW,g])||{}).length; const mx=workshop(curW).maxImgs||MAX_IMAGES_PER_GROUP;
+    const files=[...file.files].slice(0,Math.max(0,mx-existing));
+    if(!files.length){toast(`Up to ${mx} images per group in this workshop`);return}
     toast("Uploading...");
     for(const f of files){
       try{
@@ -1234,10 +1368,13 @@ function fillCard(g){
   card.querySelectorAll("[data-meta]").forEach(el=>{ if(document.activeElement!==el) el.value=meta[el.dataset.meta]||""; });
   card.querySelectorAll("textarea[data-q]").forEach(t=>{ if(document.activeElement!==t && !timers[g+"_"+t.dataset.q+"_busy"]) { const v=ans[t.dataset.q]||""; if(t.value!==v) t.value=v; } });
   card.querySelectorAll("[data-a]").forEach(d=>{const v=(ans[d.dataset.a]||"").trim(); d.innerHTML=v?linkify(v):"No answer yet"; d.classList.toggle("empty",!v)});
+  const ck=get(["checks",curW,g])||{}; const cks=card.querySelectorAll("[data-ck]");
+  cks.forEach(el=>{ el.checked=!!ck[el.dataset.ck]; });
+  const ckc=card.querySelector('[data-k="ckcount"]'); if(ckc) ckc.textContent=`${[...cks].filter(e=>e.checked).length} of ${cks.length}`;
   // gallery
   const imgs=Object.entries(get(["images",curW,g])||{}).sort((a,b)=>a[1].t-b[1].t);
   const fbAll=get(["feedback",curW,g])||{};
-  card.querySelector('[data-k="imgcount"]').textContent=imgs.length?`${imgs.length} of ${MAX_IMAGES_PER_GROUP}`:"";
+  card.querySelector('[data-k="imgcount"]').textContent=imgs.length?`${imgs.length} of ${workshop(curW).maxImgs||MAX_IMAGES_PER_GROUP}`:"";
   card.querySelector('[data-k="gallery"]').innerHTML=imgs.length?imgs.map(([id,im])=>{
     const n=Object.values(fbAll).filter(f=>f.img===id).length;
     const canDel=instructor||g===myGroup()||myIds.has(id);
@@ -1274,8 +1411,10 @@ let lbCur=null;
 function openLightbox(g,id){
   lbCur={g,id}; const im=get(["images",curW,g,id])||{};
   $("lbImg").src=im.thumb; $("lbGroup").textContent=`Group ${g} // ${workshop(curW).tab}`;
-  $("lbCap").textContent=im.caption||"Untitled image"; $("lbBy").textContent=im.by?"Uploaded by artist "+im.by:"";
+  $("lbCap").textContent=im.caption||"Untitled image"; $("lbFbText").placeholder=workshop(curW).pages?"Your comment on this page":"What is working? What could push it further?"; $("lbBy").textContent=im.by?"Uploaded by artist "+im.by:"";
   readFull(curW,g,id).then(src=>{ if(src && lbCur && lbCur.id===id) $("lbImg").src=src; });
+  $("lbPrompts").innerHTML=(workshop(curW).prompts||FEEDBACK_PROMPTS).map(p=>`<button data-p="${esc(p)}">${esc(p)}</button>`).join("");
+  $("lbPrompts").querySelectorAll("button").forEach(b=>b.onclick=()=>{const t=$("lbFbText");t.value=(t.value?t.value+" ":"")+b.dataset.p+" ";t.focus()});
   fillLightboxFb(); $("lightbox").classList.add("on");
 }
 function fillLightboxFb(){
@@ -1297,7 +1436,7 @@ $("lbFbSend").onclick=()=>{
 /* ============ CONTROLS ============ */
 $("myGroup").onchange=()=>{safeSet("fzw_group",$("myGroup").value);lastStructureKey="";render()};
 $("myArtist").value=safeGet("fzw_artist")||"";
-$("myArtist").oninput=()=>{safeSet("fzw_artist",$("myArtist").value);renderSolo(workshop(curW));renderVote(workshop(curW))};
+$("myArtist").oninput=()=>{safeSet("fzw_artist",$("myArtist").value);const w=workshop(curW);renderSolo(w);renderVote(w);renderPages(w);renderPairs(w);renderWall(w)};
 $("filters").querySelectorAll("button").forEach(b=>b.onclick=()=>{filter=b.dataset.f;syncFilters();renderGrid()});
 $("jumpMine").onclick=()=>{const g=myGroup(); if(!g){toast("Choose your group first");return} filter="all";syncFilters();renderGrid();$("g"+g)?.scrollIntoView({behavior:"smooth"})};
 /* ============ EXPORT MY WORK ============
@@ -1322,8 +1461,8 @@ function groupFor(a){
 $("exportMine").onclick=async()=>{
   const a=myArtist(); if(!a){toast("Add your artist number first");$("myArtist").focus();return}
   const g=groupFor(a); toast("Building...");
-  let solo,answers,images,feedback,ideaVotes,votes,config,pair,takeaways;
-  try{ [solo,answers,images,feedback,ideaVotes,votes,config,pair,takeaways]=await Promise.all(["solo","answers","images","feedback","ideaVotes","votes","config","pair","takeaways"].map(loadKind)); }catch(e){ toast("Could not load. Try again."); return; }
+  let solo,answers,images,feedback,ideaVotes,votes,config,pair,takeaways,checks;
+  try{ [solo,answers,images,feedback,ideaVotes,votes,config,pair,takeaways,checks]=await Promise.all(["solo","answers","images","feedback","ideaVotes","votes","config","pair","takeaways","checks"].map(loadKind)); }catch(e){ toast("Could not load. Try again."); return; }
   const meta=g?(get(["groups",g])||{}):{};
   const blocks=DEFAULT_WORKSHOPS.map(d=>{
     const w=workshop(d.id); const st=soloN(w);
@@ -1337,18 +1476,22 @@ $("exportMine").onclick=async()=>{
     const stylesHtml=myStyles.length?`<div class="pr-part">Step 1: my favorite zine styles</div><div class="pr-picks">${myStyles.map((s,i)=>prPick(i+1,s,cfg.styleImgs,styleSvg)).join("")}</div>`:"";
     const ideasHtml=myIdeas.length?`<div class="pr-part">Step 2: where my idea could come from</div><div class="pr-picks">${myIdeas.map((s,i)=>prPick(i+1,s,cfg.ideaImgs,ideaSvg)).join("")}</div>`:"";
     const pp=w.pairs?(((pair||{})[d.id]||{})[a]||{}):{};
+    const recv=[]; if(w.pairs) Object.entries((pair||{})[d.id]||{}).forEach(([from,v])=>[1,2,3].forEach(r=>{const e=(v||{})["r"+r]||{}; /* the listener writes down feedback, so it is already in their own rounds */}));
+    const rounds=[1,2,3].map(r=>pp["r"+r]||{}).map((e,i)=>(e.partner||pairCfg(w).qs.some(([k])=>(e[k]||"").trim()))?`<div class="pr-q"><b>Round ${i+1}${e.partner?" · with Artist "+esc(e.partner):""}</b>${pairCfg(w).qs.filter(([k])=>(e[k]||"").trim()).map(([k,q])=>`<div class="pr-a"><i>${esc(q)}:</i> ${esc(e[k])}</div>`).join("")}</div>`:"").join("");
+    const pairHtml=(rounds||recv.length)?`<div class="pr-part">${w.pairCfg==="outline"?"Step 2":"Step 1"}: one on one, three rounds: feedback I heard</div>${rounds}${recv.length?`<div class="pr-q"><b>Feedback I received</b>${recv.map(c=>`<div class="pr-a">From Artist ${esc(c.from)} (round ${c.r}): ${esc(c.text).replace(/\n/g,"<br>")}</div>`).join("")}</div>`:""}`:"";
     const myTk=w.wall?Object.values((takeaways||{})[d.id]||{}).filter(t=>String(t.by)===String(a)).sort((x,y)=>x.t-y.t):[];
-    const pairHtml=(pp.partner||pp.gave||pp.got||pp.bring)?`<div class="pr-part">Step 1: one on one${pp.partner?" with Artist "+esc(pp.partner):""}</div>${PAIR_QS.filter(([k])=>(pp[k]||"").trim()).map(([k,q])=>`<div class="pr-q"><b>${esc(q)}</b><div class="pr-a">${esc(pp[k])}</div></div>`).join("")}`:"";
     const tkHtml=myTk.length?`<div class="pr-part">Step 2: my takeaway${myTk.length>1?"s":""}</div>${myTk.map(t=>`<div class="pr-q"><div class="pr-a">${esc(t.text)}</div></div>`).join("")}`:"";
     const anyMine=pairHtml||tkHtml||myStyles.length||myIdeas.length||w.questions.slice(0,st).some((_,i)=>(mine[i]||"").trim());
     const anyGroup=w.questions.some((_,i)=>i>=st&&(ga[i]||"").trim());
-    if(!anyMine&&!anyGroup&&!imgs.length&&!fbs.length) return "";
+    const anyCk=w.checklist&&g&&Object.values((((checks||{})[d.id]||{})[g])||{}).some(Boolean);
+    if(!anyMine&&!anyGroup&&!anyCk&&!imgs.length&&!fbs.length) return "";
     return `<div class="pr-ws"><h2>${esc(d.tab)}: ${esc(w.title)}</h2>
       ${stylesHtml}${ideasHtml}${pairHtml}${tkHtml}
       ${st?`<div class="pr-part">On your own${myIdeas.length?": my answers":""}</div>${w.questions.slice(0,st).map((q,i)=>qa(q,i,mine[i])).join("")}`:""}
       ${st<w.questions.length?`<div class="pr-part">${g?"With your group (Group "+g+")":"With your group (no group chosen)"}</div>${w.questions.map((q,i)=>i<st?"":qa(q,i,ga[i])).join("")}`:""}
-      ${imgs.length?`<div class="pr-part">Progress images</div><div class="pr-imgs">${imgs.map(im=>`<figure><img src="${im.thumb}" alt=""/><figcaption>${[im.caption?esc(im.caption):"",im.by?"Artist "+esc(im.by):""].filter(Boolean).join(" · ")}</figcaption></figure>`).join("")}</div>`:""}
-      ${fbs.length?`<div class="pr-part">Feedback your group received</div>${fbs.map(f=>`<div class="pr-fb"><b>${f.inst?"Instructor":"Artist "+esc(f.by||"?")}:</b> ${esc(f.text)}</div>`).join("")}`:""}
+      ${w.checklist&&g?`<div class="pr-part">Requirements checklist</div>${w.checklist.map((c,i)=>`<div class="pr-q">${(((checks||{})[d.id]||{})[g]||{})[i]?"☑":"☐"} ${esc(c)}</div>`).join("")}`:""}
+      ${imgs.length?`<div class="pr-part">${w.pages?"Draft pages":"Progress images"}</div><div class="pr-imgs">${imgs.map(im=>`<figure><img src="${im.thumb}" alt=""/><figcaption>${[im.caption?esc(im.caption):"",im.by?"Artist "+esc(im.by):""].filter(Boolean).join(" · ")}</figcaption></figure>`).join("")}</div>`:""}
+      ${fbs.length?`<div class="pr-part">Feedback your group received</div>${fbs.map(f=>{const cap=f.img?((((images[d.id]||{})[g]||{})[f.img]||{}).caption||"a page"):""; return `<div class="pr-fb"><b>${f.inst?"Instructor":"Artist "+esc(f.by||"?")}${cap?" on "+esc(cap):""}:</b> ${esc(f.text)}</div>`;}).join("")}`:""}
     </div>`;
   }).filter(Boolean);
   const date=new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
@@ -1400,7 +1543,8 @@ $("expHtml").onclick=()=>{
     rows.push(`<section><h2>Group ${g}${meta.name?": "+esc(meta.name):""}</h2><p class="m">${meta.option?"Option "+esc(meta.option)+" · ":""}${meta.members?"Artists "+esc(meta.members):""}</p>
       ${w.questions.map((q,i)=>i<soloN(w)?"":`<h3>${i+1}. ${esc(q)}</h3><p>${ans[i]?linkify(ans[i]):"<em>No answer</em>"}</p>`).join("")}
       ${imgs.length?`<div class="imgs">${imgs.map(im=>`<figure><img src="${im.thumb}"/><figcaption>${esc(im.caption||"")}</figcaption></figure>`).join("")}</div>`:""}
-      ${fbs.length?`<h3>Feedback</h3><ul>${fbs.map(f=>`<li><b>${f.inst?"Instructor":"Artist "+esc(f.by||"?")}:</b> ${esc(f.text)}</li>`).join("")}</ul>`:""}</section>`);
+      ${w.checklist?`<h3>Requirements checklist</h3><ul>${w.checklist.map((c,i)=>`<li>${(get(["checks",curW,g])||{})[i]?"☑":"☐"} ${esc(c)}</li>`).join("")}</ul>`:""}
+      ${fbs.length?`<h3>Feedback</h3><ul>${fbs.map(f=>{const cap=f.img?((get(["images",curW,g,f.img])||{}).caption||"a page"):""; return `<li><b>${f.inst?"Instructor":"Artist "+esc(f.by||"?")}${cap?" on "+esc(cap):""}:</b> ${esc(f.text)}</li>`;}).join("")}</ul>`:""}</section>`);
   }
   const vt=voteTally(get(["votes",curW]));
   const sb=get(["solo",curW])||{}; const sArt=Object.keys(sb).sort((a,b)=>(+a||0)-(+b||0));
@@ -1408,7 +1552,7 @@ $("expHtml").onclick=()=>{
   const it=voteTally(get(["ideaVotes",curW]));
   const ideaHtml=w.ideas?`<section><h2>Where ideas come from (up to ${MAX_IDEA_PICKS} picks each)</h2><ol>${[...IDEA_SOURCES].sort((x,y)=>(it[y.id]||0)-(it[x.id]||0)).map(s=>`<li>${esc(s.name)}: ${it[s.id]||0}</li>`).join("")}</ol><h3>Picks by artist</h3><ul>${Object.entries(get(["ideaVotes",curW])||{}).sort((x,y)=>(+x[0]||0)-(+y[0]||0)).map(([a,v])=>`<li>Artist ${esc(a)}: ${picksOf(v).map(id=>esc((IDEA_SOURCES.find(t=>t.id===id)||{name:id}).name)).join(", ")}</li>`).join("")}</ul></section>`:"";
   const voteHtml=w.vote?`<section><h2>Zine style vote (top ${MAX_PICKS} picks each)</h2><ol>${[...STYLES].sort((x,y)=>(vt[y.id]||0)-(vt[x.id]||0)).map(s=>`<li>${esc(s.name)}: ${vt[s.id]||0}</li>`).join("")}</ol><h3>Picks by artist</h3><ul>${Object.entries(get(["votes",curW])||{}).sort((x,y)=>(+x[0]||0)-(+y[0]||0)).map(([a,v])=>`<li>Artist ${esc(a)}: ${picksOf(v).map(id=>esc((STYLES.find(t=>t.id===id)||{name:id}).name)).join(", ")}</li>`).join("")}</ul></section>`:"";
-  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(w.title)}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 16px;color:#222}h1{color:#4d661a;text-transform:uppercase}section{border-top:4px solid #14202a;padding:10px 0 20px}h2{color:#a01e5c;text-transform:uppercase}h3{font-size:14px;margin:10px 0 2px;color:#2f7d7d}.m{color:#666}.imgs{display:flex;flex-wrap:wrap;gap:8px}figure{width:200px;margin:0}figure img{width:200px;border:2px solid #14202a}figcaption{font-size:12px;color:#555}</style></head><body><h1>${esc(w.tab)}: ${esc(w.title)}</h1><p>${esc(w.date)}</p>${voteHtml}${ideaHtml}${w.wall?`<section><h2>Takeaway wall</h2><ul>${Object.values(get(["takeaways",curW])||{}).sort((x,y)=>x.t-y.t).map(t=>`<li>${esc(t.text)} <i>(Artist ${esc(t.by)}${t.g?", Group "+t.g:""})</i></li>`).join("")||"<li>None</li>"}</ul></section>`:""}${w.pairs?`<section><h2>One on one notes</h2><ul>${Object.entries(get(["pair",curW])||{}).sort((x,y)=>(+x[0])-(+y[0])).map(([a,v])=>`<li><b>Artist ${esc(a)}${v.partner?" with Artist "+esc(v.partner):""}:</b> ${PAIR_QS.filter(([k])=>(v[k]||"").trim()).map(([k,q])=>esc(q.split(":")[0])+": "+esc(v[k])).join(" · ")}</li>`).join("")||"<li>None</li>"}</ul></section>`:""}${soloHtml}${rows.join("")}</body></html>`;
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(w.title)}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;padding:0 16px;color:#222}h1{color:#4d661a;text-transform:uppercase}section{border-top:4px solid #14202a;padding:10px 0 20px}h2{color:#a01e5c;text-transform:uppercase}h3{font-size:14px;margin:10px 0 2px;color:#2f7d7d}.m{color:#666}.imgs{display:flex;flex-wrap:wrap;gap:8px}figure{width:200px;margin:0}figure img{width:200px;border:2px solid #14202a}figcaption{font-size:12px;color:#555}</style></head><body><h1>${esc(w.tab)}: ${esc(w.title)}</h1><p>${esc(w.date)}</p>${voteHtml}${ideaHtml}${w.wall?`<section><h2>Takeaway wall</h2><ul>${Object.values(get(["takeaways",curW])||{}).sort((x,y)=>x.t-y.t).map(t=>`<li>${esc(t.text)} <i>(Artist ${esc(t.by)}${t.g?", Group "+t.g:""})</i></li>`).join("")||"<li>None</li>"}</ul></section>`:""}${w.gpair?`<section><h2>Breakout rooms</h2><ul>${Object.entries(get(["gpairs",curW])||{}).map(([k,v])=>`<li>Room ${esc(k.slice(4))}: ${String(v).split(",").map(x=>"Group "+esc(x)).join(" + ")}</li>`).join("")||"<li>None</li>"}</ul></section>`:""}${w.pairs?`<section><h2>One on one feedback (3 rounds)</h2><ul>${Object.entries(get(["pair",curW])||{}).sort((x,y)=>(+x[0])-(+y[0])).map(([a,v])=>[1,2,3].map(r=>{const e=(v||{})["r"+r]||{}; const t=fbText(e,w); return t?`<li><b>Artist ${esc(a)} heard from Artist ${esc(e.partner||"?")} (round ${r}):</b> ${esc(t).replace(/\n/g," · ")}</li>`:"";}).join("")).join("")||"<li>None</li>"}</ul></section>`:""}${soloHtml}${rows.join("")}</body></html>`;
   download(`final-zine-${curW}.html`,html,"text/html");
 };
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("lightbox").classList.remove("on");$("instructor").classList.remove("on");lbCur=null}});
